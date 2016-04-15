@@ -1,0 +1,25 @@
+# Bootstrap
+spring:
+  application:
+    name: thule-people-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: thule-configuration-service
+      # Without failFast, there is a race condition when the config server has not yet registered with the discovery server.
+      # When this happens, this micro service will stay up but in an unconfigured state. By setting failFast to true
+      # this service will fail and shutdown. However, with a docker compose restart policy of always, this service will be
+      # automatically restarted. Eventually, following a restart, the configuration service would have registered with the
+      # discovery service and this service will configure correctly.
+      failFast: true
+
+eureka:
+  instance:
+    healthCheckUrlPath: /people-service/health
+    nonSecurePort: ${server.port:8761}
+    preferIpAddress: true
+    statusPageUrlPath: /people-service/info
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/

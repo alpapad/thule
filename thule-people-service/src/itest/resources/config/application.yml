@@ -1,0 +1,45 @@
+# Spring actuator info configuration
+info:
+  service:
+    description: Thule People Service
+    name: ${spring.application.name}
+    version: under-development
+
+# Spring logging configuration
+logging:
+  file: ${HOME}/log/thule/people-service/people-service.log
+  trace:
+    file: ${HOME}/log/thule/people-service/people-service-trace.log
+
+# Spring security configuration
+security:
+  user:
+    name: admin
+    password: admin
+    role: USER
+
+# Spring server configuration
+server:
+  context-path: /people-service
+  port: 8080
+
+# Spring boot configuration
+spring:
+  application:
+    name: thule-people-service
+  datasource:
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    url: jdbc:log4jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+  profiles:
+    include: ${user.name}

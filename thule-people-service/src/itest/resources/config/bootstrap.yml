@@ -1,0 +1,12 @@
+# Spring cloud configuration
+eureka:
+  client:
+    enabled: false
+
+spring:
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+      failFast: false

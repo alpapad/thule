@@ -1,0 +1,4 @@
+# Spring cloud configuration
+eureka:
+  client:
+    enabled: false

@@ -1,0 +1,8 @@
+rootProject.name = "thule"
+
+include "thule-cloud"
+include "thule-config-service"
+include "thule-core"
+include "thule-discovery-service"
+include "thule-people-service"
+include "thule-repository-mongodb"

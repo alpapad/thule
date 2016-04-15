@@ -1,0 +1,14 @@
+# Bootstrap
+spring:
+  application:
+    name: thule-configuration-service
+  profiles:
+    include: native
+
+eureka:
+  instance:
+    nonSecurePort: ${server.port:8888}
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/

@@ -1,0 +1,21 @@
+# Flyway configuration
+flyway:
+  baseline-on-migrate: true
+  locations: classpath:flyway/oracle/migration
+  password: system
+  url: jdbc:oracle:thin:@oracle-host:1521:xe
+  user: system
+
+# Spring configuration
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    password: thule
+    url: jdbc:log4jdbc:oracle:thin:@oracle-host:1521:xe
+    username: thule
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        id.new_generator_mappings: true

@@ -1,0 +1,11 @@
+# Eureka configuration
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
+
+# Spring server configuration
+server:
+  port: 8761
