@@ -2,12 +2,10 @@ buildscript {
     // Override Spring boot versions
     ext["assertj.version"] = "3.3.0"  // Remove when upgraded to a spring cloud version that uses spring boot 1.4
     ext["jackson.version"] = "2.6.5" // Remove when spring hateoas has been upgraded to support jackson 2.7
-    ext["logback.version"] = "1.1.7" // Remove when upgraded to a spring cloud version that uses spring boot 1.4
-    ext["slf4j.version"] = "1.7.21" // Remove when upgraded to a spring cloud version that uses spring boot 1.4
     ext {
         jacocoVersion = "0.7.6.201602180812"
         springBootVersion = "1.4.0.M2"
-        springCloudVersion = "Brixton.RC1"
+        springCloudVersion = "Brixton.RC2"
     }
 
     repositories {
@@ -181,7 +179,7 @@ subprojects {
 }
 
 project("thule-cloud") {
-    tasks.itest.dependsOn(":thule-config-service:itest", ":thule-discovery-service:itest", ":thule-people-service:itest")
+    tasks.itest.dependsOn(":thule-config-service:build", ":thule-discovery-service:build", ":thule-people-service:build")
 
     bootRepackage.enabled = false
 
