@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-if [ "$1" = 'app' ]; then
+if [ "$1" = "app" ]; then
     # Start the app
     jarFileName=$(basename *.jar)
     echo "Starting $jarFileName..."
