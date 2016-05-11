@@ -21,6 +21,7 @@ public final class Audit implements Serializable {
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_BY = "updatedBy";
     private static final int UPDATED_BY_MAX_LENGTH = 100;
     private static final long serialVersionUID = -2064527752664817053L;
+    private static final String CURRENT_USER_IS_NOT_AUTHENTICATED = "Current user is not authenticated";
 
     @Column
     private LocalDateTime createdAt;
@@ -97,8 +98,8 @@ public final class Audit implements Serializable {
 
     @PrePersist
     public void initialise() {
-        Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), "Current user is not authenticated");
-        Assert.notNull(SecurityContextHolder.getContext().getAuthentication().getName(), "Current user is not authenticated");
+        Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), CURRENT_USER_IS_NOT_AUTHENTICATED);
+        Assert.notNull(SecurityContextHolder.getContext().getAuthentication().getName(), CURRENT_USER_IS_NOT_AUTHENTICATED);
 
         createdAt = LocalDateTime.now();
         updatedAt = getCreatedAt();
@@ -107,8 +108,8 @@ public final class Audit implements Serializable {
 
     @PreUpdate
     public void update() {
-        Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), "Current user is not authenticated");
-        Assert.notNull(SecurityContextHolder.getContext().getAuthentication().getName(), "Current user is not authenticated");
+        Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), CURRENT_USER_IS_NOT_AUTHENTICATED);
+        Assert.notNull(SecurityContextHolder.getContext().getAuthentication().getName(), CURRENT_USER_IS_NOT_AUTHENTICATED);
 
         updatedAt = LocalDateTime.now();
         updatedBy = SecurityContextHolder.getContext().getAuthentication().getName();
