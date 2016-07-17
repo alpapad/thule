@@ -4,7 +4,7 @@ buildscript {
     ext["jackson.version"] = "2.6.5" // Remove when spring hateoas has been upgraded to support jackson 2.7
     ext {
         jacocoVersion = "0.7.6.201602180812"
-        springBootVersion = "1.4.0.M3"
+        springBootVersion = "1.4.0.RC1"
         springCloudVersion = "Brixton.RELEASE"
     }
 
