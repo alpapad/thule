@@ -12,6 +12,7 @@ public class Application {
     Application() {
     }
 
+    @SuppressWarnings("squid:S2095") // Suppress SonarQube bug 'Close this "ConfigurableApplicationContext"'
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
