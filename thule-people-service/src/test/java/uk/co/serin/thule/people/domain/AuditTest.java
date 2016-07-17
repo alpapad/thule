@@ -9,8 +9,10 @@ import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class AuditTest {
 
@@ -77,12 +79,13 @@ public class AuditTest {
         expectedAudit.initialise();
 
         Audit actualAudit = new Audit(expectedAudit);
-
-        Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value
+        // Using Awaitility.await() rather than Thread.sleep() to overcome SonarQube code smell Remove this use of "Thread.sleep()"
+        await().timeout(10, TimeUnit.SECONDS); // Allow enough time to lapse for the updatedAt to be updated with a different value.
 
         // When
         actualAudit.update();
 
+        // Then
         assertThat(actualAudit.getUpdatedAt()).isAfter(expectedAudit.getUpdatedAt());
         assertThat(actualAudit).isEqualToIgnoringGivenFields(expectedAudit, Audit.ENTITY_ATTRIBUTE_NAME_UPDATED_AT);
     }
