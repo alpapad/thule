@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+@SuppressWarnings("common-java:DuplicatedBlocks") // Suppress SonarQube code smell Source files should not have any duplicated blocks
 public final class Person implements Serializable {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
