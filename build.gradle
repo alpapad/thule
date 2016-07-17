@@ -3,7 +3,7 @@ buildscript {
     ext["assertj.version"] = "3.3.0"  // Remove when upgraded to a spring cloud version that uses spring boot 1.4
     ext["jackson.version"] = "2.6.5" // Remove when spring hateoas has been upgraded to support jackson 2.7
     ext {
-        jacocoVersion = "0.7.6.201602180812"
+        jacocoVersion = "0.7.7.201606060606"
         springBootVersion = "1.4.0.RC1"
         springCloudVersion = "Brixton.RELEASE"
     }
