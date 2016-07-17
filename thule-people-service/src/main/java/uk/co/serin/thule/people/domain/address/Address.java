@@ -72,10 +72,16 @@ public abstract class Address extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug '"@NonNull" values should not be set to null'
     Address() {
     }
 
-    public Address(Address address) {
+    /**
+     * Copy object constructor
+     * @param address Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug '"@NonNull" values should not be set to null'
+    Address(Address address) {
         // Copy business key
         this.addressLine1 = address.addressLine1;
         this.country = new Country(address.getCountry());
@@ -88,7 +94,14 @@ public abstract class Address extends DomainModel {
         getAudit().setUpdatedBy(address.getAudit().getUpdatedBy());
     }
 
-    public Address(String addressLine1, String postCode, Country country) {
+    /**
+     * Business key constructor
+     * @param addressLine1 Business key attribute
+     * @param postCode Business key attribute
+     * @param country Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug '"@NonNull" values should not be set to null'
+    Address(String addressLine1, String postCode, Country country) {
         this.addressLine1 = addressLine1;
         this.postCode = postCode;
         this.country = country;

@@ -17,10 +17,20 @@ public final class HomeAddress extends Address {
     HomeAddress() {
     }
 
+    /**
+     * Copy object constructor
+     * @param homeAddress Object to be copied
+     */
     public HomeAddress(HomeAddress homeAddress) {
         super(homeAddress);
     }
 
+    /**
+     * Business key constructor
+     * @param addressLine1 Business key attribute
+     * @param postCode Business key attribute
+     * @param country Business key attribute
+     */
     public HomeAddress(String addressLine1, String postCode, Country country) {
         super(addressLine1, postCode, country);
     }

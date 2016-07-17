@@ -17,10 +17,20 @@ public final class WorkAddress extends Address {
     WorkAddress() {
     }
 
+    /**
+     * Copy object constructor
+     * @param workAddress Object to be copied
+     */
     public WorkAddress(WorkAddress workAddress) {
         super(workAddress);
     }
 
+    /**
+     * Business key constructor
+     * @param addressLine1 Business key attribute
+     * @param postCode Business key attribute
+     * @param country Business key attribute
+     */
     public WorkAddress(String addressLine1, String postCode, Country country) {
         super(addressLine1, postCode, country);
     }
