@@ -57,9 +57,15 @@ public final class Photograph extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Photograph() {
     }
 
+    /**
+     * Copy object constructor
+     * @param person Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Photograph(Photograph photograph, Person person) {
         // Copy business key
         this.person = person;
@@ -72,6 +78,12 @@ public final class Photograph extends DomainModel {
         getAudit().setUpdatedBy(photograph.getAudit().getUpdatedBy());
     }
 
+    /**
+     * Business key constructor
+     * @param photo Business key attribute
+     * @param person key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Photograph(byte[] photo, Person person) {
         setPhoto(photo);
         this.person = person;

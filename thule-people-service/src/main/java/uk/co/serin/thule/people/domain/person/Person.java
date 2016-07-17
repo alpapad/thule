@@ -124,10 +124,16 @@ public final class Person extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Person() {
         initialise();
     }
 
+    /**
+    * Copy object constructor
+    * @param person Object to be copied
+    */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(Person person) {
         // Copy business key
         this.userId = person.userId;
@@ -143,6 +149,11 @@ public final class Person extends DomainModel {
         getAudit().setUpdatedBy(person.getAudit().getUpdatedBy());
     }
 
+    /**
+     * Business key constructor
+     * @param userId Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(String userId) {
         Assert.hasText(userId);
         this.userId = userId;

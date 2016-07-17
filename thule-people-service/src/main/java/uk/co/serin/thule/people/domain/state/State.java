@@ -58,9 +58,15 @@ public final class State extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     State() {
     }
 
+    /**
+     * Copy object constructor
+     * @param state Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public State(State state) {
         // Copy business key
         this.code = state.code;
@@ -73,6 +79,11 @@ public final class State extends DomainModel {
         getAudit().setUpdatedBy(state.getAudit().getUpdatedBy());
     }
 
+    /**
+     * Business key constructor
+     * @param code Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public State(StateCode code) {
         this.code = code;
     }

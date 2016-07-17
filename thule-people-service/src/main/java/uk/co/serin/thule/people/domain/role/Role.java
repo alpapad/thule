@@ -34,9 +34,15 @@ public final class Role extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Role() {
     }
 
+    /**
+     * Copy object constructor
+     * @param role Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Role(Role role) {
         // Copy business key
         this.code = role.code;
@@ -48,6 +54,11 @@ public final class Role extends DomainModel {
         getAudit().setUpdatedBy(role.getAudit().getUpdatedBy());
     }
 
+    /**
+     * Business key constructor
+     * @param code Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Role(RoleCode code) {
         this.code = code;
     }

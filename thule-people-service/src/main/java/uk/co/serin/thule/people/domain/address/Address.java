@@ -72,7 +72,7 @@ public abstract class Address extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug '"@NonNull" values should not be set to null'
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Address() {
     }
 
@@ -80,8 +80,8 @@ public abstract class Address extends DomainModel {
      * Copy object constructor
      * @param address Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug '"@NonNull" values should not be set to null'
-    Address(Address address) {
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public Address(Address address) {
         // Copy business key
         this.addressLine1 = address.addressLine1;
         this.country = new Country(address.getCountry());
@@ -100,8 +100,8 @@ public abstract class Address extends DomainModel {
      * @param postCode Business key attribute
      * @param country Business key attribute
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug '"@NonNull" values should not be set to null'
-    Address(String addressLine1, String postCode, Country country) {
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public Address(String addressLine1, String postCode, Country country) {
         this.addressLine1 = addressLine1;
         this.postCode = postCode;
         this.country = country;

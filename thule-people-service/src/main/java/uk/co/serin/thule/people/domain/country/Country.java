@@ -45,9 +45,15 @@ public final class Country extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Country() {
     }
 
+    /**
+     * Copy object constructor
+     * @param country Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Country(Country country) {
         // Copy business key
         this.isoCodeThreeDigit = country.isoCodeThreeDigit;
@@ -59,6 +65,11 @@ public final class Country extends DomainModel {
         getAudit().setUpdatedBy(country.getAudit().getUpdatedBy());
     }
 
+    /**
+     * Business key constructor
+     * @param isoCodeThreeDigit Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Country(String isoCodeThreeDigit) {
         this.isoCodeThreeDigit = isoCodeThreeDigit;
     }

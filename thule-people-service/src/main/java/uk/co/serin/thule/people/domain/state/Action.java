@@ -44,9 +44,15 @@ public final class Action extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Action() {
     }
 
+    /**
+     * Copy object constructor
+     * @param action Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Action(Action action) {
         // Copy business key
         this.code = action.code;
@@ -58,6 +64,11 @@ public final class Action extends DomainModel {
         getAudit().setUpdatedBy(action.getAudit().getUpdatedBy());
     }
 
+    /**
+     * Business key constructor
+     * @param code Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Action(ActionCode code) {
         this.code = code;
     }
