@@ -19,30 +19,10 @@ import javax.validation.constraints.Size;
 
 public final class Person implements Serializable {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
-    public static final String ENTITY_ATTRIBUTE_NAME_ADDRESS_LINE_1 = "addressLine1";
-    public static final String ENTITY_ATTRIBUTE_NAME_ADDRESS_LINE_2 = "addressLine2";
-    public static final String ENTITY_ATTRIBUTE_NAME_COUNTY = "county";
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
-    public static final String ENTITY_ATTRIBUTE_NAME_DATE_OF_BIRTH = "dateOfBirth";
-    public static final String ENTITY_ATTRIBUTE_NAME_DESCRIPTION = "description";
-    public static final String ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS = "emailAddress";
-    public static final String ENTITY_ATTRIBUTE_NAME_FIRST_NAME = "firstName";
-    public static final String ENTITY_ATTRIBUTE_NAME_HASH = "hash";
-    public static final String ENTITY_ATTRIBUTE_NAME_ID = "id";
-    public static final String ENTITY_ATTRIBUTE_NAME_NEXT_STATE = "nextState";
-    public static final String ENTITY_ATTRIBUTE_NAME_NEXT_STATE_ID = "nextStateId";
-    public static final String ENTITY_ATTRIBUTE_NAME_PERSON_ID = "personId";
-    public static final String ENTITY_ATTRIBUTE_NAME_POST_CODE = "postCode";
-    public static final String ENTITY_ATTRIBUTE_NAME_SALUTATION = "salutation";
-    public static final String ENTITY_ATTRIBUTE_NAME_SECOND_NAME = "secondName";
-    public static final String ENTITY_ATTRIBUTE_NAME_SURNAME = "surname";
-    public static final String ENTITY_ATTRIBUTE_NAME_TOWN = "town";
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_AT = "updatedAt";
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_BY = "updatedBy";
     public static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
-    public static final String ENTITY_ATTRIBUTE_NAME_VERSION = "version";
-    public static final String ENTITY_NAME_PEOPLE = "people";
-    public static final String ENTITY_NAME_PERSON = "person";
     public static final int FIRST_NAME_MAX_LENGTH = 30;
     public static final int PASSWORD_MAX_LENGTH = 100;
     public static final int SALUTATION_MAX_LENGTH = 10;
@@ -90,10 +70,16 @@ public final class Person implements Serializable {
     /**
      * Required by MongoDb
      */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     Person() {
         this("");
     }
 
+    /**
+     * Copy object constructor
+     * @param person Object to be copied
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(Person person) {
         // Copy business key
         this.userId = person.userId;
@@ -102,6 +88,11 @@ public final class Person implements Serializable {
         // Copy immutable properties, i.e. those without a setter
     }
 
+    /**
+     * Business key constructor
+     * @param userId Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(String userId) {
         this.userId = userId;
         initialise();
