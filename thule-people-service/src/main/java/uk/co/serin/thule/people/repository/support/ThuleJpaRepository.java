@@ -13,11 +13,11 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 
 @LogPublicMethods
-class ThuleJpaRepository<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements ThuleRepository<T, ID> {
+class ThuleJpaRepository<T, I extends Serializable> extends SimpleJpaRepository<T, I> implements ThuleRepository<T, I> {
     private final String deleteByUpdatedByEjbQl;
     private final EntityManager entityManager;
 
-    public ThuleJpaRepository(JpaEntityInformation<T, ID> metadata, EntityManager entityManager) {
+    public ThuleJpaRepository(JpaEntityInformation<T, I> metadata, EntityManager entityManager) {
         super(metadata, entityManager);
         this.entityManager = entityManager;
 

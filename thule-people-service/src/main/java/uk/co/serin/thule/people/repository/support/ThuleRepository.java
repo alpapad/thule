@@ -7,7 +7,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.io.Serializable;
 
 @NoRepositoryBean
-public interface ThuleRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface ThuleRepository<T, I extends Serializable> extends JpaRepository<T, I> {
     void deleteByUpdatedBy(String updatedBy);
 }
 

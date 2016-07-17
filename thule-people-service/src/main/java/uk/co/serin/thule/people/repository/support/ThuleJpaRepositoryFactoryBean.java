@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 
-public class ThuleJpaRepositoryFactoryBean<R extends JpaRepository<T, ID>, T, ID extends Serializable> extends JpaRepositoryFactoryBean<R, T, ID> {
+public class ThuleJpaRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable> extends JpaRepositoryFactoryBean<R, T, I> {
     @Override
     protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
         Assert.notNull(entityManager, "EntityManager must not be null!");
