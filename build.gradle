@@ -5,7 +5,7 @@ buildscript {
     ext {
         jacocoVersion = "0.7.7.201606060606"
         springBootVersion = "1.4.0.RC1"
-        springCloudVersion = "Brixton.RELEASE"
+        springCloudVersion = "Brixton.SR3"
     }
 
     repositories {
@@ -200,7 +200,7 @@ project("thule-cloud") {
 
 project("thule-config-service") {
     dependencies {
-        compile("org.springframework.boot:spring-boot-actuator:1.3.5.RELEASE") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
+        compile("org.springframework.boot:spring-boot-actuator:1.3.6.RELEASE") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         compile("org.springframework.cloud:spring-cloud-config-server")
         compile("org.springframework.cloud:spring-cloud-starter")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
@@ -264,7 +264,7 @@ project("thule-people-service") {
         compile("com.h2database:h2")
         compile("org.apache.httpcomponents:httpclient")
         compile("org.hibernate:hibernate-java8")
-        compile("org.springframework.boot:spring-boot-actuator:1.3.5.RELEASE") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
+        compile("org.springframework.boot:spring-boot-actuator:1.3.6.RELEASE") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-data-jpa")
