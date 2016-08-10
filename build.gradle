@@ -1,7 +1,11 @@
 buildscript {
     // Override Spring boot versions
     ext["assertj.version"] = "3.5.2"  // Remove when upgraded to a spring cloud version that uses spring boot 1.4
-    ext["jackson.version"] = "2.8.0" // Remove when spring hateoas has been upgraded to support jackson 2.7
+    ext["flyway.version"] = "4.0.3"  // Remove when spring boot has caught up with thje latest flyway version
+    ext["hibernate.version"] = "5.2.2.Final"  // Remove when spring boot has caught up with thje latest hibernate version
+    ext["hsqldb.version"] = "2.3.4"  // Remove when spring boot has caught up with thje latest hsqldb version
+    ext["jackson.version"] = "2.8.1" // Remove when spring hateoas has been upgraded to support jackson 2.7
+    ext["mysql.version"] = "6.0.3"  // Remove when spring boot has caught up with thje latest mysql version
     ext {
         jacocoVersion = "0.7.7.201606060606"
         springBootVersion = "1.4.0.RELEASE"
@@ -93,7 +97,7 @@ subprojects {
             dependency("com.googlecode.log4jdbc:log4jdbc:1.2")
             dependency("com.oracle:ojdbc6:11.2.0.1.0")
             dependency("commons-lang:commons-lang:2.6")
-            dependency("nl.jqno.equalsverifier:equalsverifier:2.1.3")
+            dependency("nl.jqno.equalsverifier:equalsverifier:2.1.5")
             dependency("org.awaitility:awaitility:2.0.0")
             dependency("org.powermock:powermock-api-mockito:1.6.5")
             dependency("org.powermock:powermock-core:1.6.5")
