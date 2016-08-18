@@ -1,6 +1,6 @@
 # Spring server configuration
 server:
-  port: 8081
+  port: 8071
 
 # Spring configuration
 spring:

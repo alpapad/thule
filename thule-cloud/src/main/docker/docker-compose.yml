@@ -4,7 +4,7 @@ thule-admin-server:
   environment:
     EUREKA_HOST: thule-discovery-service
     EUREKA_PORT: 8761
-    SERVER_PORT: 8081
+    SERVER_PORT: 8071
   extra_hosts:
     - docker-host:172.17.0.1
     - pooh:192.168.0.102
@@ -14,7 +14,7 @@ thule-admin-server:
     - thule-config-service
     - thule-discovery-service
   ports:
-    - "8081:8081"
+    - "8071:8071"
   restart: always
   volumes:
     # Set localtime and timezone on container to be the same as the host
