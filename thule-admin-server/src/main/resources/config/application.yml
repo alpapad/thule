@@ -1,0 +1,11 @@
+# Spring server configuration
+server:
+  port: 8081
+
+# Spring configuration
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: classpath:/config/{profile}

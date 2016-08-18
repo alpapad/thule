@@ -4,7 +4,7 @@ eureka:
     hostname: localhost
   client:
     fetchRegistry: false
-    registerWithEureka: false
+    registerWithEureka: true
 
 # Spring server configuration
 server:

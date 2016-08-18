@@ -97,6 +97,8 @@ subprojects {
             dependency("com.googlecode.log4jdbc:log4jdbc:1.2")
             dependency("com.oracle:ojdbc6:11.2.0.1.0")
             dependency("commons-lang:commons-lang:2.6")
+            dependency("de.codecentric:spring-boot-admin-server:1.4.1")
+            dependency("de.codecentric:spring-boot-admin-server-ui:1.4.1")
             dependency("nl.jqno.equalsverifier:equalsverifier:2.1.5")
             dependency("org.awaitility:awaitility:2.0.0")
             dependency("org.powermock:powermock-api-mockito:1.6.5")
@@ -184,7 +186,7 @@ subprojects {
 }
 
 project("thule-cloud") {
-    tasks.itest.dependsOn(":thule-config-service:build", ":thule-discovery-service:build", ":thule-people-service:build")
+    tasks.itest.dependsOn(":thule-admin-server:build", ":thule-config-service:build", ":thule-discovery-service:build", ":thule-people-service:build")
 
     bootRepackage.enabled = false
 
@@ -194,6 +196,25 @@ project("thule-cloud") {
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-web")
 
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.powermock:powermock-api-mockito")
+        testCompile("org.powermock:powermock-core")
+        testCompile("org.powermock:powermock-module-junit4")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+}
+
+project("thule-admin-server") {
+    dependencies {
+        compile("de.codecentric:spring-boot-admin-server")
+        compile("de.codecentric:spring-boot-admin-server-ui")
+        compile("org.springframework.cloud:spring-cloud-starter-config")
+        compile("org.springframework.cloud:spring-cloud-starter-eureka")
+
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -209,6 +230,8 @@ project("thule-config-service") {
         compile("org.springframework.cloud:spring-cloud-starter")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -224,6 +247,12 @@ project("thule-core") {
         compile("commons-lang:commons-lang")
         compile("org.springframework.boot:spring-boot-starter-aop")
 
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.powermock:powermock-api-mockito")
+        testCompile("org.powermock:powermock-core")
+        testCompile("org.powermock:powermock-module-junit4")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -241,6 +270,7 @@ project("thule-discovery-service") {
     dependencies {
         compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
 
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
@@ -284,6 +314,7 @@ project("thule-people-service") {
         testCompile("com.oracle:ojdbc6")
         testCompile("mysql:mysql-connector-java")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.hsqldb:hsqldb")
         testCompile("org.powermock:powermock-api-mockito")
@@ -302,6 +333,11 @@ project("thule-repository-mongodb") {
         compile("org.springframework.boot:spring-boot-starter-validation")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.powermock:powermock-api-mockito")
+        testCompile("org.powermock:powermock-core")
+        testCompile("org.powermock:powermock-module-junit4")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }

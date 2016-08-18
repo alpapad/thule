@@ -1,13 +1,13 @@
 # Bootstrap
 spring:
   application:
-    name: thule-configuration-service
+    name: thule-admin-server
   profiles:
     include: native
 
 eureka:
   instance:
-    nonSecurePort: ${server.port:8761}
+    nonSecurePort: ${server.port:8888}
     preferIpAddress: true
   client:
     serviceUrl:

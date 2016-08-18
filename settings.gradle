@@ -1,5 +1,6 @@
 rootProject.name = "thule"
 
+include "thule-admin-server"
 include "thule-cloud"
 include "thule-config-service"
 include "thule-core"

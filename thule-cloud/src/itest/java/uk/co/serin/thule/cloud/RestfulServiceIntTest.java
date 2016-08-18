@@ -18,6 +18,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestfulServiceIntTest {
+    private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8081/";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
     private static final String HEALTH = "health";
@@ -71,12 +72,27 @@ public class RestfulServiceIntTest {
         assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + "info", 120);
         assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + "info", 120);
         assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + "info", 240);
+        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + "info", 240);
     }
 
     @AfterClass
     public static void tearDownClass() throws InterruptedException, IOException {
         dockerComposeDown();
         dockerComposeUp.waitFor();
+    }
+
+    @Test
+    public void adminServerIsUp() {
+        // Given
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(ADMIN_SERVER_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
     }
 
     @Test

@@ -1,20 +1,20 @@
-################################  thule-people-service  ################################
-thule-people-service:
-  image: pooh.serin-consultancy.co.uk/thule-people-service
+################################  thule-admin-server  ################################
+thule-admin-server:
+  image: pooh.serin-consultancy.co.uk/thule-admin-server
   environment:
     EUREKA_HOST: thule-discovery-service
     EUREKA_PORT: 8761
-    SERVER_PORT: 8080
+    SERVER_PORT: 8081
   extra_hosts:
     - docker-host:172.17.0.1
     - pooh:192.168.0.102
     - pooh.serin-consultancy.co.uk:192.168.0.102
-  hostname: people-service-1
+  hostname: admin-server-1
   links:
     - thule-config-service
     - thule-discovery-service
   ports:
-    - "8080:8080"
+    - "8081:8081"
   restart: always
   volumes:
     # Set localtime and timezone on container to be the same as the host
@@ -52,6 +52,29 @@ thule-discovery-service:
   hostname: discovery-service-1
   ports:
     - "8761:8761"
+  restart: always
+  volumes:
+    # Set localtime and timezone on container to be the same as the host
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+
+################################  thule-people-service  ################################
+thule-people-service:
+  image: pooh.serin-consultancy.co.uk/thule-people-service
+  environment:
+    EUREKA_HOST: thule-discovery-service
+    EUREKA_PORT: 8761
+    SERVER_PORT: 8080
+  extra_hosts:
+    - docker-host:172.17.0.1
+    - pooh:192.168.0.102
+    - pooh.serin-consultancy.co.uk:192.168.0.102
+  hostname: people-service-1
+  links:
+    - thule-config-service
+    - thule-discovery-service
+  ports:
+    - "8080:8080"
   restart: always
   volumes:
     # Set localtime and timezone on container to be the same as the host
