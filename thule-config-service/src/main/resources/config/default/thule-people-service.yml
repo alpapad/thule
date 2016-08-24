@@ -1,4 +1,6 @@
 # Spring actuator info configuration
+endpoints:
+  sensitive: false
 info:
   service:
     description: Thule People Service
@@ -43,4 +45,3 @@ thule:
   logging:
     file: ${HOME}/log/thule/people-service/people-service.log
     trace-file: ${HOME}/log/thule/people-service/people-service-trace.log
-

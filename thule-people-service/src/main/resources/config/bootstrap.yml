@@ -20,6 +20,10 @@ eureka:
     nonSecurePort: ${server.port:8761}
     preferIpAddress: true
     statusPageUrlPath: /people-service/info
+    metadataMap:
+      management:
+        # Admin server ueses context-path to generate URL for actautor endpoints when using Eureka for service discovery
+        context-path: /people-service
   client:
     serviceUrl:
       defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
