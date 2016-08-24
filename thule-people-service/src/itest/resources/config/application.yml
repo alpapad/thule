@@ -1,15 +1,11 @@
 # Spring actuator info configuration
+endpoints:
+  sensitive: false
 info:
   service:
     description: Thule People Service
     name: ${spring.application.name}
     version: under-development
-
-# Spring logging configuration
-logging:
-  file: ${HOME}/log/thule/people-service/people-service.log
-  trace:
-    file: ${HOME}/log/thule/people-service/people-service-trace.log
 
 # Spring security configuration
 security:
@@ -42,4 +38,10 @@ spring:
     hibernate:
       ddl-auto: update
   profiles:
-    include: ${user.name}
+    active: ${user.name}
+
+# Thule configuration
+thule:
+  logging:
+    file: ${HOME}/log/thule/people-service/people-service.log
+    trace-file: ${HOME}/log/thule/people-service/people-service-trace.log
