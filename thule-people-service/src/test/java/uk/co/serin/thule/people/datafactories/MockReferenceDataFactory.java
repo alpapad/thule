@@ -1,8 +1,10 @@
 package uk.co.serin.thule.people.datafactories;
 
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 
 import uk.co.serin.thule.core.utils.RandomGenerators;
+import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.role.Role;
 import uk.co.serin.thule.people.domain.role.RoleCode;
@@ -35,7 +37,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.ADDRESS_DISABLE);
         action.setDescription("Disable");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -43,7 +45,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.ADDRESS_DISCARD);
         action.setDescription("Discard");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(ActionCode.ADDRESS_DISCARD, action);
     }
 
@@ -51,7 +53,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.ADDRESS_ENABLE);
         action.setDescription("Enable");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -59,7 +61,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.ADDRESS_RECOVER);
         action.setDescription("Recover");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -67,7 +69,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.ADDRESS_UPDATE);
         action.setDescription("Update");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -75,7 +77,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.ADDRESS_VIEW);
         action.setDescription("View");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -83,7 +85,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.PERSON_DISABLE);
         action.setDescription("Disable");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -91,7 +93,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.PERSON_DISCARD);
         action.setDescription("Discard");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -99,7 +101,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.PERSON_ENABLE);
         action.setDescription("Enable");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -107,7 +109,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.PERSON_RECOVER);
         action.setDescription("Recover");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -115,7 +117,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.PERSON_UPDATE);
         action.setDescription("Update");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -123,7 +125,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Action action = new Action(ActionCode.PERSON_VIEW);
         action.setDescription("View");
         action.setId(RandomGenerators.generateUniqueRandomLong());
-        action.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
@@ -152,7 +154,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         country.setIsoCodeTwoDigit("GB");
         country.setIsoName("United Kingdom");
         country.setIsoNumber("826");
-        country.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(country, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         countries.put(country.getIsoCodeThreeDigit(), country);
     }
 
@@ -160,7 +162,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Role role = new Role(RoleCode.ROLE_ADMINISTRATOR);
         role.setDescription(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault())));
         role.setId(RandomGenerators.generateUniqueRandomLong());
-        role.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
     }
 
@@ -168,7 +170,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Role role = new Role(RoleCode.ROLE_CLERK);
         role.setDescription(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault())));
         role.setId(RandomGenerators.generateUniqueRandomLong());
-        role.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
     }
 
@@ -176,7 +178,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         Role role = new Role(RoleCode.ROLE_MANAGER);
         role.setDescription(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault())));
         role.setId(RandomGenerators.generateUniqueRandomLong());
-        role.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
     }
 
@@ -201,7 +203,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         State state = new State(StateCode.ADDRESS_DISABLED);
         state.addActions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)));
         state.setDescription("Disabled");
-        state.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         state.setId(RandomGenerators.generateUniqueRandomLong());
         states.put(state.getCode(), state);
     }
@@ -211,7 +213,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         state.addActions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)));
         state.setDescription("Discarded");
         state.setId(RandomGenerators.generateUniqueRandomLong());
-        state.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
@@ -220,7 +222,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         state.addActions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW)));
         state.setDescription("Enabled");
         state.setId(RandomGenerators.generateUniqueRandomLong());
-        state.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
@@ -229,7 +231,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         state.addActions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)));
         state.setDescription("Disabled");
         state.setId(RandomGenerators.generateUniqueRandomLong());
-        state.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
@@ -238,7 +240,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         state.addActions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)));
         state.setDescription("Discarded");
         state.setId(RandomGenerators.generateUniqueRandomLong());
-        state.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
@@ -247,7 +249,7 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         state.addActions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW)));
         state.setDescription("Enabled");
         state.setId(RandomGenerators.generateUniqueRandomLong());
-        state.getAudit().setUpdatedBy(MockReferenceDataFactory.class.getSimpleName());
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 

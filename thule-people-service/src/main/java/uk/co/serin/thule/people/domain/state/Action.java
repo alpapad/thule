@@ -59,9 +59,9 @@ public final class Action extends DomainModel {
         // Copy mutable properties, i.e. those with a setter
         BeanUtils.copyProperties(action, this);
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(action.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(action.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(action.getAudit().getUpdatedBy());
+        setCreatedAt(action.getCreatedAt());
+        setUpdatedAt(action.getUpdatedAt());
+        setUpdatedBy(action.getUpdatedBy());
     }
 
     /**

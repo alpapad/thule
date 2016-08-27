@@ -49,9 +49,9 @@ public final class Role extends DomainModel {
         // Copy mutable properties, i.e. those with a setter
         BeanUtils.copyProperties(role, this);
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(role.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(role.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(role.getAudit().getUpdatedBy());
+        setCreatedAt(role.getCreatedAt());
+        setUpdatedAt(role.getUpdatedAt());
+        setUpdatedBy(role.getUpdatedBy());
     }
 
     /**

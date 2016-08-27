@@ -31,7 +31,7 @@ import javax.validation.ConstraintViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RunWith(SpringRunner.class)
 public abstract class AbstractPersonRepositoryIntTest {
     @Autowired
@@ -100,9 +100,9 @@ public abstract class AbstractPersonRepositoryIntTest {
         Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
 
         assertThat(actualPerson.getId()).isNotNull();
-        assertThat(actualPerson.getAudit().getUpdatedAt()).isNotNull();
-        assertThat(actualPerson.getAudit().getCreatedAt()).isEqualTo(actualPerson.getAudit().getUpdatedAt());
-        assertThat(actualPerson.getAudit().getUpdatedBy()).isNotNull();
+        assertThat(actualPerson.getUpdatedAt()).isNotNull();
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
         assertThat(actualPerson.getPhotographs()).hasSize(1);
         Photograph actualPhotograph = actualPerson.getPhotographs().iterator().next();
@@ -117,8 +117,11 @@ public abstract class AbstractPersonRepositoryIntTest {
         assertThat(actualWorkAddress.getId()).isNotNull();
         assertThat(actualWorkAddress.getVersion()).isEqualTo(0);
 
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, DomainModel.ENTITY_ATTRIBUTE_NAME_AUDIT);
-
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
     @Test
@@ -291,9 +294,11 @@ public abstract class AbstractPersonRepositoryIntTest {
         // Then
         Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
 
-        assertThat(actualPerson.getAudit().getUpdatedAt()).isAfter(expectedPerson.getAudit().getUpdatedAt());
-        assertThat(actualPerson.getAudit().getUpdatedBy()).isNotEmpty();
+        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_AUDIT);
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 }

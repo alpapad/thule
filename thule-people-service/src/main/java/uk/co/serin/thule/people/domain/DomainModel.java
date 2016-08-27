@@ -1,23 +1,26 @@
 package uk.co.serin.thule.people.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class DomainModel implements Serializable {
     public static final String DATABASE_COLUMN_ACTION_ID = "action_id";
     public static final String DATABASE_COLUMN_ADDRESS_TYPE = "address_type";
@@ -81,26 +84,54 @@ public abstract class DomainModel implements Serializable {
     public static final String ENTITY_NAME_STATES = "states";
     private static final int ID_ALLOCATION_SIZE = 1;
     private static final int ID_INITIAL_VALUE = 1;
+    private static final int UPDATED_BY_MAX_LENGTH = 100;
 
     @Transient
     private static final long serialVersionUID = 8489074283224856748L;
 
-    @Embedded
-    private final Audit audit = new Audit();
+    @Column
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Id
     @SequenceGenerator(name = DATABASE_SEQUENCE_UID_SEQUENCE, sequenceName = DATABASE_SEQUENCE_UID_SEQUENCE, allocationSize = ID_ALLOCATION_SIZE, initialValue = ID_INITIAL_VALUE)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = DATABASE_SEQUENCE_UID_SEQUENCE)
-    @JsonIgnore
     private Long id;
 
+    @Column
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+    @Column(length = UPDATED_BY_MAX_LENGTH)
+
+    @LastModifiedBy
+    private String updatedBy;
+    
     @Version
     @Column(nullable = false)
-    @JsonIgnore
     private Long version;
 
-    public Audit getAudit() {
-        return audit;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    protected void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    protected void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    protected void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public Long getId() {
@@ -119,20 +150,12 @@ public abstract class DomainModel implements Serializable {
         this.version = version;
     }
 
-    @PrePersist
-    public void prePersist() {
-        audit.initialise();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        audit.update();
-    }
-
     @Override
     public String toString() {
         return new StringJoiner(", ", "DomainModel{", "}")
-                .add(String.format("audit=%s", audit))
+                .add(String.format("createdAt=%s", createdAt))
+                .add(String.format("updatedAt=%s", updatedAt))
+                .add(String.format("updatedBy=%s", updatedBy))
                 .add(String.format("id=%s", id))
                 .add(String.format("version=%s", version))
                 .toString();

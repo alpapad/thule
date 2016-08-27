@@ -144,9 +144,9 @@ public final class Person extends DomainModel {
         addPhotographs(person.getPhotographs().stream().map(photograph -> new Photograph(photograph, this)));
         addRoles(person.getRoles().stream().map(Role::new));
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(person.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(person.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(person.getAudit().getUpdatedBy());
+        setCreatedAt(person.getCreatedAt());
+        setUpdatedAt(person.getUpdatedAt());
+        setUpdatedBy(person.getUpdatedBy());
     }
 
     /**

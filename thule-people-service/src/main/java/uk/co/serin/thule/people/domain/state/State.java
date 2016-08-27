@@ -74,9 +74,9 @@ public final class State extends DomainModel {
         BeanUtils.copyProperties(state, this);
         addActions(state.getActions().stream().map(Action::new));
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(state.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(state.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(state.getAudit().getUpdatedBy());
+        setCreatedAt(state.getCreatedAt());
+        setUpdatedAt(state.getUpdatedAt());
+        setUpdatedBy(state.getUpdatedBy());
     }
 
     /**

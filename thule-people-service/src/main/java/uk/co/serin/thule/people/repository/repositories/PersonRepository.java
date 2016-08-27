@@ -14,7 +14,7 @@ public interface PersonRepository extends ThuleRepository<Person, Long>, PersonR
     @Query("SELECT person FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.id = :id")
     Person findByIdAndFetchAllAssociations(@Param("id") Long id);
 
-    @Query("SELECT person FROM Person person LEFT JOIN FETCH person.photographs photographs WHERE person.audit.updatedBy = :updatedBy")
+    @Query("SELECT person FROM Person person LEFT JOIN FETCH person.photographs photographs WHERE person.updatedBy = :updatedBy")
     Set<Person> findByUpdatedBy(@Param("updatedBy") String updatedBy);
 
     @Query("SELECT person FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.userId = :userId")

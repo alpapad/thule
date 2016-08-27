@@ -89,9 +89,9 @@ public abstract class Address extends DomainModel {
         // Copy mutable properties, i.e. those with a setter
         BeanUtils.copyProperties(address, this);
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(address.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(address.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(address.getAudit().getUpdatedBy());
+        setCreatedAt(address.getCreatedAt());
+        setUpdatedAt(address.getUpdatedAt());
+        setUpdatedBy(address.getUpdatedBy());
     }
 
     /**

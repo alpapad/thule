@@ -60,9 +60,9 @@ public final class Country extends DomainModel {
         // Copy mutable properties, i.e. those with a setter
         BeanUtils.copyProperties(country, this);
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(country.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(country.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(country.getAudit().getUpdatedBy());
+        setCreatedAt(country.getCreatedAt());
+        setUpdatedAt(country.getUpdatedAt());
+        setUpdatedBy(country.getUpdatedBy());
     }
 
     /**

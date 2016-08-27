@@ -73,9 +73,9 @@ public final class Photograph extends DomainModel {
         // Copy mutable properties, i.e. those with a setter
         BeanUtils.copyProperties(photograph, this);
         // Copy immutable properties, i.e. those without a setter
-        getAudit().setCreatedAt(photograph.getAudit().getCreatedAt());
-        getAudit().setUpdatedAt(photograph.getAudit().getUpdatedAt());
-        getAudit().setUpdatedBy(photograph.getAudit().getUpdatedBy());
+        setCreatedAt(photograph.getCreatedAt());
+        setUpdatedAt(photograph.getUpdatedAt());
+        setUpdatedBy(photograph.getUpdatedBy());
     }
 
     /**

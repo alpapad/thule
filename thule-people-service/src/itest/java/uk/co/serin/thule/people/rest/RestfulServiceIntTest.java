@@ -14,8 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Resources;
@@ -31,7 +30,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import uk.co.serin.thule.people.Application;
 import uk.co.serin.thule.people.datafactories.DataFactory;
 import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
@@ -49,8 +47,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringApplicationConfiguration(Application.class)
-@WebIntegrationTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
     private static final String ID = "/{id}";
@@ -86,11 +83,14 @@ public class RestfulServiceIntTest {
 
         Person actualPerson = responseEntity.getBody();
 
-        assertThat(actualPerson.getAudit().getUpdatedAt()).isNotNull();
-        assertThat(actualPerson.getAudit().getCreatedAt()).isEqualTo(actualPerson.getAudit().getUpdatedAt());
-        assertThat(actualPerson.getAudit().getUpdatedBy()).isNotNull();
+        assertThat(actualPerson.getUpdatedAt()).isNotNull();
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_AUDIT);
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
     private Person createTestPerson(Person expectedPerson) {
@@ -194,10 +194,11 @@ public class RestfulServiceIntTest {
     }
 
     @Test
-    public void updatePerson() throws InterruptedException {
+    public void updatePerson() {
         // Given
         Person testPerson = dataFactory.getTestDataFactory().newPersonWithoutAnyAssociations();
-        long id = createTestPerson(testPerson).getId();
+        testPerson = createTestPerson(testPerson);
+        long id = testPerson.getId();
 
         testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
@@ -207,6 +208,9 @@ public class RestfulServiceIntTest {
         testPerson.setSurname("updatedSurname");
 
         Person expectedPerson = new Person(testPerson);
+        expectedPerson.setId(null);
+        expectedPerson.setState(null);
+        expectedPerson.setVersion(null);
 
         // When
         restTemplate.put(urlForPeople + ID, testPerson, id);
@@ -214,9 +218,11 @@ public class RestfulServiceIntTest {
         // Then
         Person actualPerson = restTemplate.getForObject(urlForPeople + ID, Person.class, id);
 
-        assertThat(actualPerson.getAudit().getUpdatedAt()).isAfter(expectedPerson.getAudit().getUpdatedAt());
-        assertThat(actualPerson.getAudit().getUpdatedBy()).isNotEmpty();
+        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_AUDIT);
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 }
