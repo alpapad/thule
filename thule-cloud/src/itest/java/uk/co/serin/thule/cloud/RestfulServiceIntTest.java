@@ -27,6 +27,37 @@ public class RestfulServiceIntTest {
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate;
 
+    @BeforeClass
+    public static void setUpClass() throws IOException, InterruptedException {
+        dockerComposeDown();
+        dockerComposeUp();
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(60 * 1000);
+        requestFactory.setConnectionRequestTimeout(60 * 1000);
+        requestFactory.setReadTimeout(60 * 1000);
+
+        restTemplate = new RestTemplate(requestFactory);
+        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + "info", 120);
+        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + "info", 120);
+        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + "info", 240);
+        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + "info", 240);
+    }
+
+    private static void dockerComposeDown() throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "down", "-v").inheritIO();
+        Process dockerComposeDown = pb.start();
+        dockerComposeDown.waitFor();
+        if (dockerComposeUp != null) {
+            dockerComposeUp.waitFor();
+        }
+    }
+
+    private static void dockerComposeUp() throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "up").inheritIO();
+        dockerComposeUp = pb.start();
+    }
+
     private static void assertUrlIsAvailable(String url, int timeoutInSeconds) {
         LocalDateTime giveUpTime = LocalDateTime.now().plusSeconds(timeoutInSeconds);
 
@@ -47,38 +78,9 @@ public class RestfulServiceIntTest {
         }
     }
 
-    private static void dockerComposeDown() throws IOException, InterruptedException {
-        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "down", "-v").inheritIO();
-        Process dockerComposeDown = pb.start();
-        dockerComposeDown.waitFor();
-    }
-
-    private static void dockerComposeUp() throws IOException, InterruptedException {
-        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "up").inheritIO();
-        dockerComposeUp = pb.start();
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws IOException, InterruptedException {
-        dockerComposeDown();
-        dockerComposeUp();
-
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(60 * 1000);
-        requestFactory.setConnectionRequestTimeout(60 * 1000);
-        requestFactory.setReadTimeout(60 * 1000);
-
-        restTemplate = new RestTemplate(requestFactory);
-        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + "info", 120);
-        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + "info", 120);
-        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + "info", 240);
-        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + "info", 240);
-    }
-
     @AfterClass
     public static void tearDownClass() throws InterruptedException, IOException {
         dockerComposeDown();
-        dockerComposeUp.waitFor();
     }
 
     @Test
