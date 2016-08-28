@@ -64,6 +64,7 @@ public final class State extends DomainModel {
 
     /**
      * Copy object constructor
+     *
      * @param state Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -79,21 +80,22 @@ public final class State extends DomainModel {
         setUpdatedBy(state.getUpdatedBy());
     }
 
-    /**
-     * Business key constructor
-     * @param code Business key attribute
-     */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public State(StateCode code) {
-        this.code = code;
-    }
-
     public void addActions(Stream<Action> actions) {
         this.actions.addAll(actions.collect(Collectors.toList()));
     }
 
     public Set<Action> getActions() {
         return Collections.unmodifiableSet(actions);
+    }
+
+    /**
+     * Business key constructor
+     *
+     * @param code Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public State(StateCode code) {
+        this.code = code;
     }
 
     @JsonIgnore

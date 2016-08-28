@@ -33,6 +33,51 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         addStateActions();
     }
 
+    private void addActions() {
+        addActionAddressDisable();
+        addActionAddressDiscard();
+        addActionAddressEnable();
+        addActionAddressRecover();
+        addActionAddressUpdate();
+        addActionAddressView();
+        addActionPersonDisable();
+        addActionPersonDiscard();
+        addActionPersonEnable();
+        addActionPersonRecover();
+        addActionPersonUpdate();
+        addActionPersonView();
+    }
+
+    private void addCountries() {
+        addCountryGb();
+    }
+
+    private void addRoles() {
+        addRoleAdministrator();
+        addRoleClerk();
+        addRoleManager();
+    }
+
+    private void addStates() {
+        addStateAddressDisabled();
+        addStateAddressDiscarded();
+        addStateAddressEnabled();
+        addStatePersonDisabled();
+        addStatePersonDiscarded();
+        addStatePersonEnabled();
+    }
+
+    private void addStateActions() {
+        actions.get(ActionCode.ADDRESS_DISABLE).setNextState(states.get(StateCode.ADDRESS_DISABLED));
+        actions.get(ActionCode.ADDRESS_DISCARD).setNextState(states.get(StateCode.ADDRESS_DISCARDED));
+        actions.get(ActionCode.ADDRESS_ENABLE).setNextState(states.get(StateCode.ADDRESS_ENABLED));
+        actions.get(ActionCode.ADDRESS_RECOVER).setNextState(states.get(StateCode.ADDRESS_ENABLED));
+        actions.get(ActionCode.PERSON_DISABLE).setNextState(states.get(StateCode.PERSON_DISABLED));
+        actions.get(ActionCode.PERSON_DISCARD).setNextState(states.get(StateCode.PERSON_DISCARDED));
+        actions.get(ActionCode.PERSON_ENABLE).setNextState(states.get(StateCode.PERSON_ENABLED));
+        actions.get(ActionCode.PERSON_RECOVER).setNextState(states.get(StateCode.PERSON_ENABLED));
+    }
+
     private void addActionAddressDisable() {
         Action action = new Action(ActionCode.ADDRESS_DISABLE);
         action.setDescription("Disable");
@@ -129,25 +174,6 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         actions.put(action.getCode(), action);
     }
 
-    private void addActions() {
-        addActionAddressDisable();
-        addActionAddressDiscard();
-        addActionAddressEnable();
-        addActionAddressRecover();
-        addActionAddressUpdate();
-        addActionAddressView();
-        addActionPersonDisable();
-        addActionPersonDiscard();
-        addActionPersonEnable();
-        addActionPersonRecover();
-        addActionPersonUpdate();
-        addActionPersonView();
-    }
-
-    private void addCountries() {
-        addCountryGb();
-    }
-
     private void addCountryGb() {
         Country country = new Country(Country.GBR);
         country.setId(RandomGenerators.generateUniqueRandomLong());
@@ -180,23 +206,6 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         role.setId(RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
-    }
-
-    private void addRoles() {
-        addRoleAdministrator();
-        addRoleClerk();
-        addRoleManager();
-    }
-
-    private void addStateActions() {
-        actions.get(ActionCode.ADDRESS_DISABLE).setNextState(states.get(StateCode.ADDRESS_DISABLED));
-        actions.get(ActionCode.ADDRESS_DISCARD).setNextState(states.get(StateCode.ADDRESS_DISCARDED));
-        actions.get(ActionCode.ADDRESS_ENABLE).setNextState(states.get(StateCode.ADDRESS_ENABLED));
-        actions.get(ActionCode.ADDRESS_RECOVER).setNextState(states.get(StateCode.ADDRESS_ENABLED));
-        actions.get(ActionCode.PERSON_DISABLE).setNextState(states.get(StateCode.PERSON_DISABLED));
-        actions.get(ActionCode.PERSON_DISCARD).setNextState(states.get(StateCode.PERSON_DISCARDED));
-        actions.get(ActionCode.PERSON_ENABLE).setNextState(states.get(StateCode.PERSON_ENABLED));
-        actions.get(ActionCode.PERSON_RECOVER).setNextState(states.get(StateCode.PERSON_ENABLED));
     }
 
     private void addStateAddressDisabled() {
@@ -251,15 +260,6 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         state.setId(RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
-    }
-
-    private void addStates() {
-        addStateAddressDisabled();
-        addStateAddressDiscarded();
-        addStateAddressEnabled();
-        addStatePersonDisabled();
-        addStatePersonDiscarded();
-        addStatePersonEnabled();
     }
 
     @Override

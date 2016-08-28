@@ -33,21 +33,6 @@ public class LogPublicMethodsInterceptorTest {
         // Then (no exception is a success)
     }
 
-    private void logMethod(final Object... args) throws Throwable {
-        // Given
-        final Object expectedReturnValue = "done";
-        given(proceedingJoinPoint.getTarget()).willReturn(new Object());
-        given(proceedingJoinPoint.getSignature()).willReturn(signature);
-        given(proceedingJoinPoint.getArgs()).willReturn(args);
-        given(proceedingJoinPoint.proceed()).willReturn(expectedReturnValue);
-
-        // When
-        Object actualReturnValue = logPublicMethodsInterceptor.log(proceedingJoinPoint);
-
-        // Then
-        assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
-    }
-
     @Test
     public void logMethodOnProxyTarget() throws Throwable {
         // Given
@@ -96,6 +81,21 @@ public class LogPublicMethodsInterceptorTest {
     @Test
     public void logMethodWithNoArgs() throws Throwable {
         logMethod();
+    }
+
+    private void logMethod(final Object... args) throws Throwable {
+        // Given
+        final Object expectedReturnValue = "done";
+        given(proceedingJoinPoint.getTarget()).willReturn(new Object());
+        given(proceedingJoinPoint.getSignature()).willReturn(signature);
+        given(proceedingJoinPoint.getArgs()).willReturn(args);
+        given(proceedingJoinPoint.proceed()).willReturn(expectedReturnValue);
+
+        // When
+        Object actualReturnValue = logPublicMethodsInterceptor.log(proceedingJoinPoint);
+
+        // Then
+        assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
     }
 
     @Test

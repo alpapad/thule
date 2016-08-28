@@ -6,7 +6,6 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import uk.co.serin.thule.core.utils.RandomGenerators;
-import uk.co.serin.thule.repository.mongodb.domain.Person;
 
 import java.time.LocalDate;
 
@@ -40,6 +39,27 @@ public class PersonTest {
 
         // Then
         assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
+    }
+
+    private Person newPersonWithAllAssociations() {
+        // Set the attributes
+        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
+        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
+
+        Person person = new Person(userId);
+        person.setDateOfBirth(dob);
+        person.setDateOfExpiry(expiryDate);
+        person.setDateOfPasswordExpiry(expiryDate);
+        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
+        person.setFirstName("Elizabeth");
+        person.setId(RandomGenerators.generateUniqueRandomLong());
+        person.setPassword(userId);
+        person.setSalutation("Miss");
+        person.setSecondName("K");
+        person.setSurname("Scarlett");
+
+        return person;
     }
 
     @Test
@@ -138,27 +158,6 @@ public class PersonTest {
 
         //Then
         assertThat(passwordExpired).isTrue();
-    }
-
-    private Person newPersonWithAllAssociations() {
-        // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
-
-        Person person = new Person(userId);
-        person.setDateOfBirth(dob);
-        person.setDateOfExpiry(expiryDate);
-        person.setDateOfPasswordExpiry(expiryDate);
-        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("Elizabeth");
-        person.setId(RandomGenerators.generateUniqueRandomLong());
-        person.setPassword(userId);
-        person.setSalutation("Miss");
-        person.setSecondName("K");
-        person.setSurname("Scarlett");
-
-        return person;
     }
 
     @Test

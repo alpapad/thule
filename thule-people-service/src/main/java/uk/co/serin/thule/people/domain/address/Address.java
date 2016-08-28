@@ -78,6 +78,7 @@ public abstract class Address extends DomainModel {
 
     /**
      * Copy object constructor
+     *
      * @param address Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -96,9 +97,10 @@ public abstract class Address extends DomainModel {
 
     /**
      * Business key constructor
+     *
      * @param addressLine1 Business key attribute
-     * @param postCode Business key attribute
-     * @param country Business key attribute
+     * @param postCode     Business key attribute
+     * @param country      Business key attribute
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Address(String addressLine1, String postCode, Country country) {

@@ -93,12 +93,6 @@ public class RestfulServiceIntTest {
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
-    private Person createTestPerson(Person expectedPerson) {
-        Person person = new Person(expectedPerson);
-        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(person);
-    }
-
     @Test
     public void deletePerson() {
         // Given
@@ -111,6 +105,12 @@ public class RestfulServiceIntTest {
         person = personRepository.findOne(person.getId());
 
         assertThat(person).isNull();
+    }
+
+    private Person createTestPerson(Person expectedPerson) {
+        Person person = new Person(expectedPerson);
+        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
+        return personRepository.save(person);
     }
 
     @Test

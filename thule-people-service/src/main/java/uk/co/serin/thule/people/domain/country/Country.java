@@ -51,6 +51,7 @@ public final class Country extends DomainModel {
 
     /**
      * Copy object constructor
+     *
      * @param country Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -67,6 +68,7 @@ public final class Country extends DomainModel {
 
     /**
      * Business key constructor
+     *
      * @param isoCodeThreeDigit Business key attribute
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -77,7 +79,7 @@ public final class Country extends DomainModel {
     public String getIsoCodeThreeDigit() {
         return isoCodeThreeDigit;
     }
-    
+
     public String getIsoCodeTwoDigit() {
         return isoCodeTwoDigit;
     }

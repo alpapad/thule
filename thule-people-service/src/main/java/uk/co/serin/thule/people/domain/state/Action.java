@@ -50,6 +50,7 @@ public final class Action extends DomainModel {
 
     /**
      * Copy object constructor
+     *
      * @param action Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -66,6 +67,7 @@ public final class Action extends DomainModel {
 
     /**
      * Business key constructor
+     *
      * @param code Business key attribute
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null

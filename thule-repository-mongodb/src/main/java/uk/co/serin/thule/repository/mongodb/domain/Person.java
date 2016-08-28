@@ -77,7 +77,30 @@ public final class Person implements Serializable {
     }
 
     /**
+     * Business key constructor
+     *
+     * @param userId Business key attribute
+     */
+    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public Person(String userId) {
+        this.userId = userId;
+        initialise();
+    }
+
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
+
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    /**
      * Copy object constructor
+     *
      * @param person Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -87,16 +110,6 @@ public final class Person implements Serializable {
         // Copy mutable properties, i.e. those with a setter
         BeanUtils.copyProperties(person, this);
         // Copy immutable properties, i.e. those without a setter
-    }
-
-    /**
-     * Business key constructor
-     * @param userId Business key attribute
-     */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Person(String userId) {
-        this.userId = userId;
-        initialise();
     }
 
     public LocalDateTime getCreatedAt() {
@@ -250,17 +263,6 @@ public final class Person implements Serializable {
                 .add(String.format("userId=%s", userId))
                 .add(String.format("version=%s", version))
                 .toString();
-    }
-
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
-
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
-
-        createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
     }
 
     public boolean isExpired() {

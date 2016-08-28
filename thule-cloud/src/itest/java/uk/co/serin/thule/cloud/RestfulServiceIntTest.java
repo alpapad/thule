@@ -8,7 +8,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -22,26 +21,21 @@ public class RestfulServiceIntTest {
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
     private static final String HEALTH = "health";
+    private static final String INFO = "info";
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8080/people-service/";
     private static final String STATUS = "status";
     private static Process dockerComposeUp;
-    private static RestTemplate restTemplate;
+    private static RestTemplate restTemplate = new RestTemplate();
 
     @BeforeClass
     public static void setUpClass() throws IOException, InterruptedException {
         dockerComposeDown();
         dockerComposeUp();
 
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(60 * 1000);
-        requestFactory.setConnectionRequestTimeout(60 * 1000);
-        requestFactory.setReadTimeout(60 * 1000);
-
-        restTemplate = new RestTemplate(requestFactory);
-        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + "info", 120);
-        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + "info", 120);
-        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + "info", 240);
-        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + "info", 240);
+        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO, 120);
+        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO, 120);
+        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO, 240);
+        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO, 120);
     }
 
     private static void dockerComposeDown() throws IOException, InterruptedException {
@@ -58,7 +52,7 @@ public class RestfulServiceIntTest {
         dockerComposeUp = pb.start();
     }
 
-    private static void assertUrlIsAvailable(String url, int timeoutInSeconds) {
+    private static void assertUrlIsAvailable(String url, int timeoutInSeconds) throws InterruptedException {
         LocalDateTime giveUpTime = LocalDateTime.now().plusSeconds(timeoutInSeconds);
 
         Object response = null;
@@ -69,11 +63,7 @@ public class RestfulServiceIntTest {
                 if (LocalDateTime.now().isAfter(giveUpTime)) {
                     throw e;
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e1) {
-                    // Intentionally ignored
-                }
+                Thread.sleep(1000);
             }
         }
     }

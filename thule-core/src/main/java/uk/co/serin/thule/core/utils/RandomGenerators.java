@@ -29,10 +29,6 @@ public final class RandomGenerators {
         return generateUniqueRandomDateBetween(afterDate, afterDate.plusYears(FIFTY));
     }
 
-    public static LocalDate generateUniqueRandomDateBefore(LocalDate beforeDate) {
-        return generateUniqueRandomDateBetween(beforeDate.minusYears(FIFTY), beforeDate);
-    }
-
     public static LocalDate generateUniqueRandomDateBetween(LocalDate afterDate, LocalDate beforeDate) {
         long minimum = afterDate.plusDays(1).toEpochDay();
         long maximum = beforeDate.toEpochDay();
@@ -46,6 +42,10 @@ public final class RandomGenerators {
             uniqueFound = RANDOM_DATES.add(randomDate);
         }
         return randomDate;
+    }
+
+    public static LocalDate generateUniqueRandomDateBefore(LocalDate beforeDate) {
+        return generateUniqueRandomDateBetween(beforeDate.minusYears(FIFTY), beforeDate);
     }
 
     public static LocalDate generateUniqueRandomDateInTheFuture() {

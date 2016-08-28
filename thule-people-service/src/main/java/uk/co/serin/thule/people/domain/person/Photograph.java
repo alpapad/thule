@@ -63,6 +63,7 @@ public final class Photograph extends DomainModel {
 
     /**
      * Copy object constructor
+     *
      * @param person Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -78,9 +79,26 @@ public final class Photograph extends DomainModel {
         setUpdatedBy(photograph.getUpdatedBy());
     }
 
+    public byte[] getPhoto() {
+        return Arrays.copyOf(photo, photo.length);
+    }
+
+    private void setPhoto(byte... photo) {
+        byte[] photoToSet = Arrays.copyOf(photo, photo.length);
+        try {
+            byte[] digestedPhoto = MessageDigest.getInstance(SHA).digest(photoToSet);
+            setHash(new String(Base64.getEncoder().encode(digestedPhoto), Charset.defaultCharset()));
+        } catch (NoSuchAlgorithmException e) {
+            throw new SecurityException(e);
+        }
+
+        this.photo = photoToSet;
+    }
+
     /**
      * Business key constructor
-     * @param photo Business key attribute
+     *
+     * @param photo  Business key attribute
      * @param person key attribute
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -99,22 +117,6 @@ public final class Photograph extends DomainModel {
 
     public Person getPerson() {
         return person;
-    }
-
-    public byte[] getPhoto() {
-        return Arrays.copyOf(photo, photo.length);
-    }
-
-    private void setPhoto(byte... photo) {
-        byte[] photoToSet = Arrays.copyOf(photo, photo.length);
-        try {
-            byte[] digestedPhoto = MessageDigest.getInstance(SHA).digest(photoToSet);
-            setHash(new String(Base64.getEncoder().encode(digestedPhoto), Charset.defaultCharset()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new SecurityException(e);
-        }
-
-        this.photo = photoToSet;
     }
 
     public long getPosition() {

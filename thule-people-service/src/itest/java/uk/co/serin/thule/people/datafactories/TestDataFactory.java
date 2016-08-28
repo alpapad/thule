@@ -50,15 +50,6 @@ public class TestDataFactory {
         return person;
     }
 
-    private HomeAddress newOxfordStreetHomeAddress() {
-        HomeAddress homeAddress = new HomeAddress("Oxford Street", "EC3", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR));
-        homeAddress.setAddressLine2("Green");
-        homeAddress.setCounty(GREATER_LONDON);
-        homeAddress.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED));
-        homeAddress.setTown(LONDON);
-        return homeAddress;
-    }
-
     public Person newPersonWithAllAssociations() {
         // Set the attributes
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
@@ -90,6 +81,36 @@ public class TestDataFactory {
         return person;
     }
 
+    private HomeAddress newOxfordStreetHomeAddress() {
+        HomeAddress homeAddress = new HomeAddress("Oxford Street", "EC3", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR));
+        homeAddress.setAddressLine2("Green");
+        homeAddress.setCounty(GREATER_LONDON);
+        homeAddress.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED));
+        homeAddress.setTown(LONDON);
+        return homeAddress;
+    }
+
+    private WorkAddress newRegentStreetWorkAddress() {
+        WorkAddress workAddress = new WorkAddress("Regent Street", "EC4", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR));
+        workAddress.setAddressLine2("Green");
+        workAddress.setCounty(GREATER_LONDON);
+        workAddress.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED));
+        workAddress.setTown(LONDON);
+        return workAddress;
+    }
+
+    private Photograph newPhotographMissScarlett(Person person) {
+        try {
+            Resource resource = new DefaultResourceLoader().getResource("db/photographs/missScarlet.jpg");
+            Photograph photograph = new Photograph(FileCopyUtils.copyToByteArray(resource.getInputStream()), person);
+            photograph.setPosition(1);
+
+            return photograph;
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public Person newPersonWithoutAnyAssociations() {
         // Set the attributes
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
@@ -106,26 +127,5 @@ public class TestDataFactory {
         person.setSurname("Scarlett");
 
         return person;
-    }
-
-    private Photograph newPhotographMissScarlett(Person person) {
-        try {
-            Resource resource = new DefaultResourceLoader().getResource("db/photographs/missScarlet.jpg");
-            Photograph photograph = new Photograph(FileCopyUtils.copyToByteArray(resource.getInputStream()), person);
-            photograph.setPosition(1);
-
-            return photograph;
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    private WorkAddress newRegentStreetWorkAddress() {
-        WorkAddress workAddress = new WorkAddress("Regent Street", "EC4", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR));
-        workAddress.setAddressLine2("Green");
-        workAddress.setCounty(GREATER_LONDON);
-        workAddress.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED));
-        workAddress.setTown(LONDON);
-        return workAddress;
     }
 }

@@ -70,7 +70,7 @@ public class HomeAddressTest {
         String county = "county";
         String postCode = "postCode";
         State state = referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED);
-        String town= "town";
+        String town = "town";
 
         HomeAddress homeAddress = new HomeAddress(addressLine1, postCode, country);
         homeAddress.setAddressLine2(addressLine2);

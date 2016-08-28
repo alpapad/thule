@@ -40,6 +40,7 @@ public final class Role extends DomainModel {
 
     /**
      * Copy object constructor
+     *
      * @param role Object to be copied
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -56,6 +57,7 @@ public final class Role extends DomainModel {
 
     /**
      * Business key constructor
+     *
      * @param code Business key attribute
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null

@@ -129,10 +129,19 @@ public final class Person extends DomainModel {
         initialise();
     }
 
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
+    }
+
     /**
-    * Copy object constructor
-    * @param person Object to be copied
-    */
+     * Copy object constructor
+     *
+     * @param person Object to be copied
+     */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(Person person) {
         // Copy business key
@@ -149,8 +158,41 @@ public final class Person extends DomainModel {
         setUpdatedBy(person.getUpdatedBy());
     }
 
+    public HomeAddress getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(HomeAddress homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public WorkAddress getWorkAddress() {
+        return workAddress;
+    }
+
+    public void addPhotographs(Stream<Photograph> photographs) {
+        this.photographs.addAll(photographs.collect(Collectors.toList()));
+    }
+
+    public Set<Photograph> getPhotographs() {
+        return Collections.unmodifiableSet(photographs);
+    }
+
+    public void addRoles(Stream<Role> roles) {
+        this.roles.addAll(roles.collect(Collectors.toList()));
+    }
+
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
+    }
+
+    public void setWorkAddress(WorkAddress workAddress) {
+        this.workAddress = workAddress;
+    }
+
     /**
      * Business key constructor
+     *
      * @param userId Business key attribute
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
@@ -158,14 +200,6 @@ public final class Person extends DomainModel {
         Assert.hasText(userId);
         this.userId = userId;
         initialise();
-    }
-
-    public void addPhotographs(Stream<Photograph> photographs) {
-        this.photographs.addAll(photographs.collect(Collectors.toList()));
-    }
-
-    public void addRoles(Stream<Role> roles) {
-        this.roles.addAll(roles.collect(Collectors.toList()));
     }
 
     public void disable() {
@@ -177,6 +211,14 @@ public final class Person extends DomainModel {
         // Set new state
         Action personViewAction = getState().getActionsByCode().get(ActionCode.PERSON_DISABLE);
         setState(personViewAction.getNextState());
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public void discard() {
@@ -241,28 +283,12 @@ public final class Person extends DomainModel {
         this.firstName = firstName;
     }
 
-    public HomeAddress getHomeAddress() {
-        return homeAddress;
-    }
-
-    public void setHomeAddress(HomeAddress homeAddress) {
-        this.homeAddress = homeAddress;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Photograph> getPhotographs() {
-        return Collections.unmodifiableSet(photographs);
-    }
-
-    public Set<Role> getRoles() {
-        return Collections.unmodifiableSet(roles);
     }
 
     public String getSalutation() {
@@ -281,14 +307,6 @@ public final class Person extends DomainModel {
         this.secondName = secondName;
     }
 
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
     public String getSurname() {
         return surname;
     }
@@ -299,14 +317,6 @@ public final class Person extends DomainModel {
 
     public String getUserId() {
         return userId;
-    }
-
-    public WorkAddress getWorkAddress() {
-        return workAddress;
-    }
-
-    public void setWorkAddress(WorkAddress workAddress) {
-        this.workAddress = workAddress;
     }
 
     @Override
@@ -324,14 +334,6 @@ public final class Person extends DomainModel {
         }
         Person person = (Person) o;
         return Objects.equals(userId, person.userId);
-    }
-
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
-
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
     }
 
     public boolean isExpired() {

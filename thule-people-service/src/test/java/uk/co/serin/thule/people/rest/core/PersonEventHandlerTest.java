@@ -11,7 +11,6 @@ import uk.co.serin.thule.people.domain.role.Role;
 import uk.co.serin.thule.people.domain.role.RoleCode;
 import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
-import uk.co.serin.thule.people.rest.core.PersonEventHandler;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 

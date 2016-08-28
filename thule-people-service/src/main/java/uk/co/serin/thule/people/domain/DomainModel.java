@@ -105,7 +105,7 @@ public abstract class DomainModel implements Serializable {
 
     @LastModifiedBy
     private String updatedBy;
-    
+
     @Version
     @Column(nullable = false)
     private Long version;
