@@ -41,27 +41,6 @@ public class PersonTest {
         assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
     }
 
-    private Person newPersonWithAllAssociations() {
-        // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
-
-        Person person = new Person(userId);
-        person.setDateOfBirth(dob);
-        person.setDateOfExpiry(expiryDate);
-        person.setDateOfPasswordExpiry(expiryDate);
-        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("Elizabeth");
-        person.setId(RandomGenerators.generateUniqueRandomLong());
-        person.setPassword(userId);
-        person.setSalutation("Miss");
-        person.setSecondName("K");
-        person.setSurname("Scarlett");
-
-        return person;
-    }
-
     @Test
     public void defaultConstructorCreatesInstanceSuccessfully() {
         // Given
@@ -180,5 +159,26 @@ public class PersonTest {
     @Test
     public void verifyEqualsConformsToContract() {
         EqualsVerifier.forClass(Person.class).suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+    }
+
+    private Person newPersonWithAllAssociations() {
+        // Set the attributes
+        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
+        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
+
+        Person person = new Person(userId);
+        person.setDateOfBirth(dob);
+        person.setDateOfExpiry(expiryDate);
+        person.setDateOfPasswordExpiry(expiryDate);
+        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
+        person.setFirstName("Elizabeth");
+        person.setId(RandomGenerators.generateUniqueRandomLong());
+        person.setPassword(userId);
+        person.setSalutation("Miss");
+        person.setSecondName("K");
+        person.setSurname("Scarlett");
+
+        return person;
     }
 }

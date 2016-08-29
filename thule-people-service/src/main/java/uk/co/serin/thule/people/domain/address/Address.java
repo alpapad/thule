@@ -72,7 +72,8 @@ public abstract class Address<T extends Address> extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     Address() {
     }
 
@@ -81,7 +82,8 @@ public abstract class Address<T extends Address> extends DomainModel {
      *
      * @param address Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Address(Address address) {
         // Copy mutable inherited properties
         super(address);
@@ -100,7 +102,8 @@ public abstract class Address<T extends Address> extends DomainModel {
      * @param postCode     Business key attribute
      * @param country      Business key attribute
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Address(String addressLine1, String postCode, Country country) {
         this.addressLine1 = addressLine1;
         this.postCode = postCode;

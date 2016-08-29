@@ -50,27 +50,6 @@ public class PersonRepositoryIntTest {
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
-    private Person newPerson() {
-        // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
-
-        Person person = new Person(userId);
-        person.setDateOfBirth(dob);
-        person.setDateOfExpiry(expiryDate);
-        person.setDateOfPasswordExpiry(expiryDate);
-        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("Elizabeth");
-        person.setId(id++);
-        person.setPassword(userId);
-        person.setSalutation("Miss");
-        person.setSecondName("K");
-        person.setSurname("Scarlett");
-
-        return person;
-    }
-
     @Test(expected = ConstraintViolationException.class)
     public void createAPersonViolatingValidationConstraints() {
         // Given
@@ -169,5 +148,26 @@ public class PersonRepositoryIntTest {
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    }
+
+    private Person newPerson() {
+        // Set the attributes
+        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
+        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
+
+        Person person = new Person(userId);
+        person.setDateOfBirth(dob);
+        person.setDateOfExpiry(expiryDate);
+        person.setDateOfPasswordExpiry(expiryDate);
+        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
+        person.setFirstName("Elizabeth");
+        person.setId(id++);
+        person.setPassword(userId);
+        person.setSalutation("Miss");
+        person.setSecondName("K");
+        person.setSurname("Scarlett");
+
+        return person;
     }
 }

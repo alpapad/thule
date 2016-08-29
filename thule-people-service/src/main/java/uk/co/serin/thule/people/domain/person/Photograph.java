@@ -57,7 +57,8 @@ public final class Photograph extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     Photograph() {
     }
 
@@ -66,7 +67,8 @@ public final class Photograph extends DomainModel {
      *
      * @param person Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Photograph(Photograph photograph, Person person) {
         // Copy mutable inherited properties
         super(photograph);
@@ -75,6 +77,19 @@ public final class Photograph extends DomainModel {
         setPhoto(photograph.getPhoto());
         // Copy mutable properties
         BeanUtils.copyProperties(photograph, this);
+    }
+
+    /**
+     * Business key constructor
+     *
+     * @param photo  Business key attribute
+     * @param person key attribute
+     */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public Photograph(byte[] photo, Person person) {
+        setPhoto(photo);
+        this.person = person;
     }
 
     public byte[] getPhoto() {
@@ -92,18 +107,6 @@ public final class Photograph extends DomainModel {
 
         this.photo = photoToSet;
         return this;
-    }
-
-    /**
-     * Business key constructor
-     *
-     * @param photo  Business key attribute
-     * @param person key attribute
-     */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Photograph(byte[] photo, Person person) {
-        setPhoto(photo);
-        this.person = person;
     }
 
     public String getHash() {

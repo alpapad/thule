@@ -108,11 +108,6 @@ public class RestfulServiceIntTest {
         assertThat(person).isNull();
     }
 
-    private Person createTestPerson(Person expectedPerson) {
-        Person person = new Person(expectedPerson).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(person);
-    }
-
     @Test
     public void getAllPeople() {
         // Given
@@ -221,5 +216,10 @@ public class RestfulServiceIntTest {
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    }
+
+    private Person createTestPerson(Person expectedPerson) {
+        Person person = new Person(expectedPerson).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
+        return personRepository.save(person);
     }
 }

@@ -58,7 +58,8 @@ public final class State extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     State() {
     }
 
@@ -67,7 +68,8 @@ public final class State extends DomainModel {
      *
      * @param state Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public State(State state) {
         // Copy mutable inherited properties
         super(state);
@@ -78,6 +80,17 @@ public final class State extends DomainModel {
         addActions(state.getActions().stream().map(Action::new));
     }
 
+    /**
+     * Business key constructor
+     *
+     * @param code Business key attribute
+     */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public State(StateCode code) {
+        this.code = code;
+    }
+
     public State addActions(Stream<Action> actions) {
         this.actions.addAll(actions.collect(Collectors.toList()));
         return this;
@@ -85,16 +98,6 @@ public final class State extends DomainModel {
 
     public Set<Action> getActions() {
         return Collections.unmodifiableSet(actions);
-    }
-
-    /**
-     * Business key constructor
-     *
-     * @param code Business key attribute
-     */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public State(StateCode code) {
-        this.code = code;
     }
 
     @JsonIgnore

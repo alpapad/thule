@@ -44,7 +44,8 @@ public final class Action extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     Action() {
     }
 
@@ -53,7 +54,8 @@ public final class Action extends DomainModel {
      *
      * @param action Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Action(Action action) {
         // Copy mutable inherited properties
         super(action);
@@ -68,7 +70,8 @@ public final class Action extends DomainModel {
      *
      * @param code Business key attribute
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Action(ActionCode code) {
         this.code = code;
     }

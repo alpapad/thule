@@ -105,14 +105,6 @@ public final class Person implements Serializable {
         initialise();
     }
 
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
-
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
-    }
-
     /**
      * Copy object constructor
      *
@@ -300,5 +292,13 @@ public final class Person implements Serializable {
 
     public boolean isPasswordExpired() {
         return LocalDate.now().isAfter(dateOfPasswordExpiry);
+    }
+
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
     }
 }

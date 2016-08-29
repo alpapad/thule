@@ -49,7 +49,7 @@ public class CountryTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField()  {
+    public void gettersAndSettersOperateOnTheSameField() {
         // Given
         String isoCodeThreeDigit = "isoCodeThreeDigit";
         String isoCodeTwoDigit = "isoCodeTwoDigit";

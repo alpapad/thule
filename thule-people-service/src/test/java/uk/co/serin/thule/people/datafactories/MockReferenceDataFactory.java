@@ -33,6 +33,26 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         addStateActions();
     }
 
+    @Override
+    public Map<ActionCode, Action> getActions() {
+        return actions;
+    }
+
+    @Override
+    public Map<String, Country> getCountries() {
+        return countries;
+    }
+
+    @Override
+    public Map<RoleCode, Role> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public Map<StateCode, State> getStates() {
+        return states;
+    }
+
     private void addActions() {
         addActionAddressDisable();
         addActionAddressDiscard();
@@ -245,25 +265,5 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
-    }
-
-    @Override
-    public Map<ActionCode, Action> getActions() {
-        return actions;
-    }
-
-    @Override
-    public Map<String, Country> getCountries() {
-        return countries;
-    }
-
-    @Override
-    public Map<RoleCode, Role> getRoles() {
-        return roles;
-    }
-
-    @Override
-    public Map<StateCode, State> getStates() {
-        return states;
     }
 }

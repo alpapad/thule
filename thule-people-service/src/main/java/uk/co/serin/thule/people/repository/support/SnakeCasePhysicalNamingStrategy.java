@@ -7,11 +7,6 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
 public class SnakeCasePhysicalNamingStrategy implements PhysicalNamingStrategy {
 
-    @Override
-    public Identifier toPhysicalCatalogName(Identifier identifier, JdbcEnvironment jdbcEnv) {
-        return convert(identifier);
-    }
-
     private static Identifier convert(Identifier identifier) {
         if (identifier == null) {
             return null;
@@ -21,6 +16,11 @@ public class SnakeCasePhysicalNamingStrategy implements PhysicalNamingStrategy {
         String replacement = "$1_$2";
         String newName = identifier.getText().replaceAll(regex, replacement).toLowerCase();
         return Identifier.toIdentifier(newName);
+    }
+
+    @Override
+    public Identifier toPhysicalCatalogName(Identifier identifier, JdbcEnvironment jdbcEnv) {
+        return convert(identifier);
     }
 
     @Override

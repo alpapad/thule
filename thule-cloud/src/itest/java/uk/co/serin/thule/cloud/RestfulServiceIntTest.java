@@ -27,15 +27,20 @@ public class RestfulServiceIntTest {
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate = new RestTemplate();
 
-    @BeforeClass
-    public static void setUpClass() throws IOException, InterruptedException {
-        dockerComposeDown();
-        dockerComposeUp();
+    private static void assertUrlIsAvailable(String url, int timeoutInSeconds) throws InterruptedException {
+        LocalDateTime giveUpTime = LocalDateTime.now().plusSeconds(timeoutInSeconds);
 
-        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO, 120);
-        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO, 120);
-        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO, 240);
-        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO, 120);
+        Object response = null;
+        while (response == null) {
+            try {
+                response = restTemplate.getForObject(url, Object.class);
+            } catch (Exception e) {
+                if (LocalDateTime.now().isAfter(giveUpTime)) {
+                    throw e;
+                }
+                Thread.sleep(1000);
+            }
+        }
     }
 
     private static void dockerComposeDown() throws IOException, InterruptedException {
@@ -52,20 +57,15 @@ public class RestfulServiceIntTest {
         dockerComposeUp = pb.start();
     }
 
-    private static void assertUrlIsAvailable(String url, int timeoutInSeconds) throws InterruptedException {
-        LocalDateTime giveUpTime = LocalDateTime.now().plusSeconds(timeoutInSeconds);
+    @BeforeClass
+    public static void setUpClass() throws IOException, InterruptedException {
+        dockerComposeDown();
+        dockerComposeUp();
 
-        Object response = null;
-        while (response == null) {
-            try {
-                response = restTemplate.getForObject(url, Object.class);
-            } catch (Exception e) {
-                if (LocalDateTime.now().isAfter(giveUpTime)) {
-                    throw e;
-                }
-                Thread.sleep(1000);
-            }
-        }
+        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO, 120);
+        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO, 120);
+        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO, 240);
+        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO, 120);
     }
 
     @AfterClass

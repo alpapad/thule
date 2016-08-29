@@ -34,7 +34,8 @@ public final class Role extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     Role() {
     }
 
@@ -43,7 +44,8 @@ public final class Role extends DomainModel {
      *
      * @param role Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Role(Role role) {
         // Copy mutable inherited properties
         super(role);
@@ -58,7 +60,8 @@ public final class Role extends DomainModel {
      *
      * @param code Business key attribute
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Role(RoleCode code) {
         this.code = code;
     }

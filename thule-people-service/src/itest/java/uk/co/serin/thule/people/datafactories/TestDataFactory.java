@@ -18,10 +18,10 @@ import java.util.stream.Stream;
 
 public class TestDataFactory {
     public static final String JUNIT_TEST = "JUnitTest";
-    private static final int USERID_SUFFIX_LENGTH = 8;
     private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
     private static final String GREATER_LONDON = "Greater London";
     private static final String LONDON = "London";
+    private static final int USERID_SUFFIX_LENGTH = 8;
     private final DataFactory dataFactory;
 
     TestDataFactory(DataFactory dataFactory) {
@@ -62,6 +62,19 @@ public class TestDataFactory {
         return person;
     }
 
+    public Person newPersonWithoutAnyAssociations() {
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
+
+        return new Person(userId).
+                setSalutation("Miss").setFirstName("Elizabeth").setSecondName("K").setSurname("Scarlett").
+                setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
+                setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
+                setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
+                setPassword(userId);
+    }
+
     private HomeAddress newOxfordStreetHomeAddress() {
         return new HomeAddress("Oxford Street", "EC3", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR)).
                 setAddressLine2("Green").setCounty(GREATER_LONDON).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED)).setTown(LONDON);
@@ -79,18 +92,5 @@ public class TestDataFactory {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    public Person newPersonWithoutAnyAssociations() {
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
-
-        return new Person(userId).
-                setSalutation("Miss").setFirstName("Elizabeth").setSecondName("K").setSurname("Scarlett").
-                setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
-                setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
-                setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
-                setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                setPassword(userId);
     }
 }

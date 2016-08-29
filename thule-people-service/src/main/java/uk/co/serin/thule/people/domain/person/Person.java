@@ -124,17 +124,10 @@ public final class Person extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     Person() {
         initialise();
-    }
-
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
-
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
     }
 
     /**
@@ -142,7 +135,8 @@ public final class Person extends DomainModel {
      *
      * @param person Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(Person person) {
         // Copy mutable inherited properties
         super(person);
@@ -156,12 +150,35 @@ public final class Person extends DomainModel {
         addRoles(person.getRoles().stream().map(Role::new));
     }
 
+    /**
+     * Business key constructor
+     *
+     * @param userId Business key attribute
+     */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public Person(String userId) {
+        Assert.hasText(userId);
+        this.userId = userId;
+        initialise();
+    }
+
     public HomeAddress getHomeAddress() {
         return homeAddress;
     }
 
+    public Person setHomeAddress(HomeAddress homeAddress) {
+        this.homeAddress = homeAddress;
+        return this;
+    }
+
     public WorkAddress getWorkAddress() {
         return workAddress;
+    }
+
+    public Person setWorkAddress(WorkAddress workAddress) {
+        this.workAddress = workAddress;
+        return this;
     }
 
     public Person addPhotographs(Stream<Photograph> photographs) {
@@ -180,29 +197,6 @@ public final class Person extends DomainModel {
 
     public Set<Role> getRoles() {
         return Collections.unmodifiableSet(roles);
-    }
-
-    public Person setWorkAddress(WorkAddress workAddress) {
-        this.workAddress = workAddress;
-        return this;
-    }
-
-    public Person setHomeAddress(HomeAddress homeAddress) {
-        this.homeAddress = homeAddress;
-        return this;
-    }
-
-    /**
-     * Business key constructor
-     *
-     * @param userId Business key attribute
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Person(String userId) {
-        Assert.hasText(userId);
-        this.userId = userId;
-        initialise();
     }
 
     public LocalDate getDateOfBirth() {
@@ -395,5 +389,13 @@ public final class Person extends DomainModel {
         if (!getState().getActionsByCode().containsKey(ActionCode.PERSON_UPDATE)) {
             throw new PersonInvalidStateException(this);
         }
+    }
+
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
     }
 }

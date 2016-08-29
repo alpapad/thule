@@ -83,6 +83,16 @@ public class LogPublicMethodsInterceptorTest {
         logMethod();
     }
 
+    @Test
+    public void logMethodWithOneArg() throws Throwable {
+        logMethod("arg1");
+    }
+
+    @Test
+    public void logMethodWithTwoArgs() throws Throwable {
+        logMethod("arg1", "arg2");
+    }
+
     private void logMethod(final Object... args) throws Throwable {
         // Given
         final Object expectedReturnValue = "done";
@@ -96,15 +106,5 @@ public class LogPublicMethodsInterceptorTest {
 
         // Then
         assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
-    }
-
-    @Test
-    public void logMethodWithOneArg() throws Throwable {
-        logMethod("arg1");
-    }
-
-    @Test
-    public void logMethodWithTwoArgs() throws Throwable {
-        logMethod("arg1", "arg2");
     }
 }
