@@ -68,22 +68,20 @@ public final class Photograph extends DomainModel {
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Photograph(Photograph photograph, Person person) {
+        // Copy mutable inherited properties
+        super(photograph);
         // Copy business key
         this.person = person;
         setPhoto(photograph.getPhoto());
-        // Copy mutable properties, i.e. those with a setter
+        // Copy mutable properties
         BeanUtils.copyProperties(photograph, this);
-        // Copy immutable properties, i.e. those without a setter
-        setCreatedAt(photograph.getCreatedAt());
-        setUpdatedAt(photograph.getUpdatedAt());
-        setUpdatedBy(photograph.getUpdatedBy());
     }
 
     public byte[] getPhoto() {
         return Arrays.copyOf(photo, photo.length);
     }
 
-    private void setPhoto(byte... photo) {
+    private Photograph setPhoto(byte... photo) {
         byte[] photoToSet = Arrays.copyOf(photo, photo.length);
         try {
             byte[] digestedPhoto = MessageDigest.getInstance(SHA).digest(photoToSet);
@@ -93,6 +91,7 @@ public final class Photograph extends DomainModel {
         }
 
         this.photo = photoToSet;
+        return this;
     }
 
     /**
@@ -111,8 +110,9 @@ public final class Photograph extends DomainModel {
         return hash;
     }
 
-    private void setHash(String hash) {
+    private Photograph setHash(String hash) {
         this.hash = hash;
+        return this;
     }
 
     public Person getPerson() {
@@ -123,8 +123,9 @@ public final class Photograph extends DomainModel {
         return position;
     }
 
-    public void setPosition(long positin) {
+    public Photograph setPosition(long positin) {
         this.position = positin;
+        return this;
     }
 
     @Override
@@ -148,6 +149,7 @@ public final class Photograph extends DomainModel {
     @Override
     public String toString() {
         return new StringJoiner(", ", "Photograph{", "}")
+                .add(super.toString())
                 .add(String.format("hash=%s", hash))
                 .add(String.format("photo=%s", new Object[]{photo}))
                 .add(String.format("position=%s", position))

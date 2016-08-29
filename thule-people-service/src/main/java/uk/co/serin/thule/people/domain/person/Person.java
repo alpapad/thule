@@ -144,50 +144,52 @@ public final class Person extends DomainModel {
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(Person person) {
+        // Copy mutable inherited properties
+        super(person);
         // Copy business key
         this.userId = person.userId;
-        // Copy mutable properties, i.e. those with a setter
+        // Copy mutable properties
         BeanUtils.copyProperties(person, this);
-        setHomeAddress((person.getHomeAddress() != null) ? new HomeAddress(person.getHomeAddress()) : null);
-        setWorkAddress((person.getWorkAddress() != null) ? new WorkAddress(person.getWorkAddress()) : null);
+        setHomeAddress(person.getHomeAddress() == null ? null : new HomeAddress(person.getHomeAddress()));
+        setWorkAddress(person.getWorkAddress() == null ? null : new WorkAddress(person.getWorkAddress()));
         addPhotographs(person.getPhotographs().stream().map(photograph -> new Photograph(photograph, this)));
         addRoles(person.getRoles().stream().map(Role::new));
-        // Copy immutable properties, i.e. those without a setter
-        setCreatedAt(person.getCreatedAt());
-        setUpdatedAt(person.getUpdatedAt());
-        setUpdatedBy(person.getUpdatedBy());
     }
 
     public HomeAddress getHomeAddress() {
         return homeAddress;
     }
 
-    public void setHomeAddress(HomeAddress homeAddress) {
-        this.homeAddress = homeAddress;
-    }
-
     public WorkAddress getWorkAddress() {
         return workAddress;
     }
 
-    public void addPhotographs(Stream<Photograph> photographs) {
+    public Person addPhotographs(Stream<Photograph> photographs) {
         this.photographs.addAll(photographs.collect(Collectors.toList()));
+        return this;
     }
 
     public Set<Photograph> getPhotographs() {
         return Collections.unmodifiableSet(photographs);
     }
 
-    public void addRoles(Stream<Role> roles) {
+    public Person addRoles(Stream<Role> roles) {
         this.roles.addAll(roles.collect(Collectors.toList()));
+        return this;
     }
 
     public Set<Role> getRoles() {
         return Collections.unmodifiableSet(roles);
     }
 
-    public void setWorkAddress(WorkAddress workAddress) {
+    public Person setWorkAddress(WorkAddress workAddress) {
         this.workAddress = workAddress;
+        return this;
+    }
+
+    public Person setHomeAddress(HomeAddress homeAddress) {
+        this.homeAddress = homeAddress;
+        return this;
     }
 
     /**
@@ -195,11 +197,94 @@ public final class Person extends DomainModel {
      *
      * @param userId Business key attribute
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(String userId) {
         Assert.hasText(userId);
         this.userId = userId;
         initialise();
+    }
+
+    public LocalDate getDateOfBirth() {
+
+        return dateOfBirth;
+    }
+
+    public Person setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public LocalDate getDateOfExpiry() {
+        return dateOfExpiry;
+    }
+
+    public Person setDateOfExpiry(LocalDate dateOfExpiry) {
+        this.dateOfExpiry = dateOfExpiry;
+        return this;
+    }
+
+    public LocalDate getDateOfPasswordExpiry() {
+        return dateOfPasswordExpiry;
+    }
+
+    public Person setDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
+        this.dateOfPasswordExpiry = dateOfPasswordExpiry;
+        return this;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public Person setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+        return this;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public Person setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Person setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public String getSalutation() {
+        return salutation;
+    }
+
+    public Person setSalutation(String salutation) {
+        this.salutation = salutation;
+        return this;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public Person setSecondName(String secondName) {
+        this.secondName = secondName;
+        return this;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public Person setSurname(String surname) {
+        this.surname = surname;
+        return this;
     }
 
     public void disable() {
@@ -210,15 +295,16 @@ public final class Person extends DomainModel {
 
         // Set new state
         Action personViewAction = getState().getActionsByCode().get(ActionCode.PERSON_DISABLE);
-        setState(personViewAction.getNextState());
+        state = personViewAction.getNextState();
     }
 
     public State getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public Person setState(State state) {
         this.state = state;
+        return this;
     }
 
     public void discard() {
@@ -229,7 +315,7 @@ public final class Person extends DomainModel {
 
         // Set new state
         Action personViewAction = getState().getActionsByCode().get(ActionCode.PERSON_DISCARD);
-        setState(personViewAction.getNextState());
+        state = personViewAction.getNextState();
     }
 
     public void enable() {
@@ -240,79 +326,7 @@ public final class Person extends DomainModel {
 
         // Set new state
         Action personViewAction = getState().getActionsByCode().get(ActionCode.PERSON_ENABLE);
-        setState(personViewAction.getNextState());
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public LocalDate getDateOfExpiry() {
-        return dateOfExpiry;
-    }
-
-    public void setDateOfExpiry(LocalDate dateOfExpiry) {
-        this.dateOfExpiry = dateOfExpiry;
-    }
-
-    public LocalDate getDateOfPasswordExpiry() {
-        return dateOfPasswordExpiry;
-    }
-
-    public void setDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
-        this.dateOfPasswordExpiry = dateOfPasswordExpiry;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public void setSalutation(String salutation) {
-        this.salutation = salutation;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+        state = personViewAction.getNextState();
     }
 
     public String getUserId() {
@@ -352,7 +366,7 @@ public final class Person extends DomainModel {
 
         // Set new state
         Action personViewAction = getState().getActionsByCode().get(ActionCode.PERSON_RECOVER);
-        setState(personViewAction.getNextState());
+        state = personViewAction.getNextState();
     }
 
     @Override

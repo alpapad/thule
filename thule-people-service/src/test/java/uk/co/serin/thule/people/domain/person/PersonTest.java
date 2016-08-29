@@ -46,21 +46,14 @@ public class PersonTest {
         HomeAddress homeAddress = new HomeAddress("addressLine1", "postCode", country);
         WorkAddress workAddress = new WorkAddress("addressLine1", "postCode", country);
 
-        Person expectedPerson = new Person("userId");
-        expectedPerson.setDateOfBirth(now);
-        expectedPerson.setDateOfExpiry(now);
-        expectedPerson.setDateOfPasswordExpiry(now);
-        expectedPerson.setEmailAddress("test@gmail.com");
-        expectedPerson.setFirstName("firstName");
-        expectedPerson.setHomeAddress(homeAddress);
-        expectedPerson.setPassword("password");
+        Person expectedPerson = new Person("userId").
+                setSalutation("salutation").setFirstName("firstName").setSecondName("secondName").setSurname("surname").
+                setHomeAddress(homeAddress).setWorkAddress(workAddress).
+                setDateOfBirth(now).setEmailAddress("test@gmail.com").
+                setDateOfExpiry(now).setDateOfPasswordExpiry(now).setPassword("password").
+                addRoles(referenceDataFactory.getRoles().values().stream()).
+                setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED));
         expectedPerson.addPhotographs(Stream.of(new Photograph(new byte[]{}, expectedPerson)));
-        expectedPerson.addRoles(referenceDataFactory.getRoles().values().stream());
-        expectedPerson.setSalutation("salutation");
-        expectedPerson.setSecondName("secondName");
-        expectedPerson.setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED));
-        expectedPerson.setSurname("surname");
-        expectedPerson.setWorkAddress(workAddress);
 
         // When
         Person actualPerson = new Person(expectedPerson);
@@ -83,23 +76,19 @@ public class PersonTest {
     @Test
     public void disablePerson() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED);
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         // When
         person.disable();
 
         //Then
-        assertThat(person.getState()).isEqualTo(expectedState);
+        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
     }
 
     @Test(expected = PersonInvalidStateException.class)
     public void disablePersonWhenAlreadyDisabled() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
 
         // When
         person.disable();
@@ -110,23 +99,19 @@ public class PersonTest {
     @Test
     public void discardPerson() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED);
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         // When
         person.discard();
 
         //Then
-        assertThat(person.getState()).isEqualTo(expectedState);
+        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
     }
 
     @Test(expected = PersonInvalidStateException.class)
     public void discardPersonWhenAlreadyDiscarded() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
 
         // When
         person.discard();
@@ -137,23 +122,19 @@ public class PersonTest {
     @Test
     public void enablePerson() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
-
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
 
         // When
         person.enable();
 
         //Then
-        assertThat(person.getState()).isEqualTo(expectedState);
+        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
     }
 
     @Test(expected = PersonInvalidStateException.class)
     public void enablePersonWhenAlreadyEnabled() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         // When
         person.enable();
@@ -177,19 +158,12 @@ public class PersonTest {
         String userId = "userId";
         WorkAddress workAddress = new WorkAddress("addressLine1", "postCode", country);
 
-        Person person = new Person(userId);
-        person.setDateOfBirth(now);
-        person.setDateOfExpiry(now);
-        person.setDateOfPasswordExpiry(now);
-        person.setEmailAddress(emailAddress);
-        person.setFirstName(firstName);
-        person.setHomeAddress(homeAddress);
-        person.setPassword(password);
-        person.setSalutation(salutation);
-        person.setSecondName(secondName);
-        person.setState(state);
-        person.setSurname(surname);
-        person.setWorkAddress(workAddress);
+        Person person = new Person(userId).
+                setSalutation(salutation).setFirstName(firstName).setSecondName(secondName).setSurname(surname).
+                setHomeAddress(homeAddress).setWorkAddress(workAddress).
+                setDateOfBirth(now).setEmailAddress(emailAddress).
+                setDateOfExpiry(now).setDateOfPasswordExpiry(now).setPassword(password).
+                setState(state);
 
         // When/Then
         assertThat(person.getDateOfBirth()).isEqualTo(now);
@@ -209,8 +183,7 @@ public class PersonTest {
     @Test
     public void isExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfExpiry(LocalDate.MIN);
+        Person person = new Person("userId").setDateOfExpiry(LocalDate.MIN);
 
         // When
         boolean expired = person.isExpired();
@@ -222,8 +195,7 @@ public class PersonTest {
     @Test
     public void isNotExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfExpiry(LocalDate.MAX);
+        Person person = new Person("userId").setDateOfExpiry(LocalDate.MAX);
 
         // When
         boolean expired = person.isExpired();
@@ -235,8 +207,7 @@ public class PersonTest {
     @Test
     public void isNotPasswordExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfPasswordExpiry(LocalDate.MAX);
+        Person person = new Person("userId").setDateOfPasswordExpiry(LocalDate.MAX);
 
         // When
         boolean passwordExpired = person.isPasswordExpired();
@@ -248,8 +219,7 @@ public class PersonTest {
     @Test
     public void isPasswordExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfPasswordExpiry(LocalDate.MIN);
+        Person person = new Person("userId").setDateOfPasswordExpiry(LocalDate.MIN);
 
         // When
         boolean passwordExpired = person.isPasswordExpired();
@@ -261,16 +231,13 @@ public class PersonTest {
     @Test
     public void recoverPerson() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
-
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
 
         // When
         person.recover();
 
         //Then
-        assertThat(person.getState()).isEqualTo(expectedState);
+        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
     }
 
     @Test
@@ -281,9 +248,7 @@ public class PersonTest {
     @Test
     public void updatePerson() {
         // Given
-        Person expectedPerson = new Person("userId");
-        expectedPerson.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-
+        Person expectedPerson = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
         Person actualPerson = new Person(expectedPerson);
 
         // When
@@ -296,8 +261,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void updatePersonWhenNotEnabled() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
 
         // When
         person.update();
@@ -308,8 +272,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void updateRecoverWhenNotDiscarded() {
         // Given
-        Person person = new Person("userId");
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         // When
         person.recover();

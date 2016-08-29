@@ -54,9 +54,7 @@ public class ActionTest {
         String description = "description";
         State nextState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
 
-        Action action = new Action(ActionCode.PERSON_ENABLE);
-        action.setDescription(description);
-        action.setNextState(nextState);
+        Action action = new Action(ActionCode.PERSON_ENABLE).setDescription(description).setNextState(nextState);
 
         // When/Then
         assertThat(action.getCode()).isEqualTo(ActionCode.PERSON_ENABLE);

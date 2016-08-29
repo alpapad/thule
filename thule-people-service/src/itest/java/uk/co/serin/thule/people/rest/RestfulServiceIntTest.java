@@ -28,6 +28,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import uk.co.serin.thule.people.datafactories.DataFactory;
@@ -108,8 +109,7 @@ public class RestfulServiceIntTest {
     }
 
     private Person createTestPerson(Person expectedPerson) {
-        Person person = new Person(expectedPerson);
-        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
+        Person person = new Person(expectedPerson).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
         return personRepository.save(person);
     }
 
@@ -200,17 +200,14 @@ public class RestfulServiceIntTest {
         testPerson = createTestPerson(testPerson);
         long id = testPerson.getId();
 
-        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
-        testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
-        testPerson.setFirstName("updatedFirstName");
-        testPerson.setPassword("updatedPassword");
-        testPerson.setSecondName("updatedSecondName");
-        testPerson.setSurname("updatedSurname");
+        testPerson.setFirstName("updatedFirstName").setSecondName("updatedSecondName").setSurname("updatedSurname").
+                setDateOfBirth(testPerson.getDateOfBirth().minusDays(1)).
+                setEmailAddress("updated@serin-consultancy.co.uk").
+                setPassword("updatedPassword");
 
-        Person expectedPerson = new Person(testPerson);
-        expectedPerson.setId(null);
-        expectedPerson.setState(null);
-        expectedPerson.setVersion(null);
+        Person expectedPerson = new Person(testPerson).setState(null);
+        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, null);
+        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
         // When
         restTemplate.put(urlForPeople + ID, testPerson, id);

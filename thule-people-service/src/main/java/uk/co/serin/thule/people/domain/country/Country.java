@@ -45,7 +45,8 @@ public final class Country extends DomainModel {
     /**
      * Default constructor required by Hibernate
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     Country() {
     }
 
@@ -54,16 +55,15 @@ public final class Country extends DomainModel {
      *
      * @param country Object to be copied
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Country(Country country) {
+        // Copy mutable inherited properties
+        super(country);
         // Copy business key
         this.isoCodeThreeDigit = country.isoCodeThreeDigit;
-        // Copy mutable properties, i.e. those with a setter
+        // Copy mutable properties
         BeanUtils.copyProperties(country, this);
-        // Copy immutable properties, i.e. those without a setter
-        setCreatedAt(country.getCreatedAt());
-        setUpdatedAt(country.getUpdatedAt());
-        setUpdatedBy(country.getUpdatedBy());
     }
 
     /**
@@ -71,7 +71,8 @@ public final class Country extends DomainModel {
      *
      * @param isoCodeThreeDigit Business key attribute
      */
-    @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Country(String isoCodeThreeDigit) {
         this.isoCodeThreeDigit = isoCodeThreeDigit;
     }
@@ -84,24 +85,27 @@ public final class Country extends DomainModel {
         return isoCodeTwoDigit;
     }
 
-    public void setIsoCodeTwoDigit(String isoCodeTwoDigit) {
+    public Country setIsoCodeTwoDigit(String isoCodeTwoDigit) {
         this.isoCodeTwoDigit = isoCodeTwoDigit;
+        return this;
     }
 
     public String getIsoName() {
         return isoName;
     }
 
-    public void setIsoName(String isoName) {
+    public Country setIsoName(String isoName) {
         this.isoName = isoName;
+        return this;
     }
 
     public String getIsoNumber() {
         return isoNumber;
     }
 
-    public void setIsoNumber(String isoNumber) {
+    public Country setIsoNumber(String isoNumber) {
         this.isoNumber = isoNumber;
+        return this;
     }
 
     @Override
@@ -124,6 +128,7 @@ public final class Country extends DomainModel {
     @Override
     public String toString() {
         return new StringJoiner(", ", "Country{", "}")
+                .add(super.toString())
                 .add(String.format("isoCodeThreeDigit=%s", isoCodeThreeDigit))
                 .add(String.format("isoCodeTwoDigit=%s", isoCodeTwoDigit))
                 .add(String.format("isoName=%s", isoName))

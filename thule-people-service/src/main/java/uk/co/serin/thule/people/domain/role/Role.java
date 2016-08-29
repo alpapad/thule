@@ -45,14 +45,12 @@ public final class Role extends DomainModel {
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Role(Role role) {
+        // Copy mutable inherited properties
+        super(role);
         // Copy business key
         this.code = role.code;
-        // Copy mutable properties, i.e. those with a setter
+        // Copy mutable properties
         BeanUtils.copyProperties(role, this);
-        // Copy immutable properties, i.e. those without a setter
-        setCreatedAt(role.getCreatedAt());
-        setUpdatedAt(role.getUpdatedAt());
-        setUpdatedBy(role.getUpdatedBy());
     }
 
     /**
@@ -73,8 +71,9 @@ public final class Role extends DomainModel {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Role setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     @Override
@@ -97,6 +96,7 @@ public final class Role extends DomainModel {
     @Override
     public String toString() {
         return new StringJoiner(", ", "Role{", "}")
+                .add(super.toString())
                 .add(String.format("code=%s", code))
                 .add(String.format("description=%s", description))
                 .toString();

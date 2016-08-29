@@ -53,8 +53,7 @@ public class RoleTest {
         // Given
         String description = "description";
 
-        Role role = new Role(RoleCode.ROLE_CLERK);
-        role.setDescription(description);
+        Role role = new Role(RoleCode.ROLE_CLERK).setDescription(description);
 
         // When/Then
         assertThat(role.getCode()).isEqualTo(RoleCode.ROLE_CLERK);

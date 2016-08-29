@@ -37,11 +37,8 @@ public class HomeAddressTest {
     @Test
     public void copyConstructorCreatesInstanceWithSameFieldValues() {
         // Given
-        HomeAddress expectedHomeAddress = new HomeAddress("Oxford Street", "EC3", referenceDataFactory.getCountries().get(Country.GBR));
-        expectedHomeAddress.setAddressLine2("Green");
-        expectedHomeAddress.setCounty("Greater London");
-        expectedHomeAddress.setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED));
-        expectedHomeAddress.setTown("London");
+        HomeAddress expectedHomeAddress = new HomeAddress("Oxford Street", "EC3", referenceDataFactory.getCountries().get(Country.GBR)).
+                setAddressLine2("Green").setCounty("Greater London").setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).setTown("London");
 
         // When
         HomeAddress actualHomeAddress = new HomeAddress(expectedHomeAddress);
@@ -72,11 +69,8 @@ public class HomeAddressTest {
         State state = referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED);
         String town = "town";
 
-        HomeAddress homeAddress = new HomeAddress(addressLine1, postCode, country);
-        homeAddress.setAddressLine2(addressLine2);
-        homeAddress.setCounty(county);
-        homeAddress.setState(state);
-        homeAddress.setTown(town);
+        HomeAddress homeAddress = new HomeAddress(addressLine1, postCode, country).
+                setAddressLine2(addressLine2).setCounty(county).setState(state).setTown(town);
 
         // When/Then
         assertThat(homeAddress.getAddressLine1()).isEqualTo(addressLine1);

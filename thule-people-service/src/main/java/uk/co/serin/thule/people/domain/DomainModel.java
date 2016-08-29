@@ -110,53 +110,49 @@ public abstract class DomainModel implements Serializable {
     @Column(nullable = false)
     private Long version;
 
+    protected DomainModel() {
+    }
+
+    /**
+     * Copy object constructor
+     *
+     * @param domainModel Object to be copied
+     */
+    protected DomainModel(DomainModel domainModel) {
+        createdAt = domainModel.getCreatedAt();
+        id = domainModel.getId();
+        updatedAt = domainModel.getUpdatedAt();
+        updatedBy = domainModel.getUpdatedBy();
+        version = domainModel.getVersion();
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    protected void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    protected void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    protected void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
     public Long getVersion() {
         return version;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     @Override
     public String toString() {
         return new StringJoiner(", ", "DomainModel{", "}")
                 .add(String.format("createdAt=%s", createdAt))
+                .add(String.format("id=%s", id))
                 .add(String.format("updatedAt=%s", updatedAt))
                 .add(String.format("updatedBy=%s", updatedBy))
-                .add(String.format("id=%s", id))
                 .add(String.format("version=%s", version))
                 .toString();
     }

@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 @Table(name = DomainModel.ENTITY_NAME_ADDRESSES)
 @DiscriminatorColumn(name = DomainModel.DATABASE_COLUMN_ADDRESS_TYPE, discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(value = DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_UNSPECIFIED)
-public abstract class Address extends DomainModel {
+public abstract class Address<T extends Address> extends DomainModel {
     private static final int ADDRESS_LINE1_MAX_LENGTH = 30;
     private static final int ADDRESS_LINE2_MAX_LENGTH = 30;
     private static final int COUNTY_MAX_LENGTH = 30;
@@ -83,16 +83,14 @@ public abstract class Address extends DomainModel {
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Address(Address address) {
+        // Copy mutable inherited properties
+        super(address);
         // Copy business key
         this.addressLine1 = address.addressLine1;
         this.country = new Country(address.getCountry());
         this.postCode = address.postCode;
-        // Copy mutable properties, i.e. those with a setter
+        // Copy mutable properties
         BeanUtils.copyProperties(address, this);
-        // Copy immutable properties, i.e. those without a setter
-        setCreatedAt(address.getCreatedAt());
-        setUpdatedAt(address.getUpdatedAt());
-        setUpdatedBy(address.getUpdatedBy());
     }
 
     /**
@@ -117,8 +115,10 @@ public abstract class Address extends DomainModel {
         return addressLine2;
     }
 
-    public void setAddressLine2(String addressLine2) {
+    @SuppressWarnings("unchecked")
+    public T setAddressLine2(String addressLine2) {
         this.addressLine2 = addressLine2;
+        return (T) this;
     }
 
     public Country getCountry() {
@@ -129,8 +129,10 @@ public abstract class Address extends DomainModel {
         return county;
     }
 
-    public void setCounty(String county) {
+    @SuppressWarnings("unchecked")
+    public T setCounty(String county) {
         this.county = county;
+        return (T) this;
     }
 
     public String getPostCode() {
@@ -141,16 +143,20 @@ public abstract class Address extends DomainModel {
         return state;
     }
 
-    public void setState(State state) {
+    @SuppressWarnings("unchecked")
+    public T setState(State state) {
         this.state = state;
+        return (T) this;
     }
 
     public String getTown() {
         return town;
     }
 
-    public void setTown(String town) {
+    @SuppressWarnings("unchecked")
+    public T setTown(String town) {
         this.town = town;
+        return (T) this;
     }
 
     @Override
@@ -175,6 +181,7 @@ public abstract class Address extends DomainModel {
     @Override
     public String toString() {
         return new StringJoiner(", ", "Address{", "}")
+                .add(super.toString())
                 .add(String.format("addressLine1=%s", addressLine1))
                 .add(String.format("addressLine2=%s", addressLine2))
                 .add(String.format("country=%s", country))

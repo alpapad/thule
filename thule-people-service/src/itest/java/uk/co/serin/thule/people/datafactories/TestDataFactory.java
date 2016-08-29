@@ -18,114 +18,79 @@ import java.util.stream.Stream;
 
 public class TestDataFactory {
     public static final String JUNIT_TEST = "JUnitTest";
-    public static final int USERID_SUFFIX_LENGTH = 8;
+    private static final int USERID_SUFFIX_LENGTH = 8;
     private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
     private static final String GREATER_LONDON = "Greater London";
     private static final String LONDON = "London";
     private final DataFactory dataFactory;
 
-    public TestDataFactory(DataFactory dataFactory) {
+    TestDataFactory(DataFactory dataFactory) {
         this.dataFactory = dataFactory;
     }
 
     public Person newJUnitTest() {
-        // Set the attributes
-        Person person = new Person(JUNIT_TEST);
-        person.setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast());
-        person.setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture());
-        person.setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), person.getDateOfExpiry()));
-        person.setEmailAddress(JUNIT_TEST + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("J");
-        person.setPassword(JUNIT_TEST);
-        person.setSalutation("Mr");
-        person.setSecondName("Unit");
-        person.setSurname("Tester");
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
 
-        // Set the roles
-        person.addRoles(dataFactory.getReferenceDataFactory().getRoles().values().stream());
-
-        // Set the state
-        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
-
-        return person;
+        return new Person(JUNIT_TEST).
+                setSalutation("Mr").setFirstName("J").setSecondName("Unit").setSurname("Tester").
+                setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
+                setDateOfExpiry(dateOfExpiry).
+                setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                setEmailAddress(JUNIT_TEST + EMAIL_ADDRESS_SUFFIX).
+                setPassword(JUNIT_TEST).
+                setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED)).
+                addRoles(dataFactory.getReferenceDataFactory().getRoles().values().stream());
     }
 
     public Person newPersonWithAllAssociations() {
-        // Set the attributes
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
-        Person person = new Person(userId);
-        person.setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast());
-        person.setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture());
-        person.setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), person.getDateOfExpiry()));
-        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("Elizabeth");
-        person.setPassword(userId);
-        person.setSalutation("Miss");
-        person.setSecondName("K");
-        person.setSurname("Scarlett");
+        Person person = new Person(userId).
+                setSalutation("Miss").setFirstName("Elizabeth").setSecondName("K").setSurname("Scarlett").
+                setHomeAddress(newOxfordStreetHomeAddress()).setWorkAddress(newRegentStreetWorkAddress()).
+                setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
+                setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
+                setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
+                setPassword(userId).
+                setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED)).
+                addRoles(dataFactory.getReferenceDataFactory().getRoles().values().stream());
 
-        // Set the addresses
-        person.setHomeAddress(newOxfordStreetHomeAddress());
-        person.setWorkAddress(newRegentStreetWorkAddress());
-
-        // Set the photographs
         person.addPhotographs(Stream.of(newPhotographMissScarlett(person)));
-
-        // Set the roles
-        person.addRoles(dataFactory.getReferenceDataFactory().getRoles().values().stream());
-
-        // Set the state
-        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
 
         return person;
     }
 
     private HomeAddress newOxfordStreetHomeAddress() {
-        HomeAddress homeAddress = new HomeAddress("Oxford Street", "EC3", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR));
-        homeAddress.setAddressLine2("Green");
-        homeAddress.setCounty(GREATER_LONDON);
-        homeAddress.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED));
-        homeAddress.setTown(LONDON);
-        return homeAddress;
+        return new HomeAddress("Oxford Street", "EC3", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR)).
+                setAddressLine2("Green").setCounty(GREATER_LONDON).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED)).setTown(LONDON);
     }
 
     private WorkAddress newRegentStreetWorkAddress() {
-        WorkAddress workAddress = new WorkAddress("Regent Street", "EC4", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR));
-        workAddress.setAddressLine2("Green");
-        workAddress.setCounty(GREATER_LONDON);
-        workAddress.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED));
-        workAddress.setTown(LONDON);
-        return workAddress;
+        return new WorkAddress("Regent Street", "EC4", dataFactory.getReferenceDataFactory().getCountries().get(Country.GBR)).
+                setAddressLine2("Green").setCounty(GREATER_LONDON).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.ADDRESS_ENABLED)).setTown(LONDON);
     }
 
     private Photograph newPhotographMissScarlett(Person person) {
         try {
             Resource resource = new DefaultResourceLoader().getResource("db/photographs/missScarlet.jpg");
-            Photograph photograph = new Photograph(FileCopyUtils.copyToByteArray(resource.getInputStream()), person);
-            photograph.setPosition(1);
-
-            return photograph;
+            return new Photograph(FileCopyUtils.copyToByteArray(resource.getInputStream()), person).setPosition(1);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
     public Person newPersonWithoutAnyAssociations() {
-        // Set the attributes
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
-        Person person = new Person(userId);
-        person.setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast());
-        person.setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture());
-        person.setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), person.getDateOfExpiry()));
-        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("Elizabeth");
-        person.setPassword(userId);
-        person.setSalutation("Miss");
-        person.setSecondName("K");
-        person.setSurname("Scarlett");
-
-        return person;
+        return new Person(userId).
+                setSalutation("Miss").setFirstName("Elizabeth").setSecondName("K").setSurname("Scarlett").
+                setDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
+                setDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
+                setDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
+                setPassword(userId);
     }
 }

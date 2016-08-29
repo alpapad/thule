@@ -53,8 +53,7 @@ public class StateTest {
         // Given
         String description = "description";
 
-        State expectedState = new State(StateCode.PERSON_ENABLED);
-        expectedState.setDescription(description);
+        State expectedState = new State(StateCode.PERSON_ENABLED).setDescription(description);
 
         // When/Then
         assertThat(expectedState.getCode()).isEqualTo(StateCode.PERSON_ENABLED);

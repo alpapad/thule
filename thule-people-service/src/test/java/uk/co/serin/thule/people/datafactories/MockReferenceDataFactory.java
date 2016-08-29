@@ -79,185 +79,170 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addActionAddressDisable() {
-        Action action = new Action(ActionCode.ADDRESS_DISABLE);
-        action.setDescription("Disable");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.ADDRESS_DISABLE).setDescription("Disable");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressDiscard() {
-        Action action = new Action(ActionCode.ADDRESS_DISCARD);
-        action.setDescription("Discard");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.ADDRESS_DISCARD).setDescription("Discard");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(ActionCode.ADDRESS_DISCARD, action);
     }
 
     private void addActionAddressEnable() {
-        Action action = new Action(ActionCode.ADDRESS_ENABLE);
-        action.setDescription("Enable");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.ADDRESS_ENABLE).setDescription("Enable");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressRecover() {
-        Action action = new Action(ActionCode.ADDRESS_RECOVER);
-        action.setDescription("Recover");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.ADDRESS_RECOVER).setDescription("Recover");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressUpdate() {
-        Action action = new Action(ActionCode.ADDRESS_UPDATE);
-        action.setDescription("Update");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.ADDRESS_UPDATE).setDescription("Update");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressView() {
-        Action action = new Action(ActionCode.ADDRESS_VIEW);
-        action.setDescription("View");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.ADDRESS_VIEW).setDescription("View");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDisable() {
-        Action action = new Action(ActionCode.PERSON_DISABLE);
-        action.setDescription("Disable");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.PERSON_DISABLE).setDescription("Disable");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDiscard() {
-        Action action = new Action(ActionCode.PERSON_DISCARD);
-        action.setDescription("Discard");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.PERSON_DISCARD).setDescription("Discard");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonEnable() {
-        Action action = new Action(ActionCode.PERSON_ENABLE);
-        action.setDescription("Enable");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.PERSON_ENABLE).setDescription("Enable");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonRecover() {
-        Action action = new Action(ActionCode.PERSON_RECOVER);
-        action.setDescription("Recover");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.PERSON_RECOVER).setDescription("Recover");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonUpdate() {
-        Action action = new Action(ActionCode.PERSON_UPDATE);
-        action.setDescription("Update");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.PERSON_UPDATE).setDescription("Update");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonView() {
-        Action action = new Action(ActionCode.PERSON_VIEW);
-        action.setDescription("View");
-        action.setId(RandomGenerators.generateUniqueRandomLong());
+        Action action = new Action(ActionCode.PERSON_VIEW).setDescription("View");
+        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         actions.put(action.getCode(), action);
     }
 
     private void addCountryGb() {
-        Country country = new Country(Country.GBR);
-        country.setId(RandomGenerators.generateUniqueRandomLong());
-        country.setIsoCodeTwoDigit("GB");
-        country.setIsoName("United Kingdom");
-        country.setIsoNumber("826");
+        Country country = new Country(Country.GBR).setIsoCodeTwoDigit("GB").setIsoName("United Kingdom").setIsoNumber("826");
+        ReflectionTestUtils.setField(country, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(country, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         countries.put(country.getIsoCodeThreeDigit(), country);
     }
 
     private void addRoleAdministrator() {
-        Role role = new Role(RoleCode.ROLE_ADMINISTRATOR);
-        role.setDescription(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault())));
-        role.setId(RandomGenerators.generateUniqueRandomLong());
+        Role role = new Role(RoleCode.ROLE_ADMINISTRATOR).
+                setDescription(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault())));
+        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
     }
 
     private void addRoleClerk() {
-        Role role = new Role(RoleCode.ROLE_CLERK);
-        role.setDescription(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault())));
-        role.setId(RandomGenerators.generateUniqueRandomLong());
+        Role role = new Role(RoleCode.ROLE_CLERK).
+                setDescription(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault())));
+        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
     }
 
     private void addRoleManager() {
-        Role role = new Role(RoleCode.ROLE_MANAGER);
-        role.setDescription(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault())));
-        role.setId(RandomGenerators.generateUniqueRandomLong());
+        Role role = new Role(RoleCode.ROLE_MANAGER).
+                setDescription(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault())));
+        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         roles.put(role.getCode(), role);
     }
 
     private void addStateAddressDisabled() {
-        State state = new State(StateCode.ADDRESS_DISABLED);
-        state.addActions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)));
-        state.setDescription("Disabled");
+        State state = new State(StateCode.ADDRESS_DISABLED).
+                addActions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW))).
+                setDescription("Disabled");
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
-        state.setId(RandomGenerators.generateUniqueRandomLong());
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressDiscarded() {
-        State state = new State(StateCode.ADDRESS_DISCARDED);
-        state.addActions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)));
-        state.setDescription("Discarded");
-        state.setId(RandomGenerators.generateUniqueRandomLong());
+        State state = new State(StateCode.ADDRESS_DISCARDED).
+                addActions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW))).
+                setDescription("Discarded");
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressEnabled() {
-        State state = new State(StateCode.ADDRESS_ENABLED);
-        state.addActions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW)));
-        state.setDescription("Enabled");
-        state.setId(RandomGenerators.generateUniqueRandomLong());
+        State state = new State(StateCode.ADDRESS_ENABLED).
+                addActions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW))).
+                setDescription("Enabled");
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDisabled() {
-        State state = new State(StateCode.PERSON_DISABLED);
-        state.addActions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)));
-        state.setDescription("Disabled");
-        state.setId(RandomGenerators.generateUniqueRandomLong());
+        State state = new State(StateCode.PERSON_DISABLED).
+                addActions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW))).
+                setDescription("Disabled");
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDiscarded() {
-        State state = new State(StateCode.PERSON_DISCARDED);
-        state.addActions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)));
-        state.setDescription("Discarded");
-        state.setId(RandomGenerators.generateUniqueRandomLong());
+        State state = new State(StateCode.PERSON_DISCARDED).
+                addActions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW))).
+                setDescription("Discarded");
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonEnabled() {
-        State state = new State(StateCode.PERSON_ENABLED);
-        state.addActions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW)));
-        state.setDescription("Enabled");
-        state.setId(RandomGenerators.generateUniqueRandomLong());
+        State state = new State(StateCode.PERSON_ENABLED).
+                addActions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW))).
+                setDescription("Enabled");
+        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
         ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
         states.put(state.getCode(), state);
     }

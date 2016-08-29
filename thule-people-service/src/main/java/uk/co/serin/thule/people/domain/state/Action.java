@@ -55,14 +55,12 @@ public final class Action extends DomainModel {
      */
     @SuppressWarnings("squid:S2637") // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Action(Action action) {
+        // Copy mutable inherited properties
+        super(action);
         // Copy business key
         this.code = action.code;
-        // Copy mutable properties, i.e. those with a setter
+        // Copy mutable properties
         BeanUtils.copyProperties(action, this);
-        // Copy immutable properties, i.e. those without a setter
-        setCreatedAt(action.getCreatedAt());
-        setUpdatedAt(action.getUpdatedAt());
-        setUpdatedBy(action.getUpdatedBy());
     }
 
     /**
@@ -83,16 +81,18 @@ public final class Action extends DomainModel {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Action setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public State getNextState() {
         return nextState;
     }
 
-    public void setNextState(State nextState) {
+    public Action setNextState(State nextState) {
         this.nextState = nextState;
+        return this;
     }
 
     @Override
@@ -115,6 +115,7 @@ public final class Action extends DomainModel {
     @Override
     public String toString() {
         return new StringJoiner(", ", "Action{", "}")
+                .add(super.toString())
                 .add(String.format("code=%s", code))
                 .add(String.format("description=%s", description))
                 .add(String.format("nextState=%s", nextState))

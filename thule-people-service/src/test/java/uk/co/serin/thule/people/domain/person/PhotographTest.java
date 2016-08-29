@@ -83,8 +83,7 @@ public class PhotographTest {
         Person person = new Person("person");
         byte[] photo = {};
 
-        Photograph photograph = new Photograph(photo, person);
-        photograph.setPosition(1);
+        Photograph photograph = new Photograph(photo, person).setPosition(1);
 
         // When/Then
         assertThat(photograph.getHash()).isNotEmpty();

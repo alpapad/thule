@@ -49,17 +49,14 @@ public class CountryTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() throws InterruptedException {
+    public void gettersAndSettersOperateOnTheSameField()  {
         // Given
         String isoCodeThreeDigit = "isoCodeThreeDigit";
         String isoCodeTwoDigit = "isoCodeTwoDigit";
         String isoName = "isoName";
         String isoNumber = "isoNumber";
 
-        Country country = new Country(isoCodeThreeDigit);
-        country.setIsoCodeTwoDigit(isoCodeTwoDigit);
-        country.setIsoName(isoName);
-        country.setIsoNumber(isoNumber);
+        Country country = new Country(isoCodeThreeDigit).setIsoCodeTwoDigit(isoCodeTwoDigit).setIsoName(isoName).setIsoNumber(isoNumber);
 
         // When/Then
         assertThat(country.getIsoCodeThreeDigit()).isEqualTo(isoCodeThreeDigit);

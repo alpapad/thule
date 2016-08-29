@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,7 +92,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         // Given
         Person testPerson = testDataFactory.newPersonWithAllAssociations();
         Person expectedPerson = new Person(testPerson);
-        expectedPerson.setVersion(0L);
+        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, 0L);
 
         // When
         personRepository.save(testPerson);
@@ -276,15 +277,13 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void update() throws InterruptedException {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
-        testPerson.setEmailAddress("updated@gmail.com");
-        testPerson.setFirstName("updatedFirstName");
-        testPerson.setPassword("updatedPassword");
-        testPerson.setSecondName("updatedSecondName");
-        testPerson.setSurname("updatedSurname");
+        testPerson.setFirstName("updatedFirstName").setSecondName("updatedSecondName").setSurname("updatedSurname").
+                setDateOfBirth(testPerson.getDateOfBirth().minusDays(1)).
+                setEmailAddress("updated@gmail.com").
+                setPassword("updatedPassword");
 
         Person expectedPerson = new Person(testPerson);
-        expectedPerson.setVersion(testPerson.getVersion() + 1);
+        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, testPerson.getVersion() + 1);
 
         Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
