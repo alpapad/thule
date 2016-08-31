@@ -1,6 +1,7 @@
 # Bootstrap
 spring:
   application:
+    # Required by the config service as the key for the config to retrieve
     name: thule-people-service
   cloud:
     config:

@@ -1,6 +1,7 @@
 # Bootstrap
 spring:
   application:
+    # Required by the config service as the key for the config to retrieve
     name: thule-admin-server
   profiles:
     include: native
