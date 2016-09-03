@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <jmxConfigurator/>
 
     <springProperty scope="context" name="LOGGING_FILE" source="thule.logging.file"/>
     <property name="LOGGING_FILE" value="${LOGGING_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}thule.log}"/>

@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RestfulServiceIntTest {
+public class DockerIntTest {
     private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071/";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
