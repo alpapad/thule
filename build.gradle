@@ -303,6 +303,7 @@ project("thule-people-service") {
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.data:spring-data-rest-hal-browser")
+        compile("org.springframework.retry:spring-retry") // Required to retry conecting to the discovery server when it is not available at startup
 
         testCompile("com.googlecode.log4jdbc:log4jdbc")
         testCompile("com.oracle:ojdbc6")

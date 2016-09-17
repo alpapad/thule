@@ -14,6 +14,9 @@ spring:
       # automatically restarted. Eventually, following a restart, the configuration service would have registered with the
       # discovery service and this service will configure correctly.
       failFast: true
+      retry:
+        maxAttempts: 9999
+        initialInterval: 3000
 
 eureka:
   instance:
