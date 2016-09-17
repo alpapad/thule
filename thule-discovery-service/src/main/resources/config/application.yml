@@ -3,8 +3,13 @@ eureka:
   instance:
     hostname: localhost
   client:
+    # Dont fetch registry, this is only required by discovery service clients that are not also a discovery service server
     fetchRegistry: false
+    # Register with iself so that the thule-admin-server can administrate all servers, including the the thule-discovery-service
     registerWithEureka: true
+    serviceUrl:
+      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 # Spring server configuration
 server:

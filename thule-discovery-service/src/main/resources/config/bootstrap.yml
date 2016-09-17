@@ -1,15 +1,14 @@
 # Bootstrap
 spring:
   application:
-    # Required by the config service as the key for the config to retrieve
+    # Required by the discovery service as the key to enable other services to lookup and access this service
     name: thule-discovery-service
-  profiles:
-    include: native
 
 eureka:
   instance:
-    nonSecurePort: ${server.port:8888}
+    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
     preferIpAddress: true
   client:
     serviceUrl:
+      # Location of the discovery service to register this service
       defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
