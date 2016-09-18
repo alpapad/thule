@@ -11,6 +11,12 @@ eureka:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
+# Spring logging
+logging:
+  level:
+    org.springframework: info
+    uk.co.serin: trace
+
 # Spring server configuration
 server:
   port: 8761

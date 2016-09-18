@@ -7,6 +7,17 @@ info:
     name: ${spring.application.name}
     version: under-development
 
+# Spring logging
+logging:
+  level:
+    jdbc.audit: error
+    jdbc.connection: error
+    jdbc.resultset: error
+    jdbc.sqlonly: error
+    jdbc.sqltiming: error
+    org.springframework: info
+    uk.co.serin: trace
+
 # Spring security configuration
 security:
   user:

@@ -212,6 +212,7 @@ project("thule-admin-server") {
         compile("de.codecentric:spring-boot-admin-server")
         compile("de.codecentric:spring-boot-admin-server-ui")
         compile("org.jolokia:jolokia-core")
+        compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
@@ -228,6 +229,7 @@ project("thule-admin-server") {
 project("thule-config-service") {
     dependencies {
         compile("org.jolokia:jolokia-core")
+        compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.cloud:spring-cloud-config-server")
         compile("org.springframework.cloud:spring-cloud-starter")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
@@ -262,6 +264,7 @@ project("thule-core") {
 project("thule-discovery-service") {
     dependencies {
         compile("org.jolokia:jolokia-core")
+        compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
@@ -325,6 +328,7 @@ project("thule-repository-mongodb") {
     dependencies {
         compile project(":thule-core")
         compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+        compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-validation")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
