@@ -52,7 +52,7 @@ allprojects {
     compileJava.sourceCompatibility =  1.8
     compileJava.targetCompatibility = 1.8
     // Replace the version in spring config with the gradle build version
-    processResources.filter { String line -> line.replace("under-development", version) }
+    processResources.filter { String line -> line.replace("@version@", version) }
 
     repositories {
         mavenLocal()
@@ -184,6 +184,11 @@ subprojects {
             }
         }
     }
+
+    // Spring boot create META-INF/build-info.properties to automatically add to the spring actutaor info
+    springBoot {
+        buildInfo()
+    }
 }
 
 project("thule-cloud") {
@@ -198,7 +203,6 @@ project("thule-cloud") {
         compile("org.springframework.boot:spring-boot-starter-web")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -217,7 +221,6 @@ project("thule-admin-server") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -235,7 +238,6 @@ project("thule-config-service") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -252,7 +254,6 @@ project("thule-core") {
         compile("org.springframework.boot:spring-boot-starter-aop")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -268,7 +269,6 @@ project("thule-discovery-service") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")
@@ -306,13 +306,12 @@ project("thule-people-service") {
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.data:spring-data-rest-hal-browser")
-        compile("org.springframework.retry:spring-retry") // Required to retry conecting to the discovery server when it is not available at startup
+        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
         testCompile("com.googlecode.log4jdbc:log4jdbc")
         testCompile("com.oracle:ojdbc6")
         testCompile("mysql:mysql-connector-java")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.hsqldb:hsqldb")
         testCompile("org.powermock:powermock-api-mockito")
@@ -332,7 +331,6 @@ project("thule-repository-mongodb") {
         compile("org.springframework.boot:spring-boot-starter-validation")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.assertj:assertj-core") // Remove when upgraded to a spring cloud version that uses spring boot 1.4
         testCompile("org.awaitility:awaitility")
         testCompile("org.powermock:powermock-api-mockito")
         testCompile("org.powermock:powermock-core")

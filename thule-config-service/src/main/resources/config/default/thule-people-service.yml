@@ -2,10 +2,8 @@
 endpoints:
   sensitive: false
 info:
-  service:
-    description: Thule People Service
-    name: ${spring.application.name}
-    version: under-development
+  description: Thule People Service
+  name: ${spring.application.name}
 
 # Spring logging
 logging:

@@ -1,3 +1,8 @@
+# Spring actuator info configuration
+info:
+  # Will be replaced by gradle processResources task to replace with the actual build version
+  version: @version@
+
 # Spring logging
 logging:
   level:
@@ -7,3 +12,12 @@ logging:
 # Spring server configuration
 server:
   port: 8071
+
+# Spring boot configuration
+spring:
+  jackson:
+    serialization:
+      # Admin server displays the buildTime of this service which by default will be as an
+      # absolute time (i.e. a long), not particularily meaningful unless we instruct jackson to
+      # serialize it as a timestamp which is a human readable form
+      write_dates_as_timestamps: false

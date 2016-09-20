@@ -1,3 +1,8 @@
+# Spring boot configuration
+info:
+  # Will be replaced by gradle processResources task to replace with the actual build version
+  version: @version@
+
 # Bootstrap
 spring:
   application:
@@ -26,6 +31,8 @@ eureka:
   instance:
     # By default, the discovery service will use the default actuator path, i.e. /health but we change it here to reflect our custom servlet-context /people-service
     healthCheckUrlPath: /people-service/health
+    # By default, the discovery service will use the default actuator path, i.e. /health but we change it here to reflect our custom servlet-context /people-service
+    homePageUrlPath: /people-service
     metadataMap:
       management:
         # Admin server uses context-path to generate URL for actuator endpoints when using Eureka for service discovery
