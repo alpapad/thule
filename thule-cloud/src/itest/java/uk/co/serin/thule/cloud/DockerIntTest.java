@@ -8,10 +8,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.TimeoutRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,20 +29,22 @@ public class DockerIntTest {
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate = new RestTemplate();
 
-    private static void assertUrlIsAvailable(String url, int timeoutInSeconds) throws InterruptedException {
-        LocalDateTime giveUpTime = LocalDateTime.now().plusSeconds(timeoutInSeconds);
+    private static void assertUrlIsAvailable(String url) throws InterruptedException {
+        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        retryPolicy.setTimeout(240000);
 
-        Object response = null;
-        while (response == null) {
-            try {
-                response = restTemplate.getForObject(url, Object.class);
-            } catch (Exception e) {
-                if (LocalDateTime.now().isAfter(giveUpTime)) {
-                    throw e;
-                }
-                Thread.sleep(1000);
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
+        retryTemplate.setRetryPolicy(retryPolicy);
+
+        retryTemplate.execute(context -> {
+            Object response = restTemplate.getForObject(url, Object.class);
+            if (response == null) {
+                throw new IllegalStateException(String.format("Response from %s returned null", url));
             }
-        }
+            ;
+            return response;
+        });
     }
 
     private static void dockerComposeDown() throws IOException, InterruptedException {
@@ -62,10 +66,10 @@ public class DockerIntTest {
         dockerComposeDown();
         dockerComposeUp();
 
-        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO, 120);
-        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO, 120);
-        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO, 240);
-        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO, 120);
+        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO);
+        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO);
+        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO);
+        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO);
     }
 
     @AfterClass
