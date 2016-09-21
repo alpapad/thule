@@ -105,6 +105,7 @@ subprojects {
             dependency("org.powermock:powermock-api-mockito:1.6.5")
             dependency("org.powermock:powermock-core:1.6.5")
             dependency("org.powermock:powermock-module-junit4:1.6.5")
+            dependency("org.springframework.data:spring-data-rest-hal-browser:2.6.0.M1")
         }
     }
 
