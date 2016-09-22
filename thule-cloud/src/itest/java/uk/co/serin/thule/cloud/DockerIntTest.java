@@ -28,15 +28,9 @@ public class DockerIntTest {
     private static final String STATUS = "status";
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate = new RestTemplate();
+    private static RetryTemplate retryTemplate = new RetryTemplate();
 
     private static void assertUrlIsAvailable(String url) throws InterruptedException {
-        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
-        retryPolicy.setTimeout(240000);
-
-        RetryTemplate retryTemplate = new RetryTemplate();
-        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
-        retryTemplate.setRetryPolicy(retryPolicy);
-
         retryTemplate.execute(context -> {
             Object response = restTemplate.getForObject(url, Object.class);
             if (response == null) {
@@ -65,6 +59,12 @@ public class DockerIntTest {
     public static void setUpClass() throws IOException, InterruptedException {
         dockerComposeDown();
         dockerComposeUp();
+
+        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        retryPolicy.setTimeout(240000);
+
+        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
+        retryTemplate.setRetryPolicy(retryPolicy);
 
         assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO);
         assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO);
