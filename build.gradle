@@ -99,7 +99,7 @@ subprojects {
             dependency("commons-lang:commons-lang:2.6")
             dependency("de.codecentric:spring-boot-admin-server:1.4.2")
             dependency("de.codecentric:spring-boot-admin-server-ui:1.4.2")
-            dependency("nl.jqno.equalsverifier:equalsverifier:2.1.5")
+            dependency("nl.jqno.equalsverifier:equalsverifier:2.1.6")
             dependency("org.awaitility:awaitility:2.0.0")
             dependency("org.jolokia:jolokia-core:1.3.4")
             dependency("org.powermock:powermock-api-mockito:1.6.5")
