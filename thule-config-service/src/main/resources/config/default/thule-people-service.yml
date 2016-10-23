@@ -1,4 +1,14 @@
-# Spring actuator info configuration
+# Eureka configuration
+eureka:
+  instance:
+    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      # Location of the discovery service to register this service
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+
+# Spring actuator configuration
 endpoints:
   sensitive: false
 info:
@@ -25,8 +35,7 @@ security:
 
 # Spring server configuration
 server:
-  context-path: /people-service
-  port: 8080
+  port: 8090
 
 # Spring boot configuration
 spring:

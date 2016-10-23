@@ -160,7 +160,7 @@ public class RestfulServiceIntTest {
     @Before
     public void setUp() {
         dataFactory = new DataFactory(new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository));
-        urlPrefix = "http://localhost:" + env.getRequiredProperty("server.port", Integer.class) + env.getRequiredProperty("server.context-path") + "/";
+        urlPrefix = "http://localhost:" + env.getRequiredProperty("server.port", Integer.class) + "/";
         urlForHealth = urlPrefix + "health";
         urlForPeople = urlPrefix + DomainModel.ENTITY_NAME_PEOPLE;
 

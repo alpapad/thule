@@ -1,8 +1,18 @@
+# Eureka configuration
+eureka:
+  instance:
+    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      # Location of the discovery service to register this service
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+
 # Spring actuator configuration
 endpoints:
   sensitive: false
 info:
-  description: Thule Config Service
+  description: Thule Admin Server
   name: ${spring.application.name}
 
 # Spring logging
@@ -13,15 +23,10 @@ logging:
 
 # Spring server configuration
 server:
-  port: 8888
+  port: 8071
 
 # Spring boot configuration
 spring:
-  cloud:
-    config:
-      server:
-        native:
-          searchLocations: classpath:/config/{profile}
   jackson:
     serialization:
       # Admin server displays the buildTime of this service which by default will be as an

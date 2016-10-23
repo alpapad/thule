@@ -22,9 +22,10 @@ public class DockerIntTest {
     private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071/";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
+    private static final String EDGE_SERVICE_URL_PREFIX = "http://docker-host:8080/";
     private static final String HEALTH = "health";
     private static final String INFO = "info";
-    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8080/people-service/";
+    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090/";
     private static final String STATUS = "status";
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate = new RestTemplate();
@@ -66,10 +67,11 @@ public class DockerIntTest {
         retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
         retryTemplate.setRetryPolicy(retryPolicy);
 
-        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO);
         assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO);
+        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO);
         assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO);
         assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO);
+        assertUrlIsAvailable(EDGE_SERVICE_URL_PREFIX + INFO);
     }
 
     @AfterClass
@@ -127,6 +129,20 @@ public class DockerIntTest {
 
         // When
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(PEOPLE_SERVICE_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
+    }
+
+    @Test
+    public void edgeServiceIsUp() {
+        // Given
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(EDGE_SERVICE_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

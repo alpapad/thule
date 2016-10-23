@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin;
+package uk.co.serin.thule.edge;
 
 import org.junit.Before;
 import org.junit.Test;

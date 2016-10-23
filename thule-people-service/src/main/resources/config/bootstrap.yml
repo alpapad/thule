@@ -1,47 +1,28 @@
-# Spring boot configuration
+# Spring actuator configuration
 info:
   # Will be replaced by gradle processResources task to replace with the actual build version
   version: @version@
 
-# Bootstrap
+# Spring server configuration
+# By default, tomcat will listen on port 8080 and will be restarted once the config has been read from the config service.
+# Unfortunatly, when multiple spring cloud services are starting at the same time in the same container (e.g. when testing),
+# they will all try to use port 8080 until they have been restarted following a config refresh. To overcome this,
+# port 0 (i.e. random unused port) will be used until the config has been refreshed and the correct port used.
+server:
+  port: 0
+
+# Spring cloud config client configuration
 spring:
   application:
     # Required by the discovery service as the key to enable other services to lookup and access this service
     name: thule-people-service
   cloud:
     config:
-      discovery:
-        # By default, spring cloud opts for a config service first approach (enabled: false) but we have opted for a discovery service first approach (enabled: true)
-        # In other words, the config service will be accessed via the discovery service
-        enabled: true
-        # Name of the config service as known in the discovery service
-        serviceId: thule-configuration-service
-      # Without failFast, there is a race condition when the config server has not yet registered with the discovery server.
-      # When this happens, this micro service will stay up but in an unconfigured state. By setting failFast to true
-      # this service will fail and shutdown. However, with a docker compose restart policy of always, this service will be
-      # automatically restarted. Eventually, following a restart, the configuration service would have registered with the
-      # discovery service and this service will configure correctly.
+      # Must set this to true when attempting retry otherwise it will not retry connecting to the config server if not available at startup
       failFast: true
       # When to retry accessing the config service if it not available at startup
       retry:
         maxAttempts: 9999
         initialInterval: 3000
-
-eureka:
-  instance:
-    # By default, the discovery service will use the default actuator path, i.e. /health but we change it here to reflect our custom servlet-context /people-service
-    healthCheckUrlPath: /people-service/health
-    # By default, the discovery service will use the default actuator path, i.e. /health but we change it here to reflect our custom servlet-context /people-service
-    homePageUrlPath: /people-service
-    metadataMap:
-      management:
-        # Admin server uses context-path to generate URL for actuator endpoints when using Eureka for service discovery
-        context-path: /people-service
-    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
-    preferIpAddress: true
-    # By default, the discovery service will use the default actuator path, i.e. /info but we change it here to reflect our custom servlet-context /people-service
-    statusPageUrlPath: /people-service/info
-  client:
-    serviceUrl:
-      # Location of the discovery service to register this service
-      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+      # Location of the config service
+      uri: http://${config.host:localhost}:${config.port:8888}/
