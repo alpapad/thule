@@ -199,6 +199,7 @@ project("thule-cloud") {
     bootRepackage.enabled = false
 
     dependencies {
+        compile("org.apache.httpcomponents:httpclient")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-web")

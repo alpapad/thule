@@ -1,5 +1,10 @@
 package uk.co.serin.thule.cloud;
 
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,12 +13,15 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,22 +33,13 @@ public class DockerIntTest {
     private static final String EDGE_SERVICE_URL_PREFIX = "http://docker-host:8080/";
     private static final String HEALTH = "health";
     private static final String INFO = "info";
+    private static final String PEOPLE = "people";
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090/";
     private static final String STATUS = "status";
+    private static final String THULE_PEOPLE_SERVICE = "thule-" + PEOPLE + "-service";
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate = new RestTemplate();
     private static RetryTemplate retryTemplate = new RetryTemplate();
-
-    private static void assertUrlIsAvailable(String url) throws InterruptedException {
-        retryTemplate.execute(context -> {
-            Object response = restTemplate.getForObject(url, Object.class);
-            if (response == null) {
-                throw new IllegalStateException(String.format("Response from %s returned null", url));
-            }
-            ;
-            return response;
-        });
-    }
 
     private static void dockerComposeDown() throws IOException, InterruptedException {
         ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "down", "-v").inheritIO();
@@ -51,9 +50,26 @@ public class DockerIntTest {
         }
     }
 
-    private static void dockerComposeUp() throws IOException, InterruptedException {
+    private static void dockerComposeUp() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "up").inheritIO();
         dockerComposeUp = pb.start();
+    }
+
+    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url) {
+        return getResponseEntity(url, restTemplate);
+    }
+
+    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url, RestTemplate restTemplate) {
+        return retryTemplate.execute(context -> {
+            ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+            };
+            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+            if (responseEntity == null) {
+                throw new IllegalStateException(String.format("Response from %s returned null", url));
+            }
+
+            return responseEntity;
+        });
     }
 
     @BeforeClass
@@ -66,12 +82,6 @@ public class DockerIntTest {
 
         retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
         retryTemplate.setRetryPolicy(retryPolicy);
-
-        assertUrlIsAvailable(CONFIG_SERVICE_URL_PREFIX + INFO);
-        assertUrlIsAvailable(DISCOVERY_SERVICE_URL_PREFIX + INFO);
-        assertUrlIsAvailable(PEOPLE_SERVICE_URL_PREFIX + INFO);
-        assertUrlIsAvailable(ADMIN_SERVER_URL_PREFIX + INFO);
-        assertUrlIsAvailable(EDGE_SERVICE_URL_PREFIX + INFO);
     }
 
     @AfterClass
@@ -82,11 +92,9 @@ public class DockerIntTest {
     @Test
     public void adminServerIsUp() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(ADMIN_SERVER_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(ADMIN_SERVER_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -96,11 +104,9 @@ public class DockerIntTest {
     @Test
     public void configServiceIsUp() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(CONFIG_SERVICE_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(CONFIG_SERVICE_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -110,11 +116,9 @@ public class DockerIntTest {
     @Test
     public void discoveryServiceIsUp() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(DISCOVERY_SERVICE_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(DISCOVERY_SERVICE_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -124,11 +128,9 @@ public class DockerIntTest {
     @Test
     public void peopleServiceIsUp() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(PEOPLE_SERVICE_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(PEOPLE_SERVICE_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -138,14 +140,33 @@ public class DockerIntTest {
     @Test
     public void edgeServiceIsUp() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(EDGE_SERVICE_URL_PREFIX + HEALTH, HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVICE_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
+    }
+
+    @Test
+    public void edgeServiceProxiesPeopleService() {
+        // Given
+        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
+        CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
+        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+
+        RestTemplate restTemplateWithCredentials = new RestTemplate(requestFactory);
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVICE_URL_PREFIX + THULE_PEOPLE_SERVICE + "/" + PEOPLE, restTemplateWithCredentials);
+
+        // Then
+        Map embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
+        List people = List.class.cast(embedded.get("people"));
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(people).hasSize(8);
     }
 }

@@ -33,3 +33,9 @@ spring:
       # absolute time (i.e. a long), not particularily meaningful unless we instruct jackson to
       # serialize it as a timestamp which is a human readable form
       write_dates_as_timestamps: false
+
+# Zuul configuration
+zuul:
+  # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication header will not propogate to the people service,
+  # hence Authorization has been removed from the sensitive headers
+  sensitiveHeaders: Cookie,Set-Cookie
