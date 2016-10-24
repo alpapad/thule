@@ -32,7 +32,6 @@ public class DockerIntTest {
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
     private static final String EDGE_SERVICE_URL_PREFIX = "http://docker-host:8080/";
     private static final String HEALTH = "health";
-    private static final String INFO = "info";
     private static final String PEOPLE = "people";
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090/";
     private static final String STATUS = "status";
