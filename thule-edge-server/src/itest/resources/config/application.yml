@@ -12,7 +12,7 @@ eureka:
 endpoints:
   sensitive: false
 info:
-  description: Thule Edge Service
+  description: Thule Edge Server
   name: ${spring.application.name}
 
 # Spring logging

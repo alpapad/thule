@@ -51,9 +51,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
-  ################################  thule-edge-service  ################################
-  thule-edge-service:
-    image: pooh.serin-consultancy.co.uk/thule-edge-service
+  ################################  thule-edge-server  ################################
+  thule-edge-server:
+    image: pooh.serin-consultancy.co.uk/thule-edge-server
     environment:
       CONFIG_HOST: docker-host
       CONFIG_PORT: 8888
@@ -61,7 +61,7 @@ services:
       EUREKA_PORT: 8761
     extra_hosts:
       - docker-host:172.17.0.1
-    hostname: edge-service-1
+    hostname: edge-server-1
     ports:
       - "8080:8080"
     volumes:

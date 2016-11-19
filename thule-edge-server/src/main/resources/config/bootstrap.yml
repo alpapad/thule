@@ -15,7 +15,7 @@ server:
 spring:
   application:
     # Required by the discovery service as the key to enable other services to lookup and access this service
-    name: thule-edge-service
+    name: thule-edge-server
   cloud:
     config:
       # Must set this to true when attempting retry otherwise it will not retry connecting to the config server if not available at startup

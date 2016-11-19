@@ -194,7 +194,7 @@ subprojects {
 }
 
 project("thule-cloud") {
-    tasks.itest.dependsOn(":thule-admin-server:build", ":thule-config-service:build", ":thule-discovery-service:build", ":thule-edge-service:build", ":thule-people-service:build")
+    tasks.itest.dependsOn(":thule-admin-server:build", ":thule-config-service:build", ":thule-discovery-service:build", ":thule-edge-server:build", ":thule-people-service:build")
 
     bootRepackage.enabled = false
 
@@ -289,7 +289,7 @@ project("thule-discovery-service") {
     }
 }
 
-project("thule-edge-service") {
+project("thule-edge-server") {
     dependencies {
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")

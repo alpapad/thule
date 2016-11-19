@@ -30,7 +30,7 @@ public class DockerIntTest {
     private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071/";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
-    private static final String EDGE_SERVICE_URL_PREFIX = "http://docker-host:8080/";
+    private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:8080/";
     private static final String HEALTH = "health";
     private static final String PEOPLE = "people";
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090/";
@@ -137,11 +137,11 @@ public class DockerIntTest {
     }
 
     @Test
-    public void edgeServiceIsUp() {
+    public void edgeServerIsUp() {
         // Given
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVICE_URL_PREFIX + HEALTH);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -149,7 +149,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void edgeServiceProxiesPeopleService() {
+    public void edgeServerProxiesPeopleService() {
         // Given
         BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
@@ -159,7 +159,7 @@ public class DockerIntTest {
         RestTemplate restTemplateWithCredentials = new RestTemplate(requestFactory);
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVICE_URL_PREFIX + THULE_PEOPLE_SERVICE + "/" + PEOPLE, restTemplateWithCredentials);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + "/" + PEOPLE, restTemplateWithCredentials);
 
         // Then
         Map embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
