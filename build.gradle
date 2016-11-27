@@ -24,9 +24,9 @@ buildscript {
             url "http://pooh:8081/repository/maven-public"
         }
         mavenCentral()
-        maven {
-            url "http://repo.spring.io/milestone"
-        }
+//        maven {
+//            url "http://repo.spring.io/milestone"
+//        }
     }
 
     dependencies {
@@ -106,7 +106,7 @@ subprojects {
             dependency("org.powermock:powermock-api-mockito:1.6.6")
             dependency("org.powermock:powermock-core:1.6.6")
             dependency("org.powermock:powermock-module-junit4:1.6.6")
-            dependency("org.springframework.data:spring-data-rest-hal-browser:2.6.0.M1")
+            dependency("org.springframework.data:spring-data-rest-hal-browser:2.5.5.RELEASE")
         }
     }
 
