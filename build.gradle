@@ -66,9 +66,9 @@ allprojects {
             url "http://pooh:8081/repository/maven-public"
         }
         mavenCentral()
-        maven {
-            url "http://repo.spring.io/milestone"
-        }
+//        maven {
+//            url "http://repo.spring.io/milestone"
+//        }
     }
 
     // Sonarqube plugin configuration
