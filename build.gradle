@@ -8,14 +8,10 @@ buildscript {
     ext["mysql.version"] = "6.0.5"  // Remove when spring boot has caught up with the latest version
     ext["spring-retry.version"] = "1.1.5.RELEASE"  // Remove when spring boot has caught up with the latest version
 
-    ext["spring-cloud-commons.version"] = "1.1.6.RELEASE"  // Remove when spring cloud has caught up with the latest version
-    ext["spring-cloud-config.version"] = "1.2.2.RELEASE"  // Remove when spring cloud has caught up with the latest version
-    ext["spring-cloud-netflix.version"] = "1.2.3.RELEASE"  // Remove when spring cloud has caught up with the latest version
-
     ext {
         jacocoVersion = "0.7.7.201606060606"
         springBootVersion = "1.4.2.RELEASE"
-        springCloudVersion = "Camden.SR2"
+        springCloudVersion = "Camden.SR3"
     }
 
     repositories {
