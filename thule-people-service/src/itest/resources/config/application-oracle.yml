@@ -15,7 +15,8 @@ spring:
     username: thule
   jpa:
     hibernate:
-      ddl-auto: validate
+      # Change to validate once bug https://hibernate.atlassian.net/browse/HHH-11286 has been fixed
+      ddl-auto: none
     properties:
       hibernate:
         id.new_generator_mappings: true
