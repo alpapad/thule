@@ -9,7 +9,7 @@ buildscript {
     ext {
         jacocoVersion = "0.7.8"
         springBootVersion = "1.4.3.RELEASE"
-        springCloudVersion = "Camden.SR3"
+        springCloudVersion = "Camden.SR4"
     }
 
     repositories {
