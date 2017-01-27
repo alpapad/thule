@@ -10,7 +10,7 @@ buildscript {
 
     ext {
         jacocoVersion = "0.7.8"
-        springBootVersion = "1.4.3.RELEASE"
+        springBootVersion = "1.4.4.RELEASE"
         springCloudVersion = "Camden.SR4"
     }
 
@@ -101,6 +101,7 @@ subprojects {
             dependency("commons-lang:commons-lang:2.6")
             dependency("de.codecentric:spring-boot-admin-server:1.4.5")
             dependency("de.codecentric:spring-boot-admin-server-ui:1.4.5")
+            dependency("net.logstash.logback:logstash-logback-encoder:4.8")
             dependency("nl.jqno.equalsverifier:equalsverifier:2.2")
             dependency("org.awaitility:awaitility:2.0.0")
             dependency("org.jolokia:jolokia-core:1.3.5")
@@ -216,8 +217,10 @@ project("thule-cloud") {
 
 project("thule-admin-server") {
     dependencies {
+        compile project(":thule-core")
         compile("de.codecentric:spring-boot-admin-server")
         compile("de.codecentric:spring-boot-admin-server-ui")
+        compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-aop") // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
@@ -237,6 +240,8 @@ project("thule-admin-server") {
 
 project("thule-config-service") {
     dependencies {
+        compile project(":thule-core")
+        compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-logging")
@@ -271,6 +276,8 @@ project("thule-core") {
 
 project("thule-discovery-service") {
     dependencies {
+        compile project(":thule-core")
+        compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-aop") // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
@@ -291,6 +298,8 @@ project("thule-discovery-service") {
 
 project("thule-edge-server") {
     dependencies {
+        compile project(":thule-core")
+        compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-logging")
@@ -323,6 +332,7 @@ project("thule-people-service") {
         compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310") // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
         compile("com.googlecode.log4jdbc:log4jdbc")
         compile("com.h2database:h2")
+        compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.apache.httpcomponents:httpclient")
         compile("org.flywaydb:flyway-core")
         compile("org.hibernate:hibernate-java8")
@@ -357,6 +367,7 @@ project("thule-repository-mongodb") {
 
     dependencies {
         compile project(":thule-core")
+        compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.springframework.boot:spring-boot-starter-data-mongodb")
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-validation")
