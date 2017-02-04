@@ -1,50 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="uk/co/serin/thule/logging/logback/logstash.xml"/>
     <jmxConfigurator/>
 
-    <springProperty scope="context" name="LOGGING_FILE" source="thule.logging.file"/>
-    <property name="LOGGING_FILE" value="${LOGGING_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}thule.log}"/>
-
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <file>${LOGGING_FILE}</file>
-        <!-- Deny all events with a level below debug, that is trace -->
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>debug</level>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${LOGGING_FILE}.%i</fileNamePattern>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy>
-    </appender>
-
-    <springProperty scope="context" name="LOGGING_TRACE_FILE" source="thule.logging.trace-file"/>
-    <property name="LOGGING_TRACE_FILE" value="${LOGGING_TRACE_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}thule-trace.log}"/>
-
-    <appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <file>${LOGGING_TRACE_FILE}</file>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>trace</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${LOGGING_TRACE_FILE}.%i</fileNamePattern>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy>
-    </appender>
-
-    <logger name="uk.co.serin">
-        <appender-ref ref="TRACE"/>
-    </logger>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="LOGSTASH" />
+    </root>
 </configuration>
