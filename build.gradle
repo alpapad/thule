@@ -11,8 +11,8 @@ buildscript {
 
     ext {
         jacocoVersion = "0.7.8"
-        springBootVersion = "1.4.4.RELEASE"
-        springCloudVersion = "Camden.SR4"
+        springBootVersion = "1.5.1.RELEASE"
+        springCloudVersion = "Camden.SR5"
     }
 
     repositories {
@@ -86,8 +86,8 @@ allprojects {
 subprojects {
     apply from: "../coverage.gradle"
     apply plugin: "docker"
+    apply plugin: "io.spring.dependency-management"
     apply plugin: "maven"
-    apply plugin: "org.springframework.boot"
 
     // Dependencies
     dependencyManagement {
@@ -112,6 +112,9 @@ subprojects {
             dependency("org.springframework.data:spring-data-rest-hal-browser:2.6.0.RELEASE")
         }
     }
+
+    // org.springframework.boot must be after dependencyManagement see https://spring.io/blog/2015/11/25/migrating-spring-cloud-apps-from-spring-boot-1-2-to-1-3
+    apply plugin: "org.springframework.boot"
 
     // Docker plugin configuration
     task dockerBuild(type: Docker, dependsOn: assemble) {

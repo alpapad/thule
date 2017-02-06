@@ -9,7 +9,16 @@ import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 
-public class ThuleJpaRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable> extends JpaRepositoryFactoryBean<R, T, I> {
+public class ThuleJpaRepositoryFactoryBean<T extends JpaRepository<S, I>, S,I extends Serializable> extends JpaRepositoryFactoryBean<T, S, I> {
+    /**
+     * Creates a new {@link ThuleJpaRepositoryFactoryBean} for the given repository interface.
+     *
+     * @param repositoryInterface must not be {@literal null}.
+     */
+    public ThuleJpaRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
+        super(repositoryInterface);
+    }
+
     @Override
     protected RepositoryFactorySupport createRepositoryFactory(EntityManager entityManager) {
         Assert.notNull(entityManager, "EntityManager must not be null!");

@@ -11,6 +11,7 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 import uk.co.serin.thule.people.domain.DomainModel;
+import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 
 import java.io.Serializable;
 
@@ -35,7 +36,7 @@ public class ThuleJpaRepositoryFactoryBeanTest {
     private RepositoryInformation repositoryInformation;
     @Mock
     private RepositoryMetadata repositoryMetadata;
-    private ThuleJpaRepositoryFactoryBean thuleJpaRepositoryFactoryBean = new ThuleJpaRepositoryFactoryBean();
+    private ThuleJpaRepositoryFactoryBean thuleJpaRepositoryFactoryBean = new ThuleJpaRepositoryFactoryBean(PersonRepository.class);
 
     @Test
     public void createRepositoryFactory() {
