@@ -5,6 +5,9 @@ eureka:
 
 # Spring cloud config client configuration
 spring:
+  application:
+    # Required by the discovery service as the key to enable other services to lookup and access this service
+    name: thule-edge-server
   cloud:
     config:
       enabled: false
