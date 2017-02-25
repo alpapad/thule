@@ -5,19 +5,13 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
-@RunWith(PowerMockRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PhotographTest {
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
@@ -59,22 +53,6 @@ public class PhotographTest {
 
         // Then
         assertThat(photograph).isNotNull();
-    }
-
-    @Test(expected = SecurityException.class)
-    @PrepareForTest(Photograph.class)
-    public void digestPhotoWithInvalidSecurityAlgorithm() throws NoSuchAlgorithmException {
-        // Given
-        Person person = new Person("userId");
-        byte[] photo = {};
-
-        PowerMockito.mockStatic(MessageDigest.class);
-        given(MessageDigest.getInstance("SHA")).willThrow(new NoSuchAlgorithmException());
-
-        // When
-        new Photograph(photo, person);
-
-        // Then (see expected in @Test annotation)
     }
 
     @Test

@@ -51,9 +51,8 @@ allprojects {
     version = projectVersion + "-" + buildNumber
 
     // Java plugin configuration
-    compileJava.options.encoding = "UTF-8"
-    compileJava.sourceCompatibility =  1.8
-    compileJava.targetCompatibility = 1.8
+    sourceCompatibility =  1.8
+    targetCompatibility = 1.8
     // Replace the version in spring config with the gradle build version
     processResources.filter { String line -> line.replace("@version@", version) }
 
@@ -84,9 +83,9 @@ allprojects {
 }
 
 subprojects {
-    apply from: "../coverage.gradle"
     apply plugin: "docker"
     apply plugin: "io.spring.dependency-management"
+    apply plugin: "jacoco"
     apply plugin: "maven"
 
     // Dependencies
@@ -161,7 +160,20 @@ subprojects {
     }
 
     // Jacoco plugin configuration
-    jacoco.toolVersion = "${jacocoVersion}"
+    jacoco {
+        toolVersion = "${jacocoVersion}"
+    }
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    minimum = 1.0 // 100% coverage
+                }
+            }
+        }
+    }
+    jacocoTestCoverageVerification.dependsOn jacocoTestReport
+    check.dependsOn jacocoTestCoverageVerification
 
     // Test configuration
     // Log test results summary
@@ -327,15 +339,6 @@ project("thule-edge-server") {
 }
 
 project("thule-people-service") {
-    jacocoTestReport {
-        afterEvaluate {
-            classDirectories = files(classDirectories.files.collect {
-                // Excluded because Powermock bytecode manipulation affects Jacoco coverage results
-                fileTree(it).exclude("**/Photograph.class")
-            })
-        }
-    }
-
     dependencies {
         compile project(":thule-core")
         compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310") // Spring boot will add java8 java.util.time Jackson support when this dependency has been added

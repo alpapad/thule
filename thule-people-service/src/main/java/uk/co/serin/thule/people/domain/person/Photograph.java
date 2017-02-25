@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Transient;
+import org.springframework.util.DigestUtils;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -98,12 +96,7 @@ public final class Photograph extends DomainModel {
 
     private Photograph setPhoto(byte... photo) {
         byte[] photoToSet = Arrays.copyOf(photo, photo.length);
-        try {
-            byte[] digestedPhoto = MessageDigest.getInstance(SHA).digest(photoToSet);
-            setHash(new String(Base64.getEncoder().encode(digestedPhoto), Charset.defaultCharset()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new SecurityException(e);
-        }
+        setHash(new String(DigestUtils.md5Digest(photoToSet), Charset.defaultCharset()));
 
         this.photo = photoToSet;
         return this;
