@@ -6,7 +6,7 @@ buildscript {
     ext["httpclient.version"] = "4.5.3"  // Remove when spring boot has caught up with the latest version
     ext["hsqldb.version"] = "2.3.4"  // Remove when spring boot has caught up with the latest version
     ext["jackson.version"] = "2.8.7" // Remove when spring boot has caught up with the latest version
-    ext["mockito.version"] = "2.7.11"  // Remove when spring boot has caught up with the latest version
+    ext["mockito.version"] = "2.7.12"  // Remove when spring boot has caught up with the latest version
     ext["mysql.version"] = "6.0.5"  // Remove when spring boot has caught up with the latest version
     ext["spring-retry.version"] = "1.2.0.RELEASE"  // Remove when spring boot has caught up with the latest version
 
@@ -241,7 +241,7 @@ project("thule-admin-server") {
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.mockito:mockito-core:2.7.11")
+        testCompile("org.mockito:mockito-core:2.7.12")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -259,7 +259,7 @@ project("thule-config-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.mockito:mockito-core:2.7.11")
+        testCompile("org.mockito:mockito-core:2.7.12")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -272,7 +272,7 @@ project("thule-core") {
         compile("org.springframework.boot:spring-boot-starter-aop")
 
         testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.mockito:mockito-core:2.7.11")
+        testCompile("org.mockito:mockito-core:2.7.12")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
