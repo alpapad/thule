@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Resources;
@@ -29,7 +30,6 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.client.RestTemplate;
 
 import uk.co.serin.thule.people.datafactories.DataFactory;
 import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
@@ -48,7 +48,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
     private static final String ID = "/{id}";
@@ -61,14 +61,14 @@ public class RestfulServiceIntTest {
     private Environment env;
     @Autowired
     private PersonRepository personRepository;
-    private RestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private String urlForHealth;
-    private String urlForPeople;
-    private String urlPrefix;
+    private String urlForHealth = "/health";
+    private String urlForPeople = "/" + DomainModel.ENTITY_NAME_PEOPLE;
 
     @Test
     public void createPerson() {
@@ -160,9 +160,6 @@ public class RestfulServiceIntTest {
     @Before
     public void setUp() {
         dataFactory = new DataFactory(new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository));
-        urlPrefix = "http://localhost:" + env.getRequiredProperty("server.port", Integer.class) + "/";
-        urlForHealth = urlPrefix + "health";
-        urlForPeople = urlPrefix + DomainModel.ENTITY_NAME_PEOPLE;
 
         // Create security context
         Person jUnitTestPerson = dataFactory.getTestDataFactory().newJUnitTest();
@@ -184,8 +181,8 @@ public class RestfulServiceIntTest {
         CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
         ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
-        restTemplate = new RestTemplate(requestFactory);
-        restTemplate.setMessageConverters(Collections.singletonList(httpMessageConverter));
+        restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(httpMessageConverter));
+        restTemplate.getRestTemplate().setRequestFactory(requestFactory);
     }
 
     @Test

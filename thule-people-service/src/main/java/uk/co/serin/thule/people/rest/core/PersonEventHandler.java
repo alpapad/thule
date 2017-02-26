@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people.rest.core;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,6 @@ public class PersonEventHandler {
     private RoleRepository roleRepository;
     private StateRepository stateRepository;
 
-    @Autowired
     public PersonEventHandler(RoleRepository roleRepository, StateRepository stateRepository) {
         this.roleRepository = roleRepository;
         this.stateRepository = stateRepository;
