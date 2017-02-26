@@ -9,12 +9,14 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @EnableConfigServer
 @EnableDiscoveryClient
 public class Application {
+    private static SpringApplication springApplication = new SpringApplication(Application.class);
+
     Application() {
     }
 
     @SuppressWarnings("squid:S2095")
     // Suppress SonarQube bug 'Close this "ConfigurableApplicationContext"'
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        springApplication.run(args);
     }
 }

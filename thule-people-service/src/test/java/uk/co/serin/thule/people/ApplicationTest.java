@@ -2,28 +2,29 @@ package uk.co.serin.thule.people;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(SpringApplication.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ApplicationTest {
+    @Mock
+    private SpringApplication springApplication;
     @Test
     public void applicationStartsSpringBoot() {
         // Given
         String[] args = new String[0];
+        ReflectionTestUtils.setField(Application.class, "springApplication", springApplication);
 
-        mockStatic(SpringApplication.class);
-        given(SpringApplication.run(Application.class, args)).willReturn(new StaticApplicationContext());
+        given(springApplication.run(args)).willReturn(new StaticApplicationContext());
 
         // When
         Application.main(args);

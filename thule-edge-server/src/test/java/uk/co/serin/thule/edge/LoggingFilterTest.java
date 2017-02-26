@@ -5,16 +5,15 @@ import com.netflix.zuul.context.RequestContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(PowerMockRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class LoggingFilterTest {
     private LoggingFilter loggingFilter = new LoggingFilter();
     @Mock
@@ -56,11 +55,9 @@ public class LoggingFilterTest {
     }
 
     @Test
-    @PrepareForTest(RequestContext.class)
     public void runReturnsNull() {
         // Given
-        PowerMockito.mockStatic(RequestContext.class);
-        given(RequestContext.getCurrentContext()).willReturn(requestContext);
+        ReflectionTestUtils.setField(RequestContext.class, "testContext", requestContext);
         given(requestContext.getRequest()).willReturn(httpServletRequest);
         given(httpServletRequest.getMethod()).willReturn("method");
         given(httpServletRequest.getRequestURL()).willReturn(new StringBuffer("URL"));
