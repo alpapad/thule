@@ -10,6 +10,7 @@ buildscript {
     ext["spring-retry.version"] = "1.2.0.RELEASE"  // Remove when spring boot has caught up with the latest version
 
     ext {
+        jacocoSkip = false
         jacocoVersion = "0.7.9"
         springBootVersion = "1.5.1.RELEASE"
         springCloudVersion = "Camden.SR5"
@@ -19,8 +20,8 @@ buildscript {
         mavenLocal()
         maven {
             credentials {
-                username = "${nexusUser}"
-                password = "${nexusPassword}"
+                username = nexusUser
+                password = nexusPassword
 
             }
             url "http://pooh:8081/repository/maven-public"
@@ -60,8 +61,8 @@ allprojects {
         mavenLocal()
         maven {
             credentials {
-                username = "${nexusUser}"
-                password = "${nexusPassword}"
+                username = nexusUser
+                password = nexusPassword
 
             }
             url "http://pooh:8081/repository/maven-public"
@@ -160,9 +161,8 @@ subprojects {
     }
 
     // Jacoco plugin configuration
-    jacoco {
-        toolVersion = "${jacocoVersion}"
-    }
+    jacoco.toolVersion = jacocoVersion
+    test.jacoco.enabled = !jacocoSkip
     jacocoTestCoverageVerification {
         violationRules {
             rule {
@@ -172,7 +172,7 @@ subprojects {
             }
         }
     }
-    jacocoTestCoverageVerification.dependsOn jacocoTestReport
+    jacocoTestCoverageVerification.dependsOn jacocoTestReport // Always create a report even if jacocoTestCoverageVerification fails
     check.dependsOn jacocoTestCoverageVerification
 
     // Test configuration
