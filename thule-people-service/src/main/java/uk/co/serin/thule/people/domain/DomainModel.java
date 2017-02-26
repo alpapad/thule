@@ -5,7 +5,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
@@ -16,12 +15,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class DomainModel implements Serializable {
+public abstract class DomainModel {
     public static final String DATABASE_COLUMN_ACTION_ID = "action_id";
     public static final String DATABASE_COLUMN_ADDRESS_TYPE = "address_type";
     public static final String DATABASE_COLUMN_ADDRESS_TYPE_VALUE_HOME = "HOME";
@@ -85,9 +83,6 @@ public abstract class DomainModel implements Serializable {
     private static final int ID_ALLOCATION_SIZE = 1;
     private static final int ID_INITIAL_VALUE = 1;
     private static final int UPDATED_BY_MAX_LENGTH = 100;
-
-    @Transient
-    private static final long serialVersionUID = 8489074283224856748L;
 
     @Column
     @CreatedDate

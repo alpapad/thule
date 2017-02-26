@@ -27,8 +27,6 @@ import javax.validation.constraints.Size;
 public final class Photograph extends DomainModel {
     private static final int HASH_MAX_LENGTH = 255;
     private static final int PHOTO_MAX_LENGTH = 4096;
-    private static final String SHA = "SHA";
-    private static final long serialVersionUID = -7142100183643772609L;
 
     @Column(length = HASH_MAX_LENGTH, nullable = false)
     @NotNull

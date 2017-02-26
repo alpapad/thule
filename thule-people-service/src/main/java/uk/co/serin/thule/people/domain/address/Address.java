@@ -32,7 +32,6 @@ public abstract class Address<T extends Address> extends DomainModel {
     private static final int COUNTY_MAX_LENGTH = 30;
     private static final int POSTCODE_MAX_LENGTH = 9;
     private static final int TOWN_MAX_LENGTH = 30;
-    private static final long serialVersionUID = 6334941299747911026L;
 
     @Column(length = ADDRESS_LINE1_MAX_LENGTH, nullable = false)
     @NotNull

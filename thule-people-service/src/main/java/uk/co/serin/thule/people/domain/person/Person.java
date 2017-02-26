@@ -45,7 +45,6 @@ public final class Person extends DomainModel {
     public static final int SECOND_NAME_MAX_LENGTH = 30;
     public static final int SURNAME_MAX_LENGTH = 30;
     public static final int USER_ID_MAX_LENGTH = 100;
-    private static final long serialVersionUID = 6373551551159419398L;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = ENTITY_NAME_PERSON, orphanRemoval = true)
     @JsonIgnore

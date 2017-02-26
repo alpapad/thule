@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_HOME)
 public final class HomeAddress extends Address<HomeAddress> {
-    private static final long serialVersionUID = 9196176268106577091L;
-
     /**
      * Default constructor required by Hibernate
      */

@@ -19,7 +19,6 @@ import javax.validation.constraints.Size;
 @Table(name = DomainModel.ENTITY_NAME_ROLES)
 public final class Role extends DomainModel {
     private static final int DESCRIPTION_MAX_LENGTH = 30;
-    private static final long serialVersionUID = 3554047495140157877L;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)

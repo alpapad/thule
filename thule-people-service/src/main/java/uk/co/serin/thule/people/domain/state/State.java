@@ -34,7 +34,6 @@ import javax.validation.constraints.Size;
 @Table(name = DomainModel.ENTITY_NAME_STATES)
 public final class State extends DomainModel {
     private static final int DESCRIPTION_MAX_LENGTH = 100;
-    private static final long serialVersionUID = -6469427764755399203L;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = DATABASE_TABLE_STATE_ACTIONS,

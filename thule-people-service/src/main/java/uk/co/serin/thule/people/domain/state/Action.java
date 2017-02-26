@@ -24,7 +24,6 @@ import javax.validation.constraints.Size;
 @Table(name = DomainModel.ENTITY_NAME_ACTIONS)
 public final class Action extends DomainModel {
     private static final int DESCRIPTION_MAX_LENGTH = 100;
-    private static final long serialVersionUID = -2795098920091915554L;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)

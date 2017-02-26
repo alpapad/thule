@@ -5,7 +5,7 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 

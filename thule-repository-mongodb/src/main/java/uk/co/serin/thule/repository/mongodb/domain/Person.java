@@ -7,7 +7,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,7 +18,7 @@ import javax.validation.constraints.Size;
 
 @SuppressWarnings("common-java:DuplicatedBlocks")
 // Suppress SonarQube code smell Source files should not have any duplicated blocks
-public final class Person implements Serializable {
+public final class Person {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_AT = "updatedAt";
@@ -31,7 +30,6 @@ public final class Person implements Serializable {
     public static final int SECOND_NAME_MAX_LENGTH = 30;
     public static final int SURNAME_MAX_LENGTH = 30;
     public static final int USER_ID_MAX_LENGTH = 100;
-    private static final long serialVersionUID = 8489074283224856748L;
 
     @NotNull
     @Size(max = USER_ID_MAX_LENGTH)

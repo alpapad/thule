@@ -20,7 +20,6 @@ public final class Country extends DomainModel {
     private static final int ISO_CODE_THREE_DIGIT_MAX_LENGTH = 3;
     private static final int ISO_CODE_TWO_DIGIT_MAX_LENGTH = 2;
     private static final int ISO_NAME_MAX_LENGTH = 100;
-    private static final long serialVersionUID = 7038192379056508570L;
 
     @Column(length = ISO_CODE_THREE_DIGIT_MAX_LENGTH, nullable = false, unique = true)
     @NotNull
