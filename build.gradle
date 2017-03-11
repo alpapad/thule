@@ -7,14 +7,14 @@ buildscript {
     ext["hsqldb.version"] = "2.3.4"  // Remove when spring boot has caught up with the latest version
     ext["jackson.version"] = "2.8.7" // Remove when spring boot has caught up with the latest version
     ext["mockito.version"] = "2.7.13"  // Remove when spring boot has caught up with the latest version
-    ext["mysql.version"] = "6.0.5"  // Remove when spring boot has caught up with the latest version
+    ext["mysql.version"] = "6.0.6"  // Remove when spring boot has caught up with the latest version
     ext["spring-retry.version"] = "1.2.0.RELEASE"  // Remove when spring boot has caught up with the latest version
 
     ext {
         jacocoSkip = false
         jacocoVersion = "0.7.9"
         springBootVersion = "1.5.2.RELEASE"
-        springCloudVersion = "Camden.SR5"
+        springCloudVersion = "Camden.SR6"
     }
 
     repositories {
