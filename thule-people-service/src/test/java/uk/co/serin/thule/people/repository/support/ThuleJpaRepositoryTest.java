@@ -14,9 +14,9 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,7 +35,7 @@ public class ThuleJpaRepositoryTest {
         String userId = "userId";
 
         given(entityManager.createQuery(anyString())).willReturn(typedQuery);
-        given(typedQuery.setParameter(anyString(), anyObject())).willReturn(typedQuery);
+        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
 
         // When
         thuleJpaRepository.deleteByUpdatedBy(userId);

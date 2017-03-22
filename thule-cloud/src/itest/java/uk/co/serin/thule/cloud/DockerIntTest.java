@@ -40,12 +40,20 @@ public class DockerIntTest {
     private static RestTemplate restTemplate = new RestTemplate();
     private static RetryTemplate retryTemplate = new RetryTemplate();
 
-    private static void dockerComposeDown() throws IOException, InterruptedException {
+    private static void dockerComposeDown() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "down", "-v").inheritIO();
         Process dockerComposeDown = pb.start();
-        dockerComposeDown.waitFor();
+        try {
+            dockerComposeDown.waitFor();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         if (dockerComposeUp != null) {
-            dockerComposeUp.waitFor();
+            try {
+                dockerComposeUp.waitFor();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -72,7 +80,7 @@ public class DockerIntTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws IOException, InterruptedException {
+    public static void setUpClass() throws IOException {
         dockerComposeDown();
         dockerComposeUp();
 
@@ -84,7 +92,7 @@ public class DockerIntTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws InterruptedException, IOException {
+    public static void tearDownClass() throws IOException {
         dockerComposeDown();
     }
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 
-public class ThuleJpaRepositoryFactoryBean<T extends JpaRepository<S, I>, S,I extends Serializable> extends JpaRepositoryFactoryBean<T, S, I> {
+public class ThuleJpaRepositoryFactoryBean<T extends JpaRepository<S, I>, S, I extends Serializable> extends JpaRepositoryFactoryBean<T, S, I> {
     /**
      * Creates a new {@link ThuleJpaRepositoryFactoryBean} for the given repository interface.
      *

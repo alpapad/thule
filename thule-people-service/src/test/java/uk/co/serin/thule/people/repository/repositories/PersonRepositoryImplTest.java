@@ -18,8 +18,8 @@ import javax.persistence.TypedQuery;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonRepositoryImplTest {
@@ -34,8 +34,8 @@ public class PersonRepositoryImplTest {
         // Given
         Person expectedPerson = new Person("userId").setEmailAddress("test@gmail.com").setFirstName("firstName").setSurname("surname");
 
-        given(entityManager.<Person>createQuery(anyString(), anyObject())).willReturn(typedQuery);
-        given(typedQuery.setParameter(anyString(), anyObject())).willReturn(typedQuery);
+        given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
+        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
 
         // When
@@ -51,8 +51,8 @@ public class PersonRepositoryImplTest {
         Person expectedPerson = new Person("userId");
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID, null);
 
-        given(entityManager.<Person>createQuery(anyString(), anyObject())).willReturn(typedQuery);
-        given(typedQuery.setParameter(anyString(), anyObject())).willReturn(typedQuery);
+        given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
+        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
 
         // When
@@ -67,8 +67,8 @@ public class PersonRepositoryImplTest {
         // Given
         Person expectedPerson = new Person("userId");
 
-        given(entityManager.<Person>createQuery(anyString(), anyObject())).willReturn(typedQuery);
-        given(typedQuery.setParameter(anyString(), anyObject())).willReturn(typedQuery);
+        given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
+        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
 
         // When
@@ -83,8 +83,8 @@ public class PersonRepositoryImplTest {
         // Given
         Person expectedPerson = new Person("userId");
 
-        given(entityManager.<Person>createQuery(anyString(), anyObject())).willReturn(typedQuery);
-        given(typedQuery.setParameter(anyString(), anyObject())).willReturn(typedQuery);
+        given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
+        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
 
         // When

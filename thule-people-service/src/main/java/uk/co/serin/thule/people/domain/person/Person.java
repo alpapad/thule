@@ -157,7 +157,7 @@ public final class Person extends DomainModel {
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Person(String userId) {
-        Assert.hasText(userId);
+        Assert.hasText(userId, "userId must have text");
         this.userId = userId;
         initialise();
     }
