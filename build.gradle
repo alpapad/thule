@@ -15,7 +15,7 @@ buildscript {
         jacocoSkip = false
         jacocoVersion = "0.7.9"
         springBootVersion = "1.5.2.RELEASE"
-        springCloudVersion = "Camden.SR6"
+        springCloudVersion = "Dalston.RELEASE"
     }
 
     repositories {
