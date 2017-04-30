@@ -1,5 +1,5 @@
 -- Prevent from expiring
-ALTER USER system IDENTIFIED BY system;
+ALTER USER system IDENTIFIED BY oracle;
 
 -- Create user
 BEGIN EXECUTE IMMEDIATE 'DROP USER thule CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;

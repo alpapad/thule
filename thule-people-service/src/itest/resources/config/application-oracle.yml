@@ -2,7 +2,7 @@
 flyway:
   baseline-on-migrate: true
   locations: classpath:flyway/oracle/migration
-  password: system
+  password: oracle
   url: jdbc:oracle:thin:@oracle-host:1521:xe
   user: system
 
