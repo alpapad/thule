@@ -1,7 +1,7 @@
 FROM java:8-alpine
 
 ################################  Update the base image  ################################
-# su-exec to install gosu for easy step-down from root
+# su-exec as an alternative to chroot which is not available in alpine for easy step-down from root
 RUN apk add --update bash su-exec
 
 ################################  Create user  ################################
