@@ -1,0 +1,88 @@
+version: "2"
+services:
+  ################################  thule-admin-server  ################################
+  thule-admin-server:
+    image: pooh.serin-consultancy.co.uk/thule-admin-server
+    environment:
+      CONFIG_HOST: docker-host
+      CONFIG_PORT: 8888
+      EUREKA_HOST: docker-host
+      EUREKA_PORT: 8761
+    extra_hosts:
+      - docker-host:172.17.0.1
+    hostname: admin-server-1
+    ports:
+      - "8071:8071"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  ################################  thule-config-service  ################################
+  thule-config-service:
+    image: pooh.serin-consultancy.co.uk/thule-config-service
+    environment:
+      EUREKA_HOST: docker-host
+      EUREKA_PORT: 8761
+      SERVER_PORT: 8888
+    extra_hosts:
+      - docker-host:172.17.0.1
+    hostname: config-service-1
+    ports:
+      - "8888:8888"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  ################################  thule-discovery-service  ################################
+  thule-discovery-service:
+    image: pooh.serin-consultancy.co.uk/thule-discovery-service
+    environment:
+      CONFIG_HOST: docker-host
+      CONFIG_PORT: 8888
+    extra_hosts:
+      - docker-host:172.17.0.1
+    hostname: discovery-service-1
+    ports:
+      - "8761:8761"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  ################################  thule-edge-server  ################################
+  thule-edge-server:
+    image: pooh.serin-consultancy.co.uk/thule-edge-server
+    environment:
+      CONFIG_HOST: docker-host
+      CONFIG_PORT: 8888
+      EUREKA_HOST: docker-host
+      EUREKA_PORT: 8761
+    extra_hosts:
+      - docker-host:172.17.0.1
+    hostname: edge-server-1
+    ports:
+      - "8080:8080"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  ################################  thule-people-service  ################################
+  thule-people-service:
+    image: pooh.serin-consultancy.co.uk/thule-people-service
+    environment:
+      CONFIG_HOST: docker-host
+      CONFIG_PORT: 8888
+      EUREKA_HOST: docker-host
+      EUREKA_PORT: 8761
+    extra_hosts:
+      - docker-host:172.17.0.1
+    hostname: people-service-1
+    ports:
+      - "8090:8090"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
