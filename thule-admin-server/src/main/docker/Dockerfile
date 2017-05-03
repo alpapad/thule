@@ -1,4 +1,4 @@
-FROM java:8-alpine
+FROM openjdk:8-alpine
 
 ################################  Update the base image  ################################
 # su-exec as an alternative to chroot which is not available in alpine for easy step-down from root
