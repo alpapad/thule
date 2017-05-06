@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people.repository.support;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -24,16 +23,12 @@ public class ThuleJpaRepositoryFactoryBeanTest {
     @Test
     public void createRepositoryFactory() {
         // Given
+        given(entityManager.getDelegate()).willReturn(new Object());
 
         // When
         RepositoryFactorySupport repositoryFactory = thuleJpaRepositoryFactoryBean.createRepositoryFactory(entityManager);
 
         // Then
         assertThat(repositoryFactory).isInstanceOf(ThuleJpaRepositoryFactory.class);
-    }
-
-    @Before
-    public void setUp() {
-        given(entityManager.getDelegate()).willReturn(new Object());
     }
 }

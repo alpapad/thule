@@ -1,8 +1,8 @@
 package uk.co.serin.thule.people.rest.core;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -14,12 +14,13 @@ import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonEventHandlerTest {
+    @InjectMocks
     private PersonEventHandler personEventHandler;
     @Mock
     private RoleRepository roleRepository;
@@ -38,10 +39,5 @@ public class PersonEventHandlerTest {
         // Then
         verify(roleRepository).findByCode(any());
         verify(stateRepository).findByCode(any());
-    }
-
-    @Before
-    public void setUp() {
-        personEventHandler = new PersonEventHandler(roleRepository, stateRepository);
     }
 }
