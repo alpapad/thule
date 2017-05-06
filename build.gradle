@@ -78,6 +78,8 @@ allprojects {
     // Sonarqube plugin configuration
     sonarqube {
         properties {
+            // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
+            property "sonar.cpd.exclusions", "**/domain/**"
             property "sonar.host.url", "http://pooh:9000"
             property "sonar.scm.disabled", "true"
             property "sonar.projectName", "Thule"
@@ -220,6 +222,7 @@ project("thule-cloud") {
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-web")
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
         testCompile("org.springframework.retry:spring-retry")
@@ -241,6 +244,7 @@ project("thule-admin-server") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -258,6 +262,7 @@ project("thule-config-service") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -270,6 +275,7 @@ project("thule-core") {
         compile("commons-lang:commons-lang")
         compile("org.springframework.boot:spring-boot-starter-aop")
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -289,6 +295,7 @@ project("thule-discovery-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -307,6 +314,7 @@ project("thule-edge-server") {
         compile('org.springframework.cloud:spring-cloud-starter-zuul')
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -325,6 +333,7 @@ project("thule-email-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -354,6 +363,7 @@ project("thule-people-service") {
         compile("org.springframework.data:spring-data-rest-hal-browser")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-test")
         testCompile("com.googlecode.log4jdbc:log4jdbc")
         testCompile("com.oracle:ojdbc6")
         testCompile("mysql:mysql-connector-java")
@@ -373,6 +383,16 @@ project("thule-repository-mongodb") {
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-validation")
 
+        testCompile project(":thule-test")
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+}
+
+project("thule-test") {
+    bootRepackage.enabled = false
+
+    dependencies {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
