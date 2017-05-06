@@ -4,9 +4,9 @@ import com.netflix.zuul.context.RequestContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,11 +15,10 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoggingFilterTest {
-    private LoggingFilter loggingFilter = new LoggingFilter();
     @Mock
     private HttpServletRequest httpServletRequest;
-    @Mock
-    private RequestContext requestContext;
+    @InjectMocks
+    private LoggingFilter loggingFilter;
 
     @Test
     public void filterTypeIsPre() {
@@ -57,8 +56,9 @@ public class LoggingFilterTest {
     @Test
     public void runReturnsNull() {
         // Given
-        ReflectionTestUtils.setField(RequestContext.class, "testContext", requestContext);
-        given(requestContext.getRequest()).willReturn(httpServletRequest);
+        RequestContext requestContext = new RequestContext();
+        RequestContext.testSetCurrentContext(requestContext);
+        requestContext.setRequest(httpServletRequest);
         given(httpServletRequest.getMethod()).willReturn("method");
         given(httpServletRequest.getRequestURL()).willReturn(new StringBuffer("URL"));
 
