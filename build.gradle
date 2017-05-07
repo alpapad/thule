@@ -37,13 +37,39 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("se.transmode.gradle:gradle-docker:1.2")
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT")
     }
 }
 
+// Versions plugin
 plugins {
     id "com.github.ben-manes.versions" version "0.14.0"
+}
+
+// Sonarqube plugin
+plugins {
     id "org.sonarqube" version "2.4"
 }
+// Sonarqube plugin configuration
+sonarqube {
+    properties {
+        // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
+        property "sonar.cpd.exclusions", "**/domain/**"
+        property "sonar.host.url", "http://pooh:9000"
+        property "sonar.scm.disabled", "true"
+        property "sonar.projectName", "Thule"
+    }
+}
+
+// Sonarqube build breaker plugin
+apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
+// Sonarqube build breaker plugin configuration
+sonarqubeBuildBreakerExt {
+    message = "Hi from an extension"
+}
+
+//    tasks.sonarqubeBuildBreaker.dependsOn(tasks.sonarqube)
+project.tasks["sonarqubeBuildBreaker"].dependsOn "sonarqube"
 
 allprojects {
     apply plugin: "java"
@@ -74,24 +100,11 @@ allprojects {
 //            url "http://repo.spring.io/milestone"
 //        }
     }
-
-    // Sonarqube plugin configuration
-    sonarqube {
-        properties {
-            // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
-            property "sonar.cpd.exclusions", "**/domain/**"
-            property "sonar.host.url", "http://pooh:9000"
-            property "sonar.scm.disabled", "true"
-            property "sonar.projectName", "Thule"
-        }
-    }
 }
 
 subprojects {
-    apply plugin: "docker"
+    // Dependency Management plugin
     apply plugin: "io.spring.dependency-management"
-    apply plugin: "jacoco"
-    apply plugin: "maven"
 
     // Dependencies
     dependencyManagement {
@@ -113,9 +126,8 @@ subprojects {
         }
     }
 
-    // org.springframework.boot must be after dependencyManagement see https://spring.io/blog/2015/11/25/migrating-spring-cloud-apps-from-spring-boot-1-2-to-1-3
-    apply plugin: "org.springframework.boot"
-
+    // Docker plugin
+    apply plugin: "docker"
     // Docker plugin configuration
     task dockerBuild(type: Docker, dependsOn: assemble) {
         // dockerBuild options
@@ -136,6 +148,34 @@ subprojects {
 
         // Add to build lifecycle
         build.dependsOn dockerBuild
+    }
+
+    // Jacoco plugin
+    apply plugin: "jacoco"
+    // Jacoco plugin configuration
+    jacoco.toolVersion = jacocoVersion
+    test.jacoco.enabled = !jacocoSkip
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    minimum = 1.0 // 100% coverage
+                }
+            }
+        }
+    }
+    jacocoTestCoverageVerification.dependsOn jacocoTestReport // Always create a report even if jacocoTestCoverageVerification fails
+    check.dependsOn jacocoTestCoverageVerification
+
+    // Maven plugin
+    apply plugin: "maven"
+
+    // Spring Boot plugin
+    // org.springframework.boot must be after dependencyManagement see https://spring.io/blog/2015/11/25/migrating-spring-cloud-apps-from-spring-boot-1-2-to-1-3
+    apply plugin: "org.springframework.boot"
+    // Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
+    springBoot {
+        buildInfo()
     }
 
     // Integration tests configuration
@@ -159,21 +199,6 @@ subprojects {
         // Add to build lifecycle
         check.dependsOn itest
     }
-
-    // Jacoco plugin configuration
-    jacoco.toolVersion = jacocoVersion
-    test.jacoco.enabled = !jacocoSkip
-    jacocoTestCoverageVerification {
-        violationRules {
-            rule {
-                limit {
-                    minimum = 1.0 // 100% coverage
-                }
-            }
-        }
-    }
-    jacocoTestCoverageVerification.dependsOn jacocoTestReport // Always create a report even if jacocoTestCoverageVerification fails
-    check.dependsOn jacocoTestCoverageVerification
 
     // Test configuration
     // Log test results summary
@@ -203,11 +228,6 @@ subprojects {
                 }
             }
         }
-    }
-
-    // Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
-    springBoot {
-        buildInfo()
     }
 }
 
