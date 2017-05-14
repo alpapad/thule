@@ -53,21 +53,21 @@ plugins {
 }
 
 // Sonarqube plugin configuration
-sonarqube {
-    properties {
-        // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
-        property "sonar.cpd.exclusions", "**/domain/**"
-        property "sonar.host.url", "http://pooh:9000"
-        property "sonar.scm.disabled", "true"
-        property "sonar.projectName", "Thule"
+    sonarqube {
+        properties {
+            // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
+            property "sonar.cpd.exclusions", "**/domain/**"
+            property "sonar.host.url", "http://pooh:9000"
+            property "sonar.scm.disabled", "true"
+            property "sonar.projectName", "Thule"
+        }
     }
-}
 
 // Sonarqube build breaker plugin
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
+    apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 // Sonarqube build breaker plugin configuration
-tasks.sonarqubeBuildBreaker.dependsOn(tasks.sonarqube)
-project.tasks["sonarqubeBuildBreaker"].dependsOn "sonarqube"
+    tasks.sonarqubeBuildBreaker.dependsOn(tasks.sonarqube)
+    project.tasks["sonarqubeBuildBreaker"].dependsOn "sonarqube"
 
 allprojects {
     //############################## Plugins Configuration ##############################
@@ -156,6 +156,7 @@ allprojects {
             }
         }
     }
+    // tasks.uploadArchives.dependsOn(tasks.sonarqubeBuildBreaker)
 
     //############################## Build Configuration ##############################
     repositories {
