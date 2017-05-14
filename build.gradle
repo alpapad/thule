@@ -17,6 +17,11 @@ buildscript {
         springCloudVersion = "Dalston.RELEASE"
     }
 
+    // Snapshots are cached by default for 24 hours, change the default to never
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
     repositories {
         mavenLocal()
         maven {
