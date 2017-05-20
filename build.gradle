@@ -1,6 +1,6 @@
 buildscript {
     // Override Spring boot versions
-    ext["assertj.version"] = "3.5.2"  // Remove when spring boot has caught up with the latest version
+    ext["assertj.version"] = "3.7.0"  // Remove when spring boot has caught up with the latest version
     ext["flyway.version"] = "4.2.0"  // Remove when spring boot has caught up with the latest version
     ext["h2.version"] = "1.4.195"  // Remove when spring boot has caught up with the latest h2 version
     ext["hibernate.version"] = "5.2.10.Final"  // Remove when spring boot has caught up with the latest version
@@ -193,9 +193,6 @@ allprojects {
     task itest(type: Test, dependsOn: test) {
         testClassesDir = sourceSets.itest.output.classesDir
         classpath = sourceSets.itest.runtimeClasspath
-
-        // Add to build lifecycle
-        check.dependsOn itest
     }
 
     // Test configuration
@@ -232,7 +229,6 @@ allprojects {
     description = "Thule"
     group = "uk.co.serin.thule"
     version = projectVersion + "-" + buildNumber
-
 }
 
 subprojects {
@@ -464,7 +460,7 @@ project("thule-repository-mongodb") {
 
 project("thule-test") {
     dependencies {
-        testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.springframework.boot:spring-boot-starter-test")
+        compile("nl.jqno.equalsverifier:equalsverifier")
+        compile("org.springframework.boot:spring-boot-starter-test")
     }
 }
