@@ -40,6 +40,18 @@ public class DockerIntTest {
     private static RestTemplate restTemplate = new RestTemplate();
     private static RetryTemplate retryTemplate = new RetryTemplate();
 
+    @BeforeClass
+    public static void setUpClass() throws IOException {
+        dockerComposeDown();
+        dockerComposeUp();
+
+        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        retryPolicy.setTimeout(600000);
+
+        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
+        retryTemplate.setRetryPolicy(retryPolicy);
+    }
+
     private static void dockerComposeDown() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "down", "-v").inheritIO();
         Process dockerComposeDown = pb.start();
@@ -62,35 +74,6 @@ public class DockerIntTest {
         dockerComposeUp = pb.start();
     }
 
-    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url) {
-        return getResponseEntity(url, restTemplate);
-    }
-
-    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url, RestTemplate restTemplate) {
-        return retryTemplate.execute(context -> {
-            ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-            };
-            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
-            if (responseEntity == null) {
-                throw new IllegalStateException(String.format("Response from %s returned null", url));
-            }
-
-            return responseEntity;
-        });
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws IOException {
-        dockerComposeDown();
-        dockerComposeUp();
-
-        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
-        retryPolicy.setTimeout(240000);
-
-        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
-        retryTemplate.setRetryPolicy(retryPolicy);
-    }
-
     @AfterClass
     public static void tearDownClass() throws IOException {
         dockerComposeDown();
@@ -106,6 +89,23 @@ public class DockerIntTest {
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
+    }
+
+    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url) {
+        return getResponseEntity(url, restTemplate);
+    }
+
+    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url, RestTemplate restTemplate) {
+        return retryTemplate.execute(context -> {
+            ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+            };
+            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+            if (responseEntity == null) {
+                throw new IllegalStateException(String.format("Response from %s returned null", url));
+            }
+
+            return responseEntity;
+        });
     }
 
     @Test
@@ -126,18 +126,6 @@ public class DockerIntTest {
 
         // When
         ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(DISCOVERY_SERVICE_URL_PREFIX + HEALTH);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
-    }
-
-    @Test
-    public void peopleServiceIsUp() {
-        // Given
-
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(PEOPLE_SERVICE_URL_PREFIX + HEALTH);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -175,5 +163,17 @@ public class DockerIntTest {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(people).hasSize(8);
+    }
+
+    @Test
+    public void peopleServiceIsUp() {
+        // Given
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(PEOPLE_SERVICE_URL_PREFIX + HEALTH);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
     }
 }
