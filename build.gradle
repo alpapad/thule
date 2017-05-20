@@ -24,17 +24,12 @@ buildscript {
 
     repositories {
         maven {
+            url "http://pooh:8081/repository/maven-public"
             credentials {
                 username = nexusUser
                 password = nexusPassword
-
             }
-            url "http://pooh:8081/repository/maven-public"
         }
-//        mavenCentral()
-//        maven {
-//            url "http://repo.spring.io/milestone"
-//        }
     }
 
     dependencies {
@@ -163,17 +158,12 @@ allprojects {
     //############################## Build Configuration ##############################
     repositories {
         maven {
+            url "http://pooh:8081/repository/maven-public"
             credentials {
                 username = nexusUser
                 password = nexusPassword
-
             }
-            url "http://pooh:8081/repository/maven-public"
         }
-//        mavenCentral()
-//        maven {
-//            url "http://repo.spring.io/milestone"
-//        }
     }
 
     // Integration tests configuration
@@ -201,9 +191,9 @@ allprojects {
         testLogging {
             // set options for log level LIFECYCLE
             events "passed", "skipped", "failed", "standardOut"
-            showExceptions true
             exceptionFormat "short"
             showCauses true
+            showExceptions true
             showStackTraces true
 
             // set options for log level DEBUG and INFO

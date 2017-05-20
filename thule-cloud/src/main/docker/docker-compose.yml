@@ -10,6 +10,7 @@ services:
       EUREKA_PORT: 8761
     extra_hosts:
       - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
     hostname: admin-server-1
     ports:
       - "8071:8071"
@@ -27,6 +28,7 @@ services:
       SERVER_PORT: 8888
     extra_hosts:
       - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
     hostname: config-service-1
     ports:
       - "8888:8888"
@@ -43,6 +45,7 @@ services:
       CONFIG_PORT: 8888
     extra_hosts:
       - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
     hostname: discovery-service-1
     ports:
       - "8761:8761"
@@ -61,6 +64,7 @@ services:
       EUREKA_PORT: 8761
     extra_hosts:
       - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
     hostname: edge-server-1
     ports:
       - "8080:8080"
@@ -79,6 +83,7 @@ services:
       EUREKA_PORT: 8761
     extra_hosts:
       - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
     hostname: people-service-1
     ports:
       - "8090:8090"
