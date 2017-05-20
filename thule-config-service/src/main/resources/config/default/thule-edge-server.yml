@@ -39,3 +39,10 @@ zuul:
   # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication header will not propogate to the people service,
   # hence Authorization has been removed from the sensitive headers
   sensitiveHeaders: Cookie,Set-Cookie
+
+# Thule configuration
+thule:
+  logging:
+    logstash:
+      host: logstash-host
+      port: 5400

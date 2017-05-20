@@ -38,3 +38,10 @@ spring:
       # absolute time (i.e. a long), not particularily meaningful unless we instruct jackson to
       # serialize it as a timestamp which is a human readable form
       write_dates_as_timestamps: false
+
+# Thule configuration
+thule:
+  logging:
+    logstash:
+      host: logstash-host
+      port: 5400
