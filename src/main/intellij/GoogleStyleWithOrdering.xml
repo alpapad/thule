@@ -1,4 +1,4 @@
-<code_scheme name="GoogleStyleWithOrdering">
+<code_scheme name="GoogleStyleWithOrdering copy">
   <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
   <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="99" />
   <option name="IMPORT_LAYOUT_TABLE">
@@ -328,7 +328,7 @@
         </group>
         <group>
           <type>OVERRIDDEN_METHODS</type>
-          <order>KEEP</order>
+          <order>BY_NAME</order>
         </group>
         <group>
           <type>DEPENDENT_METHODS</type>
@@ -575,10 +575,7 @@
         <section>
           <rule>
             <match>
-              <AND>
-                <METHOD>true</METHOD>
-                <visibility />
-              </AND>
+              <METHOD>true</METHOD>
             </match>
             <order>BY_NAME</order>
           </rule>
