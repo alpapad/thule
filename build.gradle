@@ -313,6 +313,8 @@ project("thule-core") {
     dependencies {
         compile("commons-lang:commons-lang")
         compile("org.springframework.boot:spring-boot-starter-aop")
+        compile("org.springframework.boot:spring-boot-starter-logging")
+        compile("org.springframework.boot:spring-boot-starter-web")
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
