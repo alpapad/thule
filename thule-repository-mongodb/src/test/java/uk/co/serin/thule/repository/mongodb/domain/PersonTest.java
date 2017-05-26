@@ -8,12 +8,76 @@ import org.junit.Test;
 import uk.co.serin.thule.core.utils.RandomGenerators;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonTest {
     private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
     private static final int SUFFIX_LENGTH = 8;
+
+    @Test
+    public void builderAndGettersOperateOnTheSameField() {
+        // Given
+        Person expectedPerson = newPersonWithAllAssociations();
+
+        // When
+        Person actualPerson = Person.PersonBuilder.aPerson().
+                withCreatedAt(expectedPerson.getCreatedAt()).
+                withDateOfBirth(expectedPerson.getDateOfBirth()).
+                withDateOfExpiry(expectedPerson.getDateOfExpiry()).
+                withDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry()).
+                withEmailAddress(expectedPerson.getEmailAddress()).
+                withFirstName(expectedPerson.getFirstName()).
+                withId(expectedPerson.getId()).
+                withPassword(expectedPerson.getPassword()).
+                withSalutation(expectedPerson.getSalutation()).
+                withSecondName(expectedPerson.getSecondName()).
+                withSurname(expectedPerson.getSurname()).
+                withUpdatedAt(expectedPerson.getUpdatedAt()).
+                withUpdatedBy(expectedPerson.getUpdatedBy()).
+                withUserId(expectedPerson.getUserId()).
+                withVersion(expectedPerson.getVersion()).build();
+
+        // Then
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
+    }
+
+    private Person newPersonWithAllAssociations() {
+        // Set the attributes
+        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
+        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
+
+        return Person.PersonBuilder.aPerson().
+                withCreatedAt(LocalDateTime.now()).
+                withDateOfBirth(dob).
+                withDateOfExpiry(expiryDate).
+                withDateOfPasswordExpiry(expiryDate).
+                withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
+                withFirstName("Elizabeth").
+                withId(RandomGenerators.generateUniqueRandomLong()).
+                withPassword(userId).
+                withSalutation("Miss").
+                withSecondName("K").
+                withUpdatedAt(LocalDateTime.now()).
+                withUpdatedBy(userId).
+                withSurname("Scarlett").
+                withUserId(userId).
+                withVersion(1L).build();
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
@@ -55,36 +119,39 @@ public class PersonTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        LocalDate now = LocalDate.now();
-        String emailAddress = "test@gmail.com";
-        String firstName = "firstName";
-        String password = "password";
-        String salutation = "salutation";
-        String secondName = "secondName";
-        String surname = "surname";
-        String userId = "userId";
+        Person expectedPerson = newPersonWithAllAssociations();
 
-        Person person = new Person(userId);
-        person.setDateOfBirth(now);
-        person.setDateOfExpiry(now);
-        person.setDateOfPasswordExpiry(now);
-        person.setEmailAddress(emailAddress);
-        person.setFirstName(firstName);
-        person.setPassword(password);
-        person.setSalutation(salutation);
-        person.setSecondName(secondName);
-        person.setSurname(surname);
+        // When
+        Person actualPerson = new Person(expectedPerson.getUserId());
+        actualPerson.setCreatedAt(expectedPerson.getCreatedAt());
+        actualPerson.setDateOfBirth(expectedPerson.getDateOfBirth());
+        actualPerson.setDateOfExpiry(expectedPerson.getDateOfExpiry());
+        actualPerson.setDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry());
+        actualPerson.setEmailAddress(expectedPerson.getEmailAddress());
+        actualPerson.setFirstName(expectedPerson.getFirstName());
+        actualPerson.setId(expectedPerson.getId());
+        actualPerson.setPassword(expectedPerson.getPassword());
+        actualPerson.setSalutation(expectedPerson.getSalutation());
+        actualPerson.setSecondName(expectedPerson.getSecondName());
+        actualPerson.setSurname(expectedPerson.getSurname());
+        actualPerson.setUpdatedAt(expectedPerson.getUpdatedAt());
+        actualPerson.setUpdatedBy(expectedPerson.getUpdatedBy());
+        actualPerson.setVersion(expectedPerson.getVersion());
 
-        // When/Then
-        assertThat(person.getDateOfBirth()).isEqualTo(now);
-        assertThat(person.getDateOfExpiry()).isEqualTo(now);
-        assertThat(person.getDateOfPasswordExpiry()).isEqualTo(now);
-        assertThat(person.getEmailAddress()).isEqualTo(emailAddress);
-        assertThat(person.getFirstName()).isEqualTo(firstName);
-        assertThat(person.getPassword()).isEqualTo(password);
-        assertThat(person.getSalutation()).isEqualTo(salutation);
-        assertThat(person.getSecondName()).isEqualTo(secondName);
-        assertThat(person.getSurname()).isEqualTo(surname);
+        // Then
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
     }
 
     @Test
@@ -159,26 +226,5 @@ public class PersonTest {
     @Test
     public void verifyEqualsConformsToContract() {
         EqualsVerifier.forClass(Person.class).suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
-    }
-
-    private Person newPersonWithAllAssociations() {
-        // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
-
-        Person person = new Person(userId);
-        person.setDateOfBirth(dob);
-        person.setDateOfExpiry(expiryDate);
-        person.setDateOfPasswordExpiry(expiryDate);
-        person.setEmailAddress(userId + EMAIL_ADDRESS_SUFFIX);
-        person.setFirstName("Elizabeth");
-        person.setId(RandomGenerators.generateUniqueRandomLong());
-        person.setPassword(userId);
-        person.setSalutation("Miss");
-        person.setSecondName("K");
-        person.setSurname("Scarlett");
-
-        return person;
     }
 }

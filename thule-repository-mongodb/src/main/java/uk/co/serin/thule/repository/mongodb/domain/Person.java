@@ -16,8 +16,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@SuppressWarnings("common-java:DuplicatedBlocks")
-// Suppress SonarQube code smell Source files should not have any duplicated blocks
 public final class Person {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
@@ -87,7 +85,7 @@ public final class Person {
      */
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
-    Person() {
+    protected Person() {
         this("");
     }
 
@@ -117,134 +115,128 @@ public final class Person {
         BeanUtils.copyProperties(person, this);
     }
 
-    public String getUserId() {
-        return userId;
-    }
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public Person setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-        return this;
-    }
-
-    public LocalDate getDateOfExpiry() {
-        return dateOfExpiry;
-    }
-
-    public Person setDateOfExpiry(LocalDate dateOfExpiry) {
-        this.dateOfExpiry = dateOfExpiry;
-        return this;
-    }
-
-    public LocalDate getDateOfPasswordExpiry() {
-        return dateOfPasswordExpiry;
-    }
-
-    public Person setDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
-        this.dateOfPasswordExpiry = dateOfPasswordExpiry;
-        return this;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public Person setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-        return this;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public Person setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Person setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Person setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public Person setSalutation(String salutation) {
-        this.salutation = salutation;
-        return this;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public Person setSecondName(String secondName) {
-        this.secondName = secondName;
-        return this;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public Person setSurname(String surname) {
-        this.surname = surname;
-        return this;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Person setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public Person setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-        return this;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public Person setVersion(Long version) {
-        this.version = version;
-        return this;
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Person setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-        return this;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public LocalDate getDateOfExpiry() {
+        return dateOfExpiry;
+    }
+
+    public void setDateOfExpiry(LocalDate dateOfExpiry) {
+        this.dateOfExpiry = dateOfExpiry;
+    }
+
+    public LocalDate getDateOfPasswordExpiry() {
+        return dateOfPasswordExpiry;
+    }
+
+    public void setDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
+        this.dateOfPasswordExpiry = dateOfPasswordExpiry;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override
@@ -292,11 +284,122 @@ public final class Person {
         return LocalDate.now().isAfter(dateOfPasswordExpiry);
     }
 
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+    public static final class PersonBuilder {
+        private LocalDateTime createdAt;
+        private LocalDate dateOfBirth;
+        private LocalDate dateOfExpiry;
+        private LocalDate dateOfPasswordExpiry;
+        private String emailAddress;
+        private String firstName;
+        private Long id;
+        private String password;
+        private String salutation;
+        private String secondName;
+        private String surname;
+        private LocalDateTime updatedAt;
+        private String updatedBy;
+        private String userId;
+        private Long version;
 
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
+        private PersonBuilder() {
+        }
+
+        public static PersonBuilder aPerson() {
+            return new PersonBuilder();
+        }
+
+        public Person build() {
+            Person person = new Person(userId);
+            person.updatedAt = this.updatedAt;
+            person.emailAddress = this.emailAddress;
+            person.id = this.id;
+            person.createdAt = this.createdAt;
+            person.dateOfPasswordExpiry = this.dateOfPasswordExpiry;
+            person.dateOfBirth = this.dateOfBirth;
+            person.version = this.version;
+            person.salutation = this.salutation;
+            person.firstName = this.firstName;
+            person.dateOfExpiry = this.dateOfExpiry;
+            person.surname = this.surname;
+            person.secondName = this.secondName;
+            person.password = this.password;
+            person.updatedBy = this.updatedBy;
+            return person;
+        }
+
+        public PersonBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public PersonBuilder withDateOfBirth(LocalDate dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public PersonBuilder withDateOfExpiry(LocalDate dateOfExpiry) {
+            this.dateOfExpiry = dateOfExpiry;
+            return this;
+        }
+
+        public PersonBuilder withDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
+            this.dateOfPasswordExpiry = dateOfPasswordExpiry;
+            return this;
+        }
+
+        public PersonBuilder withEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
+            return this;
+        }
+
+        public PersonBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public PersonBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public PersonBuilder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public PersonBuilder withSalutation(String salutation) {
+            this.salutation = salutation;
+            return this;
+        }
+
+        public PersonBuilder withSecondName(String secondName) {
+            this.secondName = secondName;
+            return this;
+        }
+
+        public PersonBuilder withSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public PersonBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public PersonBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public PersonBuilder withUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public PersonBuilder withVersion(Long version) {
+            this.version = version;
+            return this;
+        }
     }
 }
