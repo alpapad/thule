@@ -17,7 +17,6 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
@@ -57,8 +56,6 @@ public class RestfulServiceIntTest {
     @Autowired
     private CountryRepository countryRepository;
     private DataFactory dataFactory;
-    @Autowired
-    private Environment env;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -192,12 +189,15 @@ public class RestfulServiceIntTest {
         testPerson = createTestPerson(testPerson);
         long id = testPerson.getId();
 
-        testPerson.setFirstName("updatedFirstName").setSecondName("updatedSecondName").setSurname("updatedSurname").
-                setDateOfBirth(testPerson.getDateOfBirth().minusDays(1)).
-                setEmailAddress("updated@serin-consultancy.co.uk").
-                setPassword("updatedPassword");
+        testPerson.setFirstName("updatedFirstName");
+        testPerson.setSecondName("updatedSecondName");
+        testPerson.setSurname("updatedSurname");
+        testPerson.        setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
+                testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
+                testPerson.setPassword("updatedPassword");
 
-        Person expectedPerson = new Person(testPerson).setState(null);
+        Person expectedPerson = new Person(testPerson);
+        expectedPerson.setState(null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
@@ -216,7 +216,8 @@ public class RestfulServiceIntTest {
     }
 
     private Person createTestPerson(Person expectedPerson) {
-        Person person = new Person(expectedPerson).setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
+        Person person = new Person(expectedPerson);
+        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
         return personRepository.save(person);
     }
 }

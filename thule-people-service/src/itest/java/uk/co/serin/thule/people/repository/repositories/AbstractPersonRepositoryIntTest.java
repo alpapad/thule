@@ -277,10 +277,12 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void update() throws InterruptedException {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        testPerson.setFirstName("updatedFirstName").setSecondName("updatedSecondName").setSurname("updatedSurname").
-                setDateOfBirth(testPerson.getDateOfBirth().minusDays(1)).
-                setEmailAddress("updated@gmail.com").
-                setPassword("updatedPassword");
+        testPerson.setFirstName("updatedFirstName");
+        testPerson.setSecondName("updatedSecondName");
+        testPerson.setSurname("updatedSurname");
+        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
+        testPerson.setEmailAddress("updated@gmail.com");
+        testPerson.setPassword("updatedPassword");
 
         Person expectedPerson = new Person(testPerson);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, testPerson.getVersion() + 1);

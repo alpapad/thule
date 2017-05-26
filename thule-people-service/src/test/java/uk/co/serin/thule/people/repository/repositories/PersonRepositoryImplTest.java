@@ -32,7 +32,7 @@ public class PersonRepositoryImplTest {
     @Test
     public void findByCriteria() {
         // Given
-        Person expectedPerson = new Person("userId").setEmailAddress("test@gmail.com").setFirstName("firstName").setSurname("surname");
+        Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withEmailAddress("test@gmail.com").withFirstName("firstName").withSurname("surname").build();
 
         given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);

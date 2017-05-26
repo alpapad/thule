@@ -11,6 +11,7 @@ import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
@@ -27,7 +28,7 @@ public class PersonEventHandler {
 
     @HandleBeforeCreate
     public void handlePersonCreate(Person person) {
-        person.addRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)));
+        person.addRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)).collect(Collectors.toSet()));
         person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
     }
 }

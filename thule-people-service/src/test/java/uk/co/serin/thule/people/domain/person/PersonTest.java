@@ -5,6 +5,7 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+import uk.co.serin.thule.core.utils.RandomGenerators;
 import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
 import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
@@ -17,11 +18,15 @@ import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonTest {
+    private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
+    private static final int SUFFIX_LENGTH = 8;
     private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
 
     @Test
@@ -46,14 +51,14 @@ public class PersonTest {
         HomeAddress homeAddress = new HomeAddress("addressLine1", "postCode", country);
         WorkAddress workAddress = new WorkAddress("addressLine1", "postCode", country);
 
-        Person expectedPerson = new Person("userId").
-                setSalutation("salutation").setFirstName("firstName").setSecondName("secondName").setSurname("surname").
-                setHomeAddress(homeAddress).setWorkAddress(workAddress).
-                setDateOfBirth(now).setEmailAddress("test@gmail.com").
-                setDateOfExpiry(now).setDateOfPasswordExpiry(now).setPassword("password").
-                addRoles(referenceDataFactory.getRoles().values().stream()).
-                setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED));
-        expectedPerson.addPhotographs(Stream.of(new Photograph(new byte[]{}, expectedPerson)));
+        Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").
+                withSalutation("salutation").withFirstName("firstName").withSecondName("secondName").withSurname("surname").
+                withHomeAddress(homeAddress).withWorkAddress(workAddress).
+                withDateOfBirth(now).withEmailAddress("test@gmail.com").
+                withDateOfExpiry(now).withDateOfPasswordExpiry(now).withPassword("password").
+                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
+                withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).build();
+        expectedPerson.addPhotographs(Stream.of(new Photograph(new byte[]{}, expectedPerson)).collect(Collectors.toSet()));
 
         // When
         Person actualPerson = new Person(expectedPerson);
@@ -76,7 +81,7 @@ public class PersonTest {
     @Test
     public void disablePerson() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         person.disable();
@@ -88,7 +93,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void disablePersonWhenAlreadyDisabled() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
         // When
         person.disable();
@@ -99,7 +104,7 @@ public class PersonTest {
     @Test
     public void discardPerson() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         person.discard();
@@ -111,7 +116,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void discardPersonWhenAlreadyDiscarded() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
 
         // When
         person.discard();
@@ -122,7 +127,7 @@ public class PersonTest {
     @Test
     public void enablePerson() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
         // When
         person.enable();
@@ -134,7 +139,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void enablePersonWhenAlreadyEnabled() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         person.enable();
@@ -143,47 +148,121 @@ public class PersonTest {
     }
 
     @Test
+    public void builderAndGettersOperateOnTheSameField() {
+        // Given
+        Person expectedPerson = newPersonWithAllAssociations();
+
+        // When
+        Person actualPerson = Person.PersonBuilder.aPerson().
+                withDateOfBirth(expectedPerson.getDateOfBirth()).
+                withDateOfExpiry(expectedPerson.getDateOfExpiry()).
+                withDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry()).
+                withEmailAddress(expectedPerson.getEmailAddress()).
+                withFirstName(expectedPerson.getFirstName()).
+                withHomeAddress(expectedPerson.getHomeAddress()).
+                withPassword(expectedPerson.getPassword()).
+                withPhotographs(expectedPerson.getPhotographs()).
+                withSalutation(expectedPerson.getSalutation()).
+                withSecondName(expectedPerson.getSecondName()).
+                withState(expectedPerson.getState()).
+                withSurname(expectedPerson.getSurname()).
+                withUserId(expectedPerson.getUserId()).
+                withWorkAddress(expectedPerson.getWorkAddress()).build();
+
+        // Then
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getPhotographs()).isEqualTo(expectedPerson.getPhotographs());
+        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
+        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
+    }
+
+    @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        LocalDate now = LocalDate.now();
+        Person expectedPerson = newPersonWithAllAssociations();
+
+        // When
+        Person actualPerson = new Person(expectedPerson.getUserId());
+        actualPerson.setDateOfBirth(expectedPerson.getDateOfBirth());
+        actualPerson.setDateOfExpiry(expectedPerson.getDateOfExpiry());
+        actualPerson.setDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry());
+        actualPerson.setEmailAddress(expectedPerson.getEmailAddress());
+        actualPerson.setFirstName(expectedPerson.getFirstName());
+        actualPerson.setHomeAddress(expectedPerson.getHomeAddress());
+        actualPerson.setPassword(expectedPerson.getPassword());
+        actualPerson.addPhotographs(expectedPerson.getPhotographs());
+        actualPerson.setSalutation(expectedPerson.getSalutation());
+        actualPerson.setSecondName(expectedPerson.getSecondName());
+        actualPerson.setState(expectedPerson.getState());
+        actualPerson.setSurname(expectedPerson.getSurname());
+        actualPerson.setWorkAddress(expectedPerson.getWorkAddress());
+
+        // Then
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getPhotographs()).isEqualTo(expectedPerson.getPhotographs());
+        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
+        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
+    }
+
+    private Person newPersonWithAllAssociations() {
         Country country = referenceDataFactory.getCountries().get(Country.GBR);
-        String emailAddress = "test@gmail.com";
-        String firstName = "firstName";
         HomeAddress homeAddress = new HomeAddress("addressLine1", "postCode", country);
-        String password = "password";
-        String salutation = "salutation";
-        String secondName = "secondName";
         State state = referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED);
-        String surname = "surname";
-        String userId = "userId";
         WorkAddress workAddress = new WorkAddress("addressLine1", "postCode", country);
 
-        Person person = new Person(userId).
-                setSalutation(salutation).setFirstName(firstName).setSecondName(secondName).setSurname(surname).
-                setHomeAddress(homeAddress).setWorkAddress(workAddress).
-                setDateOfBirth(now).setEmailAddress(emailAddress).
-                setDateOfExpiry(now).setDateOfPasswordExpiry(now).setPassword(password).
-                setState(state);
+        // Set the attributes
+        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
+        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
 
-        // When/Then
-        assertThat(person.getDateOfBirth()).isEqualTo(now);
-        assertThat(person.getDateOfExpiry()).isEqualTo(now);
-        assertThat(person.getDateOfPasswordExpiry()).isEqualTo(now);
-        assertThat(person.getEmailAddress()).isEqualTo(emailAddress);
-        assertThat(person.getFirstName()).isEqualTo(firstName);
-        assertThat(person.getHomeAddress()).isEqualTo(homeAddress);
-        assertThat(person.getPassword()).isEqualTo(password);
-        assertThat(person.getSalutation()).isEqualTo(salutation);
-        assertThat(person.getSecondName()).isEqualTo(secondName);
-        assertThat(person.getState()).isEqualTo(state);
-        assertThat(person.getSurname()).isEqualTo(surname);
-        assertThat(person.getWorkAddress()).isEqualTo(workAddress);
+        return Person.PersonBuilder.aPerson().
+                withDateOfBirth(dob).
+                withDateOfExpiry(expiryDate).
+                withDateOfPasswordExpiry(expiryDate).
+                withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
+                withFirstName("Elizabeth").
+                withHomeAddress(homeAddress).
+                withPassword(userId).
+                withSalutation("Miss").
+                withSecondName("K").
+                withState(state).
+                withSurname("Scarlett").
+                withUserId(userId).
+                withWorkAddress(workAddress).build();
     }
+
+
 
     @Test
     public void isExpired() {
         // Given
-        Person person = new Person("userId").setDateOfExpiry(LocalDate.MIN);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MIN).build();
 
         // When
         boolean expired = person.isExpired();
@@ -195,7 +274,7 @@ public class PersonTest {
     @Test
     public void isNotExpired() {
         // Given
-        Person person = new Person("userId").setDateOfExpiry(LocalDate.MAX);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MAX).build();
 
         // When
         boolean expired = person.isExpired();
@@ -207,7 +286,7 @@ public class PersonTest {
     @Test
     public void isNotPasswordExpired() {
         // Given
-        Person person = new Person("userId").setDateOfPasswordExpiry(LocalDate.MAX);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MAX).build();
 
         // When
         boolean passwordExpired = person.isPasswordExpired();
@@ -219,7 +298,7 @@ public class PersonTest {
     @Test
     public void isPasswordExpired() {
         // Given
-        Person person = new Person("userId").setDateOfPasswordExpiry(LocalDate.MIN);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MIN).build();
 
         // When
         boolean passwordExpired = person.isPasswordExpired();
@@ -231,7 +310,7 @@ public class PersonTest {
     @Test
     public void recoverPerson() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
 
         // When
         person.recover();
@@ -248,7 +327,7 @@ public class PersonTest {
     @Test
     public void updatePerson() {
         // Given
-        Person expectedPerson = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
         Person actualPerson = new Person(expectedPerson);
 
         // When
@@ -261,7 +340,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void updatePersonWhenNotEnabled() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
         // When
         person.update();
@@ -272,7 +351,7 @@ public class PersonTest {
     @Test(expected = PersonInvalidStateException.class)
     public void updateRecoverWhenNotDiscarded() {
         // Given
-        Person person = new Person("userId").setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         person.recover();

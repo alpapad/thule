@@ -14,13 +14,13 @@ import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.State;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -130,6 +130,19 @@ public final class Person extends DomainModel {
     }
 
     /**
+     * Business key constructor
+     *
+     * @param userId Business key attribute
+     */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
+    public Person(String userId) {
+        Assert.hasText(userId, "userId must have text");
+        this.userId = userId;
+        initialise();
+    }
+
+    /**
      * Copy object constructor
      *
      * @param person Object to be copied
@@ -145,139 +158,48 @@ public final class Person extends DomainModel {
         BeanUtils.copyProperties(person, this);
         setHomeAddress(person.getHomeAddress() == null ? null : new HomeAddress(person.getHomeAddress()));
         setWorkAddress(person.getWorkAddress() == null ? null : new WorkAddress(person.getWorkAddress()));
-        addPhotographs(person.getPhotographs().stream().map(photograph -> new Photograph(photograph, this)));
-        addRoles(person.getRoles().stream().map(Role::new));
+        addPhotographs(person.getPhotographs().stream().map(photograph -> new Photograph(photograph, this)).collect(Collectors.toSet()));
+        addRoles(person.getRoles().stream().map(Role::new).collect(Collectors.toSet()));
     }
 
-    /**
-     * Business key constructor
-     *
-     * @param userId Business key attribute
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Person(String userId) {
-        Assert.hasText(userId, "userId must have text");
-        this.userId = userId;
-        initialise();
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
     }
 
     public HomeAddress getHomeAddress() {
         return homeAddress;
     }
 
-    public Person setHomeAddress(HomeAddress homeAddress) {
+    public void setHomeAddress(HomeAddress homeAddress) {
         this.homeAddress = homeAddress;
-        return this;
     }
 
     public WorkAddress getWorkAddress() {
         return workAddress;
     }
 
-    public Person setWorkAddress(WorkAddress workAddress) {
+    public void setWorkAddress(WorkAddress workAddress) {
         this.workAddress = workAddress;
-        return this;
     }
 
-    public Person addPhotographs(Stream<Photograph> photographs) {
-        this.photographs.addAll(photographs.collect(Collectors.toList()));
-        return this;
+    public void addPhotographs(Set<Photograph> photographs) {
+        this.photographs.addAll(photographs);
     }
 
     public Set<Photograph> getPhotographs() {
         return Collections.unmodifiableSet(photographs);
     }
 
-    public Person addRoles(Stream<Role> roles) {
-        this.roles.addAll(roles.collect(Collectors.toList()));
-        return this;
+    public void addRoles(Set<Role> roles) {
+        this.roles.addAll(roles);
     }
 
     public Set<Role> getRoles() {
         return Collections.unmodifiableSet(roles);
-    }
-
-    public LocalDate getDateOfBirth() {
-
-        return dateOfBirth;
-    }
-
-    public Person setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-        return this;
-    }
-
-    public LocalDate getDateOfExpiry() {
-        return dateOfExpiry;
-    }
-
-    public Person setDateOfExpiry(LocalDate dateOfExpiry) {
-        this.dateOfExpiry = dateOfExpiry;
-        return this;
-    }
-
-    public LocalDate getDateOfPasswordExpiry() {
-        return dateOfPasswordExpiry;
-    }
-
-    public Person setDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
-        this.dateOfPasswordExpiry = dateOfPasswordExpiry;
-        return this;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public Person setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-        return this;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public Person setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Person setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public Person setSalutation(String salutation) {
-        this.salutation = salutation;
-        return this;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public Person setSecondName(String secondName) {
-        this.secondName = secondName;
-        return this;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public Person setSurname(String surname) {
-        this.surname = surname;
-        return this;
     }
 
     public void disable() {
@@ -295,9 +217,8 @@ public final class Person extends DomainModel {
         return state;
     }
 
-    public Person setState(State state) {
+    public void setState(State state) {
         this.state = state;
-        return this;
     }
 
     public void discard() {
@@ -320,6 +241,79 @@ public final class Person extends DomainModel {
         // Set new state
         Action personViewAction = getState().getActionsByCode().get(ActionCode.PERSON_ENABLE);
         state = personViewAction.getNextState();
+    }
+
+    public LocalDate getDateOfBirth() {
+
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public LocalDate getDateOfExpiry() {
+        return dateOfExpiry;
+    }
+
+    public void setDateOfExpiry(LocalDate dateOfExpiry) {
+        this.dateOfExpiry = dateOfExpiry;
+    }
+
+    public LocalDate getDateOfPasswordExpiry() {
+        return dateOfPasswordExpiry;
+    }
+
+    public void setDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
+        this.dateOfPasswordExpiry = dateOfPasswordExpiry;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getUserId() {
@@ -390,11 +384,128 @@ public final class Person extends DomainModel {
         }
     }
 
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+    public static final class PersonBuilder {
+        protected LocalDateTime createdAt;
+        protected Long id;
+        protected LocalDateTime updatedAt;
 
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
+        protected String updatedBy;
+        protected Long version;
+        private LocalDate dateOfBirth;
+        private LocalDate dateOfExpiry;
+        private LocalDate dateOfPasswordExpiry;
+        private String emailAddress;
+        private String firstName;
+        private HomeAddress homeAddress;
+        private String password;
+        private Set<Photograph> photographs = new HashSet<>();
+        private Set<Role> roles = new HashSet<>();
+        private String salutation;
+        private String secondName;
+        private State state;
+        private String surname;
+        private String userId;
+        private WorkAddress workAddress;
+
+        private PersonBuilder() {
+        }
+
+        public static PersonBuilder aPerson() {
+            return new PersonBuilder();
+        }
+
+        public Person build() {
+            Person person = new Person(userId);
+            person.setDateOfBirth(dateOfBirth);
+            person.setDateOfExpiry(dateOfExpiry);
+            person.setDateOfPasswordExpiry(dateOfPasswordExpiry);
+            person.setEmailAddress(emailAddress);
+            person.setFirstName(firstName);
+            person.setHomeAddress(homeAddress);
+            person.setPassword(password);
+            person.setSalutation(salutation);
+            person.setSecondName(secondName);
+            person.setState(state);
+            person.setSurname(surname);
+            person.setWorkAddress(workAddress);
+            person.addRoles(this.roles);
+            person.addPhotographs(this.photographs);
+            return person;
+        }
+
+        public PersonBuilder withDateOfBirth(LocalDate dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public PersonBuilder withDateOfExpiry(LocalDate dateOfExpiry) {
+            this.dateOfExpiry = dateOfExpiry;
+            return this;
+        }
+
+        public PersonBuilder withDateOfPasswordExpiry(LocalDate dateOfPasswordExpiry) {
+            this.dateOfPasswordExpiry = dateOfPasswordExpiry;
+            return this;
+        }
+
+        public PersonBuilder withEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
+            return this;
+        }
+
+        public PersonBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public PersonBuilder withHomeAddress(HomeAddress homeAddress) {
+            this.homeAddress = homeAddress;
+            return this;
+        }
+
+        public PersonBuilder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public PersonBuilder withPhotographs(Set<Photograph> photographs) {
+            this.photographs = photographs;
+            return this;
+        }
+
+        public PersonBuilder withRoles(Set<Role> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public PersonBuilder withSalutation(String salutation) {
+            this.salutation = salutation;
+            return this;
+        }
+
+        public PersonBuilder withSecondName(String secondName) {
+            this.secondName = secondName;
+            return this;
+        }
+
+        public PersonBuilder withState(State state) {
+            this.state = state;
+            return this;
+        }
+
+        public PersonBuilder withSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public PersonBuilder withUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public PersonBuilder withWorkAddress(WorkAddress workAddress) {
+            this.workAddress = workAddress;
+            return this;
+        }
     }
 }
