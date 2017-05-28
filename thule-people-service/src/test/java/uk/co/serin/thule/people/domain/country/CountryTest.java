@@ -1,7 +1,6 @@
 package uk.co.serin.thule.people.domain.country;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -13,6 +12,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CountryTest {
     private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+
+    @Test
+    public void builderAndGettersOperateOnTheSameField() {
+        // Given
+        Country expectedCountry = referenceDataFactory.getCountries().get(Country.GBR);
+
+        // When
+        Country actualCountry = Country.CountryBuilder.aCountry().
+                withCreatedAt(expectedCountry.getCreatedAt()).
+                withId(expectedCountry.getId()).
+                withIsoCodeThreeDigit(expectedCountry.getIsoCodeThreeDigit()).
+                withIsoCodeTwoDigit(expectedCountry.getIsoCodeTwoDigit()).
+                withIsoName(expectedCountry.getIsoName()).
+                withIsoNumber(expectedCountry.getIsoNumber()).
+                withIsoCodeTwoDigit(expectedCountry.getIsoCodeTwoDigit()).
+                withUpdatedAt(expectedCountry.getUpdatedAt()).
+                withUpdatedBy(expectedCountry.getUpdatedBy()).
+                withVersion(expectedCountry.getVersion()).
+                build();
+
+        // Then
+        assertThat(actualCountry.getCreatedAt()).isEqualTo(expectedCountry.getCreatedAt());
+        assertThat(actualCountry.getId()).isEqualTo(expectedCountry.getId());
+        assertThat(actualCountry.getIsoCodeThreeDigit()).isEqualTo(expectedCountry.getIsoCodeThreeDigit());
+        assertThat(actualCountry.getIsoCodeTwoDigit()).isEqualTo(expectedCountry.getIsoCodeTwoDigit());
+        assertThat(actualCountry.getIsoName()).isEqualTo(expectedCountry.getIsoName());
+        assertThat(actualCountry.getIsoNumber()).isEqualTo(expectedCountry.getIsoNumber());
+        assertThat(actualCountry.getUpdatedAt()).isEqualTo(expectedCountry.getUpdatedAt());
+        assertThat(actualCountry.getUpdatedBy()).isEqualTo(expectedCountry.getUpdatedBy());
+        assertThat(actualCountry.getVersion()).isEqualTo(expectedCountry.getVersion());
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
@@ -39,18 +69,24 @@ public class CountryTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        String isoCodeThreeDigit = "isoCodeThreeDigit";
-        String isoCodeTwoDigit = "isoCodeTwoDigit";
-        String isoName = "isoName";
-        String isoNumber = "isoNumber";
+        Country expectedCountry = referenceDataFactory.getCountries().get(Country.GBR);
 
-        Country country = new Country(isoCodeThreeDigit).setIsoCodeTwoDigit(isoCodeTwoDigit).setIsoName(isoName).setIsoNumber(isoNumber);
+        // When
+        Country actualCountry = new Country(expectedCountry.getIsoCodeThreeDigit());
+        actualCountry.setIsoCodeTwoDigit(expectedCountry.getIsoCodeTwoDigit());
+        actualCountry.setIsoName(expectedCountry.getIsoName());
+        actualCountry.setIsoNumber(expectedCountry.getIsoNumber());
 
-        // When/Then
-        assertThat(country.getIsoCodeThreeDigit()).isEqualTo(isoCodeThreeDigit);
-        assertThat(country.getIsoCodeTwoDigit()).isEqualTo(isoCodeTwoDigit);
-        assertThat(country.getIsoName()).isEqualTo(isoName);
-        assertThat(country.getIsoNumber()).isEqualTo(isoNumber);
+        // Then
+        assertThat(actualCountry.getCreatedAt()).isEqualTo(expectedCountry.getCreatedAt());
+        assertThat(actualCountry.getId()).isEqualTo(expectedCountry.getId());
+        assertThat(actualCountry.getIsoCodeThreeDigit()).isEqualTo(expectedCountry.getIsoCodeThreeDigit());
+        assertThat(actualCountry.getIsoCodeTwoDigit()).isEqualTo(expectedCountry.getIsoCodeTwoDigit());
+        assertThat(actualCountry.getIsoName()).isEqualTo(expectedCountry.getIsoName());
+        assertThat(actualCountry.getIsoNumber()).isEqualTo(expectedCountry.getIsoNumber());
+        assertThat(actualCountry.getUpdatedAt()).isEqualTo(expectedCountry.getUpdatedAt());
+        assertThat(actualCountry.getUpdatedBy()).isEqualTo(expectedCountry.getUpdatedBy());
+        assertThat(actualCountry.getVersion()).isEqualTo(expectedCountry.getVersion());
     }
 
     @Test
@@ -60,6 +96,6 @@ public class CountryTest {
 
     @Test
     public void verifyEqualsConformsToContract() {
-        EqualsVerifier.forClass(Country.class).suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+        EqualsVerifier.forClass(Country.class).withOnlyTheseFields(Country.ENTITY_ATTRIBUTE_NAME_ISO_CODE_THREE_DIGIT).verify();
     }
 }

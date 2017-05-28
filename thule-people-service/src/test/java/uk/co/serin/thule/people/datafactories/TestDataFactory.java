@@ -64,14 +64,18 @@ public class TestDataFactory implements ReferenceDataFactory {
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
 
         return Person.PersonBuilder.aPerson().withUserId(JUNIT_TEST).
-                withSalutation("Mr").withFirstName("J").withSecondName("Unit").withSurname("Tester").
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(dateOfExpiry).
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(JUNIT_TEST + EMAIL_ADDRESS_SUFFIX).
+                withFirstName("J").
                 withPassword(JUNIT_TEST).
+                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
+                withSalutation("Mr").
+                withSecondName("Unit").
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
-                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).build();
+                withSurname("Tester").
+                build();
     }
 
     public Person newPerson(Person person) {
@@ -103,16 +107,20 @@ public class TestDataFactory implements ReferenceDataFactory {
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         Person person = Person.PersonBuilder.aPerson().withUserId(userId).
-                withSalutation("Miss").withFirstName("Elizabeth").withSecondName("K").withSurname("Scarlett").
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                withPassword(userId).
+                withFirstName("Elizabeth").
                 withHomeAddress(newOxfordStreetHomeAddress()).
-                withWorkAddress(newRegentStreetWorkAddress()).
+                withPassword(userId).
+                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
+                withSalutation("Miss").
+                withSecondName("K").
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
-                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).build();
+                withSurname("Scarlett").
+                withWorkAddress(newRegentStreetWorkAddress()).
+                build();
 
         person.addPhotographs(Stream.of(newPhotographMissScarlett(person)).collect(Collectors.toSet()));
 
@@ -160,12 +168,17 @@ public class TestDataFactory implements ReferenceDataFactory {
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
-        return Person.PersonBuilder.aPerson().withUserId(userId).
-                withSalutation("Miss").withFirstName("Elizabeth").withSecondName("K").withSurname("Scarlett").
+        return Person.PersonBuilder.aPerson().
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                withPassword(userId).build();
+                withFirstName("Elizabeth").
+                withPassword(userId).
+                withSalutation("Miss").
+                withSecondName("K").
+                withSurname("Scarlett").
+                withUserId(userId).
+                build();
     }
 }

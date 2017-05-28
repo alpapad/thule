@@ -2,6 +2,7 @@ package uk.co.serin.thule.people.domain.country;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -66,27 +67,24 @@ public final class Country extends DomainModel {
         return isoCodeTwoDigit;
     }
 
-    public Country setIsoCodeTwoDigit(String isoCodeTwoDigit) {
+    public void setIsoCodeTwoDigit(String isoCodeTwoDigit) {
         this.isoCodeTwoDigit = isoCodeTwoDigit;
-        return this;
     }
 
     public String getIsoName() {
         return isoName;
     }
 
-    public Country setIsoName(String isoName) {
+    public void setIsoName(String isoName) {
         this.isoName = isoName;
-        return this;
     }
 
     public String getIsoNumber() {
         return isoNumber;
     }
 
-    public Country setIsoNumber(String isoNumber) {
+    public void setIsoNumber(String isoNumber) {
         this.isoNumber = isoNumber;
-        return this;
     }
 
     @Override
@@ -115,5 +113,83 @@ public final class Country extends DomainModel {
                 .add(String.format("isoName=%s", isoName))
                 .add(String.format("isoNumber=%s", isoNumber))
                 .toString();
+    }
+
+    public static final class CountryBuilder {
+        private LocalDateTime createdAt;
+        private Long id;
+        private String isoCodeThreeDigit;
+        private String isoCodeTwoDigit;
+        private String isoName;
+        private String isoNumber;
+        private LocalDateTime updatedAt;
+
+        private String updatedBy;
+        private Long version;
+
+        private CountryBuilder() {
+        }
+
+        public static CountryBuilder aCountry() {
+            return new CountryBuilder();
+        }
+
+        public Country build() {
+            Country country = new Country(isoCodeThreeDigit);
+            country.setCreatedAt(createdAt);
+            country.setId(id);
+            country.setIsoCodeTwoDigit(isoCodeTwoDigit);
+            country.setIsoName(isoName);
+            country.setIsoNumber(isoNumber);
+            country.setUpdatedAt(updatedAt);
+            country.setUpdatedBy(updatedBy);
+            country.setVersion(version);
+            return country;
+        }
+
+        public CountryBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public CountryBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public CountryBuilder withIsoCodeThreeDigit(String isoCodeThreeDigit) {
+            this.isoCodeThreeDigit = isoCodeThreeDigit;
+            return this;
+        }
+
+        public CountryBuilder withIsoCodeTwoDigit(String isoCodeTwoDigit) {
+            this.isoCodeTwoDigit = isoCodeTwoDigit;
+            return this;
+        }
+
+        public CountryBuilder withIsoName(String isoName) {
+            this.isoName = isoName;
+            return this;
+        }
+
+        public CountryBuilder withIsoNumber(String isoNumber) {
+            this.isoNumber = isoNumber;
+            return this;
+        }
+
+        public CountryBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public CountryBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public CountryBuilder withVersion(Long version) {
+            this.version = version;
+            return this;
+        }
     }
 }

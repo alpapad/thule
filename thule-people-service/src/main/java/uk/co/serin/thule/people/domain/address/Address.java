@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 @Table(name = DomainModel.ENTITY_NAME_ADDRESSES)
 @DiscriminatorColumn(name = DomainModel.DATABASE_COLUMN_ADDRESS_TYPE, discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(value = DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_UNSPECIFIED)
-public abstract class Address<T extends Address> extends DomainModel {
+public abstract class Address extends DomainModel {
     private static final int ADDRESS_LINE1_MAX_LENGTH = 30;
     private static final int ADDRESS_LINE2_MAX_LENGTH = 30;
     private static final int COUNTY_MAX_LENGTH = 30;

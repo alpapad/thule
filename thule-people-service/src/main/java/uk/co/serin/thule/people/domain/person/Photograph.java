@@ -132,7 +132,6 @@ public final class Photograph extends DomainModel {
 
     public static final class PhotographBuilder {
         private LocalDateTime createdAt;
-        private String hash;
         private Long id;
         private Person person;
         private byte[] photo;

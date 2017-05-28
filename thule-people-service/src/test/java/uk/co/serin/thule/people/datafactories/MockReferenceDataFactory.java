@@ -183,9 +183,12 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addCountryGb() {
-        Country country = new Country(Country.GBR).setIsoCodeTwoDigit("GB").setIsoName("United Kingdom").setIsoNumber("826");
-        ReflectionTestUtils.setField(country, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(country, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Country country = Country.CountryBuilder.aCountry().
+                withIsoCodeThreeDigit(Country.GBR).
+                withIsoCodeTwoDigit("GB").
+                withIsoName("United Kingdom").
+                withIsoNumber("826").
+                build();
         countries.put(country.getIsoCodeThreeDigit(), country);
     }
 
