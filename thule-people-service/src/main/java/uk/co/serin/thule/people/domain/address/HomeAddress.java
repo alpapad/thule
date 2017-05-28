@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue(DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_HOME)
-public final class HomeAddress extends Address<HomeAddress> {
+public final class HomeAddress extends Address {
     /**
      * Default constructor required by Hibernate
      */
