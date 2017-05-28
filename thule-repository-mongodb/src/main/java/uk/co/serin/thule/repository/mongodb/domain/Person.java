@@ -1,6 +1,5 @@
 package uk.co.serin.thule.repository.mongodb.domain;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -99,20 +98,6 @@ public final class Person {
     public Person(String userId) {
         this.userId = userId;
         initialise();
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param person Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Person(Person person) {
-        // Copy business key
-        this.userId = person.userId;
-        // Copy mutable properties
-        BeanUtils.copyProperties(person, this);
     }
 
     private void initialise() {
@@ -310,20 +295,20 @@ public final class Person {
 
         public Person build() {
             Person person = new Person(userId);
-            person.updatedAt = this.updatedAt;
-            person.emailAddress = this.emailAddress;
-            person.id = this.id;
             person.createdAt = this.createdAt;
-            person.dateOfPasswordExpiry = this.dateOfPasswordExpiry;
             person.dateOfBirth = this.dateOfBirth;
-            person.version = this.version;
-            person.salutation = this.salutation;
-            person.firstName = this.firstName;
             person.dateOfExpiry = this.dateOfExpiry;
-            person.surname = this.surname;
-            person.secondName = this.secondName;
+            person.dateOfPasswordExpiry = this.dateOfPasswordExpiry;
+            person.emailAddress = this.emailAddress;
+            person.firstName = this.firstName;
+            person.id = this.id;
             person.password = this.password;
+            person.salutation = this.salutation;
+            person.secondName = this.secondName;
+            person.surname = this.surname;
+            person.updatedAt = this.updatedAt;
             person.updatedBy = this.updatedBy;
+            person.version = this.version;
             return person;
         }
 

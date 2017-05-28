@@ -30,7 +30,7 @@ public class PersonRepositoryIntTest {
         // Given
         Person testPerson = newPerson();
 
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = newPerson(testPerson);
         expectedPerson.setVersion(0L);
 
         // When
@@ -68,6 +68,25 @@ public class PersonRepositoryIntTest {
                 withSecondName("K").
                 withSurname("Scarlett").
                 withUserId(userId).build();
+    }
+
+    private Person newPerson(Person person) {
+        return Person.PersonBuilder.aPerson().
+                withCreatedAt(person.getCreatedAt()).
+                withDateOfBirth(person.getDateOfBirth()).
+                withDateOfExpiry(person.getDateOfExpiry()).
+                withDateOfPasswordExpiry(person.getDateOfPasswordExpiry()).
+                withEmailAddress(person.getEmailAddress()).
+                withFirstName(person.getFirstName()).
+                withId(person.getId()).
+                withPassword(person.getPassword()).
+                withSalutation(person.getSalutation()).
+                withSecondName(person.getSecondName()).
+                withSurname(person.getSurname()).
+                withUpdatedAt(person.getUpdatedAt()).
+                withUpdatedBy(person.getUpdatedBy()).
+                withUserId(person.getUserId()).
+                withVersion(person.getVersion()).build();
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -149,7 +168,7 @@ public class PersonRepositoryIntTest {
         testPerson.setSecondName("updatedSecondName");
         testPerson.setSurname("updatedSurname");
 
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = newPerson(testPerson);
         expectedPerson.setVersion(testPerson.getVersion() + 1);
 
         Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value

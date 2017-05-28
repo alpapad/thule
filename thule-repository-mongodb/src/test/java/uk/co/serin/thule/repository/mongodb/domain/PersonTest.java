@@ -1,7 +1,6 @@
 package uk.co.serin.thule.repository.mongodb.domain;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -91,18 +90,6 @@ public class PersonTest {
         assertThat(person.getDateOfExpiry()).isEqualTo(person.getDateOfPasswordExpiry());
         assertThat(person.getUserId()).isEqualTo(userId);
         assertThat(person.getUserId()).isEqualTo(person.getPassword());
-    }
-
-    @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        Person expectedPerson = newPersonWithAllAssociations();
-
-        // When
-        Person actualPerson = new Person(expectedPerson);
-
-        // Then
-        assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
     }
 
     @Test
@@ -207,24 +194,12 @@ public class PersonTest {
     }
 
     @Test
-    public void shallowcopyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        Person expectedPerson = new Person("userId");
-
-        // When
-        Person actualPerson = new Person(expectedPerson);
-
-        // Then
-        assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
-    }
-
-    @Test
     public void toStringIsOverridden() {
         assertThat(new Person("userId").toString()).contains(Person.ENTITY_ATTRIBUTE_NAME_USER_ID);
     }
 
     @Test
     public void verifyEqualsConformsToContract() {
-        EqualsVerifier.forClass(Person.class).suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+        EqualsVerifier.forClass(Person.class).withOnlyTheseFields(Person.ENTITY_ATTRIBUTE_NAME_USER_ID).verify();
     }
 }
