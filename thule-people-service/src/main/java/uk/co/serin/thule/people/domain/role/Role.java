@@ -1,7 +1,5 @@
 package uk.co.serin.thule.people.domain.role;
 
-import org.springframework.beans.BeanUtils;
-
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.util.Objects;
@@ -36,22 +34,6 @@ public final class Role extends DomainModel {
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
     Role() {
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param role Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Role(Role role) {
-        // Copy mutable inherited properties
-        super(role);
-        // Copy business key
-        this.code = role.code;
-        // Copy mutable properties
-        BeanUtils.copyProperties(role, this);
     }
 
     /**

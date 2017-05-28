@@ -1,28 +1,60 @@
 package uk.co.serin.thule.people.domain.address;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.State;
-import uk.co.serin.thule.people.domain.state.StateCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WorkAddressTest {
-    private final MockReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private final TestDataFactory testDataFactory = new TestDataFactory();
+
+    @Test
+    public void builderAndGettersOperateOnTheSameField() {
+        // Given
+        WorkAddress expectedWorkAddress = testDataFactory.newRegentStreetWorkAddress();
+
+        // When
+        WorkAddress actualWorkAddress = WorkAddress.WorkAddressBuilder.aWorkAddress().
+                withAddressLine1(expectedWorkAddress.getAddressLine1()).
+                withAddressLine2(expectedWorkAddress.getAddressLine2()).
+                withCountry(expectedWorkAddress.getCountry()).
+                withCounty(expectedWorkAddress.getCounty()).
+                withCreatedAt(expectedWorkAddress.getCreatedAt()).
+                withId(expectedWorkAddress.getId()).
+                withPostCode(expectedWorkAddress.getPostCode()).
+                withState(expectedWorkAddress.getState()).
+                withTown(expectedWorkAddress.getTown()).
+                withUpdatedAt(expectedWorkAddress.getUpdatedAt()).
+                withUpdatedBy(expectedWorkAddress.getUpdatedBy()).
+                withVersion(expectedWorkAddress.getVersion()).build();
+
+        // Then
+        assertThat(actualWorkAddress.getAddressLine1()).isEqualTo(expectedWorkAddress.getAddressLine1());
+        assertThat(actualWorkAddress.getAddressLine2()).isEqualTo(expectedWorkAddress.getAddressLine2());
+        assertThat(actualWorkAddress.getCountry()).isEqualTo(expectedWorkAddress.getCountry());
+        assertThat(actualWorkAddress.getCounty()).isEqualTo(expectedWorkAddress.getCounty());
+        assertThat(actualWorkAddress.getCreatedAt()).isEqualTo(expectedWorkAddress.getCreatedAt());
+        assertThat(actualWorkAddress.getId()).isEqualTo(expectedWorkAddress.getId());
+        assertThat(actualWorkAddress.getPostCode()).isEqualTo(expectedWorkAddress.getPostCode());
+        assertThat(actualWorkAddress.getState()).isEqualTo(expectedWorkAddress.getState());
+        assertThat(actualWorkAddress.getTown()).isEqualTo(expectedWorkAddress.getTown());
+        assertThat(actualWorkAddress.getUpdatedAt()).isEqualTo(expectedWorkAddress.getUpdatedAt());
+        assertThat(actualWorkAddress.getUpdatedBy()).isEqualTo(expectedWorkAddress.getUpdatedBy());
+        assertThat(actualWorkAddress.getVersion()).isEqualTo(expectedWorkAddress.getVersion());
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
         // Given
         String addressLine1 = "addressLine1";
-        Country country = referenceDataFactory.getCountries().get(Country.GBR);
+        Country country = testDataFactory.getCountries().get(Country.GBR);
         String postCode = "postCode";
 
         // When
@@ -32,19 +64,6 @@ public class WorkAddressTest {
         assertThat(workAddress.getAddressLine1()).isEqualTo(addressLine1);
         assertThat(workAddress.getCountry()).isEqualTo(country);
         assertThat(workAddress.getPostCode()).isEqualTo(postCode);
-    }
-
-    @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        WorkAddress expectedWorkAddress = new WorkAddress("Regent Street", "EC4", referenceDataFactory.getCountries().get(Country.GBR)).
-                setAddressLine2("Green").setCounty("Greater London").setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).setTown("London");
-
-        // When
-        WorkAddress actualWorkAddress = new WorkAddress(expectedWorkAddress);
-
-        // Then
-        assertThat(actualWorkAddress).isEqualToComparingFieldByField(expectedWorkAddress);
     }
 
     @Test
@@ -61,32 +80,35 @@ public class WorkAddressTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        String addressLine1 = "addressLine1";
-        String addressLine2 = "addressLine2";
-        Country country = referenceDataFactory.getCountries().get(Country.GBR);
-        String county = "county";
-        String postCode = "postCode";
-        State state = referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED);
-        String town = "town";
+        WorkAddress expectedWorkAddress = testDataFactory.newRegentStreetWorkAddress();
 
-        WorkAddress workAddress = new WorkAddress(addressLine1, postCode, country).
-                setAddressLine2(addressLine2).setCounty(county).setState(state).setTown(town);
+        // When
+        WorkAddress actualWorkAddress = new WorkAddress(expectedWorkAddress.getAddressLine1(), expectedWorkAddress.getPostCode(), expectedWorkAddress.getCountry());
+        actualWorkAddress.setAddressLine2(expectedWorkAddress.getAddressLine2());
+        actualWorkAddress.setCounty(expectedWorkAddress.getCounty());
+        actualWorkAddress.setState(expectedWorkAddress.getState());
+        actualWorkAddress.setTown(expectedWorkAddress.getTown());
 
-        // When/Then
-        assertThat(workAddress.getAddressLine1()).isEqualTo(addressLine1);
-        assertThat(workAddress.getAddressLine2()).isEqualTo(addressLine2);
-        assertThat(workAddress.getCountry()).isEqualTo(country);
-        assertThat(workAddress.getCounty()).isEqualTo(county);
-        assertThat(workAddress.getPostCode()).isEqualTo(postCode);
-        assertThat(workAddress.getState()).isEqualTo(state);
-        assertThat(workAddress.getTown()).isEqualTo(town);
+        // Then
+        assertThat(actualWorkAddress.getAddressLine1()).isEqualTo(expectedWorkAddress.getAddressLine1());
+        assertThat(actualWorkAddress.getAddressLine2()).isEqualTo(expectedWorkAddress.getAddressLine2());
+        assertThat(actualWorkAddress.getCountry()).isEqualTo(expectedWorkAddress.getCountry());
+        assertThat(actualWorkAddress.getCounty()).isEqualTo(expectedWorkAddress.getCounty());
+        assertThat(actualWorkAddress.getCreatedAt()).isEqualTo(expectedWorkAddress.getCreatedAt());
+        assertThat(actualWorkAddress.getId()).isEqualTo(expectedWorkAddress.getId());
+        assertThat(actualWorkAddress.getPostCode()).isEqualTo(expectedWorkAddress.getPostCode());
+        assertThat(actualWorkAddress.getState()).isEqualTo(expectedWorkAddress.getState());
+        assertThat(actualWorkAddress.getTown()).isEqualTo(expectedWorkAddress.getTown());
+        assertThat(actualWorkAddress.getUpdatedAt()).isEqualTo(expectedWorkAddress.getUpdatedAt());
+        assertThat(actualWorkAddress.getUpdatedBy()).isEqualTo(expectedWorkAddress.getUpdatedBy());
+        assertThat(actualWorkAddress.getVersion()).isEqualTo(expectedWorkAddress.getVersion());
     }
 
     @Test
     public void toStringIsOverridden() {
         // Given
         String addressLine1 = "addressLine1";
-        Country country = referenceDataFactory.getCountries().get(Country.GBR);
+        Country country = testDataFactory.getCountries().get(Country.GBR);
         String postCode = "postCode";
 
         // When
@@ -100,6 +122,7 @@ public class WorkAddressTest {
     public void verifyEqualsConformsToContract() {
         EqualsVerifier.forClass(WorkAddress.class).
                 withPrefabValues(Action.class, new Action(ActionCode.ADDRESS_DISABLE), new Action(ActionCode.ADDRESS_DISCARD)).
-                suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+                withOnlyTheseFields(Address.ENTITY_ATTRIBUTE_NAME_ADDRESS_LINE_1, Address.ENTITY_ATTRIBUTE_NAME_COUNTRY, Address.ENTITY_ATTRIBUTE_NAME_POST_CODE).
+                verify();
     }
 }

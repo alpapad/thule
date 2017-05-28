@@ -30,8 +30,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import uk.co.serin.thule.people.datafactories.DataFactory;
+import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.state.StateCode;
@@ -55,7 +56,6 @@ public class RestfulServiceIntTest {
     private ActionRepository actionRepository;
     @Autowired
     private CountryRepository countryRepository;
-    private DataFactory dataFactory;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -64,14 +64,14 @@ public class RestfulServiceIntTest {
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private String urlForHealth = "/health";
+    private TestDataFactory testDataFactory;
     private String urlForPeople = "/" + DomainModel.ENTITY_NAME_PEOPLE;
 
     @Test
     public void createPerson() {
         // Given
-        Person testPerson = dataFactory.getTestDataFactory().newPersonWithoutAnyAssociations();
-        Person expectedPerson = new Person(testPerson);
+        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         ResponseEntity<Person> responseEntity = restTemplate.postForEntity(urlForPeople, testPerson, Person.class);
@@ -94,7 +94,7 @@ public class RestfulServiceIntTest {
     @Test
     public void deletePerson() {
         // Given
-        Person person = createTestPerson(dataFactory.getTestDataFactory().newPersonWithoutAnyAssociations());
+        Person person = createTestPerson(testDataFactory.newPersonWithoutAnyAssociations());
 
         // When
         restTemplate.delete(urlForPeople + ID, person.getId());
@@ -105,10 +105,16 @@ public class RestfulServiceIntTest {
         assertThat(person).isNull();
     }
 
+    private Person createTestPerson(Person expectedPerson) {
+        Person person = testDataFactory.newPerson(expectedPerson);
+        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        return personRepository.save(person);
+    }
+
     @Test
     public void getAllPeople() {
         // Given
-        Person testPerson = dataFactory.getTestDataFactory().newPersonWithoutAnyAssociations();
+        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
@@ -126,7 +132,7 @@ public class RestfulServiceIntTest {
     @Test
     public void getPerson() {
         // Given
-        Person testPerson = dataFactory.getTestDataFactory().newPersonWithoutAnyAssociations();
+        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
@@ -147,7 +153,7 @@ public class RestfulServiceIntTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(urlForHealth, HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, null, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -156,10 +162,11 @@ public class RestfulServiceIntTest {
 
     @Before
     public void setUp() {
-        dataFactory = new DataFactory(new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository));
+        ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
+        testDataFactory = new TestDataFactory(referenceDataFactory);
 
         // Create security context
-        Person jUnitTestPerson = dataFactory.getTestDataFactory().newJUnitTest();
+        Person jUnitTestPerson = testDataFactory.newJUnitTest();
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(jUnitTestPerson.getUserId(), jUnitTestPerson.getPassword()));
 
@@ -185,18 +192,18 @@ public class RestfulServiceIntTest {
     @Test
     public void updatePerson() {
         // Given
-        Person testPerson = dataFactory.getTestDataFactory().newPersonWithoutAnyAssociations();
+        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
         testPerson = createTestPerson(testPerson);
         long id = testPerson.getId();
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
         testPerson.setSurname("updatedSurname");
-        testPerson.        setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
-                testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
-                testPerson.setPassword("updatedPassword");
+        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
+        testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
+        testPerson.setPassword("updatedPassword");
 
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
         expectedPerson.setState(null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
@@ -213,11 +220,5 @@ public class RestfulServiceIntTest {
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
-    }
-
-    private Person createTestPerson(Person expectedPerson) {
-        Person person = new Person(expectedPerson);
-        person.setState(dataFactory.getReferenceDataFactory().getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(person);
     }
 }

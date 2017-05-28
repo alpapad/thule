@@ -1,7 +1,5 @@
 package uk.co.serin.thule.people.domain.country;
 
-import org.springframework.beans.BeanUtils;
-
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.util.Objects;
@@ -47,22 +45,6 @@ public final class Country extends DomainModel {
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
     Country() {
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param country Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Country(Country country) {
-        // Copy mutable inherited properties
-        super(country);
-        // Copy business key
-        this.isoCodeThreeDigit = country.isoCodeThreeDigit;
-        // Copy mutable properties
-        BeanUtils.copyProperties(country, this);
     }
 
     /**

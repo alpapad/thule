@@ -2,8 +2,6 @@ package uk.co.serin.thule.people.domain.state;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.beans.BeanUtils;
-
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.util.Objects;
@@ -46,22 +44,6 @@ public final class Action extends DomainModel {
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
     Action() {
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param action Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Action(Action action) {
-        // Copy mutable inherited properties
-        super(action);
-        // Copy business key
-        this.code = action.code;
-        // Copy mutable properties
-        BeanUtils.copyProperties(action, this);
     }
 
     /**

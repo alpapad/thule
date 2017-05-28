@@ -1,28 +1,60 @@
 package uk.co.serin.thule.people.domain.address;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.State;
-import uk.co.serin.thule.people.domain.state.StateCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HomeAddressTest {
-    private final MockReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private final TestDataFactory testDataFactory = new TestDataFactory();
+
+    @Test
+    public void builderAndGettersOperateOnTheSameField() {
+        // Given
+        HomeAddress expectedHomeAddress = testDataFactory.newOxfordStreetHomeAddress();
+
+        // When
+        HomeAddress actualHomeAddress = HomeAddress.HomeAddressBuilder.aHomeAddress().
+                withAddressLine1(expectedHomeAddress.getAddressLine1()).
+                withAddressLine2(expectedHomeAddress.getAddressLine2()).
+                withCountry(expectedHomeAddress.getCountry()).
+                withCounty(expectedHomeAddress.getCounty()).
+                withCreatedAt(expectedHomeAddress.getCreatedAt()).
+                withId(expectedHomeAddress.getId()).
+                withPostCode(expectedHomeAddress.getPostCode()).
+                withState(expectedHomeAddress.getState()).
+                withTown(expectedHomeAddress.getTown()).
+                withUpdatedAt(expectedHomeAddress.getUpdatedAt()).
+                withUpdatedBy(expectedHomeAddress.getUpdatedBy()).
+                withVersion(expectedHomeAddress.getVersion()).build();
+
+        // Then
+        assertThat(actualHomeAddress.getAddressLine1()).isEqualTo(expectedHomeAddress.getAddressLine1());
+        assertThat(actualHomeAddress.getAddressLine2()).isEqualTo(expectedHomeAddress.getAddressLine2());
+        assertThat(actualHomeAddress.getCountry()).isEqualTo(expectedHomeAddress.getCountry());
+        assertThat(actualHomeAddress.getCounty()).isEqualTo(expectedHomeAddress.getCounty());
+        assertThat(actualHomeAddress.getCreatedAt()).isEqualTo(expectedHomeAddress.getCreatedAt());
+        assertThat(actualHomeAddress.getId()).isEqualTo(expectedHomeAddress.getId());
+        assertThat(actualHomeAddress.getPostCode()).isEqualTo(expectedHomeAddress.getPostCode());
+        assertThat(actualHomeAddress.getState()).isEqualTo(expectedHomeAddress.getState());
+        assertThat(actualHomeAddress.getTown()).isEqualTo(expectedHomeAddress.getTown());
+        assertThat(actualHomeAddress.getUpdatedAt()).isEqualTo(expectedHomeAddress.getUpdatedAt());
+        assertThat(actualHomeAddress.getUpdatedBy()).isEqualTo(expectedHomeAddress.getUpdatedBy());
+        assertThat(actualHomeAddress.getVersion()).isEqualTo(expectedHomeAddress.getVersion());
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
         // Given
         String addressLine1 = "addressLine1";
-        Country country = referenceDataFactory.getCountries().get(Country.GBR);
+        Country country = testDataFactory.getCountries().get(Country.GBR);
         String postCode = "postCode";
 
         // When
@@ -32,19 +64,6 @@ public class HomeAddressTest {
         assertThat(homeAddress.getAddressLine1()).isEqualTo(addressLine1);
         assertThat(homeAddress.getCountry()).isEqualTo(country);
         assertThat(homeAddress.getPostCode()).isEqualTo(postCode);
-    }
-
-    @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        HomeAddress expectedHomeAddress = new HomeAddress("Oxford Street", "EC3", referenceDataFactory.getCountries().get(Country.GBR)).
-                setAddressLine2("Green").setCounty("Greater London").setState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).setTown("London");
-
-        // When
-        HomeAddress actualHomeAddress = new HomeAddress(expectedHomeAddress);
-
-        // Then
-        assertThat(actualHomeAddress).isEqualToComparingFieldByField(expectedHomeAddress);
     }
 
     @Test
@@ -61,32 +80,35 @@ public class HomeAddressTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        String addressLine1 = "addressLine1";
-        String addressLine2 = "addressLine2";
-        Country country = referenceDataFactory.getCountries().get(Country.GBR);
-        String county = "county";
-        String postCode = "postCode";
-        State state = referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED);
-        String town = "town";
+        HomeAddress expectedHomeAddress = testDataFactory.newOxfordStreetHomeAddress();
 
-        HomeAddress homeAddress = new HomeAddress(addressLine1, postCode, country).
-                setAddressLine2(addressLine2).setCounty(county).setState(state).setTown(town);
+        // When
+        HomeAddress actualHomeAddress = new HomeAddress(expectedHomeAddress.getAddressLine1(), expectedHomeAddress.getPostCode(), expectedHomeAddress.getCountry());
+        actualHomeAddress.setAddressLine2(expectedHomeAddress.getAddressLine2());
+        actualHomeAddress.setCounty(expectedHomeAddress.getCounty());
+        actualHomeAddress.setState(expectedHomeAddress.getState());
+        actualHomeAddress.setTown(expectedHomeAddress.getTown());
 
-        // When/Then
-        assertThat(homeAddress.getAddressLine1()).isEqualTo(addressLine1);
-        assertThat(homeAddress.getAddressLine2()).isEqualTo(addressLine2);
-        assertThat(homeAddress.getCountry()).isEqualTo(country);
-        assertThat(homeAddress.getCounty()).isEqualTo(county);
-        assertThat(homeAddress.getPostCode()).isEqualTo(postCode);
-        assertThat(homeAddress.getState()).isEqualTo(state);
-        assertThat(homeAddress.getTown()).isEqualTo(town);
+        // Then
+        assertThat(actualHomeAddress.getAddressLine1()).isEqualTo(expectedHomeAddress.getAddressLine1());
+        assertThat(actualHomeAddress.getAddressLine2()).isEqualTo(expectedHomeAddress.getAddressLine2());
+        assertThat(actualHomeAddress.getCountry()).isEqualTo(expectedHomeAddress.getCountry());
+        assertThat(actualHomeAddress.getCounty()).isEqualTo(expectedHomeAddress.getCounty());
+        assertThat(actualHomeAddress.getCreatedAt()).isEqualTo(expectedHomeAddress.getCreatedAt());
+        assertThat(actualHomeAddress.getId()).isEqualTo(expectedHomeAddress.getId());
+        assertThat(actualHomeAddress.getPostCode()).isEqualTo(expectedHomeAddress.getPostCode());
+        assertThat(actualHomeAddress.getState()).isEqualTo(expectedHomeAddress.getState());
+        assertThat(actualHomeAddress.getTown()).isEqualTo(expectedHomeAddress.getTown());
+        assertThat(actualHomeAddress.getUpdatedAt()).isEqualTo(expectedHomeAddress.getUpdatedAt());
+        assertThat(actualHomeAddress.getUpdatedBy()).isEqualTo(expectedHomeAddress.getUpdatedBy());
+        assertThat(actualHomeAddress.getVersion()).isEqualTo(expectedHomeAddress.getVersion());
     }
 
     @Test
     public void toStringIsOverridden() {
         // Given
         String addressLine1 = "addressLine1";
-        Country country = referenceDataFactory.getCountries().get(Country.GBR);
+        Country country = testDataFactory.getCountries().get(Country.GBR);
         String postCode = "postCode";
 
         // When
@@ -100,6 +122,7 @@ public class HomeAddressTest {
     public void verifyEqualsConformsToContract() {
         EqualsVerifier.forClass(HomeAddress.class).
                 withPrefabValues(Action.class, new Action(ActionCode.ADDRESS_DISABLE), new Action(ActionCode.ADDRESS_DISCARD)).
-                suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+                withOnlyTheseFields(Address.ENTITY_ATTRIBUTE_NAME_ADDRESS_LINE_1, Address.ENTITY_ATTRIBUTE_NAME_COUNTRY, Address.ENTITY_ATTRIBUTE_NAME_POST_CODE).
+                verify();
     }
 }

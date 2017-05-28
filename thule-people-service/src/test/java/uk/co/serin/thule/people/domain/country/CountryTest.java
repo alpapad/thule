@@ -26,18 +26,6 @@ public class CountryTest {
     }
 
     @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        Country expectedCountry = referenceDataFactory.getCountries().get(Country.GBR);
-
-        // When
-        Country actualCountry = new Country(expectedCountry);
-
-        // Then
-        assertThat(actualCountry).isEqualToComparingFieldByField(expectedCountry);
-    }
-
-    @Test
     public void defaultConstructorCreatesInstanceSuccessfully() {
         // Given
 

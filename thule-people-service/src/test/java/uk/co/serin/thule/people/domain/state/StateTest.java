@@ -26,18 +26,6 @@ public class StateTest {
     }
 
     @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
-
-        // When
-        State actualState = new State(expectedState);
-
-        // Then
-        assertThat(actualState).isEqualToComparingFieldByField(expectedState);
-    }
-
-    @Test
     public void defaultConstructorCreatesInstanceSuccessfully() {
         // Given
 

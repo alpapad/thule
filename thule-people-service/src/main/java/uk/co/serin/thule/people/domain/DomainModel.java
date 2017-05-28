@@ -105,40 +105,44 @@ public abstract class DomainModel {
     @Column(nullable = false)
     private Long version;
 
-    protected DomainModel() {
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param domainModel Object to be copied
-     */
-    protected DomainModel(DomainModel domainModel) {
-        createdAt = domainModel.getCreatedAt();
-        id = domainModel.getId();
-        updatedAt = domainModel.getUpdatedAt();
-        updatedBy = domainModel.getUpdatedBy();
-        version = domainModel.getVersion();
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    protected void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
         return id;
     }
 
+    protected void setId(Long id) {
+        this.id = id;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    protected void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getUpdatedBy() {
         return updatedBy;
     }
 
+    protected void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
     public Long getVersion() {
         return version;
+    }
+
+    protected void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override

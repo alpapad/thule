@@ -26,18 +26,6 @@ public class RoleTest {
     }
 
     @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        Role expectedRole = referenceDataFactory.getRoles().get(RoleCode.ROLE_ADMINISTRATOR);
-
-        // When
-        Role actualRole = new Role(expectedRole);
-
-        // Then
-        assertThat(actualRole).isEqualToComparingFieldByField(expectedRole);
-    }
-
-    @Test
     public void defaultConstructorCreatesInstanceSuccessfully() {
         // Given
 

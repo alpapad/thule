@@ -26,18 +26,6 @@ public class ActionTest {
     }
 
     @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
-        // Given
-        Action expectedAction = referenceDataFactory.getActions().get(ActionCode.ADDRESS_UPDATE);
-
-        // When
-        Action actualAction = new Action(expectedAction);
-
-        // Then
-        assertThat(actualAction).isEqualToComparingFieldByField(expectedAction);
-    }
-
-    @Test
     public void defaultConstructorCreatesInstanceSuccessfully() {
         // Given
 

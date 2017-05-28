@@ -2,7 +2,6 @@ package uk.co.serin.thule.people.domain.state;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Transient;
 
 import uk.co.serin.thule.people.domain.DomainModel;
@@ -60,23 +59,6 @@ public final class State extends DomainModel {
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
     State() {
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param state Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public State(State state) {
-        // Copy mutable inherited properties
-        super(state);
-        // Copy business key
-        this.code = state.code;
-        // Copy mutable properties
-        BeanUtils.copyProperties(state, this);
-        addActions(state.getActions().stream().map(Action::new));
     }
 
     /**

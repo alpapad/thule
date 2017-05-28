@@ -2,7 +2,6 @@ package uk.co.serin.thule.people.domain.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
 import uk.co.serin.thule.people.domain.DomainModel;
@@ -20,7 +19,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -140,26 +138,6 @@ public final class Person extends DomainModel {
         Assert.hasText(userId, "userId must have text");
         this.userId = userId;
         initialise();
-    }
-
-    /**
-     * Copy object constructor
-     *
-     * @param person Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Person(Person person) {
-        // Copy mutable inherited properties
-        super(person);
-        // Copy business key
-        this.userId = person.userId;
-        // Copy mutable properties
-        BeanUtils.copyProperties(person, this);
-        setHomeAddress(person.getHomeAddress() == null ? null : new HomeAddress(person.getHomeAddress()));
-        setWorkAddress(person.getWorkAddress() == null ? null : new WorkAddress(person.getWorkAddress()));
-        addPhotographs(person.getPhotographs().stream().map(photograph -> new Photograph(photograph, this)).collect(Collectors.toSet()));
-        addRoles(person.getRoles().stream().map(Role::new).collect(Collectors.toSet()));
     }
 
     private void initialise() {
@@ -385,11 +363,10 @@ public final class Person extends DomainModel {
     }
 
     public static final class PersonBuilder {
-        protected LocalDateTime createdAt;
-        protected Long id;
-        protected LocalDateTime updatedAt;
-
-        protected String updatedBy;
+        private LocalDateTime createdAt;
+        private Long id;
+        private LocalDateTime updatedAt;
+        private String updatedBy;
         protected Long version;
         private LocalDate dateOfBirth;
         private LocalDate dateOfExpiry;
@@ -416,21 +393,31 @@ public final class Person extends DomainModel {
 
         public Person build() {
             Person person = new Person(userId);
+            person.setCreatedAt(createdAt);
             person.setDateOfBirth(dateOfBirth);
             person.setDateOfExpiry(dateOfExpiry);
             person.setDateOfPasswordExpiry(dateOfPasswordExpiry);
             person.setEmailAddress(emailAddress);
             person.setFirstName(firstName);
             person.setHomeAddress(homeAddress);
+            person.setId(id);
             person.setPassword(password);
             person.setSalutation(salutation);
             person.setSecondName(secondName);
             person.setState(state);
             person.setSurname(surname);
+            person.setUpdatedAt(updatedAt);
+            person.setUpdatedBy(updatedBy);
+            person.setVersion(version);
             person.setWorkAddress(workAddress);
             person.addRoles(this.roles);
             person.addPhotographs(this.photographs);
             return person;
+        }
+
+        public PersonBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
         }
 
         public PersonBuilder withDateOfBirth(LocalDate dateOfBirth) {
@@ -460,6 +447,11 @@ public final class Person extends DomainModel {
 
         public PersonBuilder withHomeAddress(HomeAddress homeAddress) {
             this.homeAddress = homeAddress;
+            return this;
+        }
+
+        public PersonBuilder withId(Long id) {
+            this.id = id;
             return this;
         }
 
@@ -498,8 +490,24 @@ public final class Person extends DomainModel {
             return this;
         }
 
+        public PersonBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+
+        public PersonBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
         public PersonBuilder withUserId(String userId) {
             this.userId = userId;
+            return this;
+        }
+
+        public PersonBuilder withVersion(Long version) {
+            this.version = version;
             return this;
         }
 

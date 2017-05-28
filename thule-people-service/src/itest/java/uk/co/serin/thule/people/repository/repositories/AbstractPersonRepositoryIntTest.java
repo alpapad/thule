@@ -13,7 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
-import uk.co.serin.thule.people.datafactories.DataFactory;
+import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
@@ -23,9 +23,9 @@ import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.Photograph;
 import uk.co.serin.thule.people.domain.role.Role;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
 
@@ -54,7 +54,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         person = personRepository.findOne(person.getId());
 
         // When
-        person.getPhotographs().stream().collect(Collectors.toSet());
+        new HashSet<>(person.getPhotographs());
 
         // Then (see expected in @Test annotation)
     }
@@ -66,7 +66,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         person = personRepository.findOne(person.getId());
 
         // When
-        person.getRoles().stream().collect(Collectors.toSet());
+        new HashSet<>(person.getPhotographs());
 
         // Then (see expected in @Test annotation)
     }
@@ -82,8 +82,8 @@ public abstract class AbstractPersonRepositoryIntTest {
         Set<Role> roles = person.getRoles();
 
         // Then
-        assertThat(photographs.stream().collect(Collectors.toSet())).isNotEmpty();
-        assertThat(roles.stream().collect(Collectors.toSet())).isNotEmpty();
+        assertThat(new HashSet<>(photographs)).isNotEmpty();
+        assertThat(new HashSet<>(roles)).isNotEmpty();
     }
 
     @Test
@@ -91,7 +91,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void create() {
         // Given
         Person testPerson = testDataFactory.newPersonWithAllAssociations();
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, 0L);
 
         // When
@@ -164,7 +164,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void findAll() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         List<Person> actualPeople = personRepository.findAll();
@@ -178,7 +178,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void findByCriteria() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         List<Person> actualPeople = personRepository.findByCriteria(testPerson.getEmailAddress().substring(1), null, null, null);
@@ -192,7 +192,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void findById() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         Person actualPerson = personRepository.findOne(testPerson.getId());
@@ -206,7 +206,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void findByIdAndFetchAllAssociations() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         Person actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
@@ -220,7 +220,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void findByUpdatedBy() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         Set<Person> actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
@@ -234,7 +234,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void findByUserid() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
@@ -248,7 +248,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     public void searchPeople() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
 
         // When
         List<Person> actualPeople = personRepository.search(testPerson.getEmailAddress().substring(1));
@@ -259,8 +259,8 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Before
     public void setUp() {
-        DataFactory dataFactory = new DataFactory(new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository));
-        testDataFactory = dataFactory.getTestDataFactory();
+        ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
+        testDataFactory = new TestDataFactory(referenceDataFactory);
 
         // Delete previous test data
         Set<Person> people = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
@@ -284,7 +284,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         testPerson.setEmailAddress("updated@gmail.com");
         testPerson.setPassword("updatedPassword");
 
-        Person expectedPerson = new Person(testPerson);
+        Person expectedPerson = testDataFactory.newPerson(testPerson);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, testPerson.getVersion() + 1);
 
         Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value

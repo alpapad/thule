@@ -2,13 +2,13 @@ package uk.co.serin.thule.people.domain.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.DigestUtils;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -59,23 +59,6 @@ public final class Photograph extends DomainModel {
     }
 
     /**
-     * Copy object constructor
-     *
-     * @param person Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Photograph(Photograph photograph, Person person) {
-        // Copy mutable inherited properties
-        super(photograph);
-        // Copy business key
-        this.person = person;
-        setPhoto(photograph.getPhoto());
-        // Copy mutable properties
-        BeanUtils.copyProperties(photograph, this);
-    }
-
-    /**
      * Business key constructor
      *
      * @param photo  Business key attribute
@@ -88,38 +71,35 @@ public final class Photograph extends DomainModel {
         this.person = person;
     }
 
-    public byte[] getPhoto() {
-        return Arrays.copyOf(photo, photo.length);
-    }
-
-    private Photograph setPhoto(byte... photo) {
-        byte[] photoToSet = Arrays.copyOf(photo, photo.length);
-        setHash(new String(DigestUtils.md5Digest(photoToSet), Charset.defaultCharset()));
-
-        this.photo = photoToSet;
-        return this;
-    }
-
     public String getHash() {
         return hash;
     }
 
-    private Photograph setHash(String hash) {
+    private void setHash(String hash) {
         this.hash = hash;
-        return this;
     }
 
     public Person getPerson() {
         return person;
     }
 
+    public byte[] getPhoto() {
+        return Arrays.copyOf(photo, photo.length);
+    }
+
+    private void setPhoto(byte... photo) {
+        byte[] photoToSet = Arrays.copyOf(photo, photo.length);
+        setHash(new String(DigestUtils.md5Digest(photoToSet), Charset.defaultCharset()));
+
+        this.photo = photoToSet;
+    }
+
     public long getPosition() {
         return position;
     }
 
-    public Photograph setPosition(long positin) {
+    public void setPosition(long positin) {
         this.position = positin;
-        return this;
     }
 
     @Override
@@ -148,5 +128,77 @@ public final class Photograph extends DomainModel {
                 .add(String.format("photo=%s", new Object[]{photo}))
                 .add(String.format("position=%s", position))
                 .toString();
+    }
+
+    public static final class PhotographBuilder {
+        private LocalDateTime createdAt;
+        private String hash;
+        private Long id;
+        private Person person;
+        private byte[] photo;
+        // Don't call this position because 'position' is a reserved word in HSQL
+        private long position;
+        private LocalDateTime updatedAt;
+
+        private String updatedBy;
+        private Long version;
+
+        private PhotographBuilder() {
+        }
+
+        public static PhotographBuilder aPhotograph() {
+            return new PhotographBuilder();
+        }
+
+        public Photograph build() {
+            Photograph photograph = new Photograph(photo, person);
+            photograph.setPosition(position);
+            photograph.setCreatedAt(createdAt);
+            photograph.setId(id);
+            photograph.setUpdatedAt(updatedAt);
+            photograph.setUpdatedBy(updatedBy);
+            photograph.setVersion(version);
+            return photograph;
+        }
+
+        public PhotographBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public PhotographBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public PhotographBuilder withPerson(Person person) {
+            this.person = person;
+            return this;
+        }
+
+        public PhotographBuilder withPhoto(byte[] photo) {
+            this.photo = photo;
+            return this;
+        }
+
+        public PhotographBuilder withPosition(long position) {
+            this.position = position;
+            return this;
+        }
+
+        public PhotographBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public PhotographBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public PhotographBuilder withVersion(Long version) {
+            this.version = version;
+            return this;
+        }
     }
 }

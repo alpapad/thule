@@ -2,8 +2,6 @@ package uk.co.serin.thule.people.domain.address;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.beans.BeanUtils;
-
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.state.State;
@@ -77,24 +75,6 @@ public abstract class Address<T extends Address> extends DomainModel {
     }
 
     /**
-     * Copy object constructor
-     *
-     * @param address Object to be copied
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Address(Address address) {
-        // Copy mutable inherited properties
-        super(address);
-        // Copy business key
-        this.addressLine1 = address.addressLine1;
-        this.country = new Country(address.getCountry());
-        this.postCode = address.postCode;
-        // Copy mutable properties
-        BeanUtils.copyProperties(address, this);
-    }
-
-    /**
      * Business key constructor
      *
      * @param addressLine1 Business key attribute
@@ -117,10 +97,8 @@ public abstract class Address<T extends Address> extends DomainModel {
         return addressLine2;
     }
 
-    @SuppressWarnings("unchecked")
-    public T setAddressLine2(String addressLine2) {
+    public void setAddressLine2(String addressLine2) {
         this.addressLine2 = addressLine2;
-        return (T) this;
     }
 
     public Country getCountry() {
@@ -131,10 +109,8 @@ public abstract class Address<T extends Address> extends DomainModel {
         return county;
     }
 
-    @SuppressWarnings("unchecked")
-    public T setCounty(String county) {
+    public void setCounty(String county) {
         this.county = county;
-        return (T) this;
     }
 
     public String getPostCode() {
@@ -145,20 +121,16 @@ public abstract class Address<T extends Address> extends DomainModel {
         return state;
     }
 
-    @SuppressWarnings("unchecked")
-    public T setState(State state) {
+    public void setState(State state) {
         this.state = state;
-        return (T) this;
     }
 
     public String getTown() {
         return town;
     }
 
-    @SuppressWarnings("unchecked")
-    public T setTown(String town) {
+    public void setTown(String town) {
         this.town = town;
-        return (T) this;
     }
 
     @Override
