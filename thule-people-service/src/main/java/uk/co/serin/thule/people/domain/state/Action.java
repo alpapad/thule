@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -65,18 +66,16 @@ public final class Action extends DomainModel {
         return description;
     }
 
-    public Action setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
-        return this;
     }
 
     public State getNextState() {
         return nextState;
     }
 
-    public Action setNextState(State nextState) {
+    public void setNextState(State nextState) {
         this.nextState = nextState;
-        return this;
     }
 
     @Override
@@ -104,5 +103,76 @@ public final class Action extends DomainModel {
                 .add(String.format("description=%s", description))
                 .add(String.format("nextState=%s", nextState))
                 .toString();
+    }
+
+    public static final class ActionBuilder {
+        private ActionCode code;
+        private LocalDateTime createdAt;
+        private String description;
+        private Long id;
+        private State nextState;
+        private LocalDateTime updatedAt;
+
+        private String updatedBy;
+        private Long version;
+
+        private ActionBuilder() {
+        }
+
+        public static ActionBuilder anAction() {
+            return new ActionBuilder();
+        }
+
+        public Action build() {
+            Action action = new Action(code);
+            action.setDescription(description);
+            action.setNextState(nextState);
+            action.setCreatedAt(createdAt);
+            action.setId(id);
+            action.setUpdatedAt(updatedAt);
+            action.setUpdatedBy(updatedBy);
+            action.setVersion(version);
+            return action;
+        }
+
+        public ActionBuilder withCode(ActionCode code) {
+            this.code = code;
+            return this;
+        }
+
+        public ActionBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public ActionBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public ActionBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public ActionBuilder withNextState(State nextState) {
+            this.nextState = nextState;
+            return this;
+        }
+
+        public ActionBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public ActionBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public ActionBuilder withVersion(Long version) {
+            this.version = version;
+            return this;
+        }
     }
 }

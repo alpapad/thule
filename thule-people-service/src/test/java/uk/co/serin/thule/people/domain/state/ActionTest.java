@@ -1,7 +1,6 @@
 package uk.co.serin.thule.people.domain.state;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -13,6 +12,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActionTest {
     private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+
+    @Test
+    public void builderAndSettersOperateOnTheSameField() {
+        // Given
+        Action expectedAction = referenceDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
+
+        // When
+        Action actualAction = Action.ActionBuilder.anAction().
+                withCode(expectedAction.getCode()).
+                withCreatedAt(expectedAction.getCreatedAt()).
+                withDescription(expectedAction.getDescription()).
+                withId(expectedAction.getId()).
+                withNextState(expectedAction.getNextState()).
+                withUpdatedAt(expectedAction.getUpdatedAt()).
+                withUpdatedBy(expectedAction.getUpdatedBy()).
+                withVersion(expectedAction.getVersion()).
+                build();
+
+        // Then
+        assertThat(actualAction.getCode()).isEqualTo(expectedAction.getCode());
+        assertThat(actualAction.getCreatedAt()).isEqualTo(expectedAction.getCreatedAt());
+        assertThat(actualAction.getId()).isEqualTo(expectedAction.getId());
+        assertThat(actualAction.getDescription()).isEqualTo(expectedAction.getDescription());
+        assertThat(actualAction.getNextState()).isEqualTo(expectedAction.getNextState());
+        assertThat(actualAction.getUpdatedAt()).isEqualTo(expectedAction.getUpdatedAt());
+        assertThat(actualAction.getUpdatedBy()).isEqualTo(expectedAction.getUpdatedBy());
+        assertThat(actualAction.getVersion()).isEqualTo(expectedAction.getVersion());
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
@@ -39,15 +66,22 @@ public class ActionTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        String description = "description";
-        State nextState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
+        Action expectedAction = referenceDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
 
-        Action action = new Action(ActionCode.PERSON_ENABLE).setDescription(description).setNextState(nextState);
+        // When
+        Action actualAction = new Action(expectedAction.getCode());
+        actualAction.setDescription(expectedAction.getDescription());
+        actualAction.setNextState(expectedAction.getNextState());
 
-        // When/Then
-        assertThat(action.getCode()).isEqualTo(ActionCode.PERSON_ENABLE);
-        assertThat(action.getDescription()).isEqualTo(description);
-        assertThat(action.getNextState()).isEqualTo(nextState);
+        // Then
+        assertThat(actualAction.getCode()).isEqualTo(expectedAction.getCode());
+        assertThat(actualAction.getCreatedAt()).isEqualTo(expectedAction.getCreatedAt());
+        assertThat(actualAction.getId()).isEqualTo(expectedAction.getId());
+        assertThat(actualAction.getDescription()).isEqualTo(expectedAction.getDescription());
+        assertThat(actualAction.getNextState()).isEqualTo(expectedAction.getNextState());
+        assertThat(actualAction.getUpdatedAt()).isEqualTo(expectedAction.getUpdatedAt());
+        assertThat(actualAction.getUpdatedBy()).isEqualTo(expectedAction.getUpdatedBy());
+        assertThat(actualAction.getVersion()).isEqualTo(expectedAction.getVersion());
     }
 
     @Test
@@ -59,6 +93,7 @@ public class ActionTest {
     public void verifyEqualsConformsToContract() {
         EqualsVerifier.forClass(Action.class).
                 withPrefabValues(State.class, new State(StateCode.ADDRESS_DISABLED), new State(StateCode.ADDRESS_ENABLED)).
-                suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+                withOnlyTheseFields(Action.ENTITY_ATTRIBUTE_NAME_CODE).
+                verify();
     }
 }

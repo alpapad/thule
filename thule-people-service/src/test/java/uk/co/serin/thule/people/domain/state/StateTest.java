@@ -1,7 +1,6 @@
 package uk.co.serin.thule.people.domain.state;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -13,6 +12,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StateTest {
     private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+
+    @Test
+    public void builderAndSettersOperateOnTheSameField() {
+        // Given
+        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
+
+        // When
+        State actualState = State.StateBuilder.aState().
+                withCode(expectedState.getCode()).
+                withCreatedAt(expectedState.getCreatedAt()).
+                withDescription(expectedState.getDescription()).
+                withId(expectedState.getId()).
+                withUpdatedAt(expectedState.getUpdatedAt()).
+                withUpdatedBy(expectedState.getUpdatedBy()).
+                withVersion(expectedState.getVersion()).
+                build();
+
+        // Then
+        assertThat(actualState.getCode()).isEqualTo(expectedState.getCode());
+        assertThat(actualState.getCreatedAt()).isEqualTo(expectedState.getCreatedAt());
+        assertThat(actualState.getId()).isEqualTo(expectedState.getId());
+        assertThat(actualState.getDescription()).isEqualTo(expectedState.getDescription());
+        assertThat(actualState.getUpdatedAt()).isEqualTo(expectedState.getUpdatedAt());
+        assertThat(actualState.getUpdatedBy()).isEqualTo(expectedState.getUpdatedBy());
+        assertThat(actualState.getVersion()).isEqualTo(expectedState.getVersion());
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
@@ -39,13 +64,20 @@ public class StateTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        String description = "description";
+        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
 
-        State expectedState = new State(StateCode.PERSON_ENABLED).setDescription(description);
+        // When
+        State actualState = new State(expectedState.getCode());
+        actualState.setDescription(expectedState.getDescription());
 
-        // When/Then
-        assertThat(expectedState.getCode()).isEqualTo(StateCode.PERSON_ENABLED);
-        assertThat(expectedState.getDescription()).isEqualTo(description);
+        // Then
+        assertThat(actualState.getCode()).isEqualTo(expectedState.getCode());
+        assertThat(actualState.getCreatedAt()).isEqualTo(expectedState.getCreatedAt());
+        assertThat(actualState.getId()).isEqualTo(expectedState.getId());
+        assertThat(actualState.getDescription()).isEqualTo(expectedState.getDescription());
+        assertThat(actualState.getUpdatedAt()).isEqualTo(expectedState.getUpdatedAt());
+        assertThat(actualState.getUpdatedBy()).isEqualTo(expectedState.getUpdatedBy());
+        assertThat(actualState.getVersion()).isEqualTo(expectedState.getVersion());
     }
 
     @Test
@@ -57,6 +89,7 @@ public class StateTest {
     public void verifyEqualsConformsToContract() {
         EqualsVerifier.forClass(State.class).
                 withPrefabValues(State.class, new State(StateCode.ADDRESS_DISABLED), new State(StateCode.ADDRESS_ENABLED)).
-                suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+                withOnlyTheseFields(State.ENTITY_ATTRIBUTE_NAME_CODE).
+                verify();
     }
 }

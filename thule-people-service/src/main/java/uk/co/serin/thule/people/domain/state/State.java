@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Transient;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +15,6 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,18 +72,17 @@ public final class State extends DomainModel {
         this.code = code;
     }
 
-    public State addActions(Stream<Action> actions) {
-        this.actions.addAll(actions.collect(Collectors.toList()));
-        return this;
-    }
-
-    public Set<Action> getActions() {
-        return Collections.unmodifiableSet(actions);
+    public void addActions(Set<Action> actions) {
+        this.actions.addAll(actions);
     }
 
     @JsonIgnore
     public Map<ActionCode, Action> getActionsByCode() {
         return getActions().stream().collect(Collectors.toMap(Action::getCode, Function.identity()));
+    }
+
+    public Set<Action> getActions() {
+        return Collections.unmodifiableSet(actions);
     }
 
     public StateCode getCode() {
@@ -94,9 +93,8 @@ public final class State extends DomainModel {
         return description;
     }
 
-    public State setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
-        return this;
     }
 
     @Override
@@ -123,5 +121,76 @@ public final class State extends DomainModel {
                 .add(String.format("code=%s", code))
                 .add(String.format("description=%s", description))
                 .toString();
+    }
+
+    public static final class StateBuilder {
+        private Set<Action> actions = new HashSet<>();
+        private StateCode code;
+        private LocalDateTime createdAt;
+        private String description;
+        private Long id;
+        private LocalDateTime updatedAt;
+
+        private String updatedBy;
+        private Long version;
+
+        private StateBuilder() {
+        }
+
+        public static StateBuilder aState() {
+            return new StateBuilder();
+        }
+
+        public State build() {
+            State state = new State(code);
+            state.setDescription(description);
+            state.setCreatedAt(createdAt);
+            state.setId(id);
+            state.setUpdatedAt(updatedAt);
+            state.setUpdatedBy(updatedBy);
+            state.setVersion(version);
+            state.addActions(actions);
+            return state;
+        }
+
+        public StateBuilder withActions(Set<Action> actions) {
+            this.actions = actions;
+            return this;
+        }
+
+        public StateBuilder withCode(StateCode code) {
+            this.code = code;
+            return this;
+        }
+
+        public StateBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public StateBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public StateBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public StateBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public StateBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public StateBuilder withVersion(Long version) {
+            this.version = version;
+            return this;
+        }
     }
 }

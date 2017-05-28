@@ -1,10 +1,7 @@
 package uk.co.serin.thule.people.datafactories;
 
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.core.utils.RandomGenerators;
-import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.role.Role;
 import uk.co.serin.thule.people.domain.role.RoleCode;
@@ -17,6 +14,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MockReferenceDataFactory implements ReferenceDataFactory {
@@ -31,26 +29,6 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
         addRoles();
         addStates();
         addStateActions();
-    }
-
-    @Override
-    public Map<ActionCode, Action> getActions() {
-        return actions;
-    }
-
-    @Override
-    public Map<String, Country> getCountries() {
-        return countries;
-    }
-
-    @Override
-    public Map<RoleCode, Role> getRoles() {
-        return roles;
-    }
-
-    @Override
-    public Map<StateCode, State> getStates() {
-        return states;
     }
 
     private void addActions() {
@@ -99,86 +77,98 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addActionAddressDisable() {
-        Action action = new Action(ActionCode.ADDRESS_DISABLE).setDescription("Disable");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_DISABLE).
+                withDescription("Disable").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressDiscard() {
-        Action action = new Action(ActionCode.ADDRESS_DISCARD).setDescription("Discard");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_DISCARD).
+                withDescription("Discard").
+                build();
         actions.put(ActionCode.ADDRESS_DISCARD, action);
     }
 
     private void addActionAddressEnable() {
-        Action action = new Action(ActionCode.ADDRESS_ENABLE).setDescription("Enable");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_ENABLE).
+                withDescription("Enable").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressRecover() {
-        Action action = new Action(ActionCode.ADDRESS_RECOVER).setDescription("Recover");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_RECOVER).
+                withDescription("Recover").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressUpdate() {
-        Action action = new Action(ActionCode.ADDRESS_UPDATE).setDescription("Update");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_UPDATE).
+                withDescription("Update").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressView() {
-        Action action = new Action(ActionCode.ADDRESS_VIEW).setDescription("View");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_VIEW).
+                withDescription("View").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDisable() {
-        Action action = new Action(ActionCode.PERSON_DISABLE).setDescription("Disable");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_DISABLE).
+                withDescription("Disable").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDiscard() {
-        Action action = new Action(ActionCode.PERSON_DISCARD).setDescription("Discard");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_DISCARD).
+                withDescription("Discard").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonEnable() {
-        Action action = new Action(ActionCode.PERSON_ENABLE).setDescription("Enable");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_ENABLE).
+                withDescription("Enable").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonRecover() {
-        Action action = new Action(ActionCode.PERSON_RECOVER).setDescription("Recover");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_RECOVER).
+                withDescription("Recover").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonUpdate() {
-        Action action = new Action(ActionCode.PERSON_UPDATE).setDescription("Update");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_UPDATE).
+                withDescription("Update").
+                build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonView() {
-        Action action = new Action(ActionCode.PERSON_VIEW).setDescription("View");
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_VIEW).
+                withDescription("View").
+                build();
         actions.put(action.getCode(), action);
     }
 
@@ -217,56 +207,76 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addStateAddressDisabled() {
-        State state = new State(StateCode.ADDRESS_DISABLED).
-                addActions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW))).
-                setDescription("Disabled");
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.ADDRESS_DISABLED).
+                withActions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
+                withDescription("Disabled").
+                build();
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressDiscarded() {
-        State state = new State(StateCode.ADDRESS_DISCARDED).
-                addActions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW))).
-                setDescription("Discarded");
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.ADDRESS_DISCARDED).
+                withActions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
+                withDescription("Discarded").
+                build();
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressEnabled() {
-        State state = new State(StateCode.ADDRESS_ENABLED).
-                addActions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW))).
-                setDescription("Enabled");
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.ADDRESS_ENABLED).
+                withActions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
+                withDescription("Enabled").
+                build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDisabled() {
-        State state = new State(StateCode.PERSON_DISABLED).
-                addActions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW))).
-                setDescription("Disabled");
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.PERSON_DISABLED).
+                withActions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
+                withDescription("Disabled").
+                build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDiscarded() {
-        State state = new State(StateCode.PERSON_DISCARDED).
-                addActions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW))).
-                setDescription("Discarded");
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.PERSON_DISCARDED).
+                withActions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
+                withDescription("Discarded").
+                build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonEnabled() {
-        State state = new State(StateCode.PERSON_ENABLED).
-                addActions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW))).
-                setDescription("Enabled");
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(state, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.PERSON_ENABLED).
+                withActions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
+                withDescription("Enabled").
+                build();
         states.put(state.getCode(), state);
+    }
+
+    @Override
+    public Map<ActionCode, Action> getActions() {
+        return actions;
+    }
+
+    @Override
+    public Map<String, Country> getCountries() {
+        return countries;
+    }
+
+    @Override
+    public Map<RoleCode, Role> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public Map<StateCode, State> getStates() {
+        return states;
     }
 }
