@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.core.utils.RandomGenerators;
 import uk.co.serin.thule.repository.mongodb.domain.Person;
-
-import java.time.LocalDate;
+import uk.co.serin.thule.repository.mongodb.domain.PersonFactory;
 
 import javax.validation.ConstraintViolationException;
 
@@ -19,18 +17,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PersonRepositoryIntTest {
-    public static final int SUFFIX_LENGTH = 8;
-    private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
-    private long id = 0;
     @Autowired
     private PersonRepository personRepository;
 
     @Test
     public void create() {
         // Given
-        Person testPerson = newPerson();
+        Person testPerson = PersonFactory.newPerson();
 
-        Person expectedPerson = newPerson(testPerson);
+        Person expectedPerson = PersonFactory.newPerson(testPerson);
         expectedPerson.setVersion(0L);
 
         // When
@@ -50,45 +45,6 @@ public class PersonRepositoryIntTest {
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
-    private Person newPerson() {
-        // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
-
-        return Person.PersonBuilder.aPerson().
-                withDateOfBirth(dob).
-                withDateOfExpiry(expiryDate).
-                withDateOfPasswordExpiry(expiryDate).
-                withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                withFirstName("Elizabeth").
-                withId(id++).
-                withPassword(userId).
-                withSalutation("Miss").
-                withSecondName("K").
-                withSurname("Scarlett").
-                withUserId(userId).build();
-    }
-
-    private Person newPerson(Person person) {
-        return Person.PersonBuilder.aPerson().
-                withCreatedAt(person.getCreatedAt()).
-                withDateOfBirth(person.getDateOfBirth()).
-                withDateOfExpiry(person.getDateOfExpiry()).
-                withDateOfPasswordExpiry(person.getDateOfPasswordExpiry()).
-                withEmailAddress(person.getEmailAddress()).
-                withFirstName(person.getFirstName()).
-                withId(person.getId()).
-                withPassword(person.getPassword()).
-                withSalutation(person.getSalutation()).
-                withSecondName(person.getSecondName()).
-                withSurname(person.getSurname()).
-                withUpdatedAt(person.getUpdatedAt()).
-                withUpdatedBy(person.getUpdatedBy()).
-                withUserId(person.getUserId()).
-                withVersion(person.getVersion()).build();
-    }
-
     @Test(expected = ConstraintViolationException.class)
     public void createAPersonViolatingValidationConstraints() {
         // Given
@@ -104,7 +60,7 @@ public class PersonRepositoryIntTest {
     @Test
     public void delete() {
         // Given
-        Person person = personRepository.save(newPerson());
+        Person person = personRepository.save(PersonFactory.newPerson());
 
         // When
         personRepository.delete(person);
@@ -117,7 +73,7 @@ public class PersonRepositoryIntTest {
     @Test
     public void findAll() {
         // Given
-        Person expectedPerson = personRepository.save(newPerson());
+        Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         Iterable<Person> actualPeople = personRepository.findAll();
@@ -129,7 +85,7 @@ public class PersonRepositoryIntTest {
     @Test
     public void findById() {
         // Given
-        Person expectedPerson = personRepository.save(newPerson());
+        Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         Person actualPerson = personRepository.findOne(expectedPerson.getId());
@@ -142,7 +98,7 @@ public class PersonRepositoryIntTest {
     @Test
     public void findByUserid() {
         // Given
-        Person expectedPerson = personRepository.save(newPerson());
+        Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         Person actualPerson = personRepository.findByUserId(expectedPerson.getUserId());
@@ -160,7 +116,7 @@ public class PersonRepositoryIntTest {
     @Test
     public void update() throws InterruptedException {
         // Given
-        Person testPerson = personRepository.save(newPerson());
+        Person testPerson = personRepository.save(PersonFactory.newPerson());
         testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setFirstName("updatedFirstName");
@@ -168,7 +124,7 @@ public class PersonRepositoryIntTest {
         testPerson.setSecondName("updatedSecondName");
         testPerson.setSurname("updatedSurname");
 
-        Person expectedPerson = newPerson(testPerson);
+        Person expectedPerson = PersonFactory.newPerson(testPerson);
         expectedPerson.setVersion(testPerson.getVersion() + 1);
 
         Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value

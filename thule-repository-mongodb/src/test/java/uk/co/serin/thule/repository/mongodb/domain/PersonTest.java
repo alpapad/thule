@@ -4,21 +4,15 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.core.utils.RandomGenerators;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonTest {
-    private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
-    private static final int SUFFIX_LENGTH = 8;
-
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        Person expectedPerson = newPerson();
+        Person expectedPerson = PersonFactory.newPerson();
 
         // When
         Person actualPerson = Person.PersonBuilder.aPerson().
@@ -45,6 +39,7 @@ public class PersonTest {
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
         assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
         assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
         assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
         assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
         assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
@@ -52,30 +47,6 @@ public class PersonTest {
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
-    }
-
-    private Person newPerson() {
-        // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
-
-        return Person.PersonBuilder.aPerson().
-                withCreatedAt(LocalDateTime.now()).
-                withDateOfBirth(dob).
-                withDateOfExpiry(expiryDate).
-                withDateOfPasswordExpiry(expiryDate).
-                withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                withFirstName("Elizabeth").
-                withId(RandomGenerators.generateUniqueRandomLong()).
-                withPassword(userId).
-                withSalutation("Miss").
-                withSecondName("K").
-                withUpdatedAt(LocalDateTime.now()).
-                withUpdatedBy(userId).
-                withSurname("Scarlett").
-                withUserId(userId).
-                withVersion(1L).build();
     }
 
     @Test
@@ -106,7 +77,7 @@ public class PersonTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Person expectedPerson = newPerson();
+        Person expectedPerson = PersonFactory.newPerson();
 
         // When
         Person actualPerson = new Person(expectedPerson.getUserId());
