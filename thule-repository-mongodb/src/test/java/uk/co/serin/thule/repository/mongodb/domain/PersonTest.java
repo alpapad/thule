@@ -18,7 +18,7 @@ public class PersonTest {
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        Person expectedPerson = newPersonWithAllAssociations();
+        Person expectedPerson = newPerson();
 
         // When
         Person actualPerson = Person.PersonBuilder.aPerson().
@@ -54,7 +54,7 @@ public class PersonTest {
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
     }
 
-    private Person newPersonWithAllAssociations() {
+    private Person newPerson() {
         // Set the attributes
         final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
         final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
@@ -106,7 +106,7 @@ public class PersonTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Person expectedPerson = newPersonWithAllAssociations();
+        Person expectedPerson = newPerson();
 
         // When
         Person actualPerson = new Person(expectedPerson.getUserId());
