@@ -2,6 +2,7 @@ package uk.co.serin.thule.people.domain.role;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -55,9 +56,8 @@ public final class Role extends DomainModel {
         return description;
     }
 
-    public Role setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
-        return this;
     }
 
     @Override
@@ -84,5 +84,69 @@ public final class Role extends DomainModel {
                 .add(String.format("code=%s", code))
                 .add(String.format("description=%s", description))
                 .toString();
+    }
+
+    public static final class RoleBuilder {
+        private RoleCode code;
+        private LocalDateTime createdAt;
+        private String description;
+        private Long id;
+        private LocalDateTime updatedAt;
+
+        private String updatedBy;
+        private Long version;
+
+        private RoleBuilder() {
+        }
+
+        public static RoleBuilder aRole() {
+            return new RoleBuilder();
+        }
+
+        public Role build() {
+            Role role = new Role(code);
+            role.setDescription(description);
+            role.setCreatedAt(createdAt);
+            role.setId(id);
+            role.setUpdatedAt(updatedAt);
+            role.setUpdatedBy(updatedBy);
+            role.setVersion(version);
+            return role;
+        }
+
+        public RoleBuilder withCode(RoleCode code) {
+            this.code = code;
+            return this;
+        }
+
+        public RoleBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public RoleBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public RoleBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public RoleBuilder withUpdatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public RoleBuilder withUpdatedBy(String updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public RoleBuilder withVersion(Long version) {
+            this.version = version;
+            return this;
+        }
     }
 }

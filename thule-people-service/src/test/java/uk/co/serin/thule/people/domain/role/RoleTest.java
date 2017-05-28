@@ -1,7 +1,6 @@
 package uk.co.serin.thule.people.domain.role;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -13,6 +12,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleTest {
     private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+
+    @Test
+    public void builderAndSettersOperateOnTheSameField() {
+        // Given
+        Role expectedRole = referenceDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
+
+        // When
+        Role actualRole = Role.RoleBuilder.aRole().
+                withCode(expectedRole.getCode()).
+                withCreatedAt(expectedRole.getCreatedAt()).
+                withId(expectedRole.getId()).
+                withDescription(expectedRole.getDescription()).
+                withUpdatedAt(expectedRole.getUpdatedAt()).
+                withUpdatedBy(expectedRole.getUpdatedBy()).
+                withVersion(expectedRole.getVersion()).
+                build();
+
+        // Then
+        assertThat(actualRole.getCode()).isEqualTo(expectedRole.getCode());
+        assertThat(actualRole.getCreatedAt()).isEqualTo(expectedRole.getCreatedAt());
+        assertThat(actualRole.getId()).isEqualTo(expectedRole.getId());
+        assertThat(actualRole.getDescription()).isEqualTo(expectedRole.getDescription());
+        assertThat(actualRole.getUpdatedAt()).isEqualTo(expectedRole.getUpdatedAt());
+        assertThat(actualRole.getUpdatedBy()).isEqualTo(expectedRole.getUpdatedBy());
+        assertThat(actualRole.getVersion()).isEqualTo(expectedRole.getVersion());
+    }
 
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
@@ -39,13 +64,20 @@ public class RoleTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        String description = "description";
+        Role expectedRole = referenceDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
 
-        Role role = new Role(RoleCode.ROLE_CLERK).setDescription(description);
+        // When
+        Role actualRole = new Role(expectedRole.getCode());
+        actualRole.setDescription(expectedRole.getDescription());
 
-        // When/Then
-        assertThat(role.getCode()).isEqualTo(RoleCode.ROLE_CLERK);
-        assertThat(role.getDescription()).isEqualTo(description);
+        // Then
+        assertThat(actualRole.getCode()).isEqualTo(expectedRole.getCode());
+        assertThat(actualRole.getCreatedAt()).isEqualTo(expectedRole.getCreatedAt());
+        assertThat(actualRole.getId()).isEqualTo(expectedRole.getId());
+        assertThat(actualRole.getDescription()).isEqualTo(expectedRole.getDescription());
+        assertThat(actualRole.getUpdatedAt()).isEqualTo(expectedRole.getUpdatedAt());
+        assertThat(actualRole.getUpdatedBy()).isEqualTo(expectedRole.getUpdatedBy());
+        assertThat(actualRole.getVersion()).isEqualTo(expectedRole.getVersion());
     }
 
     @Test
@@ -55,6 +87,6 @@ public class RoleTest {
 
     @Test
     public void verifyEqualsConformsToContract() {
-        EqualsVerifier.forClass(Role.class).suppress(Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+        EqualsVerifier.forClass(Role.class).withOnlyTheseFields(Role.ENTITY_ATTRIBUTE_NAME_CODE).verify();
     }
 }

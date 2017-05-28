@@ -193,26 +193,26 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addRoleAdministrator() {
-        Role role = new Role(RoleCode.ROLE_ADMINISTRATOR).
-                setDescription(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault())));
-        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Role role = Role.RoleBuilder.aRole().
+                withCode(RoleCode.ROLE_ADMINISTRATOR).
+                withDescription(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault()))).
+                build();
         roles.put(role.getCode(), role);
     }
 
     private void addRoleClerk() {
-        Role role = new Role(RoleCode.ROLE_CLERK).
-                setDescription(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault())));
-        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Role role = Role.RoleBuilder.aRole().
+                withCode(RoleCode.ROLE_CLERK).
+                withDescription(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault()))).
+                build();
         roles.put(role.getCode(), role);
     }
 
     private void addRoleManager() {
-        Role role = new Role(RoleCode.ROLE_MANAGER).
-                setDescription(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault())));
-        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, RandomGenerators.generateUniqueRandomLong());
-        ReflectionTestUtils.setField(role, DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, MockReferenceDataFactory.class.getSimpleName());
+        Role role = Role.RoleBuilder.aRole().
+                withCode(RoleCode.ROLE_MANAGER).
+                withDescription(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault()))).
+                build();
         roles.put(role.getCode(), role);
     }
 
