@@ -4,19 +4,18 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActionTest {
-    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
     public void builderAndSettersOperateOnTheSameField() {
         // Given
-        Action expectedAction = referenceDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
+        Action expectedAction = testDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
 
         // When
         Action actualAction = Action.ActionBuilder.anAction().
@@ -66,7 +65,7 @@ public class ActionTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Action expectedAction = referenceDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
+        Action expectedAction = testDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
 
         // When
         Action actualAction = new Action(expectedAction.getCode());

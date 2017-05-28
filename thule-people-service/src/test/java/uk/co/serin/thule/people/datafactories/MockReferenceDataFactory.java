@@ -17,13 +17,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MockReferenceDataFactory implements ReferenceDataFactory {
+class MockReferenceDataFactory implements ReferenceDataFactory {
     private final Map<ActionCode, Action> actions = new EnumMap<>(ActionCode.class);
     private final Map<String, Country> countries = new HashMap<>();
     private final Map<RoleCode, Role> roles = new EnumMap<>(RoleCode.class);
     private final Map<StateCode, State> states = new EnumMap<>(StateCode.class);
 
-    public MockReferenceDataFactory() {
+    MockReferenceDataFactory() {
         addActions();
         addCountries();
         addRoles();

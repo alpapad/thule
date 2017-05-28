@@ -4,19 +4,18 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StateTest {
-    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
     public void builderAndSettersOperateOnTheSameField() {
         // Given
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
+        State expectedState = testDataFactory.getStates().get(StateCode.PERSON_ENABLED);
 
         // When
         State actualState = State.StateBuilder.aState().
@@ -64,7 +63,7 @@ public class StateTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        State expectedState = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
+        State expectedState = testDataFactory.getStates().get(StateCode.PERSON_ENABLED);
 
         // When
         State actualState = new State(expectedState.getCode());

@@ -4,19 +4,18 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleTest {
-    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
     public void builderAndSettersOperateOnTheSameField() {
         // Given
-        Role expectedRole = referenceDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
+        Role expectedRole = testDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
 
         // When
         Role actualRole = Role.RoleBuilder.aRole().
@@ -64,7 +63,7 @@ public class RoleTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Role expectedRole = referenceDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
+        Role expectedRole = testDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
 
         // When
         Role actualRole = new Role(expectedRole.getCode());

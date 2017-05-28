@@ -4,19 +4,18 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.MockReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
+import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CountryTest {
-    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        Country expectedCountry = referenceDataFactory.getCountries().get(Country.GBR);
+        Country expectedCountry = testDataFactory.getCountries().get(Country.GBR);
 
         // When
         Country actualCountry = Country.CountryBuilder.aCountry().
@@ -69,7 +68,7 @@ public class CountryTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Country expectedCountry = referenceDataFactory.getCountries().get(Country.GBR);
+        Country expectedCountry = testDataFactory.getCountries().get(Country.GBR);
 
         // When
         Country actualCountry = new Country(expectedCountry.getIsoCodeThreeDigit());
