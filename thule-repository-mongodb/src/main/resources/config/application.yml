@@ -9,5 +9,3 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongo-host/test
-  profiles:
-    active: ${user.name}

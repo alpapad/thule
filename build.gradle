@@ -98,7 +98,7 @@ allprojects {
     // Docker plugin
     apply plugin: "docker"
     // Docker plugin configuration
-    task dockerBuild(type: Docker, dependsOn: assemble) {
+    task dockerBuild(type: Docker, dependsOn: jar) {
         // dockerBuild options
         applicationName = jar.baseName
         dockerfile = file("src/main/docker/Dockerfile")
@@ -116,7 +116,7 @@ allprojects {
         enabled = file(projectDir.toString() + '/src/main/docker/Dockerfile').isFile()
 
         // Add to build lifecycle
-        build.dependsOn dockerBuild
+        assemble.dependsOn dockerBuild
     }
 
     // Jacoco plugin
@@ -180,7 +180,7 @@ allprojects {
             resources.srcDir file("src/itest/resources")
         }
     }
-    task itest(type: Test, dependsOn: test) {
+    task itest(type: Test, dependsOn: testClasses) {
         testClassesDir = sourceSets.itest.output.classesDir
         classpath = sourceSets.itest.runtimeClasspath
     }
@@ -226,7 +226,7 @@ subprojects {
 
 //############################## Project Configuration ##############################
 project("thule-cloud") {
-    tasks.itest.dependsOn(":thule-admin-server:build", ":thule-config-service:build", ":thule-discovery-service:build", ":thule-edge-server:build", ":thule-people-service:build")
+    tasks.itest.dependsOn(":thule-admin-server:assemble", ":thule-config-service:assemble", ":thule-discovery-service:assemble", ":thule-edge-server:assemble", ":thule-people-service:assemble")
 
     dependencies {
         compile("org.apache.httpcomponents:httpclient")
@@ -264,6 +264,7 @@ project("thule-admin-server") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -332,6 +333,7 @@ project("thule-discovery-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -359,6 +361,7 @@ project("thule-edge-server") {
         compile('org.springframework.cloud:spring-cloud-starter-zuul')
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -386,6 +389,7 @@ project("thule-email-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -424,6 +428,7 @@ project("thule-people-service") {
         compile("org.springframework.data:spring-data-rest-hal-browser")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
 
+        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
         testCompile project(":thule-test")
         testCompile("com.googlecode.log4jdbc:log4jdbc")
         testCompile("com.oracle:ojdbc6")

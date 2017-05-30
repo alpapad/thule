@@ -21,7 +21,7 @@ spring:
     config:
       server:
         native:
-          searchLocations: classpath:/config/{profile}
+          searchLocations: classpath:/config/{application}
   jackson:
     serialization:
       # Admin server displays the buildTime of this service which by default will be as an

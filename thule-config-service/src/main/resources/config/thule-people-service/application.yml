@@ -55,8 +55,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  profiles:
-    active: ${user.name}
 
 # Thule configuration
 thule:
