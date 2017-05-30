@@ -1,12 +1,9 @@
 # Flyway configuration
 flyway:
-  enabled: false
+  locations: classpath:flyway/hsql/migration
+  url: jdbc:log4jdbc:hsqldb:mem:testdb
 
 # Spring configuration
 spring:
   datasource:
-    driver-class-name: net.sf.log4jdbc.DriverSpy
     url: jdbc:log4jdbc:hsqldb:mem:testdb
-  jpa:
-    hibernate:
-      ddl-auto: update
