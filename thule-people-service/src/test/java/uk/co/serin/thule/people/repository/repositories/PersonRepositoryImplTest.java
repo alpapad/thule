@@ -17,9 +17,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonRepositoryImplTest {

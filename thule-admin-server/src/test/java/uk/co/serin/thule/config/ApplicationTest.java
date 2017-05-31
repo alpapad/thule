@@ -20,6 +20,7 @@ import static org.mockito.BDDMockito.given;
 public class ApplicationTest {
     @Mock
     private SpringApplication springApplication;
+
     @Test
     public void applicationStartsSpringBoot() {
         // Given

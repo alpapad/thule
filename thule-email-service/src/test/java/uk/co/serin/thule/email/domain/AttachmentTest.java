@@ -8,60 +8,60 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AttachmentTest {
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void builderAndGettersOperateOnTheSameField() {
         // Given
-        byte[] content = "content".getBytes();
-        String label = "label";
+        Attachment expectedAttachment = newAttachment();
 
         // When
-        Attachment attachment = new Attachment(content, label);
+        Attachment actualAttachment = Attachment.AttachmentBuilder.anAttachment().
+                withContent(expectedAttachment.getContent()).
+                withLabel(expectedAttachment.getLabel()).build();
 
         // Then
-        assertThat(attachment.getContent()).isEqualTo(content);
-        assertThat(attachment.getLabel()).isEqualTo(label);
+        assertThat(actualAttachment.getContent()).isEqualTo(expectedAttachment.getContent());
+        assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
+    }
+
+    private Attachment newAttachment() {
+        return Attachment.AttachmentBuilder.anAttachment().withContent("content".getBytes()).withLabel("label").build();
     }
 
     @Test
-    public void copyConstructorCreatesInstanceWithSameFieldValues() {
+    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
         // Given
-        byte[] content = "content".getBytes();
-        String label = "label";
-
-        Attachment expectedAttachment = new Attachment(content, label);
+        Attachment expectedAttachment = newAttachment();
 
         // When
-        Attachment actualAttachment = new Attachment(expectedAttachment);
+        Attachment actualAttachment = new Attachment(expectedAttachment.getContent(), expectedAttachment.getLabel());
 
         // Then
-        assertThat(actualAttachment).isEqualToComparingFieldByField(expectedAttachment);
+        assertThat(actualAttachment.getContent()).isEqualTo(expectedAttachment.getContent());
+        assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
     }
 
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        byte[] content = "content".getBytes();
-        String label = "label";
+        Attachment expectedAttachment = newAttachment();
 
-        Attachment attachment = new Attachment(content, label);
+        // When
+        Attachment actualAttachment = new Attachment(expectedAttachment.getContent(), expectedAttachment.getLabel());
 
-        // When/Then
-        assertThat(attachment.getContent()).isEqualTo(content);
-        assertThat(attachment.getLabel()).isEqualTo(label);
+        // Then
+        assertThat(actualAttachment.getContent()).isEqualTo(expectedAttachment.getContent());
+        assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
     }
 
     @Test
     public void toStringIsOverridden() {
         // Given
-        byte[] content = "content".getBytes();
-        String label = "label";
-
-        Attachment attachment = new Attachment(content, label);
+        Attachment attachment = newAttachment();
 
         // When
         String attachmentAsString = attachment.toString();
 
         // Then
-        assertThat(attachmentAsString).contains(new String(content)).contains(label);
+        assertThat(attachmentAsString).contains(Attachment.ENTITY_ATTRIBUTE_NAME_LABEL);
     }
 
     @Test

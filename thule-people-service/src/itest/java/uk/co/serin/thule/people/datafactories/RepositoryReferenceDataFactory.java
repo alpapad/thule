@@ -43,26 +43,6 @@ public class RepositoryReferenceDataFactory implements ReferenceDataFactory {
         countries = StreamSupport.stream(countryRepository.findAll().spliterator(), false).collect(Collectors.toMap(Country::getIsoCodeThreeDigit, Function.identity()));
     }
 
-    @Override
-    public Map<ActionCode, Action> getActions() {
-        return actions;
-    }
-
-    @Override
-    public Map<String, Country> getCountries() {
-        return countries;
-    }
-
-    @Override
-    public Map<RoleCode, Role> getRoles() {
-        return roles;
-    }
-
-    @Override
-    public Map<StateCode, State> getStates() {
-        return states;
-    }
-
     private void saveReferenceData(StateRepository stateRepository, RoleRepository roleRepository, CountryRepository countryRepository) {
         MockReferenceDataFactory mockReferenceDataFactory = new MockReferenceDataFactory();
         SecurityContextHolder.getContext().setAuthentication(
@@ -82,5 +62,25 @@ public class RepositoryReferenceDataFactory implements ReferenceDataFactory {
         countryRepository.save(mockReferenceDataFactory.getCountries().values());
         roleRepository.deleteAll();
         roleRepository.save(mockReferenceDataFactory.getRoles().values());
+    }
+
+    @Override
+    public Map<ActionCode, Action> getActions() {
+        return actions;
+    }
+
+    @Override
+    public Map<String, Country> getCountries() {
+        return countries;
+    }
+
+    @Override
+    public Map<RoleCode, Role> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public Map<StateCode, State> getStates() {
+        return states;
     }
 }

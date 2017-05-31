@@ -18,21 +18,6 @@ public class LogPublicMethodsInterceptor {
         return log(joinPoint.getTarget(), joinPoint.getSignature().getName(), joinPoint.getArgs(), new ProceedingJoinPointLoggerCallback(joinPoint));
     }
 
-    @Pointcut("@annotation(uk.co.serin.thule.core.aspects.LogPublicMethods)")
-    public void pointcutDefinitionBasedOnAnnotationForMethod() {
-        // Pointcut definition only
-    }
-
-    @Pointcut("within(@uk.co.serin.thule.core.aspects.LogPublicMethods *)")
-    public void pointcutDefinitionBasedOnAnnotationForType() {
-        // Pointcut definition only
-    }
-
-    @Pointcut("execution(public * *(..))")
-    public void publicMethod() {
-        // Pointcut definition only
-    }
-
     private Object log(Object target, String methodName, Object[] args, PerformanceLoggerCallback performanceLoggerCallback) {
         Class loggingClass;
         if (Proxy.isProxyClass(target.getClass())) {
@@ -59,6 +44,21 @@ public class LogPublicMethodsInterceptor {
         }
 
         return returnValue;
+    }
+
+    @Pointcut("@annotation(uk.co.serin.thule.core.aspects.LogPublicMethods)")
+    public void pointcutDefinitionBasedOnAnnotationForMethod() {
+        // Pointcut definition only
+    }
+
+    @Pointcut("within(@uk.co.serin.thule.core.aspects.LogPublicMethods *)")
+    public void pointcutDefinitionBasedOnAnnotationForType() {
+        // Pointcut definition only
+    }
+
+    @Pointcut("execution(public * *(..))")
+    public void publicMethod() {
+        // Pointcut definition only
     }
 
     @FunctionalInterface

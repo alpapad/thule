@@ -21,17 +21,6 @@ public class LoggingFilterTest {
     private LoggingFilter loggingFilter;
 
     @Test
-    public void filterTypeIsPre() {
-        // Given
-
-        // When
-        String filterType = loggingFilter.filterType();
-
-        //Then
-        assertThat(filterType).isEqualTo("pre");
-    }
-
-    @Test
     public void filterOrderIsOne() {
         // Given
 
@@ -43,14 +32,14 @@ public class LoggingFilterTest {
     }
 
     @Test
-    public void shouldFilterIsTrue() {
+    public void filterTypeIsPre() {
         // Given
 
         // When
-        boolean shouldFilter = loggingFilter.shouldFilter();
+        String filterType = loggingFilter.filterType();
 
         //Then
-        assertThat(shouldFilter).isEqualTo(true);
+        assertThat(filterType).isEqualTo("pre");
     }
 
     @Test
@@ -67,5 +56,16 @@ public class LoggingFilterTest {
 
         //Then
         assertThat(result).isNull();
+    }
+
+    @Test
+    public void shouldFilterIsTrue() {
+        // Given
+
+        // When
+        boolean shouldFilter = loggingFilter.shouldFilter();
+
+        //Then
+        assertThat(shouldFilter).isEqualTo(true);
     }
 }

@@ -1,27 +1,15 @@
 package uk.co.serin.thule.email.domain;
 
-import org.springframework.beans.BeanUtils;
-
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 public final class Attachment {
+    public static final String ENTITY_ATTRIBUTE_NAME_CONTENT = "content";
+    public static final String ENTITY_ATTRIBUTE_NAME_LABEL = "label";
+    public static final String ENTITY_NAME_ATTACHMENTS = "attachments";
     private final byte[] content;
     private final String label;
-
-    /**
-     * Copy object constructor
-     *
-     * @param attachment Object to be copied
-     */
-    public Attachment(Attachment attachment) {
-        // Copy business key
-        this.content = attachment.content;
-        this.label = attachment.label;
-        // Copy mutable properties
-        BeanUtils.copyProperties(attachment, this);
-    }
 
     /**
      * Business key constructor
@@ -65,5 +53,31 @@ public final class Attachment {
                 .add(String.format("content=%s", content))
                 .add(String.format("label=%s", label))
                 .toString();
+    }
+
+    public static final class AttachmentBuilder {
+        private byte[] content;
+        private String label;
+
+        private AttachmentBuilder() {
+        }
+
+        public static AttachmentBuilder anAttachment() {
+            return new AttachmentBuilder();
+        }
+
+        public Attachment build() {
+            return new Attachment(content, label);
+        }
+
+        public AttachmentBuilder withContent(byte[] content) {
+            this.content = content;
+            return this;
+        }
+
+        public AttachmentBuilder withLabel(String label) {
+            this.label = label;
+            return this;
+        }
     }
 }

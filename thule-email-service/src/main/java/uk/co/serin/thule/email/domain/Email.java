@@ -1,36 +1,26 @@
 package uk.co.serin.thule.email.domain;
 
-import org.springframework.beans.BeanUtils;
-
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class Email {
+    public static final String ENTITY_ATTRIBUTE_NAME_BCCS = "bccs";
+    public static final String ENTITY_ATTRIBUTE_NAME_BODY = "body";
+    public static final String ENTITY_ATTRIBUTE_NAME_CCS = "ccs";
+    public static final String ENTITY_ATTRIBUTE_NAME_FROM = "from";
+    public static final String ENTITY_ATTRIBUTE_NAME_SUBJECT = "subject";
+    public static final String ENTITY_ATTRIBUTE_NAME_TOS = "tos";
+    public static final String ENTITY_NAME_EMAILS = "emails";
+    private final Set<Attachment> attachments = new HashSet<>();
+    private final Set<String> bccs = new HashSet<>();
+    private final Set<String> ccs = new HashSet<>();
     private final String from;
     private final String subject;
-    private final List<Attachment> attachments = new ArrayList<>();
-    private final List<String> bccs = new ArrayList<>();
+    private final Set<String> tos = new HashSet<>();
     private String body;
-    private final List<String> ccs = new ArrayList<>();
-    private final List<String> tos = new ArrayList<>();
-
-    /**
-     * Copy object constructor
-     *
-     * @param email Object to be copied
-     */
-    public Email(Email email) {
-        // Copy business key
-        this.from = email.from;
-        this.subject = email.subject;
-        // Copy mutable properties
-        BeanUtils.copyProperties(email, this);
-    }
 
     /**
      * Business key constructor
@@ -43,20 +33,28 @@ public final class Email {
         this.subject = subject;
     }
 
-    public List<Attachment> getAttachments() {
-        return Collections.unmodifiableList(attachments);
+    public void addAttachments(Set<Attachment> attachments) {
+        this.attachments.addAll(attachments);
     }
 
-    public void addAttachments(Stream<Attachment> attachments) {
-        this.attachments.addAll(attachments.collect(Collectors.toList()));
+    public void addBccs(Set<String> bccs) {
+        this.bccs.addAll(bccs);
     }
 
-    public List<String> getBccs() {
-        return Collections.unmodifiableList(bccs);
+    public void addCcs(Set<String> ccs) {
+        this.ccs.addAll(ccs);
     }
 
-    public void addBccs(Stream<String> bccs) {
-        this.bccs.addAll(bccs.collect(Collectors.toList()));
+    public void addTos(Set<String> tos) {
+        this.tos.addAll(tos);
+    }
+
+    public Set<Attachment> getAttachments() {
+        return Collections.unmodifiableSet(attachments);
+    }
+
+    public Set<String> getBccs() {
+        return Collections.unmodifiableSet(bccs);
     }
 
     public String getBody() {
@@ -67,12 +65,8 @@ public final class Email {
         this.body = body;
     }
 
-    public List<String> getCcs() {
-        return Collections.unmodifiableList(ccs);
-    }
-
-    public void addCcs(Stream<String> ccs) {
-        this.ccs.addAll(ccs.collect(Collectors.toList()));
+    public Set<String> getCcs() {
+        return Collections.unmodifiableSet(ccs);
     }
 
     public String getFrom() {
@@ -83,12 +77,8 @@ public final class Email {
         return subject;
     }
 
-    public List<String> getTos() {
-        return Collections.unmodifiableList(tos);
-    }
-
-    public void addTos(Stream<String> tos) {
-        this.tos.addAll(tos.collect(Collectors.toList()));
+    public Set<String> getTos() {
+        return Collections.unmodifiableSet(tos);
     }
 
     @Override
@@ -119,5 +109,67 @@ public final class Email {
                 .add(String.format("subject=%s", subject))
                 .add(String.format("tos=%s", tos))
                 .toString();
+    }
+
+    public static final class EmailBuilder {
+        private Set<Attachment> attachments = new HashSet<>();
+        private Set<String> bccs = new HashSet<>();
+        private String body;
+        private Set<String> ccs = new HashSet<>();
+        private String from;
+        private String subject;
+        private Set<String> tos = new HashSet<>();
+
+        private EmailBuilder() {
+        }
+
+        public static EmailBuilder anEmail() {
+            return new EmailBuilder();
+        }
+
+        public Email build() {
+            Email email = new Email(from, subject);
+            email.setBody(body);
+            email.addBccs(this.bccs);
+            email.addAttachments(this.attachments);
+            email.addTos(this.tos);
+            email.addCcs(this.ccs);
+            return email;
+        }
+
+        public EmailBuilder withAttachments(Set<Attachment> attachments) {
+            this.attachments = attachments;
+            return this;
+        }
+
+        public EmailBuilder withBccs(Set<String> bccs) {
+            this.bccs = bccs;
+            return this;
+        }
+
+        public EmailBuilder withBody(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public EmailBuilder withCcs(Set<String> ccs) {
+            this.ccs = ccs;
+            return this;
+        }
+
+        public EmailBuilder withFrom(String from) {
+            this.from = from;
+            return this;
+        }
+
+        public EmailBuilder withSubject(String subject) {
+            this.subject = subject;
+            return this;
+        }
+
+        public EmailBuilder withTos(Set<String> tos) {
+            this.tos = tos;
+            return this;
+        }
     }
 }

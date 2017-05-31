@@ -52,15 +52,13 @@ public class PersonTest {
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
         // Given
-        String userId = "userId";
+        Person expectedPerson = PersonFactory.newPerson();
 
         // When
-        Person person = new Person(userId);
+        Person actualPerson = new Person(expectedPerson.getUserId());
 
         // Then
-        assertThat(person.getDateOfExpiry()).isEqualTo(person.getDateOfPasswordExpiry());
-        assertThat(person.getUserId()).isEqualTo(userId);
-        assertThat(person.getUserId()).isEqualTo(person.getPassword());
+        assertThat(actualPerson.getUserId()).isEqualTo(expectedPerson.getUserId());
     }
 
     @Test
@@ -115,8 +113,7 @@ public class PersonTest {
     @Test
     public void isExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfExpiry(LocalDate.MIN);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MIN).build();
 
         // When
         boolean expired = person.isExpired();
@@ -128,8 +125,7 @@ public class PersonTest {
     @Test
     public void isNotExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfExpiry(LocalDate.MAX);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MAX).build();
 
         // When
         boolean expired = person.isExpired();
@@ -141,8 +137,7 @@ public class PersonTest {
     @Test
     public void isNotPasswordExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfPasswordExpiry(LocalDate.MAX);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MAX).build();
 
         // When
         boolean passwordExpired = person.isPasswordExpired();
@@ -154,8 +149,7 @@ public class PersonTest {
     @Test
     public void isPasswordExpired() {
         // Given
-        Person person = new Person("userId");
-        person.setDateOfPasswordExpiry(LocalDate.MIN);
+        Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MIN).build();
 
         // When
         boolean passwordExpired = person.isPasswordExpired();

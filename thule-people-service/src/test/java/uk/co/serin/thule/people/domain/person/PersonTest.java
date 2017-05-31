@@ -18,50 +18,6 @@ public class PersonTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
-        // Given
-        Person expectedPerson = testDataFactory.newPersonWithAllAssociations();
-
-        // When
-        Person actualPerson = new Person(expectedPerson.getUserId());
-        actualPerson.setDateOfBirth(expectedPerson.getDateOfBirth());
-        actualPerson.setDateOfExpiry(expectedPerson.getDateOfExpiry());
-        actualPerson.setDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry());
-        actualPerson.setEmailAddress(expectedPerson.getEmailAddress());
-        actualPerson.setFirstName(expectedPerson.getFirstName());
-        actualPerson.setHomeAddress(expectedPerson.getHomeAddress());
-        actualPerson.setPassword(expectedPerson.getPassword());
-        actualPerson.setSalutation(expectedPerson.getSalutation());
-        actualPerson.setSecondName(expectedPerson.getSecondName());
-        actualPerson.setState(expectedPerson.getState());
-        actualPerson.setSurname(expectedPerson.getSurname());
-        actualPerson.setWorkAddress(expectedPerson.getWorkAddress());
-        actualPerson.addPhotographs(expectedPerson.getPhotographs());
-        actualPerson.addRoles(expectedPerson.getRoles());
-
-        // Then
-        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
-        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
-        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
-        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
-        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
-        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
-        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
-        assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
-        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getPhotographs()).isEqualTo(expectedPerson.getPhotographs());
-        assertThat(actualPerson.getRoles()).isEqualTo(expectedPerson.getRoles());
-        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
-        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
-        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
-        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
-        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
-        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
-        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
-    }
-
-    @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
         Person expectedPerson = testDataFactory.newPersonWithAllAssociations();
@@ -203,6 +159,50 @@ public class PersonTest {
         person.enable();
 
         // Then (see expected in @Test annotation)
+    }
+
+    @Test
+    public void gettersAndSettersOperateOnTheSameField() {
+        // Given
+        Person expectedPerson = testDataFactory.newPersonWithAllAssociations();
+
+        // When
+        Person actualPerson = new Person(expectedPerson.getUserId());
+        actualPerson.setDateOfBirth(expectedPerson.getDateOfBirth());
+        actualPerson.setDateOfExpiry(expectedPerson.getDateOfExpiry());
+        actualPerson.setDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry());
+        actualPerson.setEmailAddress(expectedPerson.getEmailAddress());
+        actualPerson.setFirstName(expectedPerson.getFirstName());
+        actualPerson.setHomeAddress(expectedPerson.getHomeAddress());
+        actualPerson.setPassword(expectedPerson.getPassword());
+        actualPerson.setSalutation(expectedPerson.getSalutation());
+        actualPerson.setSecondName(expectedPerson.getSecondName());
+        actualPerson.setState(expectedPerson.getState());
+        actualPerson.setSurname(expectedPerson.getSurname());
+        actualPerson.setWorkAddress(expectedPerson.getWorkAddress());
+        actualPerson.addPhotographs(expectedPerson.getPhotographs());
+        actualPerson.addRoles(expectedPerson.getRoles());
+
+        // Then
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
+        assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getPhotographs()).isEqualTo(expectedPerson.getPhotographs());
+        assertThat(actualPerson.getRoles()).isEqualTo(expectedPerson.getRoles());
+        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
+        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
     }
 
     @Test

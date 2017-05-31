@@ -4,9 +4,12 @@
     <springProperty name="thuleLoggingLogstashPort" source="thule.logging.logstash.port"/>
     <if condition='isDefined("thuleLoggingLogstashHost") &amp;&amp; isDefined("thuleLoggingLogstashPort")'>
         <then>
-            <springProperty name="thuleLoggingLogstashSslEnabled" source="thule.logging.logstash.ssl-enabled" defaultValue="false"/>
-            <springProperty name="springApplicationName" source="spring.application.name" defaultValue="spring.application.name-not-set"/>
-            <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <springProperty name="thuleLoggingLogstashSslEnabled"
+                            source="thule.logging.logstash.ssl-enabled" defaultValue="false"/>
+            <springProperty name="springApplicationName" source="spring.application.name"
+                            defaultValue="spring.application.name-not-set"/>
+            <appender name="LOGSTASH"
+                      class="net.logstash.logback.appender.LogstashTcpSocketAppender">
                 <destination>${thuleLoggingLogstashHost}:${thuleLoggingLogstashPort}</destination>
                 <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                     <providers>

@@ -1,12 +1,12 @@
 buildscript {
     // Override Spring boot versions
-    ext["assertj.version"] = "3.7.0"  // Remove when spring boot has caught up with the latest version
-    ext["flyway.version"] = "4.2.0"  // Remove when spring boot has caught up with the latest version
-    ext["h2.version"] = "1.4.195"  // Remove when spring boot has caught up with the latest h2 version
+    ext["assertj.version"] = "3.7.0"// Remove when spring boot has caught up with the latest version
+    ext["flyway.version"] = "4.2.0"// Remove when spring boot has caught up with the latest version
+    ext["h2.version"] = "1.4.195"// Remove when spring boot has caught up with the latest h2 version
     ext["hibernate.version"] = "5.2.10.Final"  // Remove when spring boot has caught up with the latest version
     ext["httpclient.version"] = "4.5.3"  // Remove when spring boot has caught up with the latest version
-    ext["hsqldb.version"] = "2.4.0"  // Remove when spring boot has caught up with the latest version
-    ext["jackson.version"] = "2.8.8" // Remove when spring boot has caught up with the latest version
+    ext["hsqldb.version"] = "2.4.0"// Remove when spring boot has caught up with the latest version
+    ext["jackson.version"] = "2.8.8"// Remove when spring boot has caught up with the latest version
     ext["mockito.version"] = "2.7.22"  // Remove when spring boot has caught up with the latest version
     ext["mysql.version"] = "6.0.6"  // Remove when spring boot has caught up with the latest version
     ext["spring-retry.version"] = "1.2.0.RELEASE"  // Remove when spring boot has caught up with the latest version
@@ -35,7 +35,9 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("se.transmode.gradle:gradle-docker:1.2")
-        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") { changing = true }
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
+            changing = true
+        }
     }
 }
 
@@ -67,7 +69,7 @@ allprojects {
     // Java plugin (Note: Several plugins depend on the Java plugin so ensure it remains the first plugin defined)
     apply plugin: "java"
     // Java plugin configuration
-    sourceCompatibility =  1.8
+    sourceCompatibility = 1.8
     targetCompatibility = 1.8
     // Replace the version in spring config with the gradle build version
     processResources.filter { String line -> line.replace("@version@", version) }
@@ -132,7 +134,8 @@ allprojects {
             }
         }
     }
-    jacocoTestCoverageVerification.dependsOn jacocoTestReport // Always create a report even if jacocoTestCoverageVerification fails
+    // Always create a report even if jacocoTestCoverageVerification fails
+    jacocoTestCoverageVerification.dependsOn jacocoTestReport
     check.dependsOn jacocoTestCoverageVerification
 
     // Maven Publish plugin
@@ -257,14 +260,17 @@ project("thule-admin-server") {
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
-        compile("org.springframework.boot:spring-boot-starter-aop") // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
         compile("org.springframework.boot:spring-boot-starter-logging")
+        // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
+        compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
-        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
+        // Required to retry connecting to the discovery server when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
 
-        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
+        // Add config to classpath for integration tests
+        testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -325,15 +331,18 @@ project("thule-discovery-service") {
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
-        compile("org.springframework.boot:spring-boot-starter-aop") // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
+        // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
+        compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
-        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
+        // Required to retry connecting to the discovery server when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
 
-        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
+        // Add config to classpath for integration tests
+        testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -359,9 +368,11 @@ project("thule-edge-server") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile('org.springframework.cloud:spring-cloud-starter-zuul')
-        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
+        // Required to retry connecting to the discovery server when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
 
-        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
+        // Add config to classpath for integration tests
+        testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -387,9 +398,11 @@ project("thule-email-service") {
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
-        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
+        // Required to retry connecting to the discovery server when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
 
-        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
+        // Add config to classpath for integration tests
+        testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -407,7 +420,8 @@ project("thule-people-service") {
 
     dependencies {
         compile project(":thule-core")
-        compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310") // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
+        // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
+        compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
         compile("com.googlecode.log4jdbc:log4jdbc")
         compile("com.h2database:h2")
         compile("net.logstash.logback:logstash-logback-encoder")
@@ -426,9 +440,11 @@ project("thule-people-service") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.data:spring-data-rest-hal-browser")
-        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the discovery server when it is not available at startup
+        // Required to retry connecting to the discovery server when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
 
-        testCompile project(":thule-config-service").sourceSets.main.output // Add config to classpath for integration tests
+        // Add config to classpath for integration tests
+        testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("com.googlecode.log4jdbc:log4jdbc")
         testCompile("com.oracle:ojdbc6")

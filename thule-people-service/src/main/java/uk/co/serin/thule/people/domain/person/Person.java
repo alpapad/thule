@@ -148,36 +148,12 @@ public final class Person extends DomainModel {
         password = userId;
     }
 
-    public HomeAddress getHomeAddress() {
-        return homeAddress;
-    }
-
-    public void setHomeAddress(HomeAddress homeAddress) {
-        this.homeAddress = homeAddress;
-    }
-
-    public WorkAddress getWorkAddress() {
-        return workAddress;
-    }
-
-    public void setWorkAddress(WorkAddress workAddress) {
-        this.workAddress = workAddress;
-    }
-
     public void addPhotographs(Set<Photograph> photographs) {
         this.photographs.addAll(photographs);
     }
 
-    public Set<Photograph> getPhotographs() {
-        return Collections.unmodifiableSet(photographs);
-    }
-
     public void addRoles(Set<Role> roles) {
         this.roles.addAll(roles);
-    }
-
-    public Set<Role> getRoles() {
-        return Collections.unmodifiableSet(roles);
     }
 
     public void disable() {
@@ -262,12 +238,28 @@ public final class Person extends DomainModel {
         this.firstName = firstName;
     }
 
+    public HomeAddress getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(HomeAddress homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Photograph> getPhotographs() {
+        return Collections.unmodifiableSet(photographs);
+    }
+
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 
     public String getSalutation() {
@@ -296,6 +288,14 @@ public final class Person extends DomainModel {
 
     public String getUserId() {
         return userId;
+    }
+
+    public WorkAddress getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(WorkAddress workAddress) {
+        this.workAddress = workAddress;
     }
 
     @Override
@@ -363,17 +363,15 @@ public final class Person extends DomainModel {
     }
 
     public static final class PersonBuilder {
-        private LocalDateTime createdAt;
-        private Long id;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
         protected Long version;
+        private LocalDateTime createdAt;
         private LocalDate dateOfBirth;
         private LocalDate dateOfExpiry;
         private LocalDate dateOfPasswordExpiry;
         private String emailAddress;
         private String firstName;
         private HomeAddress homeAddress;
+        private Long id;
         private String password;
         private Set<Photograph> photographs = new HashSet<>();
         private Set<Role> roles = new HashSet<>();
@@ -381,6 +379,8 @@ public final class Person extends DomainModel {
         private String secondName;
         private State state;
         private String surname;
+        private LocalDateTime updatedAt;
+        private String updatedBy;
         private String userId;
         private WorkAddress workAddress;
 
