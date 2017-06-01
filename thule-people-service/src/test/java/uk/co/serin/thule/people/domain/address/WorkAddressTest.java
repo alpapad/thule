@@ -18,7 +18,7 @@ public class WorkAddressTest {
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        WorkAddress expectedWorkAddress = testDataFactory.newRegentStreetWorkAddress();
+        WorkAddress expectedWorkAddress = testDataFactory.buildRegentStreetWorkAddress();
 
         // When
         WorkAddress actualWorkAddress = WorkAddress.WorkAddressBuilder.aWorkAddress().
@@ -80,7 +80,7 @@ public class WorkAddressTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        WorkAddress expectedWorkAddress = testDataFactory.newRegentStreetWorkAddress();
+        WorkAddress expectedWorkAddress = testDataFactory.buildRegentStreetWorkAddress();
 
         // When
         WorkAddress actualWorkAddress = new WorkAddress(expectedWorkAddress.getAddressLine1(), expectedWorkAddress.getPostCode(), expectedWorkAddress.getCountry());

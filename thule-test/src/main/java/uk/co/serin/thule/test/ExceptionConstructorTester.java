@@ -14,18 +14,18 @@ public class ExceptionConstructorTester {
         this.clazz = clazz;
     }
 
-    public void assertAllConstructorsExist() {
+    public void assertThatAllConstructorsExist() {
         try {
-            assertConstructorWithMessageExists();
-            assertConstructorWithMessageAndThrowableExists();
-            assertConstructorWithMessageExecutes();
-            assertConstructorWithMessageAndThrowableExecutes();
+            assertThatConstructorWithMessageExists();
+            assertThatConstructorWithMessageAndThrowableExists();
+            assertThatConstructorWithMessageExecutes();
+            assertThatConstructorWithMessageAndThrowableExecutes();
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private void assertConstructorWithMessageExists() throws NoSuchMethodException {
+    private void assertThatConstructorWithMessageExists() throws NoSuchMethodException {
         // Given
 
         // When
@@ -34,7 +34,7 @@ public class ExceptionConstructorTester {
         // Then (throws exception when the test fails)
     }
 
-    private void assertConstructorWithMessageAndThrowableExists() throws NoSuchMethodException {
+    private void assertThatConstructorWithMessageAndThrowableExists() throws NoSuchMethodException {
         // Given
 
         // When
@@ -43,7 +43,7 @@ public class ExceptionConstructorTester {
         // Then (throws exception when the test fails)
     }
 
-    private void assertConstructorWithMessageExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void assertThatConstructorWithMessageExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // Given
         String message = uniqueMessage();
 
@@ -55,7 +55,7 @@ public class ExceptionConstructorTester {
     }
 
     @SuppressWarnings({"ThrowableInstanceNeverThrown"})
-    private void assertConstructorWithMessageAndThrowableExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void assertThatConstructorWithMessageAndThrowableExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // Given
         String message = uniqueMessage();
         RuntimeException cause = new TestException();

@@ -17,10 +17,16 @@ public final class Email {
     private final Set<Attachment> attachments = new HashSet<>();
     private final Set<String> bccs = new HashSet<>();
     private final Set<String> ccs = new HashSet<>();
-    private final String from;
-    private final String subject;
     private final Set<String> tos = new HashSet<>();
     private String body;
+    private String from;
+    private String subject;
+
+    /**
+     * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
+     */
+    protected Email() {
+    }
 
     /**
      * Business key constructor
@@ -53,10 +59,6 @@ public final class Email {
         return Collections.unmodifiableSet(attachments);
     }
 
-    public Set<String> getBccs() {
-        return Collections.unmodifiableSet(bccs);
-    }
-
     public String getBody() {
         return body;
     }
@@ -65,20 +67,12 @@ public final class Email {
         this.body = body;
     }
 
-    public Set<String> getCcs() {
-        return Collections.unmodifiableSet(ccs);
-    }
-
     public String getFrom() {
         return from;
     }
 
     public String getSubject() {
         return subject;
-    }
-
-    public Set<String> getTos() {
-        return Collections.unmodifiableSet(tos);
     }
 
     @Override
@@ -109,6 +103,22 @@ public final class Email {
                 .add(String.format("subject=%s", subject))
                 .add(String.format("tos=%s", tos))
                 .toString();
+    }
+
+    public boolean hasARecipient() {
+        return !this.getTos().isEmpty() || !this.getCcs().isEmpty() || !this.getBccs().isEmpty();
+    }
+
+    public Set<String> getTos() {
+        return Collections.unmodifiableSet(tos);
+    }
+
+    public Set<String> getCcs() {
+        return Collections.unmodifiableSet(ccs);
+    }
+
+    public Set<String> getBccs() {
+        return Collections.unmodifiableSet(bccs);
     }
 
     public static final class EmailBuilder {

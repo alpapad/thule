@@ -1,0 +1,45 @@
+# Eureka configuration
+eureka:
+  instance:
+    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      # Location of the discovery service to register this service
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+
+# Spring actuator configuration
+endpoints:
+  sensitive: false
+info:
+  description: Thule Email Service
+  name: ${spring.application.name}
+
+# Spring server configuration
+server:
+  port: 8091
+
+# Spring boot configuration
+spring:
+  application:
+    name: thule-email-service
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+  mail:
+    host: smtp.gmail.com
+    password: 1nsleyopie
+    port: 587
+    username: thule@serin-consultancy.co.uk
+    properties:
+      mail.debug: true
+      mail.smtp.auth: true
+      mail.smtp.ssl.trust: "*"
+      mail.smtp.starttls.enable: true
+
+# Thule configuration
+thule:
+  logging:
+    logstash:
+      host: logstash-host
+      port: 5400

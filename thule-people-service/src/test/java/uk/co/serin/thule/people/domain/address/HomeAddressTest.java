@@ -18,7 +18,7 @@ public class HomeAddressTest {
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        HomeAddress expectedHomeAddress = testDataFactory.newOxfordStreetHomeAddress();
+        HomeAddress expectedHomeAddress = testDataFactory.buildOxfordStreetHomeAddress();
 
         // When
         HomeAddress actualHomeAddress = HomeAddress.HomeAddressBuilder.aHomeAddress().
@@ -80,7 +80,7 @@ public class HomeAddressTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        HomeAddress expectedHomeAddress = testDataFactory.newOxfordStreetHomeAddress();
+        HomeAddress expectedHomeAddress = testDataFactory.buildOxfordStreetHomeAddress();
 
         // When
         HomeAddress actualHomeAddress = new HomeAddress(expectedHomeAddress.getAddressLine1(), expectedHomeAddress.getPostCode(), expectedHomeAddress.getCountry());

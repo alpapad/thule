@@ -1,8 +1,11 @@
 package uk.co.serin.thule.email.domain;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
+
+import uk.co.serin.thule.email.datafactories.TestDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +13,7 @@ public class AttachmentTest {
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        Attachment expectedAttachment = newAttachment();
+        Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
         // When
         Attachment actualAttachment = Attachment.AttachmentBuilder.anAttachment().
@@ -22,14 +25,10 @@ public class AttachmentTest {
         assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
     }
 
-    private Attachment newAttachment() {
-        return Attachment.AttachmentBuilder.anAttachment().withContent("content".getBytes()).withLabel("label").build();
-    }
-
     @Test
     public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
         // Given
-        Attachment expectedAttachment = newAttachment();
+        Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
         // When
         Attachment actualAttachment = new Attachment(expectedAttachment.getContent(), expectedAttachment.getLabel());
@@ -40,9 +39,20 @@ public class AttachmentTest {
     }
 
     @Test
+    public void defaultConstructorCreatesInstanceSuccessfully() {
+        // Given
+
+        // When
+        Attachment attachment = new Attachment();
+
+        // Then
+        assertThat(attachment).isNotNull();
+    }
+
+    @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Attachment expectedAttachment = newAttachment();
+        Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
         // When
         Attachment actualAttachment = new Attachment(expectedAttachment.getContent(), expectedAttachment.getLabel());
@@ -55,7 +65,7 @@ public class AttachmentTest {
     @Test
     public void toStringIsOverridden() {
         // Given
-        Attachment attachment = newAttachment();
+        Attachment attachment = TestDataFactory.buildAttachment();
 
         // When
         String attachmentAsString = attachment.toString();
@@ -66,6 +76,9 @@ public class AttachmentTest {
 
     @Test
     public void verifyEqualsConformsToContract() {
-        EqualsVerifier.forClass(Attachment.class).verify();
+        EqualsVerifier.forClass(Attachment.class).
+                suppress(Warning.NONFINAL_FIELDS).
+                withOnlyTheseFields(Attachment.ENTITY_ATTRIBUTE_NAME_CONTENT, Attachment.ENTITY_ATTRIBUTE_NAME_LABEL).
+                verify();
     }
 }

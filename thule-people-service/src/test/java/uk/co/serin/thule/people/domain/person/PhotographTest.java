@@ -18,7 +18,7 @@ public class PhotographTest {
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        Photograph expectedPhotograph = testDataFactory.newPhotographMissScarlett(testDataFactory.newPersonWithoutAnyAssociations());
+        Photograph expectedPhotograph = testDataFactory.buildPhotographMissScarlett(testDataFactory.buildPersonWithoutAnyAssociations());
 
         // When
         Photograph actualPhotograph = Photograph.PhotographBuilder.aPhotograph().
@@ -73,7 +73,7 @@ public class PhotographTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Photograph expectedPhotograph = testDataFactory.newPhotographMissScarlett(testDataFactory.newPersonWithoutAnyAssociations());
+        Photograph expectedPhotograph = testDataFactory.buildPhotographMissScarlett(testDataFactory.buildPersonWithoutAnyAssociations());
 
         // When
         Photograph actualPhotograph = new Photograph(expectedPhotograph.getPhoto(), expectedPhotograph.getPerson());

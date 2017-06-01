@@ -13,9 +13,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue(DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_WORK)
 public final class WorkAddress extends Address {
     /**
-     * Default constructor required by Hibernate
+     * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
      */
-    WorkAddress() {
+    protected WorkAddress() {
     }
 
     /**

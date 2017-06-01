@@ -8,8 +8,14 @@ public final class Attachment {
     public static final String ENTITY_ATTRIBUTE_NAME_CONTENT = "content";
     public static final String ENTITY_ATTRIBUTE_NAME_LABEL = "label";
     public static final String ENTITY_NAME_ATTACHMENTS = "attachments";
-    private final byte[] content;
-    private final String label;
+    private byte[] content;
+    private String label;
+
+    /**
+     * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
+     */
+    protected Attachment() {
+    }
 
     /**
      * Business key constructor

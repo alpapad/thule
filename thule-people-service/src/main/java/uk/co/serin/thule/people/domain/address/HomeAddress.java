@@ -13,9 +13,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue(DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_HOME)
 public final class HomeAddress extends Address {
     /**
-     * Default constructor required by Hibernate
+     * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
      */
-    HomeAddress() {
+    protected HomeAddress() {
     }
 
     /**

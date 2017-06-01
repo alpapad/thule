@@ -50,7 +50,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Test(expected = LazyInitializationException.class)
     public void accessLazyAssociatedPhotographsOutsideTransaction() {
         // Given
-        Person person = personRepository.save(testDataFactory.newPersonWithAllAssociations());
+        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         person = personRepository.findOne(person.getId());
 
         // When
@@ -62,7 +62,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Test(expected = LazyInitializationException.class)
     public void accessLazyAssociatedRolesOutsideTransaction() {
         // Given
-        Person person = personRepository.save(testDataFactory.newPersonWithAllAssociations());
+        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         person = personRepository.findOne(person.getId());
 
         // When
@@ -74,7 +74,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Test
     public void accessPreFetchedAssociationsOutsideTransaction() {
         // Given
-        Person person = personRepository.save(testDataFactory.newPersonWithAllAssociations());
+        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         person = personRepository.findByIdAndFetchAllAssociations(person.getId());
 
         // When
@@ -90,8 +90,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void create() {
         // Given
-        Person testPerson = testDataFactory.newPersonWithAllAssociations();
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = testDataFactory.buildPersonWithAllAssociations();
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, 0L);
 
         // When
@@ -149,7 +149,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void delete() {
         // Given
-        Person person = personRepository.save(testDataFactory.newPersonWithAllAssociations());
+        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
 
         // When
         personRepository.delete(person);
@@ -163,8 +163,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void findAll() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         List<Person> actualPeople = personRepository.findAll();
@@ -177,8 +177,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void findByCriteria() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         List<Person> actualPeople = personRepository.findByCriteria(testPerson.getEmailAddress().substring(1), null, null, null);
@@ -191,8 +191,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void findById() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         Person actualPerson = personRepository.findOne(testPerson.getId());
@@ -205,8 +205,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void findByIdAndFetchAllAssociations() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         Person actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
@@ -219,8 +219,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void findByUpdatedBy() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         Set<Person> actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
@@ -233,8 +233,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void findByUserid() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
@@ -247,8 +247,8 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void searchPeople() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         List<Person> actualPeople = personRepository.search(testPerson.getEmailAddress().substring(1));
@@ -267,7 +267,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         personRepository.delete(people);
 
         // Setup security context
-        Person jUnitTestPerson = testDataFactory.newJUnitTest();
+        Person jUnitTestPerson = testDataFactory.buildJUnitTest();
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(jUnitTestPerson.getUserId(), jUnitTestPerson.getPassword()));
     }
@@ -276,7 +276,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Transactional
     public void update() throws InterruptedException {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.newPersonWithAllAssociations());
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
         testPerson.setSurname("updatedSurname");
@@ -284,7 +284,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         testPerson.setEmailAddress("updated@gmail.com");
         testPerson.setPassword("updatedPassword");
 
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, testPerson.getVersion() + 1);
 
         Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value

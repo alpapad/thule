@@ -84,6 +84,7 @@ allprojects {
             mavenBom("org.springframework.boot:spring-boot-starter-parent:${springBootVersion}")
         }
         dependencies {
+            dependency("com.bitmechanic:dumbster:1.9.0.2")
             dependency("com.googlecode.log4jdbc:log4jdbc:1.2")
             dependency("com.oracle:ojdbc6:11.2.0.1.0")
             dependency("commons-lang:commons-lang:2.6")
@@ -91,6 +92,7 @@ allprojects {
             dependency("de.codecentric:spring-boot-admin-server-ui:1.5.0")
             dependency("net.logstash.logback:logstash-logback-encoder:4.9")
             dependency("nl.jqno.equalsverifier:equalsverifier:2.3")
+            dependency("org.awaitility:awaitility:3.0.0")
             dependency("org.codehaus.janino:janino:3.0.7")
             dependency("org.jolokia:jolokia-core:1.3.6")
             dependency("org.springframework.data:spring-data-rest-hal-browser:2.6.3.RELEASE")
@@ -229,7 +231,13 @@ subprojects {
 
 //############################## Project Configuration ##############################
 project("thule-cloud") {
-    tasks.itest.dependsOn(":thule-admin-server:assemble", ":thule-config-service:assemble", ":thule-discovery-service:assemble", ":thule-edge-server:assemble", ":thule-people-service:assemble")
+    tasks.itest.dependsOn(
+            ":thule-admin-server:assemble", ":thule-admin-server:itest",
+            ":thule-config-service:assemble", ":thule-config-service:itest",
+            ":thule-discovery-service:assemble", ":thule-discovery-service:itest",
+            ":thule-edge-server:assemble", ":thule-edge-server:itest",
+            ":thule-email-service:assemble", ":thule-email-service:itest",
+            ":thule-people-service:assemble", ":thule-people-service:itest")
 
     dependencies {
         compile("org.apache.httpcomponents:httpclient")
@@ -239,6 +247,7 @@ project("thule-cloud") {
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
         testCompile("org.springframework.retry:spring-retry")
     }
@@ -273,6 +282,7 @@ project("thule-admin-server") {
         testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -299,6 +309,7 @@ project("thule-config-service") {
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -313,6 +324,7 @@ project("thule-core") {
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -345,6 +357,7 @@ project("thule-discovery-service") {
         testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -375,6 +388,7 @@ project("thule-edge-server") {
         testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -404,7 +418,9 @@ project("thule-email-service") {
         // Add config to classpath for integration tests
         testCompile project(":thule-config-service").sourceSets.main.output
         testCompile project(":thule-test")
+        testCompile("com.bitmechanic:dumbster")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
@@ -450,6 +466,7 @@ project("thule-people-service") {
         testCompile("com.oracle:ojdbc6")
         testCompile("mysql:mysql-connector-java")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.hsqldb:hsqldb")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
@@ -465,6 +482,7 @@ project("thule-repository-mongodb") {
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }

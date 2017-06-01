@@ -73,6 +73,25 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
+  ################################  thule-edge-server  ################################
+  thule-email-service:
+    image: pooh.serin-consultancy.co.uk/thule-email-service
+    environment:
+      CONFIG_HOST: docker-host
+      CONFIG_PORT: 8888
+      EUREKA_HOST: docker-host
+      EUREKA_PORT: 8761
+    extra_hosts:
+      - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
+    hostname: edge-server-1
+    ports:
+      - "8091:8091"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
   ################################  thule-people-service  ################################
   thule-people-service:
     image: pooh.serin-consultancy.co.uk/thule-people-service

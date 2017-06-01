@@ -70,8 +70,8 @@ public class RestfulServiceIntTest {
     @Test
     public void createPerson() {
         // Given
-        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
         ResponseEntity<Person> responseEntity = restTemplate.postForEntity(urlForPeople, testPerson, Person.class);
@@ -94,7 +94,7 @@ public class RestfulServiceIntTest {
     @Test
     public void deletePerson() {
         // Given
-        Person person = createTestPerson(testDataFactory.newPersonWithoutAnyAssociations());
+        Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
 
         // When
         restTemplate.delete(urlForPeople + ID, person.getId());
@@ -106,7 +106,7 @@ public class RestfulServiceIntTest {
     }
 
     private Person createTestPerson(Person expectedPerson) {
-        Person person = testDataFactory.newPerson(expectedPerson);
+        Person person = testDataFactory.buildPerson(expectedPerson);
         person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
         return personRepository.save(person);
     }
@@ -114,7 +114,7 @@ public class RestfulServiceIntTest {
     @Test
     public void getAllPeople() {
         // Given
-        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
+        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
@@ -132,7 +132,7 @@ public class RestfulServiceIntTest {
     @Test
     public void getPerson() {
         // Given
-        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
+        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
@@ -166,7 +166,7 @@ public class RestfulServiceIntTest {
         testDataFactory = new TestDataFactory(referenceDataFactory);
 
         // Create security context
-        Person jUnitTestPerson = testDataFactory.newJUnitTest();
+        Person jUnitTestPerson = testDataFactory.buildJUnitTest();
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(jUnitTestPerson.getUserId(), jUnitTestPerson.getPassword()));
 
@@ -192,7 +192,7 @@ public class RestfulServiceIntTest {
     @Test
     public void updatePerson() {
         // Given
-        Person testPerson = testDataFactory.newPersonWithoutAnyAssociations();
+        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         testPerson = createTestPerson(testPerson);
         long id = testPerson.getId();
 
@@ -203,7 +203,7 @@ public class RestfulServiceIntTest {
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setPassword("updatedPassword");
 
-        Person expectedPerson = testDataFactory.newPerson(testPerson);
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
         expectedPerson.setState(null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);

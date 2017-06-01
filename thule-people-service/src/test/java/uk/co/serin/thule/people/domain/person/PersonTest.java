@@ -20,7 +20,7 @@ public class PersonTest {
     @Test
     public void builderAndGettersOperateOnTheSameField() {
         // Given
-        Person expectedPerson = testDataFactory.newPersonWithAllAssociations();
+        Person expectedPerson = testDataFactory.buildPersonWithAllAssociations();
 
         // When
         Person actualPerson = Person.PersonBuilder.aPerson().
@@ -164,7 +164,7 @@ public class PersonTest {
     @Test
     public void gettersAndSettersOperateOnTheSameField() {
         // Given
-        Person expectedPerson = testDataFactory.newPersonWithAllAssociations();
+        Person expectedPerson = testDataFactory.buildPersonWithAllAssociations();
 
         // When
         Person actualPerson = new Person(expectedPerson.getUserId());
@@ -274,7 +274,7 @@ public class PersonTest {
     public void updatePerson() {
         // Given
         Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
-        Person actualPerson = testDataFactory.newPerson(expectedPerson);
+        Person actualPerson = testDataFactory.buildPerson(expectedPerson);
 
         // When
         actualPerson.update();

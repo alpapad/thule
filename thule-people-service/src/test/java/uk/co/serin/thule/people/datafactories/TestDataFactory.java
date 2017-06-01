@@ -40,27 +40,7 @@ public class TestDataFactory implements ReferenceDataFactory {
         this.referenceDataFactory = new MockReferenceDataFactory();
     }
 
-    @Override
-    public Map<ActionCode, Action> getActions() {
-        return referenceDataFactory.getActions();
-    }
-
-    @Override
-    public Map<String, Country> getCountries() {
-        return referenceDataFactory.getCountries();
-    }
-
-    @Override
-    public Map<RoleCode, Role> getRoles() {
-        return referenceDataFactory.getRoles();
-    }
-
-    @Override
-    public Map<StateCode, State> getStates() {
-        return referenceDataFactory.getStates();
-    }
-
-    public Person newJUnitTest() {
+    public Person buildJUnitTest() {
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
 
         return Person.PersonBuilder.aPerson().withUserId(JUNIT_TEST).
@@ -78,7 +58,7 @@ public class TestDataFactory implements ReferenceDataFactory {
                 build();
     }
 
-    public Person newPerson(Person person) {
+    public Person buildPerson(Person person) {
         return Person.PersonBuilder.aPerson().
                 withCreatedAt(person.getCreatedAt()).
                 withDateOfBirth(person.getDateOfBirth()).
@@ -102,7 +82,7 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withWorkAddress(person.getWorkAddress()).build();
     }
 
-    public Person newPersonWithAllAssociations() {
+    public Person buildPersonWithAllAssociations() {
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
@@ -112,22 +92,22 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
-                withHomeAddress(newOxfordStreetHomeAddress()).
+                withHomeAddress(buildOxfordStreetHomeAddress()).
                 withPassword(userId).
                 withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
                 withSalutation("Miss").
                 withSecondName("K").
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
                 withSurname("Scarlett").
-                withWorkAddress(newRegentStreetWorkAddress()).
+                withWorkAddress(buildRegentStreetWorkAddress()).
                 build();
 
-        person.addPhotographs(Stream.of(newPhotographMissScarlett(person)).collect(Collectors.toSet()));
+        person.addPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
 
         return person;
     }
 
-    public HomeAddress newOxfordStreetHomeAddress() {
+    public HomeAddress buildOxfordStreetHomeAddress() {
         return HomeAddress.HomeAddressBuilder.aHomeAddress().
                 withAddressLine1("Oxford Street").
                 withAddressLine2("Green").
@@ -139,7 +119,7 @@ public class TestDataFactory implements ReferenceDataFactory {
                 build();
     }
 
-    public WorkAddress newRegentStreetWorkAddress() {
+    public WorkAddress buildRegentStreetWorkAddress() {
         return WorkAddress.WorkAddressBuilder.aWorkAddress().
                 withAddressLine1("Regent Street").
                 withAddressLine2("Green").
@@ -151,7 +131,7 @@ public class TestDataFactory implements ReferenceDataFactory {
                 build();
     }
 
-    public Photograph newPhotographMissScarlett(Person person) {
+    public Photograph buildPhotographMissScarlett(Person person) {
         try {
             Resource resource = new DefaultResourceLoader().getResource("db/photographs/missScarlet.jpg");
             return Photograph.PhotographBuilder.aPhotograph().
@@ -164,7 +144,7 @@ public class TestDataFactory implements ReferenceDataFactory {
         }
     }
 
-    public Person newPersonWithoutAnyAssociations() {
+    public Person buildPersonWithoutAnyAssociations() {
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
@@ -180,5 +160,25 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withSurname("Scarlett").
                 withUserId(userId).
                 build();
+    }
+
+    @Override
+    public Map<ActionCode, Action> getActions() {
+        return referenceDataFactory.getActions();
+    }
+
+    @Override
+    public Map<String, Country> getCountries() {
+        return referenceDataFactory.getCountries();
+    }
+
+    @Override
+    public Map<RoleCode, Role> getRoles() {
+        return referenceDataFactory.getRoles();
+    }
+
+    @Override
+    public Map<StateCode, State> getStates() {
+        return referenceDataFactory.getStates();
     }
 }

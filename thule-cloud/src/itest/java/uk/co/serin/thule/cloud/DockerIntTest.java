@@ -31,6 +31,8 @@ public class DockerIntTest {
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
     private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:8080/";
+    private static final String EMAILS = "emails";
+    private static final String EMAIL_SERVICE_URL_PREFIX = "http://docker-host:8091/";
     private static final String HEALTH = "health";
     private static final String PEOPLE = "people";
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090/";
@@ -163,6 +165,18 @@ public class DockerIntTest {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(people).hasSize(8);
+    }
+
+    @Test
+    public void emailServiceIsUp() {
+        // Given
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EMAIL_SERVICE_URL_PREFIX + HEALTH);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
     }
 
     @Test
