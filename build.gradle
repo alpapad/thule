@@ -1,6 +1,6 @@
 buildscript {
     // Override Spring boot versions
-    ext["assertj.version"] = "3.7.0"// Remove when spring boot has caught up with the latest version
+    ext["assertj.version"] = "3.8.0"// Remove when spring boot has caught up with the latest version
     ext["flyway.version"] = "4.2.0"// Remove when spring boot has caught up with the latest version
     ext["h2.version"] = "1.4.195"// Remove when spring boot has caught up with the latest h2 version
     ext["hibernate.version"] = "5.2.10.Final"  // Remove when spring boot has caught up with the latest version
