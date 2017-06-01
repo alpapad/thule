@@ -27,17 +27,17 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DockerIntTest {
-    private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071/";
-    private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888/";
-    private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761/";
-    private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:8080/";
-    private static final String EMAILS = "emails";
-    private static final String EMAIL_SERVICE_URL_PREFIX = "http://docker-host:8091/";
-    private static final String HEALTH = "health";
-    private static final String PEOPLE = "people";
-    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090/";
+    private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071";
+    private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888";
+    private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761";
+    private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:8080";
+    private static final String EMAIL_SERVICE_URL_PREFIX = "http://docker-host:8091";
+    private static final String HEALTH = "/health";
+    private static final String PEOPLE = "/people";
+    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:8090";
     private static final String STATUS = "status";
-    private static final String THULE_PEOPLE_SERVICE = "thule-" + PEOPLE + "-service";
+    private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
+    private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
     private static Process dockerComposeUp;
     private static RestTemplate restTemplate = new RestTemplate();
     private static RetryTemplate retryTemplate = new RetryTemplate();
@@ -147,6 +147,18 @@ public class DockerIntTest {
     }
 
     @Test
+    public void edgeServerProxiesEmailService() {
+        // Given
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + HEALTH);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().get(STATUS)).isEqualTo(Status.UP.getCode());
+    }
+
+    @Test
     public void edgeServerProxiesPeopleService() {
         // Given
         BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
@@ -157,7 +169,7 @@ public class DockerIntTest {
         RestTemplate restTemplateWithCredentials = new RestTemplate(requestFactory);
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + "/" + PEOPLE, restTemplateWithCredentials);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE, restTemplateWithCredentials);
 
         // Then
         Map embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
