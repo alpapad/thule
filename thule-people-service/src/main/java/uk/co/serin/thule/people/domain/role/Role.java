@@ -32,7 +32,9 @@ public final class Role extends DomainModel {
     /**
      * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
      */
-    protected Role() {
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
+    Role() {
     }
 
     /**

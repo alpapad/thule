@@ -15,7 +15,9 @@ public final class WorkAddress extends Address {
     /**
      * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
      */
-    protected WorkAddress() {
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
+    WorkAddress() {
     }
 
     /**
@@ -25,6 +27,8 @@ public final class WorkAddress extends Address {
      * @param postCode     Business key attribute
      * @param country      Business key attribute
      */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public WorkAddress(String addressLine1, String postCode, Country country) {
         super(addressLine1, postCode, country);
     }
