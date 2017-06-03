@@ -14,6 +14,10 @@ endpoints:
 info:
   description: Thule Edge Server
   name: ${spring.application.name}
+management:
+  security:
+    # Disabled to enable health endpoint to show complete health rather than just 'status'
+    enabled: false
 
 # Spring logging
 logging:
@@ -30,7 +34,7 @@ spring:
   jackson:
     serialization:
       # Admin server displays the buildTime of this service which by default will be as an
-      # absolute time (i.e. a long), not particularily meaningful unless we instruct jackson to
+      # absolute time (i.e. a long), not particularly meaningful unless we instruct jackson to
       # serialize it as a timestamp which is a human readable form
       write_dates_as_timestamps: false
 
