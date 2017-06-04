@@ -90,7 +90,7 @@ allprojects {
             dependency("commons-lang:commons-lang:2.6")
             dependency("de.codecentric:spring-boot-admin-server:1.5.0")
             dependency("de.codecentric:spring-boot-admin-server-ui:1.5.0")
-            dependency("net.logstash.logback:logstash-logback-encoder:4.9")
+            dependency("net.logstash.logback:logstash-logback-encoder:4.10")
             dependency("nl.jqno.equalsverifier:equalsverifier:2.3")
             dependency("org.awaitility:awaitility:3.0.0")
             dependency("org.codehaus.janino:janino:3.0.7")
