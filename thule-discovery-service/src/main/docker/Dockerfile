@@ -1,5 +1,9 @@
 FROM openjdk:8-jre-alpine
 
+################################  Update the base image  ################################
+# su-exec as an alternative to chroot which is not available in alpine for easy step-down from root
+RUN apk add --update bash su-exec
+
 ################################  Create user  ################################
 ENV GID 1000
 ENV UID 1000
