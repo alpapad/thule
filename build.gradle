@@ -442,7 +442,6 @@ project("thule-people-service") {
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.apache.httpcomponents:httpclient")
         compile("org.flywaydb:flyway-core")
-        compile("org.hibernate:hibernate-java8")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-aop")
