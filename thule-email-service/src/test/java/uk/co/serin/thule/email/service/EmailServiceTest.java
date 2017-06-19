@@ -6,17 +6,20 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import uk.co.serin.thule.email.datafactories.TestDataFactory;
 import uk.co.serin.thule.email.domain.Email;
 
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.mail.internet.MimeMessage;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,11 +28,15 @@ public class EmailServiceTest {
     private EmailService emailService;
     @Mock
     private JavaMailSender mailSender;
+    @Mock
+    private MimeMessage mimeMessage;
 
     @Test
     public void create_an_email() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = buildEmail();
+        Email expectedEmail = TestDataFactory.buildEmail();
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
         Future<Email> emailFuture = emailService.createEmail(expectedEmail);
@@ -39,20 +46,13 @@ public class EmailServiceTest {
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
-    public Email buildEmail() {
-        Email email = new Email("from@test.co.uk", "This is a test email");
-        email.setBody("This is the content");
-        email.addTos(Collections.singleton("to@test.co.uk"));
-
-        return email;
-    }
-
     @Test(expected = EmailServiceException.class)
     public void create_an_email_that_throws_a_service_exception() {
         // Given
-        Email expectedEmail = buildEmail();
+        Email expectedEmail = TestDataFactory.buildEmail();
 
-        doThrow(EmailServiceException.class).when(mailSender).send(any(SimpleMailMessage.class));
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
+        doThrow(EmailServiceException.class).when(mailSender).send(any(MimeMessage.class));
 
         // When
         emailService.createEmail(expectedEmail);
@@ -67,6 +67,8 @@ public class EmailServiceTest {
         expectedEmail.setBody("This is the content");
         expectedEmail.addBccs(Collections.singleton("bcc@test.co.uk"));
         expectedEmail.addCcs(Collections.singleton("cc@test.co.uk"));
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
         Future<Email> emailFuture = emailService.createEmail(expectedEmail);

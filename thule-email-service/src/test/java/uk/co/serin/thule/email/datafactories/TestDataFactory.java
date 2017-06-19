@@ -9,19 +9,17 @@ import java.util.stream.Stream;
 
 public class TestDataFactory {
     public static Attachment buildAttachment() {
-        return Attachment.AttachmentBuilder.anAttachment().withContent("content".getBytes()).withLabel("label").build();
+        return Attachment.AttachmentBuilder.anAttachment().withContent("This is a test attachment".getBytes()).withLabel("test-attachment.txt").build();
     }
 
     public static Email buildEmail() {
-        Attachment attachment = new Attachment("content".getBytes(), "label");
-
         return Email.EmailBuilder.anEmail().
-                withAttachments(Collections.singleton(attachment)).
+                withAttachments(Collections.singleton(buildAttachment())).
                 withBccs(Collections.singleton("bcc@test.co.uk")).
-                withBody("body").
+                withBody("This is a test body").
                 withCcs(Collections.singleton("ccs@test.co.uk")).
                 withFrom("from@test.co.uk").
-                withSubject("subject").
+                withSubject("Test subject").
                 withTos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
                 build();
     }

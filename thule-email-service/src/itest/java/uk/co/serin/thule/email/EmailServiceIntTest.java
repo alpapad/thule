@@ -1,7 +1,6 @@
 package uk.co.serin.thule.email;
 
 import com.dumbster.smtp.MailMessage;
-import com.dumbster.smtp.MailMessageImpl;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
@@ -96,21 +95,14 @@ public class EmailServiceIntTest {
 
         //Then
         await().until(() -> smtpServer.getEmailCount() > 0);
-
-        // Extract required mail message
-        MailMessage[] mailMessagesSent = smtpServer.getMessages();
-        MailMessage actualMailMessage = new MailMessageImpl();
-        for (MailMessage mailMessage : mailMessagesSent) {
-            if (mailMessage.getBody().equalsIgnoreCase(expectedEmail.getBody())) {
-                actualMailMessage = mailMessage;
-            }
-        }
+        assertThat(smtpServer.getEmailCount()).isEqualTo(1);
 
         assertThat(emailServiceResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
 
-        assertThat(actualMailMessage.getBody()).isEqualTo(expectedEmail.getBody());
+        MailMessage actualMailMessage = smtpServer.getMessage(0);
+        assertThat(actualMailMessage.getBody()).contains(expectedEmail.getBody());
+        assertThat(actualMailMessage.getBody()).contains(new String(expectedEmail.getAttachments().stream().findFirst().get().getContent()));
         assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(expectedEmail.getFrom());
-
         String[] expectedTos = expectedEmail.getTos().toArray(new String[expectedEmail.getTos().size()]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
