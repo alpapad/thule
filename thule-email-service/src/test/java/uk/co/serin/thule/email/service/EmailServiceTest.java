@@ -60,8 +60,56 @@ public class EmailServiceTest {
         // Then - see the expected in @Test
     }
 
+    @Test(expected = EmailServiceValidationException.class)
+    public void create_an_email_without_any_recipients() {
+        // Given
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
+        expectedEmail.setBody("This is the content");
+
+        // When
+        emailService.createEmail(expectedEmail);
+
+        // Then - see the expected in the @Test
+    }
+
     @Test
-    public void create_an_email_with_ccs_and_bccs_without_tos() throws ExecutionException, InterruptedException {
+    public void create_an_email_without_bccs() throws ExecutionException, InterruptedException {
+        // Given
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
+        expectedEmail.setBody("This is the content");
+        expectedEmail.addCcs(Collections.singleton("cc@test.co.uk"));
+        expectedEmail.addTos(Collections.singleton("to@test.co.uk"));
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
+
+        // When
+        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+
+        // Then
+        Email actualEmail = emailFuture.get();
+        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
+    }
+
+    @Test
+    public void create_an_email_without_ccs() throws ExecutionException, InterruptedException {
+        // Given
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
+        expectedEmail.setBody("This is the content");
+        expectedEmail.addBccs(Collections.singleton("bcc@test.co.uk"));
+        expectedEmail.addTos(Collections.singleton("to@test.co.uk"));
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
+
+        // When
+        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+
+        // Then
+        Email actualEmail = emailFuture.get();
+        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
+    }
+
+    @Test
+    public void create_an_email_without_tos() throws ExecutionException, InterruptedException {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
@@ -76,17 +124,5 @@ public class EmailServiceTest {
         // Then
         Email actualEmail = emailFuture.get();
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
-    }
-
-    @Test(expected = EmailServiceValidationException.class)
-    public void create_an_email_without_any_recipients() {
-        // Given
-        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
-        expectedEmail.setBody("This is the content");
-
-        // When
-        emailService.createEmail(expectedEmail);
-
-        // Then - see the expected in the @Test
     }
 }
