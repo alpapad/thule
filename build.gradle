@@ -6,7 +6,7 @@ buildscript {
     ext["hibernate.version"] = "5.2.10.Final"  // Remove when spring boot has caught up with the latest version
     ext["httpclient.version"] = "4.5.3"  // Remove when spring boot has caught up with the latest version
     ext["hsqldb.version"] = "2.4.0"// Remove when spring boot has caught up with the latest version
-    ext["jackson.version"] = "2.8.8"// Remove when spring boot has caught up with the latest version
+    ext["jackson.version"] = "2.8.9"// Remove when spring boot has caught up with the latest version
     ext["mockito.version"] = "2.7.22"  // Remove when spring boot has caught up with the latest version
     ext["mysql.version"] = "6.0.6"  // Remove when spring boot has caught up with the latest version
     ext["spring-retry.version"] = "1.2.1.RELEASE"  // Remove when spring boot has caught up with the latest version
