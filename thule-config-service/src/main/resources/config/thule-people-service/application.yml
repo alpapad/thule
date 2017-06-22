@@ -57,6 +57,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  sleuth:
+      sampler:
+        percentage: 1.0
+  zipkin:
+    baseUrl: http://zipkin-host:9411
 
 # Thule configuration
 thule:

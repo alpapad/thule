@@ -43,6 +43,11 @@ spring:
       mail.smtp.auth: true
       mail.smtp.ssl.trust: "*"
       mail.smtp.starttls.enable: true
+  sleuth:
+      sampler:
+        percentage: 1.0
+  zipkin:
+    baseUrl: http://zipkin-host:9411
 
 # Thule configuration
 thule:

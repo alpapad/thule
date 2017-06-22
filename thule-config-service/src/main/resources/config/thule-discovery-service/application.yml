@@ -42,6 +42,11 @@ spring:
       # absolute time (i.e. a long), not particularly meaningful unless we instruct jackson to
       # serialize it as a timestamp which is a human readable form
       write_dates_as_timestamps: false
+  sleuth:
+      sampler:
+        percentage: 1.0
+  zipkin:
+    baseUrl: http://zipkin-host:9411
 
 # Thule configuration
 thule:

@@ -274,6 +274,7 @@ project("thule-admin-server") {
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         // Required to retry connecting to the discovery server when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
@@ -305,6 +306,7 @@ project("thule-config-service") {
         compile("org.springframework.cloud:spring-cloud-starter")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
@@ -349,6 +351,7 @@ project("thule-discovery-service") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         // Required to retry connecting to the discovery server when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
@@ -380,6 +383,7 @@ project("thule-edge-server") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile('org.springframework.cloud:spring-cloud-starter-zuul')
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         // Required to retry connecting to the discovery server when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
@@ -411,6 +415,7 @@ project("thule-email-service") {
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         // Required to retry connecting to the discovery server when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
@@ -453,6 +458,7 @@ project("thule-people-service") {
         compile("org.springframework.cloud:spring-cloud-starter-config")
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         compile("org.springframework.data:spring-data-rest-hal-browser")
         // Required to retry connecting to the discovery server when it is not available at startup
         compile("org.springframework.retry:spring-retry")

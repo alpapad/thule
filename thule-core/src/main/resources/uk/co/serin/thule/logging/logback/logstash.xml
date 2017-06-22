@@ -30,7 +30,8 @@
                                 "parent": "%mdc{X-B3-ParentSpanId:-}",
                                 "service":"${springApplicationName}",
                                 "span": "%mdc{X-B3-SpanId:-}",
-                                "trace": "%mdc{X-B3-TraceId:-}"
+                                "trace": "%mdc{X-B3-TraceId:-}",
+                                "pid": "${PID:-}"
                                 }
                             </pattern>
                         </pattern>
