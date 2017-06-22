@@ -87,7 +87,6 @@ allprojects {
             dependency("com.bitmechanic:dumbster:1.9.0.2")
             dependency("com.googlecode.log4jdbc:log4jdbc:1.2")
             dependency("com.oracle:ojdbc6:11.2.0.1.0")
-            dependency("commons-lang:commons-lang:2.6")
             dependency("de.codecentric:spring-boot-admin-server:1.5.1")
             dependency("de.codecentric:spring-boot-admin-server-ui:1.5.1")
             dependency("net.logstash.logback:logstash-logback-encoder:4.10")
@@ -512,8 +511,7 @@ project("thule-test") {
 
 project("thule-utils") {
     dependencies {
-        compile("commons-lang:commons-lang")
-        compile("org.codehaus.janino:janino")
+        compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the xml configuration
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-web")

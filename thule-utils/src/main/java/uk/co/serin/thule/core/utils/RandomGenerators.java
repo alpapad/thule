@@ -1,17 +1,16 @@
 package uk.co.serin.thule.core.utils;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class RandomGenerators {
     static final int RANDOM_STRING_DEFAULT_MAX_LENGTH = 100;
     private static final int FIFTY = 50;
+    private static final String RAMDOM_STRING_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final Set<LocalDate> RANDOM_DATES = Collections.synchronizedSet(new HashSet<>());
     private static final Set<Integer> RANDOM_INTEGERS = Collections.synchronizedSet(new HashSet<>());
     private static final Set<Long> RANDOM_LONGS = Collections.synchronizedSet(new HashSet<>());
@@ -22,7 +21,7 @@ public final class RandomGenerators {
 
     public static <T extends Enum> T generateRandomEnum(Class<T> enumeration) {
         final T[] enumConstants = enumeration.getEnumConstants();
-        return enumConstants[RandomUtils.nextInt(enumConstants.length)];
+        return enumConstants[ThreadLocalRandom.current().nextInt(enumConstants.length)];
     }
 
     public static LocalDate generateUniqueRandomDateAfter(LocalDate afterDate) {
@@ -61,7 +60,7 @@ public final class RandomGenerators {
         boolean uniqueFound = false;
 
         while (!uniqueFound) {
-            randomInt = RandomUtils.nextInt();
+            randomInt = ThreadLocalRandom.current().nextInt();
             uniqueFound = RANDOM_INTEGERS.add(randomInt);
         }
         return randomInt;
@@ -72,7 +71,7 @@ public final class RandomGenerators {
         boolean uniqueFound = false;
 
         while (!uniqueFound) {
-            randomLong = RandomUtils.nextLong();
+            randomLong = ThreadLocalRandom.current().nextLong();
             uniqueFound = RANDOM_LONGS.add(randomLong);
         }
         return randomLong;
@@ -87,9 +86,19 @@ public final class RandomGenerators {
         boolean uniqueFound = false;
 
         while (!uniqueFound) {
-            randomString = RandomStringUtils.randomAlphanumeric(RandomUtils.nextInt(maxLength - 1) + 1);
+            randomString = generateFixedLengthRandomString(ThreadLocalRandom.current().nextInt(maxLength) + 1);
             uniqueFound = RANDOM_STRINGS.add(randomString);
         }
         return randomString;
+    }
+
+    public static String generateFixedLengthRandomString(int length) {
+        StringBuilder randomString = new StringBuilder();
+        Random rnd = new Random();
+        while (randomString.length() <= length) {
+            int randomIndex = rnd.nextInt(RAMDOM_STRING_CHARACTERS.length());
+            randomString.append(RAMDOM_STRING_CHARACTERS.charAt(randomIndex));
+        }
+        return randomString.toString();
     }
 }
