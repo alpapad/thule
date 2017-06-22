@@ -11,6 +11,7 @@ services:
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
     hostname: admin-server-1
     ports:
       - "8071:8071"
@@ -29,6 +30,7 @@ services:
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
     hostname: config-service-1
     ports:
       - "8888:8888"
@@ -46,6 +48,7 @@ services:
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
     hostname: discovery-service-1
     ports:
       - "8761:8761"
@@ -65,6 +68,7 @@ services:
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
     hostname: edge-server-1
     ports:
       - "8080:8080"
@@ -84,6 +88,7 @@ services:
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
     hostname: edge-server-1
     ports:
       - "8091:8091"
@@ -103,6 +108,7 @@ services:
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
     hostname: people-service-1
     ports:
       - "8090:8090"

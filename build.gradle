@@ -262,7 +262,7 @@ project("thule-admin-server") {
     }
 
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         compile("de.codecentric:spring-boot-admin-server")
         compile("de.codecentric:spring-boot-admin-server-ui")
         compile("net.logstash.logback:logstash-logback-encoder")
@@ -297,7 +297,7 @@ project("thule-config-service") {
     }
 
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -307,21 +307,6 @@ project("thule-config-service") {
         compile("org.springframework.cloud:spring-cloud-starter-eureka")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
-
-        testCompile project(":thule-test")
-        testCompile("nl.jqno.equalsverifier:equalsverifier")
-        testCompile("org.awaitility:awaitility")
-        testCompile("org.springframework.boot:spring-boot-starter-test")
-    }
-}
-
-project("thule-core") {
-    dependencies {
-        compile("commons-lang:commons-lang")
-        compile("org.codehaus.janino:janino")
-        compile("org.springframework.boot:spring-boot-starter-aop")
-        compile("org.springframework.boot:spring-boot-starter-logging")
-        compile("org.springframework.boot:spring-boot-starter-web")
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
@@ -340,7 +325,7 @@ project("thule-discovery-service") {
     }
 
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -374,7 +359,7 @@ project("thule-edge-server") {
     }
 
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -406,7 +391,7 @@ project("thule-email-service") {
     }
 
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -439,7 +424,7 @@ project("thule-people-service") {
     }
 
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
         compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
         compile("com.googlecode.log4jdbc:log4jdbc")
@@ -478,7 +463,7 @@ project("thule-people-service") {
 
 project("thule-repository-mongodb") {
     dependencies {
-        compile project(":thule-core")
+        compile project(":thule-spring-boot-starter-utils")
         compile("net.logstash.logback:logstash-logback-encoder")
         compile("org.springframework.boot:spring-boot-starter-data-mongodb")
         compile("org.springframework.boot:spring-boot-starter-logging")
@@ -491,9 +476,51 @@ project("thule-repository-mongodb") {
     }
 }
 
+project("thule-spring-boot-autoconfiguration") {
+    dependencies {
+        compile project(":thule-utils")
+
+        testCompile project(":thule-test")
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+}
+
+project("thule-spring-boot-starter-utils") {
+    dependencies {
+        compile project(":thule-spring-boot-autoconfiguration")
+        compile project(":thule-utils")
+
+        testCompile project(":thule-test")
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+}
+
 project("thule-test") {
     dependencies {
         compile("nl.jqno.equalsverifier:equalsverifier")
         compile("org.springframework.boot:spring-boot-starter-test")
+
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+}
+
+project("thule-utils") {
+    dependencies {
+        compile("commons-lang:commons-lang")
+        compile("org.codehaus.janino:janino")
+        compile("org.springframework.boot:spring-boot-starter-aop")
+        compile("org.springframework.boot:spring-boot-starter-logging")
+        compile("org.springframework.boot:spring-boot-starter-web")
+
+        testCompile project(":thule-test")
+        testCompile("nl.jqno.equalsverifier:equalsverifier")
+        testCompile("org.awaitility:awaitility")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
     }
 }
