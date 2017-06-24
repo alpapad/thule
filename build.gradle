@@ -130,6 +130,27 @@ allprojects {
         violationRules {
             rule {
                 limit {
+                    counter = "BRANCH"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "CLASS"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "COMPLEXITY"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "INSTRUCTION"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "LINE"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "METHOD"
                     minimum = 1.0 // 100% coverage
                 }
             }

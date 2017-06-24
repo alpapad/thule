@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
 import uk.co.serin.thule.email.domain.Email;
@@ -79,6 +80,22 @@ public class EmailServiceTest {
         expectedEmail.setBody("This is the content");
         expectedEmail.addCcs(Collections.singleton("cc@test.co.uk"));
         expectedEmail.addTos(Collections.singleton("to@test.co.uk"));
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
+
+        // When
+        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+
+        // Then
+        Email actualEmail = emailFuture.get();
+        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
+    }
+
+    @Test
+    public void create_an_email_without_from() throws ExecutionException, InterruptedException {
+        // Given
+        Email expectedEmail = TestDataFactory.buildEmail();
+        ReflectionTestUtils.setField(expectedEmail, "from", null);
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 

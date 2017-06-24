@@ -33,11 +33,28 @@ public class LogExceptionInterceptorTest {
     }
 
     @Test
-    public void log_throwable_issues_error_message_using_classname_of_the_LogExceptionInterceptor_when_there_is_no_stacktrace() {
+    public void log_throwable_issues_error_message_using_classname_of_the_LogExceptionInterceptor_when_the_stacktrace_is_null() {
         // Given
         String message = "Test throwable message";
         ReflectionTestUtils.setField(LogExceptionInterceptor.class, "loggerFactory", iLoggerFactory);
 
+        given(iLoggerFactory.getLogger(LogExceptionInterceptor.class.getName())).willReturn(logger);
+        given(throwable.getMessage()).willReturn(message);
+
+        // When
+        logExceptionInterceptor.log(throwable);
+
+        // Then
+        verify(logger).error(message, throwable);
+    }
+
+    @Test
+    public void log_throwable_issues_error_message_using_classname_of_the_LogExceptionInterceptor_when_thestacktrace_is_empty() {
+        // Given
+        String message = "Test throwable message";
+        ReflectionTestUtils.setField(LogExceptionInterceptor.class, "loggerFactory", iLoggerFactory);
+
+        given(throwable.getStackTrace()).willReturn(new StackTraceElement[0]);
         given(iLoggerFactory.getLogger(LogExceptionInterceptor.class.getName())).willReturn(logger);
         given(throwable.getMessage()).willReturn(message);
 
