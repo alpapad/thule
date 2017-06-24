@@ -5,14 +5,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import uk.co.serin.thule.core.aspects.LogPublicMethods;
+import uk.co.serin.thule.core.aspects.TracePublicMethods;
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
 
-@LogPublicMethods
+@TracePublicMethods
 class ThuleJpaRepository<T, I extends Serializable> extends SimpleJpaRepository<T, I> implements ThuleRepository<T, I> {
     private final String deleteByUpdatedByEjbQl;
     private final EntityManager entityManager;

@@ -12,7 +12,7 @@ public class SpringSecurityAuditorAwareTest {
     private static final String AUDITOR = "JUnitTest";
 
     @Test
-    public void getCurrentAuditorReturnsAnAuditor() {
+    public void get_current_auditor_returns_an_auditor() {
         // Given
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(AUDITOR, "password"));

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DomainModelTest {
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         LocalDateTime now = LocalDateTime.now();
         String updatedBy = "updatedBy";
@@ -35,7 +35,7 @@ public class DomainModelTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         assertThat(new DomainModel() {
         }.toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_ID);
     }

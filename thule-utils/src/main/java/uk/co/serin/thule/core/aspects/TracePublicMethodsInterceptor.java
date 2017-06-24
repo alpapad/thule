@@ -12,13 +12,28 @@ import java.lang.reflect.Proxy;
 
 @Aspect
 @Component
-public class LogPublicMethodsInterceptor {
-    @Around("(publicMethod() && pointcutDefinitionBasedOnAnnotationForType()) || pointcutDefinitionBasedOnAnnotationForMethod()")
-    public Object log(ProceedingJoinPoint joinPoint) {
-        return log(joinPoint.getTarget(), joinPoint.getSignature().getName(), joinPoint.getArgs(), new ProceedingJoinPointLoggerCallback(joinPoint));
+public class TracePublicMethodsInterceptor {
+    @Pointcut("@annotation(uk.co.serin.thule.core.aspects.TracePublicMethods)")
+    public void pointcutDefinitionBasedOnAnnotationForMethod() {
+        // Pointcut definition only
     }
 
-    private Object log(Object target, String methodName, Object[] args, PerformanceLoggerCallback performanceLoggerCallback) {
+    @Pointcut("within(@uk.co.serin.thule.core.aspects.TracePublicMethods *)")
+    public void pointcutDefinitionBasedOnAnnotationForType() {
+        // Pointcut definition only
+    }
+
+    @Pointcut("execution(public * *(..))")
+    public void publicMethod() {
+        // Pointcut definition only
+    }
+
+    @Around("(publicMethod() && pointcutDefinitionBasedOnAnnotationForType()) || pointcutDefinitionBasedOnAnnotationForMethod()")
+    public Object trace(ProceedingJoinPoint joinPoint) {
+        return trace(joinPoint.getTarget(), joinPoint.getSignature().getName(), joinPoint.getArgs(), new ProceedingJoinPointTraceCallback(joinPoint));
+    }
+
+    private Object trace(Object target, String methodName, Object[] args, PerformanceTraceCallback performanceTraceCallback) {
         Class loggingClass;
         if (Proxy.isProxyClass(target.getClass())) {
             loggingClass = target.getClass().getInterfaces()[0];
@@ -37,7 +52,7 @@ public class LogPublicMethodsInterceptor {
         long start = System.currentTimeMillis();
         Object returnValue = null;
         try {
-            returnValue = performanceLoggerCallback.proceed();
+            returnValue = performanceTraceCallback.proceed();
         } finally {
             long elapsed = System.currentTimeMillis() - start;
             logger.trace("Exiting [{}] with method name of [{}] returning [{}] in {} ms", target, methodName, returnValue, elapsed);
@@ -46,30 +61,15 @@ public class LogPublicMethodsInterceptor {
         return returnValue;
     }
 
-    @Pointcut("@annotation(uk.co.serin.thule.core.aspects.LogPublicMethods)")
-    public void pointcutDefinitionBasedOnAnnotationForMethod() {
-        // Pointcut definition only
-    }
-
-    @Pointcut("within(@uk.co.serin.thule.core.aspects.LogPublicMethods *)")
-    public void pointcutDefinitionBasedOnAnnotationForType() {
-        // Pointcut definition only
-    }
-
-    @Pointcut("execution(public * *(..))")
-    public void publicMethod() {
-        // Pointcut definition only
-    }
-
     @FunctionalInterface
-    interface PerformanceLoggerCallback {
+    interface PerformanceTraceCallback {
         Object proceed();
     }
 
-    private static class ProceedingJoinPointLoggerCallback implements PerformanceLoggerCallback {
+    private static class ProceedingJoinPointTraceCallback implements PerformanceTraceCallback {
         private final ProceedingJoinPoint joinPoint;
 
-        ProceedingJoinPointLoggerCallback(ProceedingJoinPoint joinPoint) {
+        ProceedingJoinPointTraceCallback(ProceedingJoinPoint joinPoint) {
             this.joinPoint = joinPoint;
         }
 

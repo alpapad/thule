@@ -8,7 +8,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import uk.co.serin.thule.core.aspects.LogException;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
 
@@ -18,6 +20,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
+@LogException
 public class EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private JavaMailSender mailSender;
@@ -27,17 +30,15 @@ public class EmailService {
     }
 
     @Async
-
     public Future<Email> createEmail(Email email) {
         if (!email.hasARecipient()) {
             throw new EmailServiceValidationException("At least one recipient email addresses ('TO', 'CC' 'BCC') should be provided");
         }
         try {
             mailSender.send(createMimeMessage(email));
-            LOGGER.info("Mail has been successfully sent");
+            LOGGER.info("Email has been successfully sent");
         } catch (Exception exception) {
-            LOGGER.error(exception.getMessage(), exception);
-            throw new EmailServiceException(exception.getMessage(), exception);
+            throw new EmailServiceException("Email could not be sent", exception);
         }
         return new AsyncResult<>(email);
     }
@@ -51,7 +52,9 @@ public class EmailService {
         if (!email.getCcs().isEmpty()) {
             mimeMessageHelper.setCc(email.getCcs().toArray(new String[email.getCcs().size()]));
         }
-        mimeMessageHelper.setFrom(email.getFrom());
+        if (StringUtils.hasText(email.getFrom())) {
+            mimeMessageHelper.setFrom(email.getFrom());
+        }
         mimeMessageHelper.setSubject(email.getSubject());
         mimeMessageHelper.setText(email.getBody());
         if (!email.getTos().isEmpty()) {

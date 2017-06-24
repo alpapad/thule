@@ -39,7 +39,7 @@ spring:
     port: 587
     username: thule@serin-consultancy.co.uk
     properties:
-      mail.debug: true
+      # mail.debug: true
       mail.smtp.auth: true
       mail.smtp.ssl.trust: "*"
       mail.smtp.starttls.enable: true

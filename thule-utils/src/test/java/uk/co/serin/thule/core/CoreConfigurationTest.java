@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoreConfigurationTest {
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         assertThat(new CoreConfiguration()).isNotNull();
     }
 }

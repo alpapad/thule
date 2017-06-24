@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleCodeTest {
     @Test
-    public void allEnumsExist() {
+    public void all_enums_exist() {
         assertThat(RoleCode.ROLE_ADMINISTRATOR).isEqualTo(RoleCode.valueOf("ROLE_ADMINISTRATOR"));
         assertThat(RoleCode.ROLE_CLERK).isEqualTo(RoleCode.valueOf("ROLE_CLERK"));
         assertThat(RoleCode.ROLE_MANAGER).isEqualTo(RoleCode.valueOf("ROLE_MANAGER"));

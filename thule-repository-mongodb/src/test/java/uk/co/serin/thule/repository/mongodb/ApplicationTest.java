@@ -8,12 +8,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ApplicationTest {
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         assertThat(new Application()).isNotNull();
     }
 
     @Test
-    public void localValidatorFactoryBeanIsConfigured() {
+    public void localValidatorFactoryBean_is_configured() {
         // Given
         Application mongodbConfiguration = new Application();
 
@@ -25,7 +25,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void validationIsConfiguredngMongoEventListenerIsConfigured() {
+    public void validatingMongoEventListener_is_configured() {
         // Given
         Application mongodbConfiguration = new Application();
 

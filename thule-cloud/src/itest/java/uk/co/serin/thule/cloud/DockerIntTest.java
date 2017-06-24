@@ -82,7 +82,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void adminServerIsUp() {
+    public void admin_server_is_up() {
         // Given
 
         // When
@@ -111,7 +111,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void configServiceIsUp() {
+    public void config_service_is_up() {
         // Given
 
         // When
@@ -123,7 +123,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void discoveryServiceIsUp() {
+    public void discovery_service_is_up() {
         // Given
 
         // When
@@ -135,7 +135,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void edgeServerIsUp() {
+    public void edge_server_is_up() {
         // Given
 
         // When
@@ -147,7 +147,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void edgeServerProxiesEmailService() {
+    public void edge_server_proxies_email_service() {
         // Given
 
         // When
@@ -159,7 +159,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void edgeServerProxiesPeopleService() {
+    public void edge_server_proxies_people_service() {
         // Given
         BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
@@ -180,7 +180,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void emailServiceIsUp() {
+    public void email_service_is_up() {
         // Given
 
         // When
@@ -192,7 +192,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void peopleServiceIsUp() {
+    public void people_service_is_up() {
         // Given
 
         // When

@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.rest;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.tomakehurst.wiremock.WireMockServer;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -19,14 +20,17 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -46,9 +50,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.location=classpath:/config/${spring.application.name}/"})
+@ActiveProfiles("itest")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
     private static final String ID = "/{id}";
@@ -65,10 +73,13 @@ public class RestfulServiceIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
+    private String urlForEmails = "/" + DomainModel.ENTITY_NAME_EMAILS;
     private String urlForPeople = "/" + DomainModel.ENTITY_NAME_PEOPLE;
+    @Autowired
+    private WireMockServer wireMockServer;
 
     @Test
-    public void createPerson() {
+    public void create_person() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
@@ -89,10 +100,13 @@ public class RestfulServiceIntTest {
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(urlForEmails))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 
     @Test
-    public void deletePerson() {
+    public void delete_person() {
         // Given
         Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
 
@@ -103,6 +117,9 @@ public class RestfulServiceIntTest {
         person = personRepository.findOne(person.getId());
 
         assertThat(person).isNull();
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(urlForEmails))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 
     private Person createTestPerson(Person expectedPerson) {
@@ -112,7 +129,7 @@ public class RestfulServiceIntTest {
     }
 
     @Test
-    public void getAllPeople() {
+    public void get_all_people() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
@@ -130,7 +147,7 @@ public class RestfulServiceIntTest {
     }
 
     @Test
-    public void getPerson() {
+    public void get_person() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
@@ -147,7 +164,7 @@ public class RestfulServiceIntTest {
     }
 
     @Test
-    public void isHealthy() {
+    public void is_healthy() {
         // Given
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -187,10 +204,13 @@ public class RestfulServiceIntTest {
 
         restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(httpMessageConverter));
         restTemplate.getRestTemplate().setRequestFactory(requestFactory);
+
+        // Avoid wireMockServer.verify to check requests from other tests
+        wireMockServer.resetRequests();
     }
 
     @Test
-    public void updatePerson() {
+    public void update_person() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         testPerson = createTestPerson(testPerson);
@@ -220,5 +240,8 @@ public class RestfulServiceIntTest {
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(urlForEmails))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 }

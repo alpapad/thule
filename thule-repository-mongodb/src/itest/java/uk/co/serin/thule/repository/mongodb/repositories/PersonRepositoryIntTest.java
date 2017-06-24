@@ -46,7 +46,7 @@ public class PersonRepositoryIntTest {
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void createAPersonViolatingValidationConstraints() {
+    public void create_a_person_violating_validation_constraints() {
         // Given
         Person person = new Person("userId");
         person.setId(1L);
@@ -71,7 +71,7 @@ public class PersonRepositoryIntTest {
     }
 
     @Test
-    public void findAll() {
+    public void find_all() {
         // Given
         Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
@@ -83,7 +83,7 @@ public class PersonRepositoryIntTest {
     }
 
     @Test
-    public void findById() {
+    public void find_by_id() {
         // Given
         Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
@@ -96,7 +96,7 @@ public class PersonRepositoryIntTest {
     }
 
     @Test
-    public void findByUserid() {
+    public void find_by_userid() {
         // Given
         Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 

@@ -30,7 +30,7 @@ public class ThuleJpaRepositoryTest {
     private TypedQuery<Serializable> typedQuery;
 
     @Test
-    public void deleteByUpdatedBy() {
+    public void delete_by_updated_by() {
         // Given
         String userId = "userId";
 

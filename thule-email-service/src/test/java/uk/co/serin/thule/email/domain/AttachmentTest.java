@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AttachmentTest {
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
@@ -26,7 +26,7 @@ public class AttachmentTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
@@ -39,7 +39,7 @@ public class AttachmentTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -50,7 +50,7 @@ public class AttachmentTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
@@ -63,7 +63,7 @@ public class AttachmentTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         // Given
         Attachment attachment = TestDataFactory.buildAttachment();
 
@@ -75,7 +75,7 @@ public class AttachmentTest {
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Attachment.class).
                 suppress(Warning.NONFINAL_FIELDS).
                 withOnlyTheseFields(Attachment.ENTITY_ATTRIBUTE_NAME_CONTENT, Attachment.ENTITY_ATTRIBUTE_NAME_LABEL).

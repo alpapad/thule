@@ -30,7 +30,7 @@ public class PersonRepositoryImplTest {
     private TypedQuery<Person> typedQuery;
 
     @Test
-    public void findByCriteria() {
+    public void find_by_criteria() {
         // Given
         Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withEmailAddress("test@gmail.com").withFirstName("firstName").withSurname("surname").build();
 
@@ -46,7 +46,7 @@ public class PersonRepositoryImplTest {
     }
 
     @Test
-    public void findByNullCriteria() {
+    public void find_by_null_criteria() {
         // Given
         Person expectedPerson = new Person("userId");
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID, null);
@@ -79,7 +79,7 @@ public class PersonRepositoryImplTest {
     }
 
     @Test
-    public void searchByNullCriteria() {
+    public void search_by_null_criteria() {
         // Given
         Person expectedPerson = new Person("userId");
 

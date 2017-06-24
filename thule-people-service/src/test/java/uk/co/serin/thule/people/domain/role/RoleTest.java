@@ -13,7 +13,7 @@ public class RoleTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builderAndSettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Role expectedRole = testDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
 
@@ -39,7 +39,7 @@ public class RoleTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
 
         // When
@@ -50,7 +50,7 @@ public class RoleTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -61,7 +61,7 @@ public class RoleTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Role expectedRole = testDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
 
@@ -80,12 +80,12 @@ public class RoleTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         assertThat(new Role(RoleCode.ROLE_ADMINISTRATOR).toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_CODE);
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Role.class).withOnlyTheseFields(Role.ENTITY_ATTRIBUTE_NAME_CODE).verify();
     }
 }

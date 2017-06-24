@@ -8,6 +8,7 @@ import uk.co.serin.thule.core.utils.RandomGenerators;
 import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.country.Country;
+import uk.co.serin.thule.people.domain.email.Email;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.Photograph;
 import uk.co.serin.thule.people.domain.role.Role;
@@ -38,6 +39,14 @@ public class TestDataFactory implements ReferenceDataFactory {
 
     public TestDataFactory() {
         this.referenceDataFactory = new MockReferenceDataFactory();
+    }
+
+    public Email buildEmail() {
+        return Email.EmailBuilder.anEmail().
+                withBody("This is a test body").
+                withSubject("Test subject").
+                withTos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
+                build();
     }
 
     public Person buildJUnitTest() {

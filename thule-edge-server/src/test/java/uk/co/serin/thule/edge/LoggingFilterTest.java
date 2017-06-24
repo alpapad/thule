@@ -21,7 +21,7 @@ public class LoggingFilterTest {
     private LoggingFilter loggingFilter;
 
     @Test
-    public void filterOrderIsOne() {
+    public void filter_order_is_one() {
         // Given
 
         // When
@@ -32,7 +32,7 @@ public class LoggingFilterTest {
     }
 
     @Test
-    public void filterTypeIsPre() {
+    public void filter_type_is_pre() {
         // Given
 
         // When
@@ -43,7 +43,7 @@ public class LoggingFilterTest {
     }
 
     @Test
-    public void runReturnsNull() {
+    public void run_returns_null() {
         // Given
         RequestContext requestContext = new RequestContext();
         RequestContext.testSetCurrentContext(requestContext);
@@ -59,7 +59,7 @@ public class LoggingFilterTest {
     }
 
     @Test
-    public void shouldFilterIsTrue() {
+    public void should_filter_is_true() {
         // Given
 
         // When

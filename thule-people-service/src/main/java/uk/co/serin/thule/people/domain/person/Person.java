@@ -343,15 +343,11 @@ public final class Person extends DomainModel {
                 .add(String.format("dateOfPasswordExpiry=%s", dateOfPasswordExpiry))
                 .add(String.format("emailAddress=%s", emailAddress))
                 .add(String.format("firstName=%s", firstName))
-                .add(String.format("homeAddress=%s", homeAddress))
-                .add(String.format("photographs=%s", photographs))
-                .add(String.format("roles=%s", roles))
                 .add(String.format("salutation=%s", salutation))
                 .add(String.format("secondName=%s", secondName))
                 .add(String.format("state=%s", state))
                 .add(String.format("surname=%s", surname))
                 .add(String.format("userId=%s", userId))
-                .add(String.format("workAddress=%s", workAddress))
                 .toString();
     }
 

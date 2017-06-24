@@ -73,7 +73,7 @@ public class EmailServiceIntTest {
         }
     }
 
-    public boolean isSmtpServerUp() {
+    private boolean isSmtpServerUp() {
         try (Socket socket = new Socket(env.getRequiredProperty(SPRING_MAIL_HOST), env.getRequiredProperty(SPRING_MAIL_PORT, Integer.class))) {
             return socket.isConnected();
         } catch (Exception e) {
@@ -109,7 +109,7 @@ public class EmailServiceIntTest {
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
     }
 
-    public void stopAndStartEmbeddedSmtpServer() {
+    private void stopAndStartEmbeddedSmtpServer() {
         stopEmbeddedServer();
 
         ServerOptions serverOptions = new ServerOptions();

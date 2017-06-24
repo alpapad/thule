@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActionCodeTest {
     @Test
-    public void allEnumsExist() {
+    public void all_enums_exist() {
         assertThat(ActionCode.ADDRESS_DISABLE).isEqualTo(ActionCode.valueOf("ADDRESS_DISABLE"));
         assertThat(ActionCode.ADDRESS_DISCARD).isEqualTo(ActionCode.valueOf("ADDRESS_DISCARD"));
         assertThat(ActionCode.ADDRESS_ENABLE).isEqualTo(ActionCode.valueOf("ADDRESS_ENABLE"));

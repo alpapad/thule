@@ -22,7 +22,7 @@ public class ApplicationTest {
     private SpringApplication springApplication;
 
     @Test
-    public void applicationStartsSpringBoot() {
+    public void application_starts_spring_boot() {
         // Given
         String[] args = new String[0];
         ReflectionTestUtils.setField(Application.class, "springApplication", springApplication);
@@ -36,7 +36,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void default_constructor_creates_instance_successfully() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         assertThat(BeanUtils.instantiateClass(Application.class)).isNotNull();
     }
 }

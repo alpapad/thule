@@ -18,7 +18,7 @@ public class SnakeCasePhysicalNamingStrategyTest {
     private SnakeCasePhysicalNamingStrategy snakeCasePhysicalNamingStrategy = new SnakeCasePhysicalNamingStrategy();
 
     @Test
-    public void nullIdentifier() {
+    public void null_identifier() {
         // Given
 
         // When
@@ -29,7 +29,7 @@ public class SnakeCasePhysicalNamingStrategyTest {
     }
 
     @Test
-    public void toPhysicalCatalogName() {
+    public void to_physical_catalog_name() {
         // Given
         Identifier camelCaseIdentifier = Identifier.toIdentifier(CAMEL_CASE_IDENTIFIER);
 
@@ -41,7 +41,7 @@ public class SnakeCasePhysicalNamingStrategyTest {
     }
 
     @Test
-    public void toPhysicalColumnName() {
+    public void to_physical_column_name() {
         // Given
         Identifier camelCaseIdentifier = Identifier.toIdentifier(CAMEL_CASE_IDENTIFIER);
 
@@ -53,7 +53,7 @@ public class SnakeCasePhysicalNamingStrategyTest {
     }
 
     @Test
-    public void toPhysicalSchemaName() {
+    public void to_physical_schema_name() {
         // Given
         Identifier camelCaseIdentifier = Identifier.toIdentifier(CAMEL_CASE_IDENTIFIER);
 
@@ -65,7 +65,7 @@ public class SnakeCasePhysicalNamingStrategyTest {
     }
 
     @Test
-    public void toPhysicalSequenceName() {
+    public void to_physical_sequencename() {
         // Given
         Identifier camelCaseIdentifier = Identifier.toIdentifier(CAMEL_CASE_IDENTIFIER);
 
@@ -77,7 +77,7 @@ public class SnakeCasePhysicalNamingStrategyTest {
     }
 
     @Test
-    public void toPhysicalTableName() {
+    public void to_physical_table_name() {
         // Given
         Identifier camelCaseIdentifier = Identifier.toIdentifier(CAMEL_CASE_IDENTIFIER);
 

@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.repository.repositories;
 
-import uk.co.serin.thule.core.aspects.LogPublicMethods;
+import uk.co.serin.thule.core.aspects.TracePublicMethods;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.person.Person;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@LogPublicMethods
+@TracePublicMethods
 public class PersonRepositoryImpl implements PersonRepositoryCustom {
     private static final String FIND_PEOPLE_BY_CRITERIA_EJB_QL =
             "select DISTINCT(person) FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or :emailAddress is null) and ( person.firstName like :firstName or :firstName is null) and ( person.surname like :surname or :surname is null) and ( person.userId like :userId or :userId is null)";

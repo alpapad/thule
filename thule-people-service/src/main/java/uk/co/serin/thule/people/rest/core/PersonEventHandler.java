@@ -1,34 +1,43 @@
 package uk.co.serin.thule.people.rest.core;
 
+import org.springframework.data.rest.core.annotation.HandleAfterCreate;
+import org.springframework.data.rest.core.annotation.HandleAfterDelete;
+import org.springframework.data.rest.core.annotation.HandleAfterSave;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
-import uk.co.serin.thule.core.aspects.LogPublicMethods;
+import uk.co.serin.thule.core.aspects.TracePublicMethods;
 import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.domain.state.StateCode;
-import uk.co.serin.thule.people.repository.repositories.RoleRepository;
-import uk.co.serin.thule.people.repository.repositories.StateRepository;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import uk.co.serin.thule.people.service.PeopleService;
 
 @Component
 @RepositoryEventHandler
-@LogPublicMethods
+@TracePublicMethods
 public class PersonEventHandler {
-    private RoleRepository roleRepository;
-    private StateRepository stateRepository;
+    private PeopleService peopleService;
 
-    public PersonEventHandler(RoleRepository roleRepository, StateRepository stateRepository) {
-        this.roleRepository = roleRepository;
-        this.stateRepository = stateRepository;
+    public PersonEventHandler(PeopleService peopleService) {
+        this.peopleService = peopleService;
+    }
+
+    @HandleAfterCreate
+    public void handlePersonAfterCreate(Person person) {
+        peopleService.afterCreate(person);
+    }
+
+    @HandleAfterDelete
+    public void handlePersonAfterDelete(Person person) {
+        peopleService.afterDelete(person);
+    }
+
+    @HandleAfterSave
+    public void handlePersonAfterSave(Person person) {
+        peopleService.afterSave(person);
     }
 
     @HandleBeforeCreate
-    public void handlePersonCreate(Person person) {
-        person.addRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)).collect(Collectors.toSet()));
-        person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
+    public void handlePersonBeforeCreate(Person person) {
+        peopleService.beforeCreate(person);
     }
 }

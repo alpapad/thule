@@ -74,6 +74,7 @@ public abstract class DomainModel {
     public static final String ENTITY_NAME_ACTIONS = "actions";
     public static final String ENTITY_NAME_ADDRESSES = "addresses";
     public static final String ENTITY_NAME_COUNTRIES = "countries";
+    public static final String ENTITY_NAME_EMAILS = "emails";
     public static final String ENTITY_NAME_PEOPLE = "people";
     public static final String ENTITY_NAME_PERSON = "person";
     public static final String ENTITY_NAME_PHOTOGRAPHS = "photographs";

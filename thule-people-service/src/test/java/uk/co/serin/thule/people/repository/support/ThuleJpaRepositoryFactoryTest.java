@@ -38,7 +38,7 @@ public class ThuleJpaRepositoryFactoryTest {
     private ThuleJpaRepositoryFactory thuleJpaRepositoryFactory;
 
     @Test
-    public void getRepositoryBaseClass() {
+    public void get_repository_base_class() {
         // Given
 
         // When
@@ -49,7 +49,7 @@ public class ThuleJpaRepositoryFactoryTest {
     }
 
     @Test
-    public void getTargetRepository() {
+    public void get_target_repository() {
         // Given
         BDDMockito.<Class<?>>given(repositoryInformation.getDomainType()).willReturn(DomainModel.class);
         given(entityManager.getMetamodel()).willReturn(metamodel);

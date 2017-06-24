@@ -48,7 +48,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     private TestDataFactory testDataFactory;
 
     @Test(expected = LazyInitializationException.class)
-    public void accessLazyAssociatedPhotographsOutsideTransaction() {
+    public void access_lazy_associated_photographs_outside_transaction() {
         // Given
         Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         person = personRepository.findOne(person.getId());
@@ -60,7 +60,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test(expected = LazyInitializationException.class)
-    public void accessLazyAssociatedRolesOutsideTransaction() {
+    public void access_lazy_associated_roles_outside_transaction() {
         // Given
         Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         person = personRepository.findOne(person.getId());
@@ -72,7 +72,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    public void accessPreFetchedAssociationsOutsideTransaction() {
+    public void access_prefetched_associations_outside_transaction() {
         // Given
         Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         person = personRepository.findByIdAndFetchAllAssociations(person.getId());
@@ -126,7 +126,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    public void createAPersonViolatingValidationConstraints() {
+    public void create_a_person_violating_validation_constraints() {
         // Given
         Person person = new Person("userId");
 
@@ -175,7 +175,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Test
     @Transactional
-    public void findByCriteria() {
+    public void find_by_criteria() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
@@ -189,7 +189,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Test
     @Transactional
-    public void findById() {
+    public void find_by_id() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
@@ -203,7 +203,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Test
     @Transactional
-    public void findByIdAndFetchAllAssociations() {
+    public void find_by_id_and_fetch_all_associations() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
@@ -217,7 +217,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Test
     @Transactional
-    public void findByUpdatedBy() {
+    public void find_by_updated_by() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
@@ -231,7 +231,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Test
     @Transactional
-    public void findByUserid() {
+    public void find_by_userid() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
@@ -245,7 +245,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
     @Test
     @Transactional
-    public void searchPeople() {
+    public void search_people() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         Person expectedPerson = testDataFactory.buildPerson(testPerson);

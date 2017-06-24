@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StateCodeTest {
     @Test
-    public void allEnumsExist() {
+    public void all_enums_exist() {
         assertThat(StateCode.ADDRESS_DISABLED).isEqualTo(StateCode.valueOf("ADDRESS_DISABLED"));
         assertThat(StateCode.ADDRESS_DISCARDED).isEqualTo(StateCode.valueOf("ADDRESS_DISCARDED"));
         assertThat(StateCode.ADDRESS_ENABLED).isEqualTo(StateCode.valueOf("ADDRESS_ENABLED"));

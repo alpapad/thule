@@ -16,7 +16,7 @@ public class HomeAddressTest {
     private final TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         HomeAddress expectedHomeAddress = testDataFactory.buildOxfordStreetHomeAddress();
 
@@ -51,7 +51,7 @@ public class HomeAddressTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         String addressLine1 = "addressLine1";
         Country country = testDataFactory.getCountries().get(Country.GBR);
@@ -67,7 +67,7 @@ public class HomeAddressTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -78,7 +78,7 @@ public class HomeAddressTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         HomeAddress expectedHomeAddress = testDataFactory.buildOxfordStreetHomeAddress();
 
@@ -105,7 +105,7 @@ public class HomeAddressTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         // Given
         String addressLine1 = "addressLine1";
         Country country = testDataFactory.getCountries().get(Country.GBR);
@@ -119,7 +119,7 @@ public class HomeAddressTest {
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(HomeAddress.class).
                 withPrefabValues(Action.class, new Action(ActionCode.ADDRESS_DISABLE), new Action(ActionCode.ADDRESS_DISCARD)).
                 withOnlyTheseFields(Address.ENTITY_ATTRIBUTE_NAME_ADDRESS_LINE_1, Address.ENTITY_ATTRIBUTE_NAME_COUNTRY, Address.ENTITY_ATTRIBUTE_NAME_POST_CODE).

@@ -6,6 +6,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
+import uk.co.serin.thule.email.service.EmailServiceValidationException;
 
 import java.util.Collections;
 
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmailTest {
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
 
@@ -38,7 +39,7 @@ public class EmailTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
 
@@ -50,8 +51,28 @@ public class EmailTest {
         assertThat(actualEmail.getSubject()).isEqualTo(expectedEmail.getSubject());
     }
 
+    @Test(expected = EmailServiceValidationException.class)
+    public void business_key_constructor_throws_EmailServiceValidationException_when_from_is_empty() {
+        // Given
+
+        // When
+        new Email("", "test subject");
+
+        // Then (see expected in @Test annotation)
+    }
+
+    @Test(expected = EmailServiceValidationException.class)
+    public void business_key_constructor_throws_EmailServiceValidationException_when_subject_is_empty() {
+        // Given
+
+        // When
+        new Email("from@test.co.uk", "");
+
+        // Then (see expected in @Test annotation)
+    }
+
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -62,7 +83,7 @@ public class EmailTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
 
@@ -138,7 +159,7 @@ public class EmailTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         // Given
         Email email = TestDataFactory.buildEmail();
 
@@ -150,7 +171,7 @@ public class EmailTest {
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Email.class).
                 suppress(Warning.NONFINAL_FIELDS).
                 withOnlyTheseFields(Email.ENTITY_ATTRIBUTE_NAME_FROM, Email.ENTITY_ATTRIBUTE_NAME_SUBJECT).

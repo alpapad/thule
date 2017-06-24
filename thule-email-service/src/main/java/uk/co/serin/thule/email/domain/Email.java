@@ -1,10 +1,18 @@
 package uk.co.serin.thule.email.domain;
 
+import org.springframework.util.StringUtils;
+
+import uk.co.serin.thule.core.validator.PatternJava8;
+import uk.co.serin.thule.email.service.EmailServiceValidationException;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 public final class Email {
     public static final String ENTITY_ATTRIBUTE_NAME_BCCS = "bccs";
@@ -14,17 +22,25 @@ public final class Email {
     public static final String ENTITY_ATTRIBUTE_NAME_SUBJECT = "subject";
     public static final String ENTITY_ATTRIBUTE_NAME_TOS = "tos";
     public static final String ENTITY_NAME_EMAILS = "emails";
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private final Set<Attachment> attachments = new HashSet<>();
-    private final Set<String> bccs = new HashSet<>();
-    private final Set<String> ccs = new HashSet<>();
-    private final Set<String> tos = new HashSet<>();
+    @Valid
+    private final Set<@PatternJava8(regexp = EMAIL_PATTERN, message = "Email address should be of username@domain.extension format") String> bccs = new HashSet<>();
+    @Valid
+    private final Set<@PatternJava8(regexp = EMAIL_PATTERN, message = "Email address should be of username@domain.extension format") String> ccs = new HashSet<>();
+    @Valid
+    private final Set<@PatternJava8(regexp = EMAIL_PATTERN, message = "Email address should be of username@domain.extension format") String> tos = new HashSet<>();
+    @NotNull
     private String body;
     private String from;
+    @NotNull
     private String subject;
 
     /**
      * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
      */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     protected Email() {
     }
 
@@ -34,9 +50,19 @@ public final class Email {
      * @param from    Business key attribute
      * @param subject Business key attribute
      */
+    @SuppressWarnings("squid:S2637")
+    // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Email(String from, String subject) {
-        this.from = from;
-        this.subject = subject;
+        if (StringUtils.hasText(from)) {
+            this.from = from;
+        } else {
+            throw new EmailServiceValidationException("The 'from' email address is mandatory");
+        }
+        if (StringUtils.hasText(subject)) {
+            this.subject = subject;
+        } else {
+            throw new EmailServiceValidationException("The 'subject' is mandatory");
+        }
     }
 
     public void addAttachments(Set<Attachment> attachments) {
@@ -75,6 +101,22 @@ public final class Email {
         return subject;
     }
 
+    public boolean hasARecipient() {
+        return !this.getTos().isEmpty() || !this.getCcs().isEmpty() || !this.getBccs().isEmpty();
+    }
+
+    public Set<String> getTos() {
+        return Collections.unmodifiableSet(tos);
+    }
+
+    public Set<String> getCcs() {
+        return Collections.unmodifiableSet(ccs);
+    }
+
+    public Set<String> getBccs() {
+        return Collections.unmodifiableSet(bccs);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(from, subject);
@@ -103,22 +145,6 @@ public final class Email {
                 .add(String.format("subject=%s", subject))
                 .add(String.format("tos=%s", tos))
                 .toString();
-    }
-
-    public boolean hasARecipient() {
-        return !this.getTos().isEmpty() || !this.getCcs().isEmpty() || !this.getBccs().isEmpty();
-    }
-
-    public Set<String> getTos() {
-        return Collections.unmodifiableSet(tos);
-    }
-
-    public Set<String> getCcs() {
-        return Collections.unmodifiableSet(ccs);
-    }
-
-    public Set<String> getBccs() {
-        return Collections.unmodifiableSet(bccs);
     }
 
     public static final class EmailBuilder {

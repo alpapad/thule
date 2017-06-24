@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonTest {
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Person expectedPerson = PersonFactory.newPerson();
 
@@ -50,7 +50,7 @@ public class PersonTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         Person expectedPerson = PersonFactory.newPerson();
 
@@ -62,7 +62,7 @@ public class PersonTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -73,7 +73,7 @@ public class PersonTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Person expectedPerson = PersonFactory.newPerson();
 
@@ -111,7 +111,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isExpired() {
+    public void is_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MIN).build();
 
@@ -123,7 +123,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isNotExpired() {
+    public void is_not_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MAX).build();
 
@@ -135,7 +135,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isNotPasswordExpired() {
+    public void is_not_password_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MAX).build();
 
@@ -147,7 +147,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isPasswordExpired() {
+    public void is_password_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MIN).build();
 
@@ -159,12 +159,12 @@ public class PersonTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         assertThat(new Person("userId").toString()).contains(Person.ENTITY_ATTRIBUTE_NAME_USER_ID);
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Person.class).withOnlyTheseFields(Person.ENTITY_ATTRIBUTE_NAME_USER_ID).verify();
     }
 }

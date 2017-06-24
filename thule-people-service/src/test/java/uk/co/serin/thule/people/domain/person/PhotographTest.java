@@ -16,7 +16,7 @@ public class PhotographTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Photograph expectedPhotograph = testDataFactory.buildPhotographMissScarlett(testDataFactory.buildPersonWithoutAnyAssociations());
 
@@ -45,7 +45,7 @@ public class PhotographTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         Person person = new Person("userId");
         byte[] photo = {};
@@ -60,7 +60,7 @@ public class PhotographTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -71,7 +71,7 @@ public class PhotographTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Photograph expectedPhotograph = testDataFactory.buildPhotographMissScarlett(testDataFactory.buildPersonWithoutAnyAssociations());
 
@@ -92,12 +92,12 @@ public class PhotographTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         assertThat(new Photograph(new byte[]{}, new Person("userId")).toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_PHOTO);
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Photograph.class).
                 withPrefabValues(Person.class, new Person("userid"), new Person("another-userid")).
                 withOnlyTheseFields(Photograph.ENTITY_ATTRIBUTE_NAME_HASH, Photograph.ENTITY_NAME_PERSON).

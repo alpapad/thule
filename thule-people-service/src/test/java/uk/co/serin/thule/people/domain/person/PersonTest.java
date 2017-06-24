@@ -18,7 +18,7 @@ public class PersonTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Person expectedPerson = testDataFactory.buildPersonWithAllAssociations();
 
@@ -68,7 +68,7 @@ public class PersonTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         String userId = "userId";
 
@@ -82,7 +82,7 @@ public class PersonTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -93,7 +93,7 @@ public class PersonTest {
     }
 
     @Test
-    public void disablePerson() {
+    public void disable_person() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
@@ -105,7 +105,7 @@ public class PersonTest {
     }
 
     @Test(expected = PersonInvalidStateException.class)
-    public void disablePersonWhenAlreadyDisabled() {
+    public void disable_person_when_already_disabled() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
@@ -116,7 +116,7 @@ public class PersonTest {
     }
 
     @Test
-    public void discardPerson() {
+    public void discard_person() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
@@ -128,7 +128,7 @@ public class PersonTest {
     }
 
     @Test(expected = PersonInvalidStateException.class)
-    public void discardPersonWhenAlreadyDiscarded() {
+    public void discard_person_when_already_discarded() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
 
@@ -139,7 +139,7 @@ public class PersonTest {
     }
 
     @Test
-    public void enablePerson() {
+    public void enable_person() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
@@ -151,7 +151,7 @@ public class PersonTest {
     }
 
     @Test(expected = PersonInvalidStateException.class)
-    public void enablePersonWhenAlreadyEnabled() {
+    public void enable_person_when_already_enabled() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
@@ -162,7 +162,7 @@ public class PersonTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Person expectedPerson = testDataFactory.buildPersonWithAllAssociations();
 
@@ -206,7 +206,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isExpired() {
+    public void is_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MIN).build();
 
@@ -218,7 +218,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isNotExpired() {
+    public void is_not_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MAX).build();
 
@@ -230,7 +230,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isNotPasswordExpired() {
+    public void is_not_password_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MAX).build();
 
@@ -242,7 +242,7 @@ public class PersonTest {
     }
 
     @Test
-    public void isPasswordExpired() {
+    public void is_password_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfPasswordExpiry(LocalDate.MIN).build();
 
@@ -254,7 +254,7 @@ public class PersonTest {
     }
 
     @Test
-    public void recoverPerson() {
+    public void recover_person() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
 
@@ -266,12 +266,12 @@ public class PersonTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         assertThat(new Person("userId").toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID);
     }
 
     @Test
-    public void updatePerson() {
+    public void update_person() {
         // Given
         Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
         Person actualPerson = testDataFactory.buildPerson(expectedPerson);
@@ -284,7 +284,7 @@ public class PersonTest {
     }
 
     @Test(expected = PersonInvalidStateException.class)
-    public void updatePersonWhenNotEnabled() {
+    public void update_person_when_not_enabled() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
@@ -295,7 +295,7 @@ public class PersonTest {
     }
 
     @Test(expected = PersonInvalidStateException.class)
-    public void updateRecoverWhenNotDiscarded() {
+    public void update_recover_when_not_discarded() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
@@ -306,7 +306,7 @@ public class PersonTest {
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Person.class).
                 withPrefabValues(Action.class, new Action(ActionCode.ADDRESS_DISABLE), new Action(ActionCode.ADDRESS_DISCARD)).
                 withPrefabValues(Person.class, new Person("userid"), new Person("another-userid")).

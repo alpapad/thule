@@ -21,7 +21,7 @@ public class ThuleJpaRepositoryFactoryBeanTest {
     private ThuleJpaRepositoryFactoryBean<PersonRepository, Person, Long> thuleJpaRepositoryFactoryBean = new ThuleJpaRepositoryFactoryBean<>(PersonRepository.class);
 
     @Test
-    public void createRepositoryFactory() {
+    public void create_repository_factory() {
         // Given
         given(entityManager.getDelegate()).willReturn(new Object());
 

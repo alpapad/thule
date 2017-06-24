@@ -13,7 +13,7 @@ public class CountryTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builderAndGettersOperateOnTheSameField() {
+    public void builder_and_getters_operate_on_the_same_field() {
         // Given
         Country expectedCountry = testDataFactory.getCountries().get(Country.GBR);
 
@@ -44,7 +44,7 @@ public class CountryTest {
     }
 
     @Test
-    public void businessKeyConstructorCreatesInstanceWithCorrectKey() {
+    public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
 
         // When
@@ -55,7 +55,7 @@ public class CountryTest {
     }
 
     @Test
-    public void defaultConstructorCreatesInstanceSuccessfully() {
+    public void default_constructor_creates_instance_successfully() {
         // Given
 
         // When
@@ -66,7 +66,7 @@ public class CountryTest {
     }
 
     @Test
-    public void gettersAndSettersOperateOnTheSameField() {
+    public void getters_and_setters_operate_on_the_same_field() {
         // Given
         Country expectedCountry = testDataFactory.getCountries().get(Country.GBR);
 
@@ -89,12 +89,12 @@ public class CountryTest {
     }
 
     @Test
-    public void toStringIsOverridden() {
+    public void toString_is_overridden() {
         assertThat(new Country(Country.GBR).toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_ISO_CODE_THREE_DIGIT);
     }
 
     @Test
-    public void verifyEqualsConformsToContract() {
+    public void verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Country.class).withOnlyTheseFields(Country.ENTITY_ATTRIBUTE_NAME_ISO_CODE_THREE_DIGIT).verify();
     }
 }
