@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
+import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
 
 import java.net.Socket;
@@ -88,6 +89,8 @@ public class EmailServiceIntTest {
         ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<Email>() {
         };
         Email expectedEmail = TestDataFactory.buildEmail();
+        Attachment expectedAttachment = expectedEmail.getAttachments().stream().findFirst().orElseThrow(() -> new IllegalStateException("Expected email does not contain any attachments"));
+
         HttpEntity<Email> entity = new HttpEntity<>(expectedEmail, null);
 
         // When
@@ -101,7 +104,7 @@ public class EmailServiceIntTest {
 
         MailMessage actualMailMessage = smtpServer.getMessage(0);
         assertThat(actualMailMessage.getBody()).contains(expectedEmail.getBody());
-        assertThat(actualMailMessage.getBody()).contains(new String(expectedEmail.getAttachments().stream().findFirst().get().getContent()));
+        assertThat(actualMailMessage.getBody()).contains(new String(expectedAttachment.getContent()));
         assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(expectedEmail.getFrom());
         String[] expectedTos = expectedEmail.getTos().toArray(new String[expectedEmail.getTos().size()]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);

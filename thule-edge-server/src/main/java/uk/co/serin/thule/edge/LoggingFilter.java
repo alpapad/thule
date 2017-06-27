@@ -33,7 +33,7 @@ public class LoggingFilter extends ZuulFilter {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
 
-        LOGGER.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
+        LOGGER.info("{} request to {}", request.getMethod(), request.getRequestURL());
 
         return null;
     }
