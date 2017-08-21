@@ -14,7 +14,7 @@ buildscript {
     ext {
         jacocoVersion = "0.7.9"
         springBootVersion = "1.5.6.RELEASE"
-        springCloudVersion = "Dalston.SR2"
+        springCloudVersion = "Dalston.SR3"
     }
 
     // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing
