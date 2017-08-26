@@ -37,18 +37,4 @@ public class EmailControllerTest {
         verify(emailService).createEmail(expectedEmail);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
     }
-
-//    @Test
-//    public void validation_exception_returns_bad_request() {
-//        // Given
-//        String expectedExceptionMessage = "Invalid Request";
-//        ValidationException validationException = new ValidationException(expectedExceptionMessage);
-//
-//        // When
-//        ResponseEntity<String> responseEntity = emailController.validationExceptionHandler(validationException);
-//
-//        // Then
-//        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-//        assertThat(responseEntity.getBody()).isEqualTo(expectedExceptionMessage);
-//    }
 }

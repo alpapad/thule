@@ -27,9 +27,4 @@ class EmailController {
         emailService.createEmail(email);
         return new ResponseEntity<>(email, HttpStatus.ACCEPTED);
     }
-
-//    @ExceptionHandler(EmailServiceValidationException.class)
-//    public ResponseEntity<String> validationExceptionHandler(Exception ex) {
-//        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-//    }
 }
