@@ -5,12 +5,17 @@ import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
+import pl.pojo.tester.api.FieldPredicate;
+import pl.pojo.tester.api.assertion.Method;
+
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
-import uk.co.serin.thule.email.service.EmailServiceValidationException;
 
 import java.util.Collections;
 
+import javax.validation.ValidationException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class EmailTest {
     @Test
@@ -38,21 +43,8 @@ public class EmailTest {
         assertThat(actualEmail.getTos()).isEqualTo(expectedEmail.getTos());
     }
 
-    @Test
-    public void business_key_constructor_creates_instance_with_correct_key() {
-        // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
-
-        // When
-        Email actualEmail = new Email(expectedEmail.getFrom(), expectedEmail.getSubject());
-
-        // Then
-        assertThat(actualEmail.getFrom()).isEqualTo(expectedEmail.getFrom());
-        assertThat(actualEmail.getSubject()).isEqualTo(expectedEmail.getSubject());
-    }
-
-    @Test(expected = EmailServiceValidationException.class)
-    public void business_key_constructor_throws_EmailServiceValidationException_when_from_is_empty() {
+    @Test(expected = ValidationException.class)
+    public void business_key_constructor_throws_ValidationException_when_from_is_empty() {
         // Given
 
         // When
@@ -61,48 +53,14 @@ public class EmailTest {
         // Then (see expected in @Test annotation)
     }
 
-    @Test(expected = EmailServiceValidationException.class)
-    public void business_key_constructor_throws_EmailServiceValidationException_when_subject_is_empty() {
+    @Test(expected = ValidationException.class)
+    public void business_key_constructor_throws_ValidationException_when_subject_is_empty() {
         // Given
 
         // When
         new Email("from@test.co.uk", "");
 
         // Then (see expected in @Test annotation)
-    }
-
-    @Test
-    public void default_constructor_creates_instance_successfully() {
-        // Given
-
-        // When
-        Email email = new Email();
-
-        // Then
-        assertThat(email).isNotNull();
-    }
-
-    @Test
-    public void getters_and_setters_operate_on_the_same_field() {
-        // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
-
-        // When
-        Email actualEmail = new Email(expectedEmail.getFrom(), expectedEmail.getSubject());
-        actualEmail.setBody(expectedEmail.getBody());
-        actualEmail.addAttachments(expectedEmail.getAttachments());
-        actualEmail.addBccs(expectedEmail.getBccs());
-        actualEmail.addCcs(expectedEmail.getCcs());
-        actualEmail.addTos(expectedEmail.getTos());
-
-        // Then
-        assertThat(actualEmail.getAttachments()).isEqualTo(expectedEmail.getAttachments());
-        assertThat(actualEmail.getBccs()).isEqualTo(expectedEmail.getBccs());
-        assertThat(actualEmail.getBody()).isEqualTo(expectedEmail.getBody());
-        assertThat(actualEmail.getCcs()).isEqualTo(expectedEmail.getCcs());
-        assertThat(actualEmail.getFrom()).isEqualTo(expectedEmail.getFrom());
-        assertThat(actualEmail.getSubject()).isEqualTo(expectedEmail.getSubject());
-        assertThat(actualEmail.getTos()).isEqualTo(expectedEmail.getTos());
     }
 
     @Test
@@ -159,15 +117,17 @@ public class EmailTest {
     }
 
     @Test
-    public void toString_is_overridden() {
+    public void pojo_methods_are_well_implemented() {
         // Given
-        Email email = TestDataFactory.buildEmail();
 
         // When
-        String emailAsString = email.toString();
 
         // Then
-        assertThat(emailAsString).contains(Email.ENTITY_ATTRIBUTE_NAME_FROM);
+        assertPojoMethodsFor(Email.class, FieldPredicate.exclude("from", "subject", "attachments", "bccs", "ccs", "tos")).
+                testing(Method.SETTER).areWellImplemented();
+
+        assertPojoMethodsFor(Email.class).
+                testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).areWellImplemented();
     }
 
     @Test

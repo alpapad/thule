@@ -3,75 +3,52 @@ package uk.co.serin.thule.email.domain;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import uk.co.serin.thule.email.datafactories.TestDataFactory;
+import pl.pojo.tester.api.assertion.Method;
+
+import javax.validation.ValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class AttachmentTest {
-    @Test
-    public void builder_and_getters_operate_on_the_same_field() {
+    @Test(expected = ValidationException.class)
+    public void business_key_constructor_throws_ValidationException_when_content_is_empty() {
         // Given
-        Attachment expectedAttachment = TestDataFactory.buildAttachment();
 
         // When
-        Attachment actualAttachment = Attachment.AttachmentBuilder.anAttachment().
-                withContent(expectedAttachment.getContent()).
-                withLabel(expectedAttachment.getLabel()).build();
+        new Attachment("", "test label");
 
-        // Then
-        assertThat(actualAttachment.getContent()).isEqualTo(expectedAttachment.getContent());
-        assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
+        // Then (see expected in @Test annotation)
+    }
+
+    @Test(expected = ValidationException.class)
+    public void business_key_constructor_throws_ValidationException_when_label_is_empty() {
+        // Given
+
+        // When
+        new Attachment("test content", "");
+
+        // Then (see expected in @Test annotation)
     }
 
     @Test
-    public void business_key_constructor_creates_instance_with_correct_key() {
+    public void pojo_methods_are_well_implemented() {
         // Given
-        Attachment expectedAttachment = TestDataFactory.buildAttachment();
+        Object[] constructorParameters = {"test content", "test label"};
+        Class[] constructorParameterTypes = {String.class, String.class};
 
         // When
-        Attachment actualAttachment = new Attachment(expectedAttachment.getContent(), expectedAttachment.getLabel());
+        Throwable throwable = Assertions.catchThrowable(() ->
+                assertPojoMethodsFor(Attachment.class).
+                        create(Attachment.class, constructorParameters, constructorParameterTypes).
+                        testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).
+                        areWellImplemented());
 
         // Then
-        assertThat(actualAttachment.getContent()).isEqualTo(expectedAttachment.getContent());
-        assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
-    }
-
-    @Test
-    public void default_constructor_creates_instance_successfully() {
-        // Given
-
-        // When
-        Attachment attachment = new Attachment();
-
-        // Then
-        assertThat(attachment).isNotNull();
-    }
-
-    @Test
-    public void getters_and_setters_operate_on_the_same_field() {
-        // Given
-        Attachment expectedAttachment = TestDataFactory.buildAttachment();
-
-        // When
-        Attachment actualAttachment = new Attachment(expectedAttachment.getContent(), expectedAttachment.getLabel());
-
-        // Then
-        assertThat(actualAttachment.getContent()).isEqualTo(expectedAttachment.getContent());
-        assertThat(actualAttachment.getLabel()).isEqualTo(expectedAttachment.getLabel());
-    }
-
-    @Test
-    public void toString_is_overridden() {
-        // Given
-        Attachment attachment = TestDataFactory.buildAttachment();
-
-        // When
-        String attachmentAsString = attachment.toString();
-
-        // Then
-        assertThat(attachmentAsString).contains(Attachment.ENTITY_ATTRIBUTE_NAME_LABEL);
+        assertThat(throwable).isNull();
     }
 
     @Test

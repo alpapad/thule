@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.validation.ValidationException;
 
 @Service
 @LogException
@@ -32,7 +33,7 @@ public class EmailService {
     @Async
     public Future<Email> createEmail(Email email) {
         if (!email.hasARecipient()) {
-            throw new EmailServiceValidationException("At least one recipient email addresses ('TO', 'CC' 'BCC') should be provided");
+            throw new ValidationException("At least one recipient email addresses ('TO', 'CC' 'BCC') should be provided");
         }
         try {
             mailSender.send(createMimeMessage(email));
@@ -62,7 +63,7 @@ public class EmailService {
         }
         // Add attachments
         for (Attachment attachment : email.getAttachments()) {
-            mimeMessageHelper.addAttachment(attachment.getLabel(), new ByteArrayResource(attachment.getContent()));
+            mimeMessageHelper.addAttachment(attachment.getLabel(), new ByteArrayResource(attachment.getContent().getBytes()));
         }
 
         return mimeMessage;

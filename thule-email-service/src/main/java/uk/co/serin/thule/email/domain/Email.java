@@ -3,7 +3,6 @@ package uk.co.serin.thule.email.domain;
 import org.springframework.util.StringUtils;
 
 import uk.co.serin.thule.core.validator.PatternJava8;
-import uk.co.serin.thule.email.service.EmailServiceValidationException;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -12,6 +11,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 
 public final class Email {
@@ -56,12 +56,12 @@ public final class Email {
         if (StringUtils.hasText(from)) {
             this.from = from;
         } else {
-            throw new EmailServiceValidationException("The 'from' email address is mandatory");
+            throw new ValidationException("The 'from' email address is mandatory");
         }
         if (StringUtils.hasText(subject)) {
             this.subject = subject;
         } else {
-            throw new EmailServiceValidationException("The 'subject' is mandatory");
+            throw new ValidationException("The 'subject' is mandatory");
         }
     }
 

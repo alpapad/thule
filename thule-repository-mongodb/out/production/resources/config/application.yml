@@ -1,0 +1,11 @@
+# Spring logging configuration
+logging:
+  level:
+    org.springframework: info
+    uk.co.serin: trace
+
+# Spring configuration
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongo-host/test

@@ -4,8 +4,10 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
+import pl.pojo.tester.api.FieldPredicate;
+import pl.pojo.tester.api.assertion.Method;
+
 import uk.co.serin.thule.people.datafactories.TestDataFactory;
-import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.StateCode;
@@ -13,6 +15,7 @@ import uk.co.serin.thule.people.domain.state.StateCode;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class PersonTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
@@ -65,31 +68,6 @@ public class PersonTest {
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
         assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
-    }
-
-    @Test
-    public void business_key_constructor_creates_instance_with_correct_key() {
-        // Given
-        String userId = "userId";
-
-        // When
-        Person person = new Person(userId);
-
-        // Then
-        assertThat(person.getDateOfExpiry()).isEqualTo(person.getDateOfPasswordExpiry());
-        assertThat(person.getUserId()).isEqualTo(userId);
-        assertThat(person.getUserId()).isEqualTo(person.getPassword());
-    }
-
-    @Test
-    public void default_constructor_creates_instance_successfully() {
-        // Given
-
-        // When
-        Person person = new Person();
-
-        // Then
-        assertThat(person).isNotNull();
     }
 
     @Test
@@ -162,50 +140,6 @@ public class PersonTest {
     }
 
     @Test
-    public void getters_and_setters_operate_on_the_same_field() {
-        // Given
-        Person expectedPerson = testDataFactory.buildPersonWithAllAssociations();
-
-        // When
-        Person actualPerson = new Person(expectedPerson.getUserId());
-        actualPerson.setDateOfBirth(expectedPerson.getDateOfBirth());
-        actualPerson.setDateOfExpiry(expectedPerson.getDateOfExpiry());
-        actualPerson.setDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry());
-        actualPerson.setEmailAddress(expectedPerson.getEmailAddress());
-        actualPerson.setFirstName(expectedPerson.getFirstName());
-        actualPerson.setHomeAddress(expectedPerson.getHomeAddress());
-        actualPerson.setPassword(expectedPerson.getPassword());
-        actualPerson.setSalutation(expectedPerson.getSalutation());
-        actualPerson.setSecondName(expectedPerson.getSecondName());
-        actualPerson.setState(expectedPerson.getState());
-        actualPerson.setSurname(expectedPerson.getSurname());
-        actualPerson.setWorkAddress(expectedPerson.getWorkAddress());
-        actualPerson.addPhotographs(expectedPerson.getPhotographs());
-        actualPerson.addRoles(expectedPerson.getRoles());
-
-        // Then
-        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
-        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
-        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
-        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
-        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
-        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
-        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
-        assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
-        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getPhotographs()).isEqualTo(expectedPerson.getPhotographs());
-        assertThat(actualPerson.getRoles()).isEqualTo(expectedPerson.getRoles());
-        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
-        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
-        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
-        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
-        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
-        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
-        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
-    }
-
-    @Test
     public void is_expired() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withDateOfExpiry(LocalDate.MIN).build();
@@ -254,6 +188,18 @@ public class PersonTest {
     }
 
     @Test
+    public void pojo_methods_are_well_implemented() {
+        assertPojoMethodsFor(Person.class, FieldPredicate.exclude("photographs", "roles", "userId")).
+                testing(Method.SETTER).areWellImplemented();
+
+        assertPojoMethodsFor(Person.class, FieldPredicate.exclude("homeAddress", "password", "photographs", "roles", "workAddress")).
+                testing(Method.TO_STRING).areWellImplemented();
+
+        assertPojoMethodsFor(Person.class).
+                testing(Method.CONSTRUCTOR, Method.GETTER).areWellImplemented();
+    }
+
+    @Test
     public void recover_person() {
         // Given
         Person person = Person.PersonBuilder.aPerson().withUserId("userId").withState(testDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
@@ -263,11 +209,6 @@ public class PersonTest {
 
         //Then
         assertThat(person.getState()).isEqualTo(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-    }
-
-    @Test
-    public void toString_is_overridden() {
-        assertThat(new Person("userId").toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID);
     }
 
     @Test

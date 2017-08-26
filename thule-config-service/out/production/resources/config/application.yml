@@ -1,0 +1,39 @@
+# Spring actuator configuration
+endpoints:
+  sensitive: false
+info:
+  description: Thule Config Service
+  name: ${spring.application.name}
+management:
+  security:
+    # Disabled to enable health endpoint to show complete health rather than just 'status'
+    enabled: false
+
+# Spring logging
+logging:
+  level:
+    org.springframework: info
+    uk.co.serin: trace
+
+# Spring server configuration
+server:
+  port: 8888
+
+# Spring boot configuration
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: classpath:/config/{application}
+  jackson:
+    serialization:
+      # Admin server displays the buildTime of this service which by default will be as an
+      # absolute time (i.e. a long), not particularly meaningful unless we instruct jackson to
+      # serialize it as a timestamp which is a human readable form
+      write_dates_as_timestamps: false
+  sleuth:
+      sampler:
+        percentage: 1.0
+  zipkin:
+    baseUrl: http://zipkin-host:9411

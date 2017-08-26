@@ -1,0 +1,18 @@
+# Flyway configuration
+flyway:
+  baseline-on-migrate: true
+  locations: classpath:flyway/oracle/migration
+  password: oracle
+  url: jdbc:oracle:thin:@oracle-host:1521:xe
+  user: system
+
+# Spring configuration
+spring:
+  datasource:
+    password: thule
+    url: jdbc:log4jdbc:oracle:thin:@oracle-host:1521:xe
+    username: thule
+  jpa:
+    hibernate:
+      # Change to validate once bug https://hibernate.atlassian.net/browse/HHH-11286 has been fixed
+      ddl-auto: none

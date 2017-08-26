@@ -8,13 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestDataFactory {
-    public static Attachment buildAttachment() {
-        return Attachment.AttachmentBuilder.anAttachment().withContent("This is a test attachment".getBytes()).withLabel("test-attachment.txt").build();
-    }
-
     public static Email buildEmail() {
         return Email.EmailBuilder.anEmail().
-                withAttachments(Collections.singleton(buildAttachment())).
+                withAttachments(Collections.singleton(new Attachment("This is a test attachment", "test-attachment.txt"))).
                 withBccs(Collections.singleton("bcc@test.co.uk")).
                 withBody("This is a test body").
                 withCcs(Collections.singleton("ccs@test.co.uk")).

@@ -4,10 +4,13 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
+import pl.pojo.tester.api.FieldPredicate;
+import pl.pojo.tester.api.assertion.Method;
+
 import uk.co.serin.thule.people.datafactories.TestDataFactory;
-import uk.co.serin.thule.people.domain.DomainModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class ActionTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
@@ -41,51 +44,17 @@ public class ActionTest {
     }
 
     @Test
-    public void business_key_constructor_creates_instance_with_correct_key() {
+    public void pojo_methods_are_well_implemented() {
         // Given
 
         // When
-        Action action = new Action(ActionCode.ADDRESS_DISABLE);
 
         // Then
-        assertThat(action.getCode()).isEqualTo(ActionCode.ADDRESS_DISABLE);
-    }
+        assertPojoMethodsFor(Action.class, FieldPredicate.exclude("code")).
+                testing(Method.SETTER).areWellImplemented();
 
-    @Test
-    public void default_constructor_creates_instance_successfully() {
-        // Given
-
-        // When
-        Action action = new Action();
-
-        // Then
-        assertThat(action).isNotNull();
-    }
-
-    @Test
-    public void getters_and_setters_operate_on_the_same_field() {
-        // Given
-        Action expectedAction = testDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
-
-        // When
-        Action actualAction = new Action(expectedAction.getCode());
-        actualAction.setDescription(expectedAction.getDescription());
-        actualAction.setNextState(expectedAction.getNextState());
-
-        // Then
-        assertThat(actualAction.getCode()).isEqualTo(expectedAction.getCode());
-        assertThat(actualAction.getCreatedAt()).isEqualTo(expectedAction.getCreatedAt());
-        assertThat(actualAction.getId()).isEqualTo(expectedAction.getId());
-        assertThat(actualAction.getDescription()).isEqualTo(expectedAction.getDescription());
-        assertThat(actualAction.getNextState()).isEqualTo(expectedAction.getNextState());
-        assertThat(actualAction.getUpdatedAt()).isEqualTo(expectedAction.getUpdatedAt());
-        assertThat(actualAction.getUpdatedBy()).isEqualTo(expectedAction.getUpdatedBy());
-        assertThat(actualAction.getVersion()).isEqualTo(expectedAction.getVersion());
-    }
-
-    @Test
-    public void toString_is_overridden() {
-        assertThat(new Action(ActionCode.ADDRESS_ENABLE).toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_CODE);
+        assertPojoMethodsFor(Action.class).
+                testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).areWellImplemented();
     }
 
     @Test

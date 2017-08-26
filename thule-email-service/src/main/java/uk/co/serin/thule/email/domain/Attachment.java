@@ -1,14 +1,17 @@
 package uk.co.serin.thule.email.domain;
 
-import java.util.Arrays;
+import org.springframework.util.StringUtils;
+
 import java.util.Objects;
 import java.util.StringJoiner;
+
+import javax.validation.ValidationException;
 
 public final class Attachment {
     public static final String ENTITY_ATTRIBUTE_NAME_CONTENT = "content";
     public static final String ENTITY_ATTRIBUTE_NAME_LABEL = "label";
     public static final String ENTITY_NAME_ATTACHMENTS = "attachments";
-    private byte[] content;
+    private String content;
     private String label;
 
     /**
@@ -23,13 +26,21 @@ public final class Attachment {
      * @param content Business key attribute
      * @param label   Business key attribute
      */
-    public Attachment(byte[] content, String label) {
-        this.content = Arrays.copyOf(content, content.length);
-        this.label = label;
+    public Attachment(String content, String label) {
+        if (StringUtils.hasText(content)) {
+            this.content = content;
+        } else {
+            throw new ValidationException("The 'content' is mandatory");
+        }
+        if (StringUtils.hasText(label)) {
+            this.label = label;
+        } else {
+            throw new ValidationException("The 'label' is mandatory");
+        }
     }
 
-    public byte[] getContent() {
-        return Arrays.copyOf(content, content.length);
+    public String getContent() {
+        return content;
     }
 
     public String getLabel() {
@@ -38,7 +49,7 @@ public final class Attachment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.hashCode(content), label);
+        return Objects.hash(content, label);
     }
 
     @Override
@@ -50,7 +61,7 @@ public final class Attachment {
             return false;
         }
         Attachment that = (Attachment) o;
-        return Arrays.equals(content, that.content) && Objects.equals(label, that.label);
+        return Objects.equals(content, that.content) && Objects.equals(label, that.label);
     }
 
     @Override
@@ -59,31 +70,5 @@ public final class Attachment {
                 .add(String.format("content=%s", content))
                 .add(String.format("label=%s", label))
                 .toString();
-    }
-
-    public static final class AttachmentBuilder {
-        private byte[] content;
-        private String label;
-
-        private AttachmentBuilder() {
-        }
-
-        public static AttachmentBuilder anAttachment() {
-            return new AttachmentBuilder();
-        }
-
-        public Attachment build() {
-            return new Attachment(content, label);
-        }
-
-        public AttachmentBuilder withContent(byte[] content) {
-            this.content = content;
-            return this;
-        }
-
-        public AttachmentBuilder withLabel(String label) {
-            this.label = label;
-            return this;
-        }
     }
 }

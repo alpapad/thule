@@ -4,10 +4,13 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
+import pl.pojo.tester.api.FieldPredicate;
+import pl.pojo.tester.api.assertion.Method;
+
 import uk.co.serin.thule.people.datafactories.TestDataFactory;
-import uk.co.serin.thule.people.domain.DomainModel;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class RoleTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
@@ -39,49 +42,17 @@ public class RoleTest {
     }
 
     @Test
-    public void business_key_constructor_creates_instance_with_correct_key() {
+    public void pojo_methods_are_well_implemented() {
         // Given
 
         // When
-        Role actualRole = new Role(RoleCode.ROLE_ADMINISTRATOR);
 
         // Then
-        assertThat(actualRole.getCode()).isEqualTo(RoleCode.ROLE_ADMINISTRATOR);
-    }
+        assertPojoMethodsFor(Role.class, FieldPredicate.exclude("code")).
+                testing(Method.SETTER).areWellImplemented();
 
-    @Test
-    public void default_constructor_creates_instance_successfully() {
-        // Given
-
-        // When
-        Role role = new Role();
-
-        // Then
-        assertThat(role).isNotNull();
-    }
-
-    @Test
-    public void getters_and_setters_operate_on_the_same_field() {
-        // Given
-        Role expectedRole = testDataFactory.getRoles().get(RoleCode.ROLE_CLERK);
-
-        // When
-        Role actualRole = new Role(expectedRole.getCode());
-        actualRole.setDescription(expectedRole.getDescription());
-
-        // Then
-        assertThat(actualRole.getCode()).isEqualTo(expectedRole.getCode());
-        assertThat(actualRole.getCreatedAt()).isEqualTo(expectedRole.getCreatedAt());
-        assertThat(actualRole.getId()).isEqualTo(expectedRole.getId());
-        assertThat(actualRole.getDescription()).isEqualTo(expectedRole.getDescription());
-        assertThat(actualRole.getUpdatedAt()).isEqualTo(expectedRole.getUpdatedAt());
-        assertThat(actualRole.getUpdatedBy()).isEqualTo(expectedRole.getUpdatedBy());
-        assertThat(actualRole.getVersion()).isEqualTo(expectedRole.getVersion());
-    }
-
-    @Test
-    public void toString_is_overridden() {
-        assertThat(new Role(RoleCode.ROLE_ADMINISTRATOR).toString()).contains(DomainModel.ENTITY_ATTRIBUTE_NAME_CODE);
+        assertPojoMethodsFor(Role.class).
+                testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).areWellImplemented();
     }
 
     @Test

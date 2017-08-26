@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -67,6 +68,12 @@ public final class Photograph extends DomainModel {
     @SuppressWarnings("squid:S2637")
     // Suppress SonarQube bug "@NonNull" values should not be set to null
     public Photograph(byte[] photo, Person person) {
+        if (person != null) {
+            this.person = person;
+        } else {
+            throw new ValidationException("The 'person' is mandatory");
+        }
+
         setPhoto(photo);
         this.person = person;
     }
@@ -84,10 +91,16 @@ public final class Photograph extends DomainModel {
     }
 
     public byte[] getPhoto() {
-        return Arrays.copyOf(photo, photo.length);
+        return (photo == null) ? null : Arrays.copyOf(photo, photo.length);
     }
 
-    private void setPhoto(byte... photo) {
+    private void setPhoto(byte[] photo) {
+        if (photo != null) {
+            this.photo = photo;
+        } else {
+            throw new ValidationException("The 'photo' cannot be empty");
+        }
+
         byte[] photoToSet = Arrays.copyOf(photo, photo.length);
         setHash(new String(DigestUtils.md5Digest(photoToSet), Charset.defaultCharset()));
 
@@ -125,7 +138,7 @@ public final class Photograph extends DomainModel {
         return new StringJoiner(", ", "Photograph{", "}")
                 .add(super.toString())
                 .add(String.format("hash=%s", hash))
-                .add(String.format("photo=%s", new Object[]{photo}))
+                .add(String.format("photo=%s", photo))
                 .add(String.format("position=%s", position))
                 .toString();
     }

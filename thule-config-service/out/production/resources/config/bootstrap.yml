@@ -1,0 +1,23 @@
+# Eureka configuration
+eureka:
+  instance:
+    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      # Location of the discovery service to register this service
+      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+
+# Spring actuator configuration
+info:
+  # Will be replaced by gradle processResources task to replace with the actual build version
+  version: @version@
+
+# Spring cloud config client configuration
+spring:
+  application:
+    # Required by the discovery service as the key to enable other services to lookup and access this service
+    name: thule-configuration-service
+  profiles:
+    # By default, thule-config-server will use git as a repository for all config, we will override for demo purposes to use native, i.e. classpath or filesystem
+    include: native

@@ -1,0 +1,6 @@
+# Spring boot configuration
+spring:
+  mail:
+    host: localhost
+    port: 1025
+

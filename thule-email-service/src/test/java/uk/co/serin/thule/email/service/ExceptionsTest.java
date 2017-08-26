@@ -11,7 +11,6 @@ public class ExceptionsTest {
 
         // When
         new ExceptionConstructorTester(EmailServiceException.class).assertThatAllConstructorsExist();
-        new ExceptionConstructorTester(EmailServiceValidationException.class).assertThatAllConstructorsExist();
 
         // Then (throws exception if constructors do not exist)
     }

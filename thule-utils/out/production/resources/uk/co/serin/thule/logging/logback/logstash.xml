@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <springProperty name="thuleLoggingLogstashHost" source="thule.logging.logstash.host"/>
+    <springProperty name="thuleLoggingLogstashPort" source="thule.logging.logstash.port"/>
+    <if condition='isDefined("thuleLoggingLogstashHost") &amp;&amp; isDefined("thuleLoggingLogstashPort")'>
+        <then>
+            <springProperty name="thuleLoggingLogstashSslEnabled"
+                            source="thule.logging.logstash.ssl-enabled" defaultValue="false"/>
+            <springProperty name="springApplicationName" source="spring.application.name"
+                            defaultValue="spring.application.name-not-set"/>
+            <appender name="LOGSTASH"
+                      class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+                <destination>${thuleLoggingLogstashHost}:${thuleLoggingLogstashPort}</destination>
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <arguments/>
+                        <context/>
+                        <loggerName/>
+                        <logLevel/>
+                        <logstashMarkers/>
+                        <mdc/>
+                        <message/>
+                        <stackTrace/>
+                        <threadName/>
+                        <timestamp/>
+                        <pattern>
+                            <pattern>
+                                {
+                                "exportable": "%mdc{X-Span-Export:-}",
+                                "parent": "%mdc{X-B3-ParentSpanId:-}",
+                                "service":"${springApplicationName}",
+                                "span": "%mdc{X-B3-SpanId:-}",
+                                "trace": "%mdc{X-B3-TraceId:-}",
+                                "pid": "${PID:-}"
+                                }
+                            </pattern>
+                        </pattern>
+                    </providers>
+                </encoder>
+                <keepAliveDuration>5 minutes</keepAliveDuration>
+                <reconnectionDelay>10 second</reconnectionDelay>
+                <ringBufferSize>16384</ringBufferSize>
+                <if condition='property("thuleLoggingLogstashSslEnabled").equals("true")'>
+                    <then>
+                        <ssl/>
+                    </then>
+                </if>
+                <waitStrategyType>sleeping</waitStrategyType>
+            </appender>
+        </then>
+    </if>
+</included>

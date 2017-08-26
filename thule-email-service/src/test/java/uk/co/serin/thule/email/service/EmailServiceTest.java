@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.mail.internet.MimeMessage;
+import javax.validation.ValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,7 +62,7 @@ public class EmailServiceTest {
         // Then - see the expected in @Test
     }
 
-    @Test(expected = EmailServiceValidationException.class)
+    @Test(expected = ValidationException.class)
     public void create_an_email_without_any_recipients() {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
