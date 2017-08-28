@@ -4,7 +4,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
-import uk.co.serin.thule.core.utils.RandomGenerators;
+import uk.co.serin.thule.utils.utils.RandomGenerators;
 import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.country.Country;

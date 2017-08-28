@@ -7,7 +7,7 @@ import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
-import uk.co.serin.thule.core.aspects.TracePublicMethods;
+import uk.co.serin.thule.utils.aspects.TracePublicMethods;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.service.PeopleService;
 

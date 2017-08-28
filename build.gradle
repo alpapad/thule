@@ -207,7 +207,7 @@ allprojects {
         }
     }
     task itest(type: Test, dependsOn: testClasses) {
-        testClassesDir = sourceSets.itest.output.classesDir
+        testClassesDirs = sourceSets.itest.output.classesDirs
         classpath = sourceSets.itest.runtimeClasspath
     }
 
@@ -274,6 +274,7 @@ project("thule-cloud") {
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
         testCompile("org.springframework.retry:spring-retry")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -309,6 +310,7 @@ project("thule-admin-server") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -337,6 +339,7 @@ project("thule-config-service") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -371,6 +374,7 @@ project("thule-discovery-service") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -403,6 +407,7 @@ project("thule-edge-server") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -502,10 +507,11 @@ project("thule-repository-mongodb") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
-project("thule-spring-boot-autoconfiguration") {
+project("thule-spring-boot-autoconfigure") {
     dependencies {
         compile project(":thule-utils")
 
@@ -513,18 +519,20 @@ project("thule-spring-boot-autoconfiguration") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
 project("thule-spring-boot-starter-utils") {
     dependencies {
-        compile project(":thule-spring-boot-autoconfiguration")
+        compile project(":thule-spring-boot-autoconfigure")
         compile project(":thule-utils")
 
         testCompile project(":thule-test")
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -536,6 +544,7 @@ project("thule-test") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }
 
@@ -553,5 +562,6 @@ project("thule-utils") {
         testCompile("nl.jqno.equalsverifier:equalsverifier")
         testCompile("org.awaitility:awaitility")
         testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("pl.pojo:pojo-tester")
     }
 }

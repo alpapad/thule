@@ -2,7 +2,7 @@ package uk.co.serin.thule.email.domain;
 
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.core.validator.PatternJava8;
+import uk.co.serin.thule.utils.validator.PatternJava8;
 
 import java.util.Collections;
 import java.util.HashSet;

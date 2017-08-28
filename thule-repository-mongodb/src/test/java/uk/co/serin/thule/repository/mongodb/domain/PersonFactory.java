@@ -1,6 +1,6 @@
 package uk.co.serin.thule.repository.mongodb.domain;
 
-import uk.co.serin.thule.core.utils.RandomGenerators;
+import uk.co.serin.thule.utils.utils.RandomGenerators;
 
 import java.time.LocalDate;
 
