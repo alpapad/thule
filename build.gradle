@@ -72,7 +72,7 @@ allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     // Replace the version in spring config with the gradle build version
-    processResources.filter { String line -> line.replace("@version@", version) }
+    processResources.filter { String line -> line.replace("@version@", version.toString()) }
 
     // Dependency Management plugin
     apply plugin: "io.spring.dependency-management"
