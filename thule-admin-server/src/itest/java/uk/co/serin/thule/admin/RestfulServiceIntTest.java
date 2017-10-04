@@ -16,14 +16,14 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.location=classpath:/config/${spring.application.name}/"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.location=classpath:/config/${spring.application.name}/", "spring.cloud.bootstrap.location=classpath:/"})
 @RunWith(SpringRunner.class)
 public class RestfulServiceIntTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void isHealthy() {
+    public void is_healthy() {
         // Given
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
