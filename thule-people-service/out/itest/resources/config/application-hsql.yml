@@ -1,9 +1,0 @@
-# Flyway configuration
-flyway:
-  locations: classpath:flyway/hsql/migration
-  url: jdbc:log4jdbc:hsqldb:mem:testdb
-
-# Spring configuration
-spring:
-  datasource:
-    url: jdbc:log4jdbc:hsqldb:mem:testdb

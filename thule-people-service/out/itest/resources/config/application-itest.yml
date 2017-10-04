@@ -1,4 +1,0 @@
-# Thule configuration
-thule:
-  wiremock:
-    port: 10123
