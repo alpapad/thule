@@ -1,4 +1,0 @@
-# Eureka configuration
-eureka:
-  client:
-    enabled: false
