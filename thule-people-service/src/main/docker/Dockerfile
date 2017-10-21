@@ -3,7 +3,7 @@ FROM openjdk:8-jre
 ################################  Create user  ################################
 ENV GID 1000
 ENV UID 1000
-ENV USER app
+ENV USER service
 
 RUN \
     addgroup --gid $GID $USER && \
