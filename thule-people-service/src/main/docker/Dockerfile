@@ -1,8 +1,4 @@
-FROM openjdk:8-jre-alpine
-
-################################  Update the base image  ################################
-# su-exec as an alternative to chroot which is not available in alpine for easy step-down from root
-RUN apk add --update bash su-exec
+FROM openjdk:8-jre
 
 ################################  Create user  ################################
 ENV GID 1000
@@ -10,8 +6,8 @@ ENV UID 1000
 ENV USER app
 
 RUN \
-    addgroup -g $GID $USER && \
-    adduser -D -G $USER -s /bin/bash -u $UID $USER
+    addgroup --gid $GID $USER && \
+    adduser --disabled-password --gecos "" --gid $GID --shell /bin/bash --uid $UID $USER
 
 ################################  Install Spring Boot App ################################
 # Add a VOLUME pointing to "/tmp" because that is where a Spring Boot application creates working directories for Tomcat by default.
