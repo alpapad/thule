@@ -68,6 +68,7 @@ allprojects {
     //############################## Plugins Configuration ##############################
     // Java plugin (Note: Several plugins depend on the Java plugin so ensure it remains the first plugin defined)
     apply plugin: "java"
+
     // Java plugin configuration
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -352,6 +353,10 @@ project("thule-discovery-service") {
         buildInfo()
     }
 
+    tasks.withType(Test) {
+        jvmArgs += ["--add-modules", "java.xml.bind"]
+    }
+
     dependencies {
         compile project(":thule-spring-boot-starter-utils")
         compile("net.logstash.logback:logstash-logback-encoder")
@@ -452,6 +457,10 @@ project("thule-people-service") {
     // Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
     springBoot {
         buildInfo()
+    }
+
+    tasks.withType(Test) {
+        jvmArgs += ["--add-modules", "java.xml.bind"]
     }
 
     dependencies {
