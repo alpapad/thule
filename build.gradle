@@ -459,9 +459,10 @@ project("thule-people-service") {
         buildInfo()
     }
 
-    tasks.withType(Test) {
-        jvmArgs += ["--add-modules", "java.xml.bind"]
-    }
+    // Required for Java9
+//    tasks.withType(Test) {
+//        jvmArgs += ["--add-modules", "java.xml.bind"]
+//    }
 
     dependencies {
         compile project(":thule-spring-boot-starter-utils")
