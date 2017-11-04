@@ -1,0 +1,37 @@
+// Jacoco plugin
+apply plugin: "jacoco"
+// Jacoco plugin configuration
+jacoco.toolVersion = "0.7.9"
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = "BRANCH"
+                minimum = 1.0 // 100% coverage
+            }
+            limit {
+                counter = "CLASS"
+                minimum = 1.0 // 100% coverage
+            }
+            limit {
+                counter = "COMPLEXITY"
+                minimum = 1.0 // 100% coverage
+            }
+            limit {
+                counter = "INSTRUCTION"
+                minimum = 1.0 // 100% coverage
+            }
+            limit {
+                counter = "LINE"
+                minimum = 1.0 // 100% coverage
+            }
+            limit {
+                counter = "METHOD"
+                minimum = 1.0 // 100% coverage
+            }
+        }
+    }
+}
+// Always create a report even if jacocoTestCoverageVerification fails
+jacocoTestCoverageVerification.dependsOn jacocoTestReport
+check.dependsOn jacocoTestCoverageVerification

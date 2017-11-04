@@ -1,7 +1,7 @@
 buildscript {
     ext["hibernate.version"] = "5.2.12.Final" // Override spring boot defined version 5.0.12.Final which contains a bug whereby auto-ddl=validate always fails
 
-    apply from: "../gradle/repo-config.gradle", to: buildscript
+    apply from: "${rootDir}/../gradle/repo-config.gradle", to: buildscript
 
     // Dependencies for non-core plugins
     // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
@@ -22,9 +22,13 @@ buildscript {
     }
 }
 
-apply from: "../gradle/plugins-config.gradle"
-apply from: "../gradle/plugins-sonarqube-config.gradle"
-apply from: "../gradle/build-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-java-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
+apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Required for Java9
 //    tasks.withType(Test) {

@@ -1,0 +1,11 @@
+// Spring Boot plugin
+apply plugin: "org.springframework.boot"
+// Spring Boot configuration
+ext["assertj.version"] = "3.8.0"// Override spring boot defined version 2.6.0 which contains bugs
+ext["mockito.version"] = "2.11.0" // Override spring boot defined version which defaults to mockito 1.10.19 and does not support mocking finals
+// Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
+springBoot {
+    buildInfo()
+}
+// Replace the version in spring config with the gradle build version
+processResources.filter { String line -> line.replace("@version@", version.toString()) }

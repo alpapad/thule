@@ -1,0 +1,19 @@
+// Maven Publish plugin
+apply plugin: 'maven-publish'
+// Maven-publish plugin configuration
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url("http://pooh:8081/repository/maven-${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}")
+            credentials {
+                username = "admin"
+                password = "admin123"
+            }
+        }
+    }
+}
