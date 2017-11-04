@@ -1,0 +1,40 @@
+buildscript {
+    apply from: "../gradle/repo-config.gradle", to: buildscript
+
+    // Dependencies for non-core plugins
+    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
+    // see https://github.com/gradle/gradle/issues/1894
+    dependencies {
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
+        classpath("se.transmode.gradle:gradle-docker:1.2")
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
+            changing = true
+        }
+    }
+
+    // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
+apply from: "../gradle/plugins-config.gradle"
+apply from: "../gradle/plugins-sonarqube-config.gradle"
+apply from: "../gradle/build-config.gradle"
+
+bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+
+dependencies {
+    compile("org.apache.httpcomponents:httpclient")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-logging")
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    testCompile("org.springframework.retry:spring-retry")
+}

@@ -1,0 +1,74 @@
+buildscript {
+    ext["hibernate.version"] = "5.2.12.Final" // Override spring boot defined version 5.0.12.Final which contains a bug whereby auto-ddl=validate always fails
+
+    apply from: "../gradle/repo-config.gradle", to: buildscript
+
+    // Dependencies for non-core plugins
+    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
+    // see https://github.com/gradle/gradle/issues/1894
+    dependencies {
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
+        classpath("se.transmode.gradle:gradle-docker:1.2")
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
+            changing = true
+        }
+    }
+
+    // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
+apply from: "../gradle/plugins-config.gradle"
+apply from: "../gradle/plugins-sonarqube-config.gradle"
+apply from: "../gradle/build-config.gradle"
+
+// Required for Java9
+//    tasks.withType(Test) {
+//        jvmArgs += ["--add-modules", "java.xml.bind"]
+//    }
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Dalston.SR3")
+    }
+}
+
+dependencies {
+    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("com.googlecode.log4jdbc:log4jdbc:1.2")
+    compile("com.h2database:h2")
+    compile("net.logstash.logback:logstash-logback-encoder:4.11")
+    compile("org.apache.httpcomponents:httpclient")
+    compile("org.flywaydb:flyway-core")
+    compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-logging")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-validation")
+    compile("org.springframework.cloud:spring-cloud-starter-config")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+    compile("org.springframework.cloud:spring-cloud-starter-feign")
+    compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+    compile("org.springframework.cloud:spring-cloud-starter-zipkin")
+    compile("org.springframework.data:spring-data-rest-hal-browser")
+    // Required to retry connecting to the discovery server when it is not available at startup
+    compile("org.springframework.retry:spring-retry")
+
+    // Add spring boot config to the classpath for integration tests
+    itestCompile files("../thule-config-service/src/main/resources")
+
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    testCompile("com.googlecode.log4jdbc:log4jdbc:1.2")
+    testCompile("com.oracle:ojdbc6:11.2.0.1.0")
+    testCompile("mysql:mysql-connector-java")
+    testCompile("org.hsqldb:hsqldb")
+}

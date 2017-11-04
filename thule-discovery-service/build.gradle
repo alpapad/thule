@@ -1,0 +1,53 @@
+buildscript {
+    apply from: "../gradle/repo-config.gradle", to: buildscript
+
+    // Dependencies for non-core plugins
+    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
+    // see https://github.com/gradle/gradle/issues/1894
+    dependencies {
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
+        classpath("se.transmode.gradle:gradle-docker:1.2")
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
+            changing = true
+        }
+    }
+}
+
+apply from: "../gradle/plugins-config.gradle"
+apply from: "../gradle/plugins-sonarqube-config.gradle"
+apply from: "../gradle/build-config.gradle"
+
+// Required for Java9
+//    tasks.withType(Test) {
+//        jvmArgs += ["--add-modules", "java.xml.bind"]
+//    }
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Dalston.SR3")
+    }
+}
+
+dependencies {
+    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    compile("net.logstash.logback:logstash-logback-encoder:4.11")
+    compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    compile("org.springframework.boot:spring-boot-starter-logging")
+    compile("org.springframework.cloud:spring-cloud-starter-config")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
+    compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+    compile("org.springframework.cloud:spring-cloud-starter-zipkin")
+    // Required to retry connecting to the discovery server when it is not available at startup
+    compile("org.springframework.retry:spring-retry")
+
+    // Add spring boot config to the classpath for integration tests
+    itestCompile files("../thule-config-service/src/main/resources")
+
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+}
