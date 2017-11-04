@@ -22,7 +22,7 @@ buildscript {
 
 apply from: "${rootDir}/../gradle/plugins-sonarqube-config.gradle"
 
-allprojects {
+subprojects {
     apply from: "${rootDir}/../gradle/plugins-config.gradle"
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
