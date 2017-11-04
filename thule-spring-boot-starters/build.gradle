@@ -1,0 +1,69 @@
+buildscript {
+    apply from: "${rootDir}/../gradle/repo-config.gradle", to: buildscript
+
+    // Dependencies for non-core plugins
+    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
+    // see https://github.com/gradle/gradle/issues/1894
+    dependencies {
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.17.0")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
+        classpath("se.transmode.gradle:gradle-docker:1.2")
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
+            changing = true
+        }
+    }
+
+    // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
+apply from: "${rootDir}/../gradle/plugins-sonarqube-config.gradle"
+
+subprojects {
+    apply from: "${rootDir}/../gradle/plugins-config.gradle"
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+}
+
+project("thule-spring-boot-starter-test") {
+    dependencies {
+        compile project(":thule-test")
+        compile("com.github.tomakehurst:wiremock:2.10.1")
+        compile("nl.jqno.equalsverifier:equalsverifier:2.3.3")
+        compile("org.awaitility:awaitility:3.0.0")
+        compile("org.springframework.boot:spring-boot-starter-test")
+        compile("pl.pojo:pojo-tester:0.7.5")
+    }
+}
+
+project("thule-spring-boot-starter-utils") {
+    dependencies {
+        compile("uk.co.serin.thule:thule-utils:1.0.0-SNAPSHOT")
+
+        testCompile project(":thule-spring-boot-starter-test")
+    }
+}
+
+project("thule-test") {
+    dependencies {
+        compile("org.springframework.boot:spring-boot-starter-test")
+    }
+}
+
+project("thule-utils") {
+    dependencies {
+        compile("org.codehaus.janino:janino:3.0.7") // Required by logback if-condition statements in the xml configuration
+        compile("org.springframework.boot:spring-boot-starter-aop")
+        compile("org.springframework.boot:spring-boot-starter-jetty")
+        compile("org.springframework.boot:spring-boot-starter-logging")
+        compile("org.springframework.boot:spring-boot-starter-web") {
+            exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        }
+
+        testCompile project(":thule-spring-boot-starter-test")
+    }
+}

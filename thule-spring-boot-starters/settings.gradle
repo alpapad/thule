@@ -1,0 +1,6 @@
+rootProject.name = "thule-spring-boot-starters"
+
+include "thule-spring-boot-starter-test"
+include "thule-spring-boot-starter-utils"
+include "thule-test"
+include "thule-utils"
