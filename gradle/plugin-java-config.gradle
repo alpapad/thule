@@ -1,5 +1,0 @@
-// Java plugin (Note: Several plugins depend on the Java plugin so ensure it remains the first plugin defined)
-apply plugin: "java"
-// Java plugin configuration
-sourceCompatibility = 8.0
-targetCompatibility = 8.0

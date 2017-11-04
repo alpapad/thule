@@ -1,6 +1,3 @@
-// Docker plugin
-apply plugin: "docker"
-// Docker plugin configuration
 task dockerBuild(type: Docker, dependsOn: [jar, test]) {
     // dockerBuild options
     applicationName = jar.baseName

@@ -1,4 +1,0 @@
-// Versions plugin
-apply plugin: "com.github.ben-manes.versions"
-// Versions plugin configuration
-dependencyUpdates.revision = "release"

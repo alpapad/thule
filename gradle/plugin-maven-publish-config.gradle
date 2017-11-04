@@ -1,6 +1,3 @@
-// Maven Publish plugin
-apply plugin: 'maven-publish'
-// Maven-publish plugin configuration
 publishing {
     publications {
         mavenJava(MavenPublication) {

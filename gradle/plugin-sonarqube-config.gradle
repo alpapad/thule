@@ -1,6 +1,3 @@
-// Sonarqube plugin
-apply plugin: "org.sonarqube"
-// Sonarqube plugin configuration
 sonarqube {
     properties {
         // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
@@ -10,8 +7,3 @@ sonarqube {
         property "sonar.projectName", project.description
     }
 }
-
-// Sonarqube build breaker plugin
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
-// Sonarqube build breaker plugin configuration
-tasks.sonarqubeBuildBreaker.dependsOn(tasks.sonarqube)
