@@ -1,0 +1,10 @@
+repositories {
+    maven {
+        url "http://pooh:8081/repository/maven-public"
+        credentials {
+            username = "admin"
+            password = "admin123"
+        }
+    }
+    mavenLocal()
+}
