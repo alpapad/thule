@@ -25,7 +25,6 @@ apply from: "${rootDir}/../gradle/plugin-versions-config.gradle"
 
 subprojects {
     apply from: "${rootDir}/../gradle/plugin-java-config.gradle"
-    apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"

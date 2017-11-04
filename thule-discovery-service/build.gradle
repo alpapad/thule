@@ -21,6 +21,7 @@ apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-versions-config.gradle"
 apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Required for Java9
