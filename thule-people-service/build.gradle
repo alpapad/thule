@@ -18,7 +18,6 @@ buildscript {
         }
     }
 
-
     // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
     configurations.all {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
