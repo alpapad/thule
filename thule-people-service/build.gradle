@@ -32,6 +32,7 @@ plugins {
 apply plugin: "docker"
 apply plugin: "org.springframework.boot"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
+
 apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
