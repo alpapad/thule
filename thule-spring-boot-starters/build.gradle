@@ -20,13 +20,12 @@ buildscript {
 
 plugins {
     id "org.sonarqube" version "2.5"
-    id "com.github.ben-manes.versions" version "0.17.0" apply false
+    id "com.github.ben-manes.versions" version "0.17.0"
 }
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 
 subprojects {
-    apply plugin: "com.github.ben-manes.versions"
     apply plugin: "jacoco"
     apply plugin: "java"
     apply plugin: "maven-publish"
