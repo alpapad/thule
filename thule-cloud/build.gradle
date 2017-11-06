@@ -29,6 +29,7 @@ apply plugin: "docker"
 apply plugin: "org.springframework.boot"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
+// Standard Serin gradle plugin config
 apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
@@ -36,6 +37,7 @@ apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
 apply from: "${rootDir}/../gradle/build-config.gradle"
 
+// Non-standard Serin gradle plugin config
 bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
 
 dependencies {

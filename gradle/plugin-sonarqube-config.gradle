@@ -1,7 +1,5 @@
 sonarqube {
     properties {
-        // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
-        property "sonar.cpd.exclusions", "**/domain/**"
         property "sonar.host.url", "http://pooh:9000"
         property "sonar.scm.disabled", "true"
         property "sonar.projectName", project.description

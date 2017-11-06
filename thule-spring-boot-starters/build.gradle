@@ -30,11 +30,14 @@ subprojects {
     apply plugin: "java"
     apply plugin: "maven-publish"
     apply plugin: "org.springframework.boot"
+
+    // Standard Serin gradle plugin config
     apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
+    // Non-standard Serin gradle plugin config
     bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
 }
 
