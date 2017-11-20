@@ -44,7 +44,7 @@ subprojects {
 project("thule-spring-boot-starter-test") {
     dependencies {
         compile project(":thule-test")
-        compile("com.github.tomakehurst:wiremock:2.10.1")
+        compile("com.github.tomakehurst:wiremock:2.11.0")
         compile("nl.jqno.equalsverifier:equalsverifier:2.4")
         compile("org.awaitility:awaitility:3.0.0")
         compile("org.springframework.boot:spring-boot-starter-test")
