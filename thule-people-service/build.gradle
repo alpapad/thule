@@ -9,8 +9,6 @@ buildscript {
     // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
     // see https://github.com/gradle/gradle/issues/1894
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
-        classpath("se.transmode.gradle:gradle-docker:1.2")
         classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
             changing = true
         }
@@ -24,13 +22,13 @@ buildscript {
 
 plugins {
     id "com.github.ben-manes.versions" version "0.17.0"
+    id "com.palantir.docker" version "0.13.0"
     id "jacoco"
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.6.1"
+    id "org.springframework.boot" version "1.5.8.RELEASE"
 }
-apply plugin: "docker"
-apply plugin: "org.springframework.boot"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config

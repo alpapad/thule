@@ -14,7 +14,8 @@ RUN \
 VOLUME /tmp
 
 # Copy the app's jar file to the container
-COPY *.jar /
+ARG JAR_FILE
+COPY ${JAR_FILE} /
 
 ################################  Create entrypoint  ################################
 COPY docker-entrypoint.sh /

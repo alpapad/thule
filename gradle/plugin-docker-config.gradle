@@ -1,20 +1,11 @@
-task dockerBuild(type: Docker, dependsOn: [jar, test]) {
-    // dockerBuild options
-    applicationName = jar.baseName
-    dockerfile = file("src/main/docker/Dockerfile")
-    push = false
-    registry = "pooh.serin-consultancy.co.uk"
-    tagVersion = "latest"
+docker {
+    name "${project.group}/${jar.baseName}"
+    dockerfile project.file("src/main/docker/Dockerfile")
+    files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
+    buildArgs(["JAR_FILE": "${jar.archiveName}"])
 
-    // Add files to Docker context
-    doFirst {
-        copy { from jar into stageDir }
-        copy { from "src/main/docker/docker-entrypoint.sh" into stageDir }
-    }
-
-    // Only enable if a Dockerfile exists
-    enabled = file(projectDir.toString() + '/src/main/docker/Dockerfile').isFile()
-
-    // Add to build lifecycle
-    assemble.dependsOn dockerBuild
+    dependsOn bootRepackage
 }
+
+tasks.docker.shouldRunAfter jacocoTestCoverageVerification
+assemble.dependsOn tasks.docker

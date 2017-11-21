@@ -6,3 +6,9 @@ springBoot {
 }
 // Replace the version in spring config with the gradle build version
 processResources.filter { String line -> line.replace("@version@", version.toString()) }
+
+// By default the bootRepackage task will look for all jars not just the artifact produced by the jar task.
+// However, the docker plugin screws this up somehow. The work around
+// (see https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html#build-tool-plugins-understanding-the-gradle-plugin)
+// is to force bootRepackage to use the jar artifact produced by the Jar task.
+bootRepackage.withJarTask = jar
