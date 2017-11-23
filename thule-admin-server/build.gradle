@@ -25,26 +25,27 @@ plugins {
     id "org.sonarqube" version "2.6.1"
     id "org.springframework.boot" version "1.5.8.RELEASE"
 }
+apply plugin: "io.spring.dependency-management"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
-apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
+apply from: "${rootDir}/../gradle/build-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-docker-with-spring-boot-1.5.x-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
-apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
-apply from: "${rootDir}/../gradle/build-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-spring-boot-with-spring-boot-1.5.x-config.gradle"
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Dalston.SR3")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Dalston.SR4")
     }
 }
 
 dependencies {
     compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
-    compile("de.codecentric:spring-boot-admin-server:1.5.4")
-    compile("de.codecentric:spring-boot-admin-server-ui:1.5.4")
+    compile("de.codecentric:spring-boot-admin-server:1.5.5")
+    compile("de.codecentric:spring-boot-admin-server-ui:1.5.5")
     compile("net.logstash.logback:logstash-logback-encoder:4.11")
     compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     compile("org.springframework.boot:spring-boot-starter-actuator")
