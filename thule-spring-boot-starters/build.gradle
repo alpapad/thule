@@ -19,7 +19,7 @@ buildscript {
 plugins {
     id "com.github.ben-manes.versions" version "0.17.0"
     id "org.sonarqube" version "2.6.1"
-    id "org.springframework.boot" version "1.5.8.RELEASE" apply(false)
+    id "org.springframework.boot" version "2.0.0.M6" apply(false)
 }
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
@@ -35,10 +35,11 @@ subprojects {
     apply from: "${rootDir}/../gradle/build-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
-    apply from: "${rootDir}/../gradle/plugin-spring-boot-with-spring-boot-1.5.x-config.gradle"
+    apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
 
     // Non-standard Serin gradle plugin config
-    bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+    bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+    jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 }
 
 project("thule-spring-boot-starter-test") {
