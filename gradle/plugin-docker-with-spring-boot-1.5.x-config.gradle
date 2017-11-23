@@ -1,0 +1,11 @@
+docker {
+    name "pooh.serin-consultancy.co.uk/${jar.baseName}"
+    dockerfile project.file("src/main/docker/Dockerfile")
+    files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
+    buildArgs(["JAR_FILE": "${jar.archiveName}"])
+
+    dependsOn bootRepackage
+}
+
+tasks.docker.shouldRunAfter jacocoTestCoverageVerification
+assemble.dependsOn tasks.docker
