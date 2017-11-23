@@ -23,7 +23,7 @@ public class RestfulServiceIntTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void is_healthy() {
+    public void is_status_up() {
         // Given
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };

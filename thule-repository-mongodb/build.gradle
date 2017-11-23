@@ -22,19 +22,21 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.6.1"
-    id "org.springframework.boot" version "1.5.8.RELEASE"
+    id "org.springframework.boot" version "2.0.0.M6"
 }
+apply plugin: "io.spring.dependency-management"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
+apply from: "${rootDir}/../gradle/build-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
-apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Non-standard Serin gradle plugin config
-bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 sonarqube {
     properties {
         // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes

@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.serin.thule.repository.mongodb.domain.Person;
 import uk.co.serin.thule.repository.mongodb.domain.PersonFactory;
 
+import java.util.Optional;
+
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,8 +68,8 @@ public class PersonRepositoryIntTest {
         personRepository.delete(person);
 
         // Then
-        person = personRepository.findOne(person.getId());
-        assertThat(person).isNull();
+        Optional<Person> deletedPerson = personRepository.findById(person.getId());
+        assertThat(deletedPerson).isNotPresent();
     }
 
     @Test
@@ -88,11 +90,12 @@ public class PersonRepositoryIntTest {
         Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
-        Person actualPerson = personRepository.findOne(expectedPerson.getId());
+        Optional<Person> actualPerson = personRepository.findById(expectedPerson.getId());
 
         // Then
-        assertThat(actualPerson).isNotSameAs(expectedPerson);
-        assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
+        assertThat(actualPerson).isPresent();
+        assertThat(actualPerson.get()).isNotSameAs(expectedPerson);
+        assertThat(actualPerson.get()).isEqualToComparingFieldByField(expectedPerson);
     }
 
     @Test

@@ -16,20 +16,20 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.location=classpath:/config/${spring.application.name}/", "spring.cloud.bootstrap.location=classpath:/"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.additional-location=classpath:/config/${spring.application.name}/", "spring.cloud.bootstrap.location=classpath:/"})
 @RunWith(SpringRunner.class)
 public class RestfulServiceIntTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void is_healthy() {
+    public void is_status_up() {
         // Given
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/application/status", HttpMethod.GET, null, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

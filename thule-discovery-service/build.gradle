@@ -9,6 +9,11 @@ buildscript {
             changing = true
         }
     }
+
+    // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
 }
 
 plugins {
@@ -18,17 +23,18 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.6.1"
-    id "org.springframework.boot" version "1.5.8.RELEASE"
+    id "org.springframework.boot" version "2.0.0.M6"
 }
+apply plugin: "io.spring.dependency-management"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
+apply from: "${rootDir}/../gradle/build-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
-apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Non-standard Serin gradle plugin config
 // Required for Java9
@@ -38,7 +44,7 @@ apply from: "${rootDir}/../gradle/build-config.gradle"
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Dalston.SR3")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.M4")
     }
 }
 
@@ -51,8 +57,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-aop")
     compile("org.springframework.boot:spring-boot-starter-logging")
     compile("org.springframework.cloud:spring-cloud-starter-config")
-    compile("org.springframework.cloud:spring-cloud-starter-eureka")
-    compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
+    compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server")
     compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     compile("org.springframework.cloud:spring-cloud-starter-zipkin")
     // Required to retry connecting to the discovery server when it is not available at startup

@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DockerIntTest {
     private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071";
+    private static final String APPLICATION_STATUS = "/application/status";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761";
     private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:8080";
@@ -115,7 +116,7 @@ public class DockerIntTest {
         // Given
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(CONFIG_SERVICE_URL_PREFIX + HEALTH);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(CONFIG_SERVICE_URL_PREFIX + APPLICATION_STATUS);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -127,7 +128,7 @@ public class DockerIntTest {
         // Given
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(DISCOVERY_SERVICE_URL_PREFIX + HEALTH);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(DISCOVERY_SERVICE_URL_PREFIX + APPLICATION_STATUS);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -139,7 +140,7 @@ public class DockerIntTest {
         // Given
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + HEALTH);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + APPLICATION_STATUS);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -151,7 +152,7 @@ public class DockerIntTest {
         // Given
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + HEALTH);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + APPLICATION_STATUS);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -184,7 +185,7 @@ public class DockerIntTest {
         // Given
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EMAIL_SERVICE_URL_PREFIX + HEALTH);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EMAIL_SERVICE_URL_PREFIX + APPLICATION_STATUS);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

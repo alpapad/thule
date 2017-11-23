@@ -25,13 +25,13 @@ public class RestfulServiceIntTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void is_healthy() {
+    public void is_status_up() {
         // Given
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/application/status", HttpMethod.GET, null, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

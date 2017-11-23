@@ -5,10 +5,17 @@ import org.springframework.stereotype.Component;
 
 import uk.co.serin.thule.utils.utils.RandomGenerators;
 
+import java.util.Optional;
+
 @Component
 public class RandomUsernameAuditorAware implements AuditorAware<String> {
+    /**
+     * Returns the current auditor of the application.
+     *
+     * @return the current auditor
+     */
     @Override
-    public String getCurrentAuditor() {
-        return RandomGenerators.generateUniqueRandomString();
+    public Optional<String> getCurrentAuditor() {
+        return Optional.of(RandomGenerators.generateUniqueRandomString());
     }
 }

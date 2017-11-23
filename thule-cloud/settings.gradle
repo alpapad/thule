@@ -1,0 +1,19 @@
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.namespace == "org.springframework") {
+                useModule("org.springframework.boot:spring-boot-gradle-plugin:" + requested.version)
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "http://pooh:8081/repository/maven-public"
+            credentials {
+                username = "admin"
+                password = "admin123"
+            }
+        }
+        gradlePluginPortal()
+    }
+}

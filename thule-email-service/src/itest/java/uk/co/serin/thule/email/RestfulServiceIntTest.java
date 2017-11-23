@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -31,14 +32,15 @@ import uk.co.serin.thule.email.domain.Email;
 
 import java.net.Socket;
 import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.location=classpath:/config/${spring.application.name}/", "spring.cloud.bootstrap.location=classpath:/"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.additional-location=classpath:/config/${spring.application.name}/", "spring.cloud.bootstrap.location=classpath:/"})
 @ActiveProfiles("itest")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class EmailServiceIntTest {
+public class RestfulServiceIntTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
     private static final String SPRING_MAIL_PORT = "spring.mail.port";
     private String emailServiceUrl = "/" + Email.ENTITY_NAME_EMAILS;
@@ -48,6 +50,21 @@ public class EmailServiceIntTest {
     private TestRestTemplate restTemplate;
     @Autowired
     private SmtpServer smtpServer;
+
+    @Test
+    public void is_status_up() {
+        // Given
+        stopAndStartEmbeddedSmtpServer();
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/application/status", HttpMethod.GET, null, responseType);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody().get("status")).isEqualTo(Status.UP.getCode());
+    }
 
     @Test
     public void response_should_be_accepted_when_the_smtp_server_is_down() {
