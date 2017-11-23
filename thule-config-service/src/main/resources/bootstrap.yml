@@ -8,11 +8,6 @@ eureka:
       # Location of the discovery service to register this service
       defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
 
-# Spring actuator configuration
-info:
-  # Will be replaced by gradle processResources task to replace with the actual build version
-  version: @version@
-
 # Spring cloud config client configuration
 spring:
   application:

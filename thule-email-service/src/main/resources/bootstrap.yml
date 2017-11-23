@@ -1,8 +1,3 @@
-# Spring actuator configuration
-info:
-  # Will be replaced by gradle processResources task to replace with the actual build version
-  version: @version@
-
 # Spring server configuration
 # By default, tomcat will listen on port 8080 and will be restarted once the config has been read from the config service.
 # Unfortunately, when multiple spring cloud services are starting at the same time in the same container (e.g. when testing),
