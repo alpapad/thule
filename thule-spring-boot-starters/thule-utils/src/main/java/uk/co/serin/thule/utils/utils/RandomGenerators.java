@@ -86,7 +86,7 @@ public final class RandomGenerators {
         boolean uniqueFound = false;
 
         while (!uniqueFound) {
-            randomString = generateFixedLengthRandomString(ThreadLocalRandom.current().nextInt(maxLength) + 1);
+            randomString = generateFixedLengthRandomString(ThreadLocalRandom.current().nextInt(maxLength));
             uniqueFound = RANDOM_STRINGS.add(randomString);
         }
         return randomString;
