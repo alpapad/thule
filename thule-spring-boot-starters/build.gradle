@@ -17,24 +17,25 @@ buildscript {
 }
 
 plugins {
-    id "org.sonarqube" version "2.6.1"
     id "com.github.ben-manes.versions" version "0.17.0"
+    id "org.sonarqube" version "2.6.1"
     id "org.springframework.boot" version "1.5.8.RELEASE" apply(false)
 }
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 
 subprojects {
+    apply plugin: "io.spring.dependency-management"
     apply plugin: "jacoco"
     apply plugin: "java"
     apply plugin: "maven-publish"
     apply plugin: "org.springframework.boot"
 
     // Standard Serin gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
-    apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
-    apply from: "${rootDir}/../gradle/build-config.gradle"
+    apply from: "${rootDir}/../gradle/plugin-spring-boot-with-spring-boot-1.5.x-config.gradle"
 
     // Non-standard Serin gradle plugin config
     bootRepackage.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
