@@ -36,6 +36,7 @@ apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
 
 // Non-standard Serin gradle plugin config
 bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 
 dependencies {
     compile("org.apache.httpcomponents:httpclient")
