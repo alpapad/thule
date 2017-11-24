@@ -37,7 +37,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.additional-location=classpath:/config/${spring.application.name}/", "spring.cloud.bootstrap.location=classpath:/"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.config.additional-location=classpath:/config/thule-email-service/")
 @ActiveProfiles("itest")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
