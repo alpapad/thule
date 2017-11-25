@@ -56,7 +56,7 @@ public class DockerIntTest {
     }
 
     private static void dockerComposeDown() throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "down", "-v").inheritIO();
+        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/itest/docker/docker-compose.yml", "down", "-v").inheritIO();
         Process dockerComposeDown = pb.start();
         try {
             dockerComposeDown.waitFor();
@@ -73,7 +73,7 @@ public class DockerIntTest {
     }
 
     private static void dockerComposeUp() throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/main/docker/docker-compose.yml", "up").inheritIO();
+        ProcessBuilder pb = new ProcessBuilder("docker-compose", "-f", "src/itest/docker/docker-compose.yml", "up").inheritIO();
         dockerComposeUp = pb.start();
     }
 
