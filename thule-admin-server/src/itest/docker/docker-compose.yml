@@ -1,0 +1,22 @@
+version: "2"
+services:
+  ################################  thule-admin-server  ################################
+  thule-admin-server:
+    image: pooh.serin-consultancy.co.uk/thule-admin-server
+    environment:
+      SPRING_CONFIG_LOCATION: file:/config/prod/,file:/config/itest/
+    extra_hosts:
+      - docker-host:172.17.0.1
+      - logstash-host:172.17.0.1
+      - zipkin-host:172.17.0.1
+    hostname: admin-server-1
+    ports:
+      - "8071:8071"
+    volumes:
+      # Set localtime and timezone on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # Set prod config
+      - ../../../../thule-config-service/src/main/resources/config/thule-admin-server:/config/prod:ro
+      # Set itest config to override any prod config
+      - ../resources:/config/itest:ro
