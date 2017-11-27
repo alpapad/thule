@@ -4,7 +4,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
-import uk.co.serin.thule.utils.utils.RandomGenerators;
 import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.country.Country;
@@ -17,9 +16,11 @@ import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.utils.utils.RandomGenerators;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildJUnitTest() {
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
 
         return Person.PersonBuilder.aPerson().withUserId(JUNIT_TEST).
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
@@ -92,7 +93,7 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildPersonWithAllAssociations() {
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         Person person = Person.PersonBuilder.aPerson().withUserId(userId).
@@ -154,7 +155,7 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildPersonWithoutAnyAssociations() {
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateInTheFuture();
+        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         return Person.PersonBuilder.aPerson().
