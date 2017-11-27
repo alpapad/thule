@@ -49,7 +49,7 @@ project("thule-spring-boot-starter-test") {
         compile("nl.jqno.equalsverifier:equalsverifier:2.4")
         compile("org.awaitility:awaitility:3.0.0")
         compile("org.springframework.boot:spring-boot-starter-test")
-        compile("pl.pojo:pojo-tester:0.7.5")
+        compile("pl.pojo:pojo-tester:0.7.6")
     }
 }
 
