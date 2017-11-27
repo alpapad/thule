@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin;
+package uk.co.serin.thule.discovery.rest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.config.location=classpath:/config/thule-admin-server/")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 public class RestfulServiceIntTest {
     @Autowired
@@ -29,7 +29,7 @@ public class RestfulServiceIntTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/application/status", HttpMethod.GET, null, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

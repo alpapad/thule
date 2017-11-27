@@ -53,5 +53,8 @@ dependencies {
     compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     compile("org.springframework.cloud:spring-cloud-starter-zipkin")
 
+    // Required to retry connecting to the discovery server when it is not available at startup
+    itestCompile("org.springframework.retry:spring-retry")
+
     testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
 }

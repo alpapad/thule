@@ -1,19 +1,18 @@
 version: "2"
 services:
-  ################################  thule-admin-server  ################################
-  thule-admin-server:
-    image: pooh.serin-consultancy.co.uk/thule-admin-server
+  ################################  thule-discovery-service  ################################
+  thule-discovery-service:
+    image: pooh.serin-consultancy.co.uk/thule-discovery-service
     environment:
-      EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
     extra_hosts:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
-    hostname: admin-server-1
+    hostname: discovery-service-1
     ports:
-      - "8071:8071"
+      - "8761:8761"
     volumes:
       # Set localtime and timezone on container to be the same as the host
       - /etc/localtime:/etc/localtime:ro

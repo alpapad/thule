@@ -84,9 +84,6 @@ dependencies {
     // Required to retry connecting to the discovery server when it is not available at startup
     compile("org.springframework.retry:spring-retry")
 
-    // Add spring boot config to the classpath for integration tests
-    itestCompile files("../thule-config-service/src/main/resources")
-
     testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
     testCompile("com.googlecode.log4jdbc:log4jdbc:1.2")
     testCompile("com.oracle:ojdbc6:11.2.0.1.0")

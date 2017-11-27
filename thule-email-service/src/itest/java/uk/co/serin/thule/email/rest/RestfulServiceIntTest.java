@@ -1,4 +1,4 @@
-package uk.co.serin.thule.email;
+package uk.co.serin.thule.email.rest;
 
 import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
@@ -37,7 +37,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.config.additional-location=classpath:/config/thule-email-service/")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("itest")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {

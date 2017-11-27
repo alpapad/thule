@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin;
+package uk.co.serin.thule.admin.docker;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

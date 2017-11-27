@@ -1,8 +1,8 @@
 version: "2"
 services:
-  ################################  thule-admin-server  ################################
-  thule-admin-server:
-    image: pooh.serin-consultancy.co.uk/thule-admin-server
+  ################################  thule-edge-server  ################################
+  thule-edge-server:
+    image: pooh.serin-consultancy.co.uk/thule-edge-server
     environment:
       EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"
@@ -11,9 +11,9 @@ services:
       - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
-    hostname: admin-server-1
+    hostname: edge-server-1
     ports:
-      - "8071:8071"
+      - "8080:8080"
     volumes:
       # Set localtime and timezone on container to be the same as the host
       - /etc/localtime:/etc/localtime:ro

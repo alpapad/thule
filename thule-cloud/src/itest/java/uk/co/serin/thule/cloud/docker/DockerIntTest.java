@@ -1,4 +1,4 @@
-package uk.co.serin.thule.cloud;
+package uk.co.serin.thule.cloud.docker;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
