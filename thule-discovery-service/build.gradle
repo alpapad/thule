@@ -49,7 +49,9 @@ dependencyManagement {
 }
 
 dependencies {
-    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
+        changing = true
+    }
     compile("net.logstash.logback:logstash-logback-encoder:4.11")
     compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -64,5 +66,7 @@ dependencies {
     // Required to retry connecting to the discovery server when it is not available at startup
     compile("org.springframework.retry:spring-retry")
 
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") {
+        changing = true
+    }
 }

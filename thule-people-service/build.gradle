@@ -59,7 +59,9 @@ dependencyManagement {
 }
 
 dependencies {
-    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
+        changing = true
+    }
     // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     compile("com.googlecode.log4jdbc:log4jdbc:1.2")
@@ -84,7 +86,9 @@ dependencies {
     // Required to retry connecting to the discovery server when it is not available at startup
     compile("org.springframework.retry:spring-retry")
 
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") {
+        changing = true
+    }
     testCompile("com.googlecode.log4jdbc:log4jdbc:1.2")
     testCompile("com.oracle:ojdbc6:11.2.0.1.0")
     testCompile("mysql:mysql-connector-java")

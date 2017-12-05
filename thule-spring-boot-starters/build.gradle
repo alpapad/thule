@@ -55,7 +55,9 @@ project("thule-spring-boot-starter-test") {
 
 project("thule-spring-boot-starter-utils") {
     dependencies {
-        compile("uk.co.serin.thule:thule-utils:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-utils:1.0.0-SNAPSHOT") {
+            changing = true
+        }
 
         testCompile project(":thule-spring-boot-starter-test")
     }
@@ -63,7 +65,13 @@ project("thule-spring-boot-starter-utils") {
 
 project("thule-test") {
     dependencies {
+        compile("org.assertj:assertj-core")
+        compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
+        compile("org.springframework.boot:spring-boot-starter-web")
+        compile("org.springframework.retry:spring-retry")
+
+        testCompile("pl.pojo:pojo-tester:0.7.6")
     }
 }
 
