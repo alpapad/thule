@@ -20,6 +20,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -170,7 +171,7 @@ public class RestfulServiceIntTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, null, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
