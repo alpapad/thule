@@ -55,9 +55,7 @@ project("thule-spring-boot-starter-test") {
 
 project("thule-spring-boot-starter-utils") {
     dependencies {
-        compile("uk.co.serin.thule:thule-utils:1.0.0-SNAPSHOT") {
-            changing = true
-        }
+        compile project(":thule-utils")
 
         testCompile project(":thule-spring-boot-starter-test")
     }
