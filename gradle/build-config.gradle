@@ -1,11 +1,6 @@
 // Define repos
 apply from: "${rootDir}/../gradle/repo-config.gradle"
 
-// Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
 // Integration test configuration
 configurations {
     itestCompile.extendsFrom testCompile

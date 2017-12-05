@@ -1,9 +1,18 @@
 ext["assertj.version"] = "3.8.0"// Override spring boot defined version 2.6.0 which contains bugs
 ext["mockito.version"] = "2.11.0" // Override spring boot defined version which defaults to mockito 1.10.19 and does not support mocking finals
+
 // Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
 springBoot {
     buildInfo()
 }
+
+// Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing
+dependencyManagement {
+    resolutionStrategy {
+        cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
 // By default the bootRepackage task will look for all jars not just the artifact produced by the jar task.
 // However, the docker plugin screws this up somehow. The work around
 // (see https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html#build-tool-plugins-understanding-the-gradle-plugin)
