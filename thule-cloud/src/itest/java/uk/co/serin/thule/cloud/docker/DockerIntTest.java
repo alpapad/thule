@@ -31,7 +31,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
     private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:8071";
-    private static final String APPLICATION_STATUS = "/application/status";
+    private static final String ACTUATOR_HEALTH = "/actuator/health";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:8888";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:8761";
     private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:8080";
@@ -61,22 +61,22 @@ public class DockerIntTest {
 
     @Test
     public void config_service_is_up() {
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + APPLICATION_STATUS))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void discovery_service_is_up() {
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + APPLICATION_STATUS))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_is_up() {
-        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + APPLICATION_STATUS))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_proxies_email_service() {
-        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + APPLICATION_STATUS))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
@@ -115,7 +115,7 @@ public class DockerIntTest {
 
     @Test
     public void email_service_is_up() {
-        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + APPLICATION_STATUS))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test

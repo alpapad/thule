@@ -30,7 +30,7 @@ public class RestfulServiceIntTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/application/status", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/actuator/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

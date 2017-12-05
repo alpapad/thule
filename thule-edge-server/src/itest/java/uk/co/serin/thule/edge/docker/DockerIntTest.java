@@ -14,7 +14,7 @@ import java.net.URI;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
-    private static final ActuatorUri EDGE_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8080/application/status"));
+    private static final ActuatorUri EDGE_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8080/actuator/health"));
     private static DockerCompose dockerComposeUtils = new DockerCompose("src/itest/docker/docker-compose.yml");
 
     @BeforeClass

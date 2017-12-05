@@ -26,12 +26,6 @@ spring:
       server:
         native:
           searchLocations: classpath:/config/{application}
-  jackson:
-    serialization:
-      # Admin server displays the buildTime of this service which by default will be as an
-      # absolute time (i.e. a long), not particularly meaningful unless we instruct jackson to
-      # serialize it as a timestamp which is a human readable form
-      write_dates_as_timestamps: false
   sleuth:
       sampler:
         percentage: 1.0
