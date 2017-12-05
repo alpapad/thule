@@ -6,7 +6,7 @@ eureka:
   client:
     serviceUrl:
       # Location of the discovery service to register this service
-      defaultZone: http://${eureka.host:localhost}:${eureka.port:8761}/eureka/
+      defaultZone: http://${thule.discovery.service.host:localhost}:${thule.discovery.service.port:8761}/eureka/
 
 # Spring cloud config client configuration
 spring:
