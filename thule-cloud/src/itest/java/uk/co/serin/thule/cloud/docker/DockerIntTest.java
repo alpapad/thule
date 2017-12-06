@@ -41,17 +41,17 @@ public class DockerIntTest {
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:9090";
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
     private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
-    private static DockerCompose dockerComposeUtils = new DockerCompose("src/itest/docker/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/docker-compose.yml");
     private static RetryTemplate retryTemplate = new RetryTemplate();
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerComposeUtils.downAndUp();
+        dockerCompose.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerComposeUtils.down();
+        dockerCompose.down();
     }
 
     @Test

@@ -15,16 +15,16 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
     private static final ActuatorUri PEOPLE_SERVICE_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8090/health"));
-    private static DockerCompose dockerComposeUtils = new DockerCompose("src/itest/docker/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerComposeUtils.downAndUp();
+        dockerCompose.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerComposeUtils.down();
+        dockerCompose.down();
     }
 
     @Test
