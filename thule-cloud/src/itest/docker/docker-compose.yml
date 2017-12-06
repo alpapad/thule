@@ -4,16 +4,12 @@ services:
   thule-cloud-admin-server:
     image: pooh.serin-consultancy.co.uk/thule-admin-server
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service-host
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service-host
+      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: admin-server-1
-    links:
-      - thule-cloud-config-service:thule-config-service-host
-      - thule-cloud-discovery-service:thule-discovery-service-host
     ports:
       - "9071:8071"
     volumes:
@@ -25,10 +21,8 @@ services:
   thule-cloud-config-service:
     image: pooh.serin-consultancy.co.uk/thule-config-service
     environment:
-      THULE_DISCOVERY_SERVICE_HOST: docker-host
-      THULE_DISCOVERY_SERVICE_PORT: 9761
+      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: config-service-1
@@ -43,10 +37,8 @@ services:
   thule-cloud-discovery-service:
     image: pooh.serin-consultancy.co.uk/thule-discovery-service
     environment:
-      THULE_CONFIG_SERVICE_HOST: docker-host
-      THULE_CONFIG_SERVICE_PORT: 9888
+      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: discovery-service-1
@@ -61,16 +53,12 @@ services:
   thule-cloud-edge-server:
     image: pooh.serin-consultancy.co.uk/thule-edge-server
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service-host
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service-host
+      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: edge-server-1
-    links:
-      - thule-cloud-config-service:thule-config-service-host
-      - thule-cloud-discovery-service:thule-discovery-service-host
     ports:
       - "9080:8080"
     volumes:
@@ -82,16 +70,12 @@ services:
   thule-cloud-email-service:
     image: pooh.serin-consultancy.co.uk/thule-email-service
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service-host
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service-host
+      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: email-server-1
-    links:
-      - thule-cloud-config-service:thule-config-service-host
-      - thule-cloud-discovery-service:thule-discovery-service-host
     ports:
       - "9091:8091"
     volumes:
@@ -103,16 +87,12 @@ services:
   thule-cloud-people-service:
     image: pooh.serin-consultancy.co.uk/thule-people-service
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service-host
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service-host
+      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: people-service-1
-    links:
-      - thule-cloud-config-service:thule-config-service-host
-      - thule-cloud-discovery-service:thule-discovery-service-host
     ports:
       - "9090:8090"
     volumes:

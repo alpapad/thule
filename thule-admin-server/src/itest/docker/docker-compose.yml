@@ -8,7 +8,6 @@ services:
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
     extra_hosts:
-      - docker-host:172.17.0.1
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: admin-server-1
