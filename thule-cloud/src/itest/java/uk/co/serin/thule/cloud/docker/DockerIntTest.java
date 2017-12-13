@@ -51,7 +51,7 @@ public class DockerIntTest {
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerCompose.down();
+        // dockerCompose.down();
     }
 
     @Test
