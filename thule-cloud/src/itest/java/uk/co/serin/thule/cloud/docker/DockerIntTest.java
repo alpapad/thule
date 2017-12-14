@@ -56,32 +56,59 @@ public class DockerIntTest {
 
     @Test
     public void admin_server_is_up() {
+        // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(ADMIN_SERVER_URL_PREFIX + HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void config_service_is_up() {
+        // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void discovery_service_is_up() {
+        // Given
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_is_up() {
+        // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_proxies_email_service() {
+        // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_proxies_people_service() {
         // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
         BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
         CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
@@ -115,11 +142,21 @@ public class DockerIntTest {
 
     @Test
     public void email_service_is_up() {
+        // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 
     @Test
     public void people_service_is_up() {
+        // Given
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+
+        // When/Then
         assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + HEALTH))).hasStatus(Status.UP);
     }
 }
