@@ -12,7 +12,7 @@ buildscript {
 
     // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
     configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
     }
 }
 
@@ -35,6 +35,45 @@ apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
+
+// Non-standard Serin gradle plugin config
+def thuleMicroServicesConfig = "$buildDir/generated-resources/thule-micro-services"
+// Add Spring boot config from each thule micro-service
+sourceSets {
+    main {
+        // Register an output folder for thuleMicroServicesConfig, it will then be on the
+        // 'main' classpath and will be added into the jar
+        output.dir(thuleMicroServicesConfig, builtBy: "processResourcesFromMicroServices")
+        // Add the thuleMicroServicesConfig as a resource source directory, not strictly required
+        // for gradle but will enable the thuleMicroServicesConfig to be added to the classpath used by IntelliJ
+        resources.srcDirs += thuleMicroServicesConfig
+    }
+}
+// Collect Spring boot config from individual micro-services
+task processResourcesFromMicroServices {
+    doLast {
+        copy {
+            from "../thule-admin-server/src/main/resources/config"
+            into thuleMicroServicesConfig + "/config/thule-admin-server"
+        }
+        copy {
+            from "../thule-discovery-service/src/main/resources/config"
+            into thuleMicroServicesConfig + "/config/thule-discovery-service"
+        }
+        copy {
+            from "../thule-edge-server/src/main/resources/config"
+            into thuleMicroServicesConfig + "/config/thule-edge-server"
+        }
+        copy {
+            from "../thule-email-service/src/main/resources/config"
+            into thuleMicroServicesConfig + "/config/thule-email-service"
+        }
+        copy {
+            from "../thule-people-service/src/main/resources/config"
+            into thuleMicroServicesConfig + "/config/thule-people-service"
+        }
+    }
+}
 
 dependencyManagement {
     imports {
