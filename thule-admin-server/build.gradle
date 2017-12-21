@@ -38,7 +38,7 @@ apply from: "${rootDir}/../gradle/plugin-spring-boot-with-spring-boot-1.5.x-conf
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Dalston.SR4")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Edgware.RELEASE")
     }
 }
 
