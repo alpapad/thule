@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestTemplate;
 
@@ -130,6 +132,12 @@ public class DockerIntTest {
     }
 
     private static ResponseEntity<Map<String, Object>> getResponseEntity(String url, RestTemplate restTemplate) {
+        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        retryPolicy.setTimeout(600000);
+
+        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
+        retryTemplate.setRetryPolicy(retryPolicy);
+
         return retryTemplate.execute(context -> {
             ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
             };
