@@ -39,19 +39,18 @@ bootJar.enabled = false // Don't need an "über-jar" but still want the rest of 
 jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 
 dependencies {
-    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
+    itestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") {
         changing = true
     }
-    compile("org.apache.httpcomponents:httpclient")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-logging")
-    compile("org.springframework.boot:spring-boot-starter-web") {
+    itestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
+        changing = true
+    }
+    itestCompile("org.apache.httpcomponents:httpclient")
+    itestCompile("org.springframework.boot:spring-boot-starter-actuator")
+    itestCompile("org.springframework.boot:spring-boot-starter-jetty")
+    itestCompile("org.springframework.boot:spring-boot-starter-logging")
+    itestCompile("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") {
-        changing = true
-    }
-    testCompile("org.springframework.retry:spring-retry")
+    itestCompile("org.springframework.retry:spring-retry")
 }

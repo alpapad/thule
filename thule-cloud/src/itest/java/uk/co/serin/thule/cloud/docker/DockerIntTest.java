@@ -32,8 +32,8 @@ import java.util.Map;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
-    private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:9071";
     private static final String ACTUATOR_HEALTH = "/actuator/health";
+    private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:9071";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:9888";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:9761";
     private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:9080";
@@ -44,7 +44,6 @@ public class DockerIntTest {
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
     private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
     private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/docker-compose.yml");
-    private static RetryTemplate retryTemplate = new RetryTemplate();
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -113,15 +112,8 @@ public class DockerIntTest {
         assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + HEALTH))).hasStatus(Status.UP);
 
-        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
-        CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
-        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-
-        RestTemplate restTemplateWithCredentials = new RestTemplate(requestFactory);
-
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE, restTemplateWithCredentials);
+        ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE);
 
         // Then
         Map embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
@@ -131,10 +123,20 @@ public class DockerIntTest {
         assertThat(people).hasSize(8);
     }
 
-    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url, RestTemplate restTemplate) {
+    private static ResponseEntity<Map<String, Object>> getResponseEntity(String url) {
+        // Setup restTemplate
+        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
+        CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
+        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+        // Setup retryTemplate
         TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
         retryPolicy.setTimeout(600000);
 
+        RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
         retryTemplate.setRetryPolicy(retryPolicy);
 
