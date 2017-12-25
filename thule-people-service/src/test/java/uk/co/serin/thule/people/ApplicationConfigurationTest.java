@@ -26,7 +26,7 @@ public class ApplicationConfigurationTest {
     private WebSecurity webSecurity;
 
     @Test
-    public void configure_adds_request_mappings() {
+    public void configure_ignores_missing_credentials_for_http_options_method() {
         // Given
 
         // When
