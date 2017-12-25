@@ -3,44 +3,42 @@ package uk.co.serin.thule.people;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationConfigurationTest {
     private ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration();
     @Mock
     private ApplicationContext applicationContext;
-    private ExpressionUrlAuthorizationConfigurer expressionUrlAuthorizationConfigurer;
     @Mock
-    private HttpSecurity httpSecurity;
+    private ObjectPostProcessor objectPostProcessor;
+    @InjectMocks
+    private WebSecurity webSecurity;
 
     @Test
-    public void configure_adds_request_mappings() throws Exception {
+    public void configure_adds_request_mappings() {
         // Given
-        ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry registry = expressionUrlAuthorizationConfigurer.getRegistry();
-        given(httpSecurity.authorizeRequests()).willReturn(registry);
 
         // When
-        applicationConfiguration.configure(httpSecurity);
+        applicationConfiguration.configure(webSecurity);
 
         // Then
-        List urlMappings = List.class.cast(ReflectionTestUtils.getField(registry, "urlMappings"));
-        assertThat(urlMappings).hasSize(2);
+        List ignoredRequests = List.class.cast(ReflectionTestUtils.getField(webSecurity, "ignoredRequests"));
+        assertThat(ignoredRequests).hasSize(1);
     }
 
     @Before
     public void setUp() {
-        expressionUrlAuthorizationConfigurer = new ExpressionUrlAuthorizationConfigurer(applicationContext);
-        expressionUrlAuthorizationConfigurer.setBuilder(httpSecurity);
+        webSecurity.setApplicationContext(applicationContext);
     }
 }
