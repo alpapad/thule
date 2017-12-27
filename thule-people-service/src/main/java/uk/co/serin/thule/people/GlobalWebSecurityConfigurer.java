@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @ConditionalOnWebApplication
-@Order(SecurityProperties.BASIC_AUTH_ORDER + 1)
-// Before default order specified in Spring boot class ApplicationWebSecurityConfigurerAdapter
-public class ApplicationConfiguration extends WebSecurityConfigurerAdapter {
+@Order(SecurityProperties.BASIC_AUTH_ORDER + 1) // Before default order specified in Spring boot class ApplicationWebSecurityConfigurerAdapter
+public class GlobalWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
+        // By default, the OPTIONS method with Spring Security has to have credentials but in a
+        // javascript pre-flight request, there are no credentials so we need to turn off security
+        // for OPTIONS
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

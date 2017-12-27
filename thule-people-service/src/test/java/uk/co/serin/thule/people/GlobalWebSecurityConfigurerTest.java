@@ -16,21 +16,22 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ApplicationConfigurationTest {
-    private ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration();
+public class GlobalWebSecurityConfigurerTest {
     @Mock
     private ApplicationContext applicationContext;
+    @InjectMocks
+    private GlobalWebSecurityConfigurer globalWebSecurityConfigurer;
     @Mock
     private ObjectPostProcessor objectPostProcessor;
     @InjectMocks
     private WebSecurity webSecurity;
 
     @Test
-    public void configure_ignores_missing_credentials_for_http_options_method() {
+    public void configurer_ignores_http_options_method() {
         // Given
 
         // When
-        applicationConfiguration.configure(webSecurity);
+        globalWebSecurityConfigurer.configure(webSecurity);
 
         // Then
         List ignoredRequests = List.class.cast(ReflectionTestUtils.getField(webSecurity, "ignoredRequests"));
