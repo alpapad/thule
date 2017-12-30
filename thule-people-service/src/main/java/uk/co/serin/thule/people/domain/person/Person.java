@@ -38,10 +38,10 @@ import javax.validation.constraints.Size;
 public final class Person extends DomainModel {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
     public static final int FIRST_NAME_MAX_LENGTH = 30;
+    public static final int LAST_NAME_MAX_LENGTH = 30;
     public static final int PASSWORD_MAX_LENGTH = 100;
-    public static final int SALUTATION_MAX_LENGTH = 10;
     public static final int SECOND_NAME_MAX_LENGTH = 30;
-    public static final int SURNAME_MAX_LENGTH = 30;
+    public static final int TITLE_MAX_LENGTH = 10;
     public static final int USER_ID_MAX_LENGTH = 100;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = ENTITY_NAME_PERSON, orphanRemoval = true)
@@ -84,14 +84,15 @@ public final class Person extends DomainModel {
     @JsonIgnore
     private HomeAddress homeAddress;
 
+    @Column(length = LAST_NAME_MAX_LENGTH, nullable = false)
+    @NotNull
+    @Size(max = LAST_NAME_MAX_LENGTH)
+    private String lastName;
+
     @Column(length = PASSWORD_MAX_LENGTH, nullable = false)
     @NotNull
     @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
-
-    @Column(length = SALUTATION_MAX_LENGTH)
-    @Size(max = SALUTATION_MAX_LENGTH)
-    private String salutation;
 
     @Column(length = SECOND_NAME_MAX_LENGTH)
     @Size(max = SECOND_NAME_MAX_LENGTH)
@@ -103,10 +104,9 @@ public final class Person extends DomainModel {
     @JsonIgnore
     private State state;
 
-    @Column(length = SURNAME_MAX_LENGTH, nullable = false)
-    @NotNull
-    @Size(max = SURNAME_MAX_LENGTH)
-    private String surname;
+    @Column(length = TITLE_MAX_LENGTH)
+    @Size(max = TITLE_MAX_LENGTH)
+    private String title;
 
     @Column(length = USER_ID_MAX_LENGTH, nullable = false, unique = true)
     @NotNull
@@ -127,6 +127,14 @@ public final class Person extends DomainModel {
         initialise();
     }
 
+    private void initialise() {
+        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
+
+        dateOfExpiry = defaultExpiry;
+        dateOfPasswordExpiry = defaultExpiry;
+        password = userId;
+    }
+
     /**
      * Business key constructor
      *
@@ -138,14 +146,6 @@ public final class Person extends DomainModel {
         Assert.hasText(userId, "userId must have text");
         this.userId = userId;
         initialise();
-    }
-
-    private void initialise() {
-        LocalDate defaultExpiry = LocalDate.now().plusYears(1);
-
-        dateOfExpiry = defaultExpiry;
-        dateOfPasswordExpiry = defaultExpiry;
-        password = userId;
     }
 
     public void addPhotographs(Set<Photograph> photographs) {
@@ -246,6 +246,14 @@ public final class Person extends DomainModel {
         this.homeAddress = homeAddress;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -262,14 +270,6 @@ public final class Person extends DomainModel {
         return Collections.unmodifiableSet(roles);
     }
 
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public void setSalutation(String salutation) {
-        this.salutation = salutation;
-    }
-
     public String getSecondName() {
         return secondName;
     }
@@ -278,12 +278,12 @@ public final class Person extends DomainModel {
         this.secondName = secondName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getUserId() {
@@ -343,10 +343,10 @@ public final class Person extends DomainModel {
                 .add(String.format("dateOfPasswordExpiry=%s", dateOfPasswordExpiry))
                 .add(String.format("emailAddress=%s", emailAddress))
                 .add(String.format("firstName=%s", firstName))
-                .add(String.format("salutation=%s", salutation))
+                .add(String.format("lastName=%s", lastName))
                 .add(String.format("secondName=%s", secondName))
                 .add(String.format("state=%s", state))
-                .add(String.format("surname=%s", surname))
+                .add(String.format("title=%s", title))
                 .add(String.format("userId=%s", userId))
                 .toString();
     }
@@ -368,13 +368,13 @@ public final class Person extends DomainModel {
         private String firstName;
         private HomeAddress homeAddress;
         private Long id;
+        private String lastName;
         private String password;
         private Set<Photograph> photographs = new HashSet<>();
         private Set<Role> roles = new HashSet<>();
-        private String salutation;
         private String secondName;
         private State state;
-        private String surname;
+        private String title;
         private LocalDateTime updatedAt;
         private String updatedBy;
         private String userId;
@@ -398,10 +398,10 @@ public final class Person extends DomainModel {
             person.setHomeAddress(homeAddress);
             person.setId(id);
             person.setPassword(password);
-            person.setSalutation(salutation);
+            person.setTitle(title);
             person.setSecondName(secondName);
             person.setState(state);
-            person.setSurname(surname);
+            person.setLastName(lastName);
             person.setUpdatedAt(updatedAt);
             person.setUpdatedBy(updatedBy);
             person.setVersion(version);
@@ -451,6 +451,11 @@ public final class Person extends DomainModel {
             return this;
         }
 
+        public PersonBuilder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
         public PersonBuilder withPassword(String password) {
             this.password = password;
             return this;
@@ -466,11 +471,6 @@ public final class Person extends DomainModel {
             return this;
         }
 
-        public PersonBuilder withSalutation(String salutation) {
-            this.salutation = salutation;
-            return this;
-        }
-
         public PersonBuilder withSecondName(String secondName) {
             this.secondName = secondName;
             return this;
@@ -481,8 +481,8 @@ public final class Person extends DomainModel {
             return this;
         }
 
-        public PersonBuilder withSurname(String surname) {
-            this.surname = surname;
+        public PersonBuilder withTitle(String title) {
+            this.title = title;
             return this;
         }
 

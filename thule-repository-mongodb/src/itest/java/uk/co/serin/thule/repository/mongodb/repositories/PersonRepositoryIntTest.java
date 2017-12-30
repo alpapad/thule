@@ -123,9 +123,9 @@ public class PersonRepositoryIntTest {
         testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setFirstName("updatedFirstName");
+        testPerson.setLastName("updatedLastName");
         testPerson.setPassword("updatedPassword");
         testPerson.setSecondName("updatedSecondName");
-        testPerson.setSurname("updatedSurname");
 
         Person expectedPerson = PersonFactory.newPerson(testPerson);
         expectedPerson.setVersion(testPerson.getVersion() + 1);

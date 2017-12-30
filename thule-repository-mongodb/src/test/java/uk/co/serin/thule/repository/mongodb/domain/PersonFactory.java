@@ -17,10 +17,10 @@ public class PersonFactory {
                 withEmailAddress(person.getEmailAddress()).
                 withFirstName(person.getFirstName()).
                 withId(person.getId()).
+                withLastName(person.getLastName()).
                 withPassword(person.getPassword()).
-                withSalutation(person.getSalutation()).
                 withSecondName(person.getSecondName()).
-                withSurname(person.getSurname()).
+                withTitle(person.getTitle()).
                 withUpdatedAt(person.getUpdatedAt()).
                 withUpdatedBy(person.getUpdatedBy()).
                 withUserId(person.getUserId()).
@@ -40,10 +40,10 @@ public class PersonFactory {
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
                 withId(RandomGenerators.generateUniqueRandomLong()).
+                withLastName("Scarlett").
                 withPassword(userId).
-                withSalutation("Miss").
                 withSecondName("K").
-                withSurname("Scarlett").
+                withTitle("Miss").
                 withUserId(userId).
                 build();
     }

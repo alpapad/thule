@@ -59,12 +59,12 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(JUNIT_TEST + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("J").
+                withLastName("Tester").
                 withPassword(JUNIT_TEST).
                 withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
-                withSalutation("Mr").
                 withSecondName("Unit").
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
-                withSurname("Tester").
+                withTitle("Mr").
                 build();
     }
 
@@ -78,13 +78,13 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withFirstName(person.getFirstName()).
                 withHomeAddress(person.getHomeAddress()).
                 withId(person.getId()).
+                withLastName(person.getLastName()).
                 withPassword(person.getPassword()).
                 withPhotographs(person.getPhotographs()).
                 withRoles(person.getRoles()).
-                withSalutation(person.getSalutation()).
                 withSecondName(person.getSecondName()).
                 withState(person.getState()).
-                withSurname(person.getSurname()).
+                withTitle(person.getTitle()).
                 withUpdatedAt(person.getUpdatedAt()).
                 withUpdatedBy(person.getUpdatedBy()).
                 withUserId(person.getUserId()).
@@ -103,12 +103,12 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
                 withHomeAddress(buildOxfordStreetHomeAddress()).
+                withLastName("Scarlett").
                 withPassword(userId).
                 withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
-                withSalutation("Miss").
                 withSecondName("K").
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
-                withSurname("Scarlett").
+                withTitle("Miss").
                 withWorkAddress(buildRegentStreetWorkAddress()).
                 build();
 
@@ -164,10 +164,10 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
+                withLastName("Scarlett").
                 withPassword(userId).
-                withSalutation("Miss").
                 withSecondName("K").
-                withSurname("Scarlett").
+                withTitle("Miss").
                 withUserId(userId).
                 build();
     }

@@ -22,10 +22,10 @@ public final class Person {
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_BY = "updatedBy";
     public static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
     public static final int FIRST_NAME_MAX_LENGTH = 30;
+    public static final int LAST_NAME_MAX_LENGTH = 30;
     public static final int PASSWORD_MAX_LENGTH = 100;
-    public static final int SALUTATION_MAX_LENGTH = 10;
     public static final int SECOND_NAME_MAX_LENGTH = 30;
-    public static final int SURNAME_MAX_LENGTH = 30;
+    public static final int TITLE_MAX_LENGTH = 10;
     public static final int USER_ID_MAX_LENGTH = 100;
 
     @NotNull
@@ -55,21 +55,16 @@ public final class Person {
 
     @Id
     private Long id;
-
+    @NotNull
+    @Size(max = LAST_NAME_MAX_LENGTH)
+    private String lastName;
     @NotNull
     @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
-
-    @Size(max = SALUTATION_MAX_LENGTH)
-    private String salutation;
-
     @Size(max = SECOND_NAME_MAX_LENGTH)
     private String secondName;
-
-    @NotNull
-    @Size(max = SURNAME_MAX_LENGTH)
-    private String surname;
-
+    @Size(max = TITLE_MAX_LENGTH)
+    private String title;
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
@@ -164,20 +159,20 @@ public final class Person {
         this.id = id;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public void setSalutation(String salutation) {
-        this.salutation = salutation;
     }
 
     public String getSecondName() {
@@ -188,12 +183,12 @@ public final class Person {
         this.secondName = secondName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public LocalDateTime getUpdatedAt() {
@@ -251,9 +246,9 @@ public final class Person {
                 .add(String.format("emailAddress=%s", emailAddress))
                 .add(String.format("firstName=%s", firstName))
                 .add(String.format("id=%s", id))
-                .add(String.format("salutation=%s", salutation))
+                .add(String.format("lastName=%s", lastName))
                 .add(String.format("secondName=%s", secondName))
-                .add(String.format("surname=%s", surname))
+                .add(String.format("title=%s", title))
                 .add(String.format("updatedAt=%s", updatedAt))
                 .add(String.format("updatedBy=%s", updatedBy))
                 .add(String.format("userId=%s", userId))
@@ -277,10 +272,10 @@ public final class Person {
         private String emailAddress;
         private String firstName;
         private Long id;
+        private String lastName;
         private String password;
-        private String salutation;
         private String secondName;
-        private String surname;
+        private String title;
         private LocalDateTime updatedAt;
         private String updatedBy;
         private String userId;
@@ -303,9 +298,9 @@ public final class Person {
             person.firstName = this.firstName;
             person.id = this.id;
             person.password = this.password;
-            person.salutation = this.salutation;
+            person.title = this.title;
             person.secondName = this.secondName;
-            person.surname = this.surname;
+            person.lastName = this.lastName;
             person.updatedAt = this.updatedAt;
             person.updatedBy = this.updatedBy;
             person.version = this.version;
@@ -347,13 +342,13 @@ public final class Person {
             return this;
         }
 
-        public PersonBuilder withPassword(String password) {
-            this.password = password;
+        public PersonBuilder withLastName(String lastName) {
+            this.lastName = lastName;
             return this;
         }
 
-        public PersonBuilder withSalutation(String salutation) {
-            this.salutation = salutation;
+        public PersonBuilder withPassword(String password) {
+            this.password = password;
             return this;
         }
 
@@ -362,8 +357,8 @@ public final class Person {
             return this;
         }
 
-        public PersonBuilder withSurname(String surname) {
-            this.surname = surname;
+        public PersonBuilder withTitle(String title) {
+            this.title = title;
             return this;
         }
 

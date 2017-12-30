@@ -23,10 +23,10 @@ public class PersonTest {
                 withEmailAddress(expectedPerson.getEmailAddress()).
                 withFirstName(expectedPerson.getFirstName()).
                 withId(expectedPerson.getId()).
+                withLastName(expectedPerson.getLastName()).
                 withPassword(expectedPerson.getPassword()).
-                withSalutation(expectedPerson.getSalutation()).
                 withSecondName(expectedPerson.getSecondName()).
-                withSurname(expectedPerson.getSurname()).
+                withTitle(expectedPerson.getTitle()).
                 withUpdatedAt(expectedPerson.getUpdatedAt()).
                 withUpdatedBy(expectedPerson.getUpdatedBy()).
                 withUserId(expectedPerson.getUserId()).
@@ -40,10 +40,10 @@ public class PersonTest {
         assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
         assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
         assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
+        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
         assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
-        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
@@ -87,9 +87,9 @@ public class PersonTest {
         actualPerson.setFirstName(expectedPerson.getFirstName());
         actualPerson.setId(expectedPerson.getId());
         actualPerson.setPassword(expectedPerson.getPassword());
-        actualPerson.setSalutation(expectedPerson.getSalutation());
+        actualPerson.setTitle(expectedPerson.getTitle());
         actualPerson.setSecondName(expectedPerson.getSecondName());
-        actualPerson.setSurname(expectedPerson.getSurname());
+        actualPerson.setLastName(expectedPerson.getLastName());
         actualPerson.setUpdatedAt(expectedPerson.getUpdatedAt());
         actualPerson.setUpdatedBy(expectedPerson.getUpdatedBy());
         actualPerson.setVersion(expectedPerson.getVersion());
@@ -101,10 +101,10 @@ public class PersonTest {
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
         assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
         assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
         assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
-        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());

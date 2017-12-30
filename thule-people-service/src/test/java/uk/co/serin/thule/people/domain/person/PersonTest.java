@@ -35,13 +35,13 @@ public class PersonTest {
                 withFirstName(expectedPerson.getFirstName()).
                 withHomeAddress(expectedPerson.getHomeAddress()).
                 withId(expectedPerson.getId()).
+                withLastName(expectedPerson.getLastName()).
                 withPassword(expectedPerson.getPassword()).
                 withPhotographs(expectedPerson.getPhotographs()).
                 withRoles(expectedPerson.getRoles()).
-                withSalutation(expectedPerson.getSalutation()).
                 withSecondName(expectedPerson.getSecondName()).
                 withState(expectedPerson.getState()).
-                withSurname(expectedPerson.getSurname()).
+                withTitle(expectedPerson.getTitle()).
                 withUpdatedAt(expectedPerson.getUpdatedAt()).
                 withUpdatedBy(expectedPerson.getUpdatedBy()).
                 withUserId(expectedPerson.getUserId()).
@@ -57,13 +57,13 @@ public class PersonTest {
         assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
         assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
         assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
+        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
         assertThat(actualPerson.getPhotographs()).isEqualTo(expectedPerson.getPhotographs());
         assertThat(actualPerson.getRoles()).isEqualTo(expectedPerson.getRoles());
-        assertThat(actualPerson.getSalutation()).isEqualTo(expectedPerson.getSalutation());
         assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
         assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
-        assertThat(actualPerson.getSurname()).isEqualTo(expectedPerson.getSurname());
+        assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());

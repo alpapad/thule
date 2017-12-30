@@ -24,7 +24,7 @@ INSERT INTO actions(id, code, description, next_state_id, version, updated_by, c
 INSERT INTO actions(id, code, description, next_state_id, version, updated_by, created_at, updated_at)
     SELECT uid_sequence.NEXTVAL, 'PERSON_RECOVER', 'Recover', states.id, 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
 INSERT INTO actions(id, code, description, version, updated_by, created_at, updated_at)
-    VALUES(uid_sequence.NEXTVAL, 'PERSON_UPDATE', 'Update',  1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    VALUES(uid_sequence.NEXTVAL, 'PERSON_UPDATE', 'Update', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO actions(id, code, description, version, updated_by, created_at, updated_at)
     VALUES(uid_sequence.NEXTVAL, 'PERSON_VIEW', 'View', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO actions(id, code, description, next_state_id, version, updated_by, created_at, updated_at)
@@ -61,8 +61,8 @@ INSERT INTO state_actions(state_id, action_id)
 
 -- People
 DELETE FROM people;
-INSERT INTO people(id, date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, password, salutation, second_name, surname, state_id, user_id, version, updated_by, created_at, updated_at)
-    SELECT uid_sequence.NEXTVAL, CURRENT_DATE, TO_DATE('2030-12-31', 'YYYY-MM-DD'), TO_DATE('2030-12-31', 'YYYY-MM-DD'), 'superuser@serin-consultancy.co.uk', 'Super', 'superuser', 'Mr', '', 'User', states.id, 'superuser', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
+INSERT INTO people(id, date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, last_name, password, second_name, state_id, title, user_id, version, updated_by, created_at, updated_at)
+    SELECT uid_sequence.NEXTVAL, CURRENT_DATE, TO_DATE('2030-12-31', 'YYYY-MM-DD'), TO_DATE('2030-12-31', 'YYYY-MM-DD'), 'superuser@serin-consultancy.co.uk', 'Super', 'User', 'superuser', '', states.id, 'Mr', 'superuser', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
 
 -- Roles
 DELETE FROM roles;

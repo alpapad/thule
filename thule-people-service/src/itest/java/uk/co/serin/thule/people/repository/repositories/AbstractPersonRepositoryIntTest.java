@@ -279,7 +279,7 @@ public abstract class AbstractPersonRepositoryIntTest {
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
-        testPerson.setSurname("updatedSurname");
+        testPerson.setLastName("updatedLastName");
         testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
         testPerson.setEmailAddress("updated@gmail.com");
         testPerson.setPassword("updatedPassword");

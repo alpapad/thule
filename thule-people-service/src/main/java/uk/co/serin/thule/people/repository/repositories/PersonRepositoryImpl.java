@@ -12,24 +12,24 @@ import javax.persistence.PersistenceContext;
 @TracePublicMethods
 public class PersonRepositoryImpl implements PersonRepositoryCustom {
     private static final String FIND_PEOPLE_BY_CRITERIA_EJB_QL =
-            "select DISTINCT(person) FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or :emailAddress is null) and ( person.firstName like :firstName or :firstName is null) and ( person.surname like :surname or :surname is null) and ( person.userId like :userId or :userId is null)";
+            "select DISTINCT(person) FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or :emailAddress is null) and ( person.firstName like :firstName or :firstName is null) and ( person.lastName like :lastName or :lastName is null) and ( person.userId like :userId or :userId is null)";
     private static final String SEARCH_PEOPLE_BY_QUERY_EJB_QL =
-            "select DISTINCT(person) FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or person.firstName like :firstName or person.surname like :surname or person.userId like :userId)";
+            "select DISTINCT(person) FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or person.firstName like :firstName or person.lastName like :lastName or person.userId like :userId)";
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public List<Person> findByCriteria(String emailAddress, String firstName, String surname, String userId) {
+    public List<Person> findByCriteria(String emailAddress, String firstName, String lastName, String userId) {
         String emailAddressForLikeComparison = (emailAddress == null) ? null : '%' + emailAddress + '%';
         String firstNameForLikeComparison = (firstName == null) ? null : '%' + firstName + '%';
-        String surnameForLikeComparison = (surname == null) ? null : '%' + surname + '%';
+        String lastNameForLikeComparison = (lastName == null) ? null : '%' + lastName + '%';
         String userIdForLikeComparison = (userId == null) ? null : '%' + userId + '%';
 
         return entityManager.createQuery(FIND_PEOPLE_BY_CRITERIA_EJB_QL, Person.class)
                 .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS, emailAddressForLikeComparison)
                 .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_FIRST_NAME, firstNameForLikeComparison)
-                .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_SURNAME, surnameForLikeComparison)
+                .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_LAST_NAME, lastNameForLikeComparison)
                 .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID, userIdForLikeComparison).getResultList();
     }
 
@@ -40,7 +40,7 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
         return entityManager.createQuery(SEARCH_PEOPLE_BY_QUERY_EJB_QL, Person.class)
                 .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS, queryForLikeComparison)
                 .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_FIRST_NAME, queryForLikeComparison)
-                .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_SURNAME, queryForLikeComparison)
+                .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_LAST_NAME, queryForLikeComparison)
                 .setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID, queryForLikeComparison).getResultList();
     }
 }

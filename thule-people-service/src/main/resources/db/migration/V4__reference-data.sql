@@ -22,7 +22,7 @@ INSERT INTO actions(code, description, next_state_id, version, updated_by, creat
 INSERT INTO actions(code, description, next_state_id, version, updated_by, created_at, updated_at)
     SELECT 'PERSON_RECOVER', 'Recover', states.id, 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
 INSERT INTO actions(code, description, version, updated_by, created_at, updated_at)
-    VALUES('PERSON_UPDATE', 'Update',  1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    VALUES('PERSON_UPDATE', 'Update', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO actions(code, description, version, updated_by, created_at, updated_at)
     VALUES('PERSON_VIEW', 'View', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO actions(code, description, next_state_id, version, updated_by, created_at, updated_at)
@@ -57,8 +57,8 @@ INSERT INTO state_actions(state_id, action_id)
     SELECT states.id, actions.id FROM states, actions WHERE states.code = 'PERSON_DISCARDED' AND actions.code = 'PERSON_VIEW';
 
 -- People
-INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, password, salutation, second_name, surname, state_id, user_id, version, updated_by, created_at, updated_at)
-    SELECT CURRENT_DATE, '2030-12-31', '2030-12-31', 'superuser@serin-consultancy.co.uk', 'Super', 'superuser', 'Mr', '', 'User', states.id, 'superuser', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
+INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, last_name, password, second_name, state_id, title, user_id, version, updated_by, created_at, updated_at)
+    SELECT CURRENT_DATE, '2030-12-31', '2030-12-31', 'superuser@serin-consultancy.co.uk', 'Super', 'User', 'superuser', '', states.id, 'Mr', 'superuser', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
 
 -- Roles
 INSERT INTO roles(code, description, version, updated_by, created_at, updated_at)

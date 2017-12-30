@@ -219,7 +219,7 @@ public class RestfulServiceIntTest {
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
-        testPerson.setSurname("updatedSurname");
+        testPerson.setLastName("updatedLastName");
         testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setPassword("updatedPassword");

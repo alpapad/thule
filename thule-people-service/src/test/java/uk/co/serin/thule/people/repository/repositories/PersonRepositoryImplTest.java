@@ -32,14 +32,14 @@ public class PersonRepositoryImplTest {
     @Test
     public void find_by_criteria() {
         // Given
-        Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withEmailAddress("test@gmail.com").withFirstName("firstName").withSurname("surname").build();
+        Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withEmailAddress("test@gmail.com").withFirstName("firstName").withLastName("lastName").build();
 
         given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
 
         // When
-        List<Person> actualPeople = personRepositoryImpl.findByCriteria(expectedPerson.getEmailAddress(), expectedPerson.getFirstName(), expectedPerson.getSurname(), expectedPerson.getUserId());
+        List<Person> actualPeople = personRepositoryImpl.findByCriteria(expectedPerson.getEmailAddress(), expectedPerson.getFirstName(), expectedPerson.getLastName(), expectedPerson.getUserId());
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
@@ -56,7 +56,7 @@ public class PersonRepositoryImplTest {
         given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
 
         // When
-        List<Person> actualPeople = personRepositoryImpl.findByCriteria(expectedPerson.getEmailAddress(), expectedPerson.getFirstName(), expectedPerson.getSurname(), expectedPerson.getUserId());
+        List<Person> actualPeople = personRepositoryImpl.findByCriteria(expectedPerson.getEmailAddress(), expectedPerson.getFirstName(), expectedPerson.getLastName(), expectedPerson.getUserId());
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);

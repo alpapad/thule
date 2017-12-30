@@ -33,7 +33,7 @@ public class PeopleService {
 
     private void sendEmail(Person person, String event) {
         Email email = Email.EmailBuilder.anEmail().
-                withBody(String.format("Person %s %s has been %s", person.getFirstName(), person.getSurname(), event)).
+                withBody(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event)).
                 withSubject("Thule people service notification").
                 withTos(Collections.singleton(person.getEmailAddress())).
                 build();
