@@ -13,11 +13,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GlobalRepositoryRestConfigurerTest {
+public class CorsRepositoryRestConfigurerTest {
     @Mock
     private CorsRegistration corsRegistration;
     @InjectMocks
-    private GlobalRepositoryRestConfigurer globalRepositoryRestConfigurer;
+    private CorsRepositoryRestConfigurer corsRepositoryRestConfigurer;
     @Mock
     private RepositoryCorsRegistry repositoryCorsRegistry;
     @Mock
@@ -30,7 +30,7 @@ public class GlobalRepositoryRestConfigurerTest {
         given(repositoryCorsRegistry.addMapping("/**")).willReturn(corsRegistration);
 
         // When
-        globalRepositoryRestConfigurer.configureRepositoryRestConfiguration(repositoryRestConfiguration);
+        corsRepositoryRestConfigurer.configureRepositoryRestConfiguration(repositoryRestConfiguration);
 
         // Then
         verify(corsRegistration).allowedMethods("*");

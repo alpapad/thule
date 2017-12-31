@@ -98,6 +98,7 @@ public class RestfulServiceIntTest {
         assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
@@ -226,7 +227,6 @@ public class RestfulServiceIntTest {
 
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
         expectedPerson.setState(null);
-        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
         // When
