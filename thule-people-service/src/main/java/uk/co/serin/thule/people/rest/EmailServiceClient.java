@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.service;
+package uk.co.serin.thule.people.rest;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;

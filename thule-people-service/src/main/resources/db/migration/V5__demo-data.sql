@@ -13,8 +13,8 @@ INSERT INTO addresses(address_type, address_line1, address_line2, town, county, 
 -- State_actions
 
 -- People
-INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, last_name, password, second_name, state_id, title, user_id, version, updated_by, created_at, updated_at)
-    SELECT CURRENT_DATE, '2030-12-31', '2030-12-31', 'was@serin-consultancy.co.uk', 'WebSphere', 'Server', 'websphere', 'Application', states.id, 'Mr', 'websphere', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
+INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, home_address_id, last_name, password, second_name, state_id, title, user_id, version, updated_by, created_at, updated_at)
+    SELECT CURRENT_DATE, '2030-12-31', '2030-12-31', 'was@serin-consultancy.co.uk', 'WebSphere', addresses.id, 'Server', 'websphere', 'Application', states.id, 'Mr', 'websphere', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM addresses, states WHERE states.code = 'PERSON_ENABLED' AND address_type = 'HOME';
 INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, last_name, password, second_name, state_id, title, user_id, version, updated_by, created_at, updated_at)
     SELECT '1970-07-29', '2030-12-31', '2030-12-31', 'scarlett@serin-consultancy.co.uk', 'Ruby', 'Scarlett', 'scarlett', null, states.id, 'Miss', 'scarlett', 1, 'superuser', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM states WHERE states.code = 'PERSON_ENABLED';
 INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, last_name, password, second_name, state_id, title, user_id, version, updated_by, created_at, updated_at)

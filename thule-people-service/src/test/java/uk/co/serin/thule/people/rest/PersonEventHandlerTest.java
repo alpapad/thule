@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest.core;
+package uk.co.serin.thule.people.rest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

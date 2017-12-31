@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
 import uk.co.serin.thule.people.domain.email.Email;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.role.Role;
@@ -15,6 +14,7 @@ import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
+import uk.co.serin.thule.people.rest.EmailServiceClient;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -35,7 +35,6 @@ public class PeopleServiceTest {
     private RoleRepository roleRepository;
     @Mock
     private StateRepository stateRepository;
-    private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
     public void after_create() {

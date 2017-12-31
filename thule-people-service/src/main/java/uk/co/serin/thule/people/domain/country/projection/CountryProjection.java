@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest.projection;
+package uk.co.serin.thule.people.domain.country.projection;
 
 import org.springframework.data.rest.core.config.Projection;
 

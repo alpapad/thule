@@ -43,7 +43,6 @@ public abstract class Address extends DomainModel {
     @ManyToOne(optional = false)
     @JoinColumn(name = DATABASE_COLUMN_COUNTRY_ID, nullable = false, updatable = false)
     @NotNull
-    @JsonIgnore
     private Country country;
 
     @Column(length = COUNTY_MAX_LENGTH, nullable = false)

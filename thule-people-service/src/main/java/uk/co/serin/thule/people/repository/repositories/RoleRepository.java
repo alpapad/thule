@@ -5,9 +5,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import uk.co.serin.thule.people.domain.role.Role;
 import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.rest.projection.RoleProjection;
 
-@RepositoryRestResource(excerptProjection = RoleProjection.class)
+@RepositoryRestResource
 public interface RoleRepository extends PagingAndSortingRepository<Role, Long> {
     Role findByCode(RoleCode roleCode);
 }

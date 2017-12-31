@@ -1,7 +1,5 @@
 package uk.co.serin.thule.people.domain.person;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.DigestUtils;
 
@@ -38,7 +36,6 @@ public final class Photograph extends DomainModel {
     @JoinColumn(name = ENTITY_ATTRIBUTE_NAME_PERSON_ID, nullable = false, updatable = false)
     @NotNull
     @Transient
-    @JsonIgnore
     private Person person;
 
     @Column(length = PHOTO_MAX_LENGTH, nullable = false)

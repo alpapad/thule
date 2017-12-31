@@ -1,5 +1,5 @@
 ext["assertj.version"] = "3.8.0"// Override spring boot defined version 2.6.0 which contains bugs
-ext["mockito.version"] = "2.11.0" // Override spring boot defined version which defaults to mockito 1.10.19 and does not support mocking finals
+ext["mockito.version"] = "2.13.0" // Override spring boot defined version which defaults to mockito 1.10.19 and does not support mocking finals
 
 // Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
 springBoot {

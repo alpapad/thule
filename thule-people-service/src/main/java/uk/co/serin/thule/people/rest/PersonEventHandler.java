@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest.core;
+package uk.co.serin.thule.people.rest;
 
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterDelete;

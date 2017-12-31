@@ -1,6 +1,7 @@
 package uk.co.serin.thule.people.domain.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.util.Assert;
 
@@ -45,7 +46,6 @@ public final class Person extends DomainModel {
     public static final int USER_ID_MAX_LENGTH = 100;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = ENTITY_NAME_PERSON, orphanRemoval = true)
-    @JsonIgnore
     private final Set<Photograph> photographs = new HashSet<>();
 
     @ManyToMany
@@ -53,7 +53,6 @@ public final class Person extends DomainModel {
             joinColumns = {@JoinColumn(name = DATABASE_COLUMN_PERSON_ID, nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = DATABASE_COLUMN_ROLE_ID, nullable = false)})
     @NotNull
-    @JsonIgnore
     private final Set<Role> roles = new HashSet<>();
 
     @Column(nullable = false)
@@ -81,7 +80,6 @@ public final class Person extends DomainModel {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = DATABASE_COLUMN_HOME_ADDRESS_ID)
-    @JsonIgnore
     private HomeAddress homeAddress;
 
     @Column(length = LAST_NAME_MAX_LENGTH, nullable = false)
@@ -92,6 +90,7 @@ public final class Person extends DomainModel {
     @Column(length = PASSWORD_MAX_LENGTH, nullable = false)
     @NotNull
     @Size(max = PASSWORD_MAX_LENGTH)
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     private String password;
 
     @Column(length = SECOND_NAME_MAX_LENGTH)
@@ -115,7 +114,6 @@ public final class Person extends DomainModel {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = DATABASE_COLUMN_WORK_ADDRESS_ID)
-    @JsonIgnore
     private WorkAddress workAddress;
 
     /**

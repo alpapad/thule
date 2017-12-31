@@ -1,7 +1,6 @@
 buildscript {
-    ext["flyway.version"] = "4.2.0"           // Override spring boot defined version 3.2.1 (does not cause any problems but will use the latest)
     ext["hibernate.version"] = "5.2.12.Final" // Override spring boot defined version 5.0.12.Final which contains a bug whereby auto-ddl=validate always fails
-    ext["hsqldb.version"] = "2.4.0"           // Override spring boot defined version 2.3.5 (does not cause any problems but will use the latest)
+    ext["jackson.version"] = "2.9.3"          // Override spring boot defined version 2.8.10 which fixes a bug where the JsonProperty access attribute is ignored
 
     apply from: "${rootDir}/../gradle/repo-config.gradle", to: buildscript
 

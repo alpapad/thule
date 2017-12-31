@@ -40,7 +40,6 @@ public final class State extends DomainModel {
             inverseJoinColumns = {@JoinColumn(name = DATABASE_COLUMN_ACTION_ID, nullable = false)})
     @OrderBy(value = ENTITY_ATTRIBUTE_NAME_DESCRIPTION)
     @Transient
-    @JsonIgnore
     private final Set<Action> actions = new HashSet<>();
 
     @Enumerated(EnumType.STRING)

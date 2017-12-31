@@ -2,6 +2,7 @@ package uk.co.serin.thule.people.service;
 
 import org.springframework.stereotype.Service;
 
+import uk.co.serin.thule.people.rest.EmailServiceClient;
 import uk.co.serin.thule.utils.aspects.TracePublicMethods;
 import uk.co.serin.thule.people.domain.email.Email;
 import uk.co.serin.thule.people.domain.person.Person;

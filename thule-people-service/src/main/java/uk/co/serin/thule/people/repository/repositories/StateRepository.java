@@ -6,11 +6,10 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
-import uk.co.serin.thule.people.rest.projection.StateProjection;
 
 import java.util.Set;
 
-@RepositoryRestResource(excerptProjection = StateProjection.class)
+@RepositoryRestResource
 public interface StateRepository extends PagingAndSortingRepository<State, Long> {
     @Query("SELECT s FROM State s LEFT JOIN FETCH s.actions")
     Set<State> findAllWithActions();
