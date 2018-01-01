@@ -16,7 +16,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 
 @Configuration
 @ConditionalOnProperty(name = "thule.wiremock.port")
-public class WiremockConfiguration {
+public class WiremockConfigurer {
     @Value("${thule.wiremock.port}")
     private int wireMockPort;
 

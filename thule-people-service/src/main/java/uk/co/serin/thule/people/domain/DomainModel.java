@@ -44,6 +44,7 @@ public abstract class DomainModel {
     public static final String ENTITY_ATTRIBUTE_NAME_COUNTRY = "country";
     public static final String ENTITY_ATTRIBUTE_NAME_COUNTY = "county";
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
+    public static final String ENTITY_ATTRIBUTE_NAME_CREDENTIALS = "password";
     public static final String ENTITY_ATTRIBUTE_NAME_DATE_OF_BIRTH = "dateOfBirth";
     public static final String ENTITY_ATTRIBUTE_NAME_DESCRIPTION = "description";
     public static final String ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS = "emailAddress";

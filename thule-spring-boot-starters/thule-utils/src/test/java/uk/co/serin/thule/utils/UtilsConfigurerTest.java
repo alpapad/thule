@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UtilsConfigurationTest {
+public class UtilsConfigurerTest {
     @Test
     public void default_constructor_creates_instance_successfully() {
-        assertThat(new UtilsConfiguration()).isNotNull();
+        assertThat(new UtilsConfigurer()).isNotNull();
     }
 }

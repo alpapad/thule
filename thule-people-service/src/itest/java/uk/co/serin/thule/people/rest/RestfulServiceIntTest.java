@@ -1,15 +1,10 @@
 package uk.co.serin.thule.people.rest;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.github.tomakehurst.wiremock.WireMockServer;
 
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,15 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,6 +42,7 @@ import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -61,6 +54,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
     private static final String ID = "/{id}";
+    private static final String URL_FOR_EMAILS = "/" + DomainModel.ENTITY_NAME_EMAILS;
+    private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
@@ -74,8 +69,6 @@ public class RestfulServiceIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
-    private String urlForEmails = "/" + DomainModel.ENTITY_NAME_EMAILS;
-    private String urlForPeople = "/" + DomainModel.ENTITY_NAME_PEOPLE;
     @Autowired
     private WireMockServer wireMockServer;
 
@@ -86,24 +79,27 @@ public class RestfulServiceIntTest {
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(urlForPeople, testPerson, Person.class);
+        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(URL_FOR_PEOPLE, testPerson, Person.class);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         Person actualPerson = responseEntity.getBody();
 
+        assertThat(actualPerson.getId()).isNotNull();
+        assertThat(actualPerson.getPassword()).isNull();
         assertThat(actualPerson.getUpdatedAt()).isNotNull();
         assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
 
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(urlForEmails))
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
                 .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 
@@ -113,14 +109,14 @@ public class RestfulServiceIntTest {
         Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
 
         // When
-        restTemplate.delete(urlForPeople + ID, person.getId());
+        restTemplate.delete(URL_FOR_PEOPLE + ID, person.getId());
 
         // Then
         person = personRepository.findOne(person.getId());
 
         assertThat(person).isNull();
 
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(urlForEmails))
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
                 .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 
@@ -138,7 +134,7 @@ public class RestfulServiceIntTest {
 
         // When
         ResponseEntity<Resources<Person>> personResponseEntity
-                = restTemplate.exchange(urlForPeople + "?page={page}&size={size}", HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Person>>() {
+                = restTemplate.exchange(URL_FOR_PEOPLE + "?page={page}&size={size}", HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Person>>() {
         }, 0, 1000);
 
         // Then
@@ -155,7 +151,7 @@ public class RestfulServiceIntTest {
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(urlForPeople + ID, Person.class, expectedPerson.getId());
+        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(URL_FOR_PEOPLE + ID, Person.class, expectedPerson.getId());
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -180,7 +176,7 @@ public class RestfulServiceIntTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Throwable {
         ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
 
@@ -189,23 +185,20 @@ public class RestfulServiceIntTest {
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(jUnitTestPerson.getUserId(), jUnitTestPerson.getPassword()));
 
-        // Create http message converter to handle json+hal requests
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.registerModule(new Jackson2HalModule());
-        objectMapper.registerModule(new JavaTimeModule());
-
-        MappingJackson2HttpMessageConverter httpMessageConverter = new MappingJackson2HttpMessageConverter();
-        httpMessageConverter.setObjectMapper(objectMapper);
-
         // Create restTemplate with Basic Authentication security
-        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("admin", "admin"));
-        CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
-        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        restTemplate = restTemplate.withBasicAuth("admin", "admin");
 
-        restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(httpMessageConverter));
-        restTemplate.getRestTemplate().setRequestFactory(requestFactory);
+        // Create new OjectMapper to create an "excludePasswordFilter" which does not exclude the password so it is serialized into Json for test purposes
+        ObjectMapper objectMapper =
+                restTemplate.getRestTemplate().getMessageConverters().stream() // Get all existing MessageConverters
+                        .filter(httpMessageConverter -> httpMessageConverter instanceof MappingJackson2HttpMessageConverter) // Filter out everything that is not a MappingJackson2HttpMessageConverter
+                        .map(MappingJackson2HttpMessageConverter.class::cast) // Cast all to a MappingJackson2HttpMessageConverter
+                        .findFirst() // Find the first MappingJackson2HttpMessageConverter
+                        .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("RestTemplate does not contain any MappingJackson2HttpMessageConverter converters!")) // Throw an exception if there aren't any MappingJackson2HttpMessageConverters
+                        .getObjectMapper().copy() // Copy the ObjectMapper
+                        .setFilterProvider(new SimpleFilterProvider().addFilter(Person.EXCLUDE_CREDENTIALS_FILTER, SimpleBeanPropertyFilter.serializeAll())); // Set the excludePasswordFilter
+
+        restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
 
         // Avoid wireMockServer.verify to check requests from other tests
         wireMockServer.resetRequests();
@@ -230,19 +223,21 @@ public class RestfulServiceIntTest {
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
         // When
-        restTemplate.put(urlForPeople + ID, testPerson, id);
+        restTemplate.put(URL_FOR_PEOPLE + ID, testPerson, id);
 
         // Then
-        Person actualPerson = restTemplate.getForObject(urlForPeople + ID, Person.class, id);
+        Person actualPerson = restTemplate.getForObject(URL_FOR_PEOPLE + ID, Person.class, id);
 
+        assertThat(actualPerson.getPassword()).isNull();
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
 
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(urlForEmails))
+        wireMockServer.verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
                 .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 }
