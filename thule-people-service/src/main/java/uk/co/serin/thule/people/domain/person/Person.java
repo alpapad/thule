@@ -1,7 +1,6 @@
 package uk.co.serin.thule.people.domain.person;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.util.Assert;
 
@@ -104,7 +103,6 @@ public final class Person extends DomainModel {
     @ManyToOne(optional = false)
     @JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false)
     @NotNull
-    @JsonIgnore
     private State state;
 
     @Column(length = TITLE_MAX_LENGTH)
