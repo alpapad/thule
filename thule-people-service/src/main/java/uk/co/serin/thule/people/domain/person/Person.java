@@ -1,7 +1,5 @@
 package uk.co.serin.thule.people.domain.person;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-
 import org.springframework.util.Assert;
 
 import uk.co.serin.thule.people.domain.DomainModel;
@@ -33,12 +31,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import static uk.co.serin.thule.people.domain.person.Person.EXCLUDE_CREDENTIALS_FILTER;
-
 @Entity
 @Table(name = DomainModel.ENTITY_NAME_PEOPLE)
 // Use JsonFilter rather than @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) so that it can be overridden during integration tests
-@JsonFilter(EXCLUDE_CREDENTIALS_FILTER)
+//@JsonFilter(EXCLUDE_CREDENTIALS_FILTER)
 public final class Person extends DomainModel {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
     public static final String EXCLUDE_CREDENTIALS_FILTER = "excludePasswordFilter";

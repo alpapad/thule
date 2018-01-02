@@ -87,14 +87,14 @@ public class RestfulServiceIntTest {
         Person actualPerson = responseEntity.getBody();
 
         assertThat(actualPerson.getId()).isNotNull();
-        assertThat(actualPerson.getPassword()).isNull();
+//        assertThat(actualPerson.getPassword()).isNull();
         assertThat(actualPerson.getUpdatedAt()).isNotNull();
         assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
+//                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
@@ -228,12 +228,12 @@ public class RestfulServiceIntTest {
         // Then
         Person actualPerson = restTemplate.getForObject(URL_FOR_PEOPLE + ID, Person.class, id);
 
-        assertThat(actualPerson.getPassword()).isNull();
+//        assertThat(actualPerson.getPassword()).isNull();
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
+//                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
 
