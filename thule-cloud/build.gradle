@@ -45,7 +45,6 @@ dependencies {
     itestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
         changing = true
     }
-    itestCompile("org.apache.httpcomponents:httpclient")
     itestCompile("org.springframework.boot:spring-boot-starter-actuator")
     itestCompile("org.springframework.boot:spring-boot-starter-jetty")
     itestCompile("org.springframework.boot:spring-boot-starter-logging")
