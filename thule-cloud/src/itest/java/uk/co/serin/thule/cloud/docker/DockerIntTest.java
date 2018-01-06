@@ -117,7 +117,7 @@ public class DockerIntTest {
         List people = List.class.cast(embedded.get("people"));
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(people).hasSize(8);
+        assertThat(people).hasSize(7);
     }
 
     private static ResponseEntity<Map<String, Object>> getResponseEntity(String url) {
