@@ -1,16 +1,14 @@
 package uk.co.serin.thule.test;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.lang.instrument.IllegalClassFormatException;
+
 public class ExceptionConstructorTesterTest {
-    private ExceptionConstructorTester exceptionConstructorTester = new ExceptionConstructorTester(RuntimeException.class);
-
     @Test
-    public void assert_that_all_constructors_exist_does_not_throw_an_exception_when_all_constructors_exist() {
+    public void all_constructors_exist_with_runtime_exception() {
         // Given
+        ExceptionConstructorTester exceptionConstructorTester = new ExceptionConstructorTester(RuntimeException.class);
 
         // When
         exceptionConstructorTester.assertThatAllConstructorsExist();
@@ -19,9 +17,9 @@ public class ExceptionConstructorTesterTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void assert_that_all_constructors_exist_rethrows_exception_as_an_IllegalStateException() {
+    public void an_exception_without_all_constructors_throws_an_exception() {
         // Given
-        exceptionConstructorTester = new ExceptionConstructorTester(Class.class);
+        ExceptionConstructorTester exceptionConstructorTester = new ExceptionConstructorTester(IllegalClassFormatException.class);
 
         // When
         exceptionConstructorTester.assertThatAllConstructorsExist();

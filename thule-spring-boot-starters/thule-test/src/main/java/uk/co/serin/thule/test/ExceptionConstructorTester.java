@@ -1,16 +1,13 @@
 package uk.co.serin.thule.test;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExceptionConstructorTester {
-    private static final Random RANDOM = new Random();
-    private static final String UNIQUE_PREFIX = "Unique message ";
     private final Class<?> clazz;
 
-    public ExceptionConstructorTester(Class<?> clazz) {
+    public ExceptionConstructorTester(Class<? extends Throwable> clazz) {
         this.clazz = clazz;
     }
 
@@ -45,7 +42,7 @@ public class ExceptionConstructorTester {
 
     private void assertThatConstructorWithMessageExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // Given
-        String message = uniqueMessage();
+        String message = "Test message";
 
         // When
         Throwable t = (Throwable) clazz.getConstructor(String.class).newInstance(message);
@@ -57,7 +54,7 @@ public class ExceptionConstructorTester {
     @SuppressWarnings({"ThrowableInstanceNeverThrown"})
     private void assertThatConstructorWithMessageAndThrowableExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // Given
-        String message = uniqueMessage();
+        String message = "Test message";
         RuntimeException cause = new TestException();
 
         // When
@@ -65,10 +62,6 @@ public class ExceptionConstructorTester {
 
         // Then
         assertThat(t.getMessage()).contains(message);
-    }
-
-    private String uniqueMessage() {
-        return UNIQUE_PREFIX + RANDOM.nextInt();
     }
 
     private static class TestException extends RuntimeException {
