@@ -3,7 +3,6 @@ package uk.co.serin.thule.people.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.github.tomakehurst.wiremock.WireMockServer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
@@ -44,13 +44,21 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("itest")
+// Spring doc very clear but to override the default location (src/test/resources) of the response
+// files, you *must* specify then under META-INF!
+@AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
     private static final String ID = "/{id}";
@@ -69,8 +77,6 @@ public class RestfulServiceIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
-    @Autowired
-    private WireMockServer wireMockServer;
 
     @Test
     public void create_person() {
@@ -78,10 +84,19 @@ public class RestfulServiceIntTest {
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
+        stubFor(post(urlEqualTo(URL_FOR_EMAILS)).
+                willReturn(aResponse().
+                        withStatus(HttpStatus.ACCEPTED.value()).
+                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                        withBodyFile("thule-email-service-response.json")));
+
         // When
         ResponseEntity<Person> responseEntity = restTemplate.postForEntity(URL_FOR_PEOPLE, testPerson, Person.class);
 
         // Then
+        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         Person actualPerson = responseEntity.getBody();
@@ -98,9 +113,6 @@ public class RestfulServiceIntTest {
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
-
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
     }
 
     @Test
@@ -108,22 +120,22 @@ public class RestfulServiceIntTest {
         // Given
         Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
 
+        stubFor(post(urlEqualTo(URL_FOR_EMAILS)).
+                willReturn(aResponse().
+                        withStatus(HttpStatus.ACCEPTED.value()).
+                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                        withBodyFile("thule-email-service-response.json")));
+
         // When
         restTemplate.delete(URL_FOR_PEOPLE + ID, person.getId());
 
         // Then
+        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+
         person = personRepository.findOne(person.getId());
 
         assertThat(person).isNull();
-
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
-    }
-
-    private Person createTestPerson(Person expectedPerson) {
-        Person person = testDataFactory.buildPerson(expectedPerson);
-        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(person);
     }
 
     @Test
@@ -199,9 +211,6 @@ public class RestfulServiceIntTest {
                         .setFilterProvider(new SimpleFilterProvider().addFilter(Person.EXCLUDE_CREDENTIALS_FILTER, SimpleBeanPropertyFilter.serializeAll())); // Set the excludePasswordFilter
 
         restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
-
-        // Avoid wireMockServer.verify to check requests from other tests
-        wireMockServer.resetRequests();
     }
 
     @Test
@@ -222,10 +231,19 @@ public class RestfulServiceIntTest {
         expectedPerson.setState(null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
+        stubFor(post(urlEqualTo(URL_FOR_EMAILS)).
+                willReturn(aResponse().
+                        withStatus(HttpStatus.ACCEPTED.value()).
+                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                        withBodyFile("thule-email-service-response.json")));
+
         // When
         restTemplate.put(URL_FOR_PEOPLE + ID, testPerson, id);
 
         // Then
+        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+
         Person actualPerson = restTemplate.getForObject(URL_FOR_PEOPLE + ID, Person.class, id);
 
 //        assertThat(actualPerson.getPassword()).isNull();
@@ -236,8 +254,11 @@ public class RestfulServiceIntTest {
 //                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    }
 
-        wireMockServer.verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+    private Person createTestPerson(Person expectedPerson) {
+        Person person = testDataFactory.buildPerson(expectedPerson);
+        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        return personRepository.save(person);
     }
 }
