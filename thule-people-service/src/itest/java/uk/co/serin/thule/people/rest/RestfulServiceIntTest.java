@@ -84,7 +84,9 @@ public class RestfulServiceIntTest {
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
-        stubFor(post(urlEqualTo(URL_FOR_EMAILS)).
+        stubFor(post(
+                urlEqualTo(URL_FOR_EMAILS)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
                 willReturn(aResponse().
                         withStatus(HttpStatus.ACCEPTED.value()).
                         withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
@@ -94,8 +96,9 @@ public class RestfulServiceIntTest {
         ResponseEntity<Person> responseEntity = restTemplate.postForEntity(URL_FOR_PEOPLE, testPerson, Person.class);
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        verify(postRequestedFor(
+                urlPathEqualTo(URL_FOR_EMAILS)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -120,18 +123,20 @@ public class RestfulServiceIntTest {
         // Given
         Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
 
-        stubFor(post(urlEqualTo(URL_FOR_EMAILS)).
-                willReturn(aResponse().
-                        withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                        withBodyFile("thule-email-service-response.json")));
+        stubFor(
+                post(urlEqualTo(URL_FOR_EMAILS)).
+                        withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
+                        willReturn(aResponse().
+                                withStatus(HttpStatus.ACCEPTED.value()).
+                                withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                                withBodyFile("thule-email-service-response.json")));
 
         // When
         restTemplate.delete(URL_FOR_PEOPLE + ID, person.getId());
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
         person = personRepository.findOne(person.getId());
 
@@ -216,6 +221,14 @@ public class RestfulServiceIntTest {
     @Test
     public void update_person() {
         // Given
+        stubFor(post(
+                urlEqualTo(URL_FOR_EMAILS)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
+                willReturn(aResponse().
+                        withStatus(HttpStatus.ACCEPTED.value()).
+                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                        withBodyFile("thule-email-service-response.json")));
+
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         testPerson = createTestPerson(testPerson);
         long id = testPerson.getId();
@@ -231,18 +244,12 @@ public class RestfulServiceIntTest {
         expectedPerson.setState(null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
-        stubFor(post(urlEqualTo(URL_FOR_EMAILS)).
-                willReturn(aResponse().
-                        withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                        withBodyFile("thule-email-service-response.json")));
-
         // When
         restTemplate.put(URL_FOR_PEOPLE + ID, testPerson, id);
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
         Person actualPerson = restTemplate.getForObject(URL_FOR_PEOPLE + ID, Person.class, id);
 
