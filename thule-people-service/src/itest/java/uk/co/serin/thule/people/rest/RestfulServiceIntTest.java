@@ -57,7 +57,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("itest")
 // Spring doc very clear but to override the default location (src/test/resources) of the response
-// files, you *must* specify then under META-INF!
+// files, you *must* specify them under META-INF!
 @AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulServiceIntTest {
