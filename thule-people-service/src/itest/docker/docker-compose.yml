@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-people-service  ################################
   thule-people-service:
-    image: pooh.serin-consultancy.co.uk/thule-people-service
+    image: pooh:8082/thule-people-service
     environment:
       EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"

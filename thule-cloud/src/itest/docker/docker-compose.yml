@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-admin-server  ################################
   thule-cloud-admin-server:
-    image: pooh.serin-consultancy.co.uk/thule-admin-server
+    image: pooh:8082/thule-admin-server
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
@@ -19,7 +19,7 @@ services:
 
   ################################  thule-config-service  ################################
   thule-cloud-config-service:
-    image: pooh.serin-consultancy.co.uk/thule-config-service
+    image: pooh:8082/thule-config-service
     environment:
       THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
     extra_hosts:
@@ -35,7 +35,7 @@ services:
 
   ################################  thule-discovery-service  ################################
   thule-cloud-discovery-service:
-    image: pooh.serin-consultancy.co.uk/thule-discovery-service
+    image: pooh:8082/thule-discovery-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
     extra_hosts:
@@ -51,7 +51,7 @@ services:
 
   ################################  thule-edge-server  ################################
   thule-cloud-edge-server:
-    image: pooh.serin-consultancy.co.uk/thule-edge-server
+    image: pooh:8082/thule-edge-server
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
@@ -68,7 +68,7 @@ services:
 
   ################################  thule-email-server  ################################
   thule-cloud-email-service:
-    image: pooh.serin-consultancy.co.uk/thule-email-service
+    image: pooh:8082/thule-email-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
@@ -85,7 +85,7 @@ services:
 
   ################################  thule-people-service  ################################
   thule-cloud-people-service:
-    image: pooh.serin-consultancy.co.uk/thule-people-service
+    image: pooh:8082/thule-people-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service

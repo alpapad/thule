@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
-    image: pooh.serin-consultancy.co.uk/thule-discovery-service
+    image: pooh:8082/thule-discovery-service
     environment:
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"

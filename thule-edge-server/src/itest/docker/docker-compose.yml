@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-edge-server  ################################
   thule-edge-server:
-    image: pooh.serin-consultancy.co.uk/thule-edge-server
+    image: pooh:8082/thule-edge-server
     environment:
       EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"

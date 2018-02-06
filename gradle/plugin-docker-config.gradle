@@ -1,5 +1,5 @@
 docker {
-    name "pooh.serin-consultancy.co.uk/${jar.baseName}"
+    name "pooh:8082/${jar.baseName}"
     dockerfile project.file("src/main/docker/Dockerfile")
     files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
     buildArgs(["JAR_FILE": "${jar.archiveName}"])
