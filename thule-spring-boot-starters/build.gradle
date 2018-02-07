@@ -18,11 +18,9 @@ buildscript {
 
 plugins {
     id "com.github.ben-manes.versions" version "0.17.0"
-    id "org.sonarqube" version "2.6.1"
+    id "org.sonarqube" version "2.6.1" apply(false)
     id "org.springframework.boot" version "2.0.0.M7" apply(false)
 }
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
-apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
 
 subprojects {
     apply plugin: "io.spring.dependency-management"
@@ -30,11 +28,13 @@ subprojects {
     apply plugin: "java"
     apply plugin: "maven-publish"
     apply plugin: "org.springframework.boot"
+    apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
     // Standard Serin gradle plugin config
     apply from: "${rootDir}/../gradle/build-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
+    apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
     apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
 
     // Non-standard Serin gradle plugin config
