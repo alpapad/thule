@@ -2,6 +2,6 @@ sonarqube {
     properties {
         property "sonar.host.url", "http://pooh:9000"
         property "sonar.scm.disabled", "true"
-        property "sonar.projectName", project.description
+        property "sonar.projectName", project.description + " [" + project.name + "]"
     }
 }
