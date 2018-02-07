@@ -7,13 +7,13 @@ services:
       EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
     hostname: edge-server-1
     ports:
-      - "8080:8080"
+      - 8080:8080
     volumes:
-      # Set localtime and timezone on container to be the same as the host
+      # Set localtime on container to be the same as the host
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
