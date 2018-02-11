@@ -1,7 +1,5 @@
 package uk.co.serin.thule.people.domain.address;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.state.State;
