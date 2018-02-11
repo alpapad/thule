@@ -44,7 +44,7 @@ subprojects {
 project("thule-spring-boot-starter-test") {
     dependencies {
         compile project(":thule-test")
-        compile("nl.jqno.equalsverifier:equalsverifier:2.4.2")
+        compile("nl.jqno.equalsverifier:equalsverifier:2.4.3")
         compile("org.awaitility:awaitility:3.0.0")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.cloud:spring-cloud-contract-wiremock:1.2.2.RELEASE")
