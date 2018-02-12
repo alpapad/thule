@@ -1,0 +1,17 @@
+<application>
+  <component name="EqualsHashCodeTemplates">
+    <option name="defaultTempalteName" value="Objects.equals and hashCode (Java 8) equals" />
+    <option name="templates">
+      <list>
+        <TemplateResource>
+          <option name="fileName" value="Objects.equals and hashCode (Java 8) equals" />
+          <option name="template" value="#parse(&quot;equalsHelper.vm&quot;)&#10;public boolean equals(##&#10;#if ($settings.generateFinalParameters)&#10;final ##&#10;#end&#10;Object $paramName){&#10;if (this == o) { return true; }&#10;if (o == null || getClass() != o.getClass()) { return false; }&#10;#addClassInstance()&#10;return ##&#10;#set($i = 0)&#10;#foreach($field in $fields)&#10;    #if ($i &gt; 0)&#10;    &amp;&amp;&#10;    #end&#10;    #set($i = $i + 1)&#10;java.util.Objects.equals($field.accessor, ${classInstanceName}.$field.accessor)##&#10;#end&#10;;&#10;}" />
+        </TemplateResource>
+        <TemplateResource>
+          <option name="fileName" value="Objects.equals and hashCode (Java 8) hashCode" />
+          <option name="template" value="public int hashCode() {&#10;return java.util.Objects.hash(##&#10;#set($i = 0)&#10;#foreach($field in $fields)&#10;    #if ($i &gt; 0)&#10;    , ##&#10;    #end&#10;    $field.accessor ##&#10;    #set($i = $i + 1)&#10;#end&#10;);&#10;}" />
+        </TemplateResource>
+      </list>
+    </option>
+  </component>
+</application>
