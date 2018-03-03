@@ -1,3 +1,9 @@
+ext {
+    // Set default values for properties that can be overridden
+    nexusHost = project.hasProperty("nexusHost") ? project.getProperty("nexusHost") : "pooh"
+    nexusPort = project.hasProperty("nexusPort") ? project.getProperty("nexusPort") : 8081
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -6,7 +12,7 @@ publishing {
     }
     repositories {
         maven {
-            url("http://pooh:8081/repository/maven-${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}")
+            url("http://${nexusHost}:${nexusPort}/repository/maven-${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}")
             credentials {
                 username = "admin"
                 password = "admin123"
