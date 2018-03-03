@@ -37,6 +37,7 @@ subprojects {
 }
 
 project("thule-spring-boot-starter-test") {
+    description = "Thule Spring Boot Starter Test"
     dependencies {
         compile project(":thule-test")
         compile("nl.jqno.equalsverifier:equalsverifier:2.4.3")
@@ -48,6 +49,7 @@ project("thule-spring-boot-starter-test") {
 }
 
 project("thule-spring-boot-starter-utils") {
+    description = "Thule Spring Boot Starter Utils"
     dependencies {
         compile project(":thule-utils")
 
@@ -56,6 +58,7 @@ project("thule-spring-boot-starter-utils") {
 }
 
 project("thule-test") {
+    description = "Thule Test"
     dependencies {
         compile("org.assertj:assertj-core")
         compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -68,6 +71,7 @@ project("thule-test") {
 }
 
 project("thule-utils") {
+    description = "Thule Utils"
     dependencies {
         compile("org.codehaus.janino:janino:3.0.8") // Required by logback if-condition statements in the xml configuration
         compile("org.springframework.boot:spring-boot-starter-aop")
