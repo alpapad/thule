@@ -169,6 +169,6 @@ public class DockerIntTest {
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
     }
 }
