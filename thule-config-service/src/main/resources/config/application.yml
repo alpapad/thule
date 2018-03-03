@@ -1,13 +1,7 @@
 # Spring actuator configuration
-endpoints:
-  sensitive: false
 info:
   description: Thule Config Service
   name: ${spring.application.name}
-management:
-  security:
-    # Disabled to enable health endpoint to show complete health rather than just 'status'
-    enabled: false
 
 # Spring logging
 logging:
