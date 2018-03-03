@@ -1,5 +1,5 @@
 buildscript {
-    ext["hibernate.version"] = "5.2.12.Final" // Override spring boot defined version 5.0.12.Final which contains a bug whereby auto-ddl=validate always fails
+    ext["hibernate.version"] = "5.2.12.Final" // Override spring boot defined version 5.2.14.Final which contains a bug whereby Oracle integration tests fail with a AbstractMethodError
 
     repositories {
         maven { url "http://pooh:8081/repository/maven-public" }
