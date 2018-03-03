@@ -14,7 +14,7 @@ import java.net.URI;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
-    private static final ActuatorUri PEOPLE_SERVICE_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8090/health"));
+    private static final ActuatorUri PEOPLE_SERVICE_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8090/actuator/health"));
     private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/docker-compose.yml");
 
     @BeforeClass
@@ -29,6 +29,6 @@ public class DockerIntTest {
 
     @Test
     public void people_service_is_up() {
-        assertThat(PEOPLE_SERVICE_STATUS_URI).hasStatus(Status.UP);
+        assertThat(PEOPLE_SERVICE_STATUS_URI).withCredentials("user", "user").hasStatus(Status.UP);
     }
 }

@@ -57,11 +57,11 @@ public class RepositoryReferenceDataFactory implements ReferenceDataFactory {
                 ReflectionTestUtils.setField(action, DomainModel.ENTITY_ATTRIBUTE_NAME_ID, null);
             }
         }
-        stateRepository.save(mockReferenceDataFactoryStates); // Will save state and action due to cascade on state-->action
+        stateRepository.saveAll(mockReferenceDataFactoryStates); // Will save state and action due to cascade on state-->action
         countryRepository.deleteAll();
-        countryRepository.save(mockReferenceDataFactory.getCountries().values());
+        countryRepository.saveAll(mockReferenceDataFactory.getCountries().values());
         roleRepository.deleteAll();
-        roleRepository.save(mockReferenceDataFactory.getRoles().values());
+        roleRepository.saveAll(mockReferenceDataFactory.getRoles().values());
     }
 
     @Override

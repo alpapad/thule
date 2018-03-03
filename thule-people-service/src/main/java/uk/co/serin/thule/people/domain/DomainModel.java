@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Version;
 
 @MappedSuperclass
@@ -82,8 +81,6 @@ public abstract class DomainModel {
     public static final String ENTITY_NAME_ROLES = "roles";
     public static final String ENTITY_NAME_STATE = "state";
     public static final String ENTITY_NAME_STATES = "states";
-    private static final int ID_ALLOCATION_SIZE = 1;
-    private static final int ID_INITIAL_VALUE = 1;
     private static final int UPDATED_BY_MAX_LENGTH = 100;
 
     @Column
@@ -91,8 +88,7 @@ public abstract class DomainModel {
     private LocalDateTime createdAt;
 
     @Id
-    @SequenceGenerator(name = DATABASE_SEQUENCE_UID_SEQUENCE, sequenceName = DATABASE_SEQUENCE_UID_SEQUENCE, allocationSize = ID_ALLOCATION_SIZE, initialValue = ID_INITIAL_VALUE)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = DATABASE_SEQUENCE_UID_SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

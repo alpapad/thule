@@ -6,6 +6,8 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringSecurityAuditorAwareTest {
@@ -20,10 +22,11 @@ public class SpringSecurityAuditorAwareTest {
         SpringSecurityAuditorAware springSecurityAuditorAware = new SpringSecurityAuditorAware();
 
         // When
-        String currentAuditor = springSecurityAuditorAware.getCurrentAuditor();
+        Optional<String> currentAuditor = springSecurityAuditorAware.getCurrentAuditor();
 
         // Then
-        assertThat(currentAuditor).isEqualTo(AUDITOR);
+        assertThat(currentAuditor).isPresent();
+        assertThat(currentAuditor.get()).isEqualTo(AUDITOR);
     }
 
     @After

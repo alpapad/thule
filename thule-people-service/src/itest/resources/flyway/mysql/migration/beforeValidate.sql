@@ -1,2 +1,2 @@
 -- Create flyway table to force migrations to start afresh
-DROP TABLE IF EXISTS schema_version CASCADE;
+DROP TABLE IF EXISTS flyway_schema_history CASCADE;

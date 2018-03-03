@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
@@ -25,6 +26,7 @@ import uk.co.serin.thule.people.domain.role.Role;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolationException;
@@ -32,7 +34,7 @@ import javax.validation.ConstraintViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, properties = "spring.config.location=classpath:/config/thule-people-service/")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RunWith(SpringRunner.class)
 public abstract class AbstractPersonRepositoryIntTest {
     @Autowired
@@ -50,11 +52,11 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Test(expected = LazyInitializationException.class)
     public void access_lazy_associated_photographs_outside_transaction() {
         // Given
-        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
-        person = personRepository.findOne(person.getId());
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Optional<Person> person = personRepository.findById(testPerson.getId());
 
         // When
-        new HashSet<>(person.getPhotographs());
+        new HashSet<>(person.get().getPhotographs());
 
         // Then (see expected in @Test annotation)
     }
@@ -62,11 +64,11 @@ public abstract class AbstractPersonRepositoryIntTest {
     @Test(expected = LazyInitializationException.class)
     public void access_lazy_associated_roles_outside_transaction() {
         // Given
-        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
-        person = personRepository.findOne(person.getId());
+        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        Optional<Person> person = personRepository.findById(testPerson.getId());
 
         // When
-        new HashSet<>(person.getPhotographs());
+        new HashSet<>(person.get().getPhotographs());
 
         // Then (see expected in @Test annotation)
     }
@@ -155,8 +157,8 @@ public abstract class AbstractPersonRepositoryIntTest {
         personRepository.delete(person);
 
         // Then
-        person = personRepository.findOne(person.getId());
-        assertThat(person).isNull();
+        Optional<Person> deletedPerson = personRepository.findById(person.getId());
+        assertThat(deletedPerson).isNotPresent();
     }
 
     @Test
@@ -195,10 +197,11 @@ public abstract class AbstractPersonRepositoryIntTest {
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
-        Person actualPerson = personRepository.findOne(testPerson.getId());
+        Optional<Person> actualPerson = personRepository.findById(testPerson.getId());
 
         // Then
-        assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
+        assertThat(actualPerson).isPresent();
+        assertThat(actualPerson.get()).isEqualToComparingFieldByField(expectedPerson);
     }
 
     @Test
@@ -264,7 +267,7 @@ public abstract class AbstractPersonRepositoryIntTest {
 
         // Delete previous test data
         Set<Person> people = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
-        personRepository.delete(people);
+        personRepository.deleteAll(people);
 
         // Setup security context
         Person jUnitTestPerson = testDataFactory.buildJUnitTest();

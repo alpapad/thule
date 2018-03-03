@@ -1,3 +1,5 @@
+USE thule;
+
 -- States
 DELETE FROM states;
 INSERT INTO states(code, description, version, updated_by, created_at, updated_at)

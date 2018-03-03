@@ -1,16 +1,9 @@
 buildscript {
     ext["hibernate.version"] = "5.2.12.Final" // Override spring boot defined version 5.0.12.Final which contains a bug whereby auto-ddl=validate always fails
-    ext["jackson.version"] = "2.9.4"          // Override spring boot defined version 2.8.10 which fixes a bug where the JsonProperty access attribute is ignored
 
-    apply from: "${rootDir}/../gradle/repo-config.gradle", to: buildscript
-
-    // Dependencies for non-core plugins
-    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
-    // see https://github.com/gradle/gradle/issues/1894
-    dependencies {
-        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
-            changing = true
-        }
+    repositories {
+        maven { url "http://pooh:8081/repository/maven-public" }
+        mavenLocal()
     }
 
     // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
@@ -26,18 +19,17 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.6.2"
-    id "org.springframework.boot" version "1.5.10.RELEASE"
+    id "org.springframework.boot" version "2.0.0.RELEASE"
 }
 apply plugin: "io.spring.dependency-management"
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
 apply from: "${rootDir}/../gradle/build-config.gradle"
-apply from: "${rootDir}/../gradle/plugin-docker-with-spring-boot-1.5.x-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
-apply from: "${rootDir}/../gradle/plugin-spring-boot-with-spring-boot-1.5.x-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"
 
 // Non-standard Serin gradle plugin config
 sonarqube {
@@ -53,16 +45,12 @@ sonarqube {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Edgware.RELEASE")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.M8")
     }
 }
 
 dependencies {
-    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
-        changing = true
-    }
-    // Spring boot will add java8 java.util.time Jackson support when this dependency has been added
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") { changing = true }
     compile("com.googlecode.log4jdbc:log4jdbc:1.2")
     compile("com.h2database:h2")
     compile("net.logstash.logback:logstash-logback-encoder:5.0")
@@ -76,19 +64,17 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-validation")
     compile("org.springframework.cloud:spring-cloud-starter-config")
-    compile("org.springframework.cloud:spring-cloud-starter-eureka")
-    compile("org.springframework.cloud:spring-cloud-starter-feign")
+    compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    compile("org.springframework.cloud:spring-cloud-starter-openfeign")
     compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     compile("org.springframework.cloud:spring-cloud-starter-zipkin")
     compile("org.springframework.data:spring-data-rest-hal-browser")
     // Required to retry connecting to the discovery server when it is not available at startup
     compile("org.springframework.retry:spring-retry")
 
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") {
-        changing = true
-    }
-    testCompile("com.googlecode.log4jdbc:log4jdbc:1.2")
-    testCompile("com.oracle:ojdbc6:11.2.0.1.0")
-    testCompile("mysql:mysql-connector-java")
-    testCompile("org.hsqldb:hsqldb")
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") { changing = true }
+
+    itestCompile("com.oracle:ojdbc6:11.2.0.1.0")
+    itestCompile("mysql:mysql-connector-java")
+    itestCompile("org.hsqldb:hsqldb")
 }
