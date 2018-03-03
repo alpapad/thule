@@ -1,13 +1,7 @@
 buildscript {
-    apply from: "${rootDir}/../gradle/repo-config.gradle", to: buildscript
-
-    // Dependencies for non-core plugins
-    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
-    // see https://github.com/gradle/gradle/issues/1894
-    dependencies {
-        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") {
-            changing = true
-        }
+    repositories {
+        maven { url "http://pooh:8081/repository/maven-public" }
+        mavenLocal()
     }
 
     // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
@@ -25,7 +19,6 @@ plugins {
     id "org.springframework.boot" version "2.0.0.RELEASE"
 }
 apply plugin: "io.spring.dependency-management"
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
 apply from: "${rootDir}/../gradle/build-config.gradle"
@@ -45,15 +38,11 @@ sonarqube {
 }
 
 dependencies {
-    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") {
-        changing = true
-    }
+    compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") { changing = true }
     compile("net.logstash.logback:logstash-logback-encoder:5.0")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-logging")
     compile("org.springframework.boot:spring-boot-starter-validation")
 
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") {
-        changing = true
-    }
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") { changing = true }
 }

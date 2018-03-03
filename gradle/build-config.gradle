@@ -1,5 +1,8 @@
 // Define repos
-apply from: "${rootDir}/../gradle/repo-config.gradle"
+repositories {
+    maven { url "http://pooh:8081/repository/maven-public" }
+    mavenLocal()
+}
 
 // Integration test configuration
 configurations {

@@ -1,11 +1,7 @@
 buildscript {
-    apply from: "${rootDir}/../gradle/repo-config.gradle", to: buildscript
-
-    // Dependencies for non-core plugins
-    // Note: These dependencies must reside in a buildscript block that is *not* within a script plugin
-    // see https://github.com/gradle/gradle/issues/1894
-    dependencies {
-        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT") { changing = true }
+    repositories {
+        maven { url "http://pooh:8081/repository/maven-public" }
+        mavenLocal()
     }
 
     // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
@@ -27,7 +23,6 @@ subprojects {
     apply plugin: "maven-publish"
     apply plugin: "org.sonarqube"
     apply plugin: "org.springframework.boot"
-    apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
     // Standard Serin gradle plugin config
     apply from: "${rootDir}/../gradle/build-config.gradle"
@@ -76,11 +71,8 @@ project("thule-utils") {
     dependencies {
         compile("org.codehaus.janino:janino:3.0.8") // Required by logback if-condition statements in the xml configuration
         compile("org.springframework.boot:spring-boot-starter-aop")
-        compile("org.springframework.boot:spring-boot-starter-jetty")
         compile("org.springframework.boot:spring-boot-starter-logging")
-        compile("org.springframework.boot:spring-boot-starter-web") {
-            exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
-        }
+        compile("org.springframework.boot:spring-boot-starter-web") 
 
         testCompile project(":thule-spring-boot-starter-test")
     }
