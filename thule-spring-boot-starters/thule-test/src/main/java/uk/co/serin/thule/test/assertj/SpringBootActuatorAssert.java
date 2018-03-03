@@ -7,12 +7,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("squid:S2160") // Suppress Subclasses that add fields should override "equals"
@@ -60,5 +65,18 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
 
             return responseEntity;
         });
+    }
+
+    public SpringBootActuatorAssert withCredentials(String username, String password) {
+        Assert.hasLength(username, "username cannot be empty");
+        Assert.hasLength(password, "password cannot be empty");
+
+        List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
+        interceptors = new ArrayList<>(interceptors);
+        interceptors.removeIf(BasicAuthorizationInterceptor.class::isInstance);
+        interceptors.add(new BasicAuthorizationInterceptor(username, password));
+        restTemplate.setInterceptors(interceptors);
+
+        return this;
     }
 }

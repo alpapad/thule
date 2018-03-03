@@ -116,4 +116,19 @@ public class SpringBootActuatorAssertTest {
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();
     }
+
+    @Test
+    public void withCredentials() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+
+        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+
+        // When
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.withCredentials("username", "password");
+
+        // Then
+        assertThat(actualSpringBootActuatorAssert).isNotNull();
+    }
 }
