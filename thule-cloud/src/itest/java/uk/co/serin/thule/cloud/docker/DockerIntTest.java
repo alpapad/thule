@@ -107,7 +107,7 @@ public class DockerIntTest {
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).withCredentials("user", "user").hasStatus(Status.UP);
 
         // When
         ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE);
@@ -129,7 +129,7 @@ public class DockerIntTest {
         }
         interceptors = new ArrayList<>(interceptors);
         interceptors.removeIf(BasicAuthorizationInterceptor.class::isInstance);
-        interceptors.add(new BasicAuthorizationInterceptor("admin", "admin"));
+        interceptors.add(new BasicAuthorizationInterceptor("user", "user"));
         restTemplate.setInterceptors(interceptors);
 
         // Setup retryTemplate
