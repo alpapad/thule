@@ -1,45 +1,36 @@
 package uk.co.serin.thule.people;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Map;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalWebSecurityConfigurerTest {
     @Mock
-    private ApplicationContext applicationContext;
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
     @InjectMocks
     private GlobalWebSecurityConfigurer globalWebSecurityConfigurer;
+    @InjectMocks
+    private HttpSecurity httpSecurity;
     @Mock
     private ObjectPostProcessor objectPostProcessor;
-    @InjectMocks
-    private WebSecurity webSecurity;
+    @Mock
+    private Map<Class<? extends Object>, Object> sharedObjects;
 
     @Test
-    public void configurer_ignores_http_options_method() {
+    public void configurer_ignores_http_options_method() throws Exception {
         // Given
 
         // When
-        globalWebSecurityConfigurer.configure(webSecurity);
+        globalWebSecurityConfigurer.configure(httpSecurity);
 
-        // Then
-        List ignoredRequests = List.class.cast(ReflectionTestUtils.getField(webSecurity, "ignoredRequests"));
-        assertThat(ignoredRequests).hasSize(1);
-    }
-
-    @Before
-    public void setUp() {
-        webSecurity.setApplicationContext(applicationContext);
+        // Then (the test is successful if no exception has been thrown!!)
     }
 }

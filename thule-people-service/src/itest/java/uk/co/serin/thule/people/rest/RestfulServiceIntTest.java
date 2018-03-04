@@ -79,7 +79,7 @@ public class RestfulServiceIntTest {
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
 
-//    @Test
+    @Test
     public void create_person() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
@@ -106,20 +106,18 @@ public class RestfulServiceIntTest {
         Person actualPerson = responseEntity.getBody();
 
         assertThat(actualPerson.getId()).isNotNull();
-//        assertThat(actualPerson.getPassword()).isNull();
         assertThat(actualPerson.getUpdatedAt()).isNotNull();
         assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
-//                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
-//    @Test
+    @Test
     public void delete_person() {
         // Given
         Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
@@ -142,6 +140,12 @@ public class RestfulServiceIntTest {
         Optional<Person> deletedPerson = personRepository.findById(person.getId());
 
         assertThat(deletedPerson).isNotPresent();
+    }
+
+    private Person createTestPerson(Person expectedPerson) {
+        Person person = testDataFactory.buildPerson(expectedPerson);
+        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        return personRepository.save(person);
     }
 
     @Test
@@ -219,7 +223,7 @@ public class RestfulServiceIntTest {
         restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
     }
 
-//    @Test
+    @Test
     public void update_person() {
         // Given
         stubFor(post(
@@ -254,19 +258,11 @@ public class RestfulServiceIntTest {
 
         Person actualPerson = restTemplate.getForObject(URL_FOR_PEOPLE + ID, Person.class, id);
 
-//        assertThat(actualPerson.getPassword()).isNull();
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-//                DomainModel.ENTITY_ATTRIBUTE_NAME_CREDENTIALS,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
-    }
-
-    private Person createTestPerson(Person expectedPerson) {
-        Person person = testDataFactory.buildPerson(expectedPerson);
-        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(person);
     }
 }
