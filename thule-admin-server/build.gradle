@@ -44,8 +44,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator")
     // Without aop, spring-retry will not work, see https://github.com/spring-projects/spring-retry/issues/52
     compile("org.springframework.boot:spring-boot-starter-aop")
-    compile("org.springframework.cloud:spring-cloud-starter-config")
     compile("org.springframework.boot:spring-boot-starter-logging")
+    compile("org.springframework.cloud:spring-cloud-starter-config")
     compile("org.springframework.cloud:spring-cloud-starter-eureka")
     compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     compile("org.springframework.cloud:spring-cloud-starter-zipkin")
