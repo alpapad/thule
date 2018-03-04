@@ -22,7 +22,6 @@ import uk.co.serin.thule.utils.utils.DockerCompose;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -124,9 +123,6 @@ public class DockerIntTest {
         // Setup restTemplate
         RestTemplate restTemplate = new RestTemplate();
         List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
-        if (interceptors == null) {
-            interceptors = Collections.emptyList();
-        }
         interceptors = new ArrayList<>(interceptors);
         interceptors.removeIf(BasicAuthorizationInterceptor.class::isInstance);
         interceptors.add(new BasicAuthorizationInterceptor("user", "user"));

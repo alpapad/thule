@@ -43,7 +43,7 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         isNotNull();
 
         try {
-            ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(actual.getUri(), restTemplate);
+            ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(actual.getUri());
             if (!responseEntity.getBody().get(STATUS).equals(status.getCode())) {
                 throw new AssertionError(String.format("Expected actuator's status to be <%s> but was <%s>", status.getCode(), responseEntity.getBody().get(STATUS)));
             }
@@ -54,7 +54,7 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         return this;
     }
 
-    private ResponseEntity<Map<String, Object>> getResponseEntity(URI uri, RestTemplate restTemplate) {
+    private ResponseEntity<Map<String, Object>> getResponseEntity(URI uri) {
         return retryTemplate.execute(context -> {
             ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
             };
