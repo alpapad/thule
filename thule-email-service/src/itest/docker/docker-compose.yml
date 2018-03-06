@@ -7,7 +7,7 @@ services:
       EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
-      TZ: Europe/London
+      TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
