@@ -21,9 +21,10 @@ sourceSets {
         resources.srcDir file("src/itest/resources")
     }
 }
-task itest(type: Test, dependsOn: testClasses) {
+task itest(type: Test) {
     testClassesDirs = sourceSets.itest.output.classesDirs
     classpath = sourceSets.itest.runtimeClasspath
+    mustRunAfter tasks.test
 }
 
 // Test configuration
