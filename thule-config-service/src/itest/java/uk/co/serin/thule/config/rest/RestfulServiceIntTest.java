@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("itest")
+@ActiveProfiles({"itest", "${spring.profiles.include:itest}"})
 @RunWith(SpringRunner.class)
 public class RestfulServiceIntTest {
     @Autowired
