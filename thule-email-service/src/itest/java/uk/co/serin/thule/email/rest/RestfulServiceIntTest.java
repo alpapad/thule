@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("itest")
+@ActiveProfiles({"itest", "${spring.profiles.include:itest}"})
 @RunWith(SpringRunner.class)
 public class RestfulServiceIntTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
