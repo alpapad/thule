@@ -4,9 +4,6 @@ repositories {
     mavenLocal()
 }
 
-// Properties
-group = "uk.co.serin.thule"
-
 // Include bespoke gradle config
 apply from: "${rootDir}/../gradle/build-gitflow-config.gradle"
 apply from: "${rootDir}/../gradle/build-itest-config.gradle"
