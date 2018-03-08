@@ -1,0 +1,56 @@
+// Gitflow rules
+ext {
+    branch = getBranch()
+    branchType = (branch =~ /([^\/]+)/)[0][1]
+    mavenDeployTarget = getDeployTarget(branch)
+    isSnapshotVersion = project.version.endsWith('-SNAPSHOT')
+}
+
+def getBranch() {
+    return "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+}
+
+def getDeployTarget(branch) {
+    switch (branch) {
+        case ~/^(master)/:
+            return 'release'
+        case ~/^(release.*|hotfix.*)/:
+            return 'staging'
+        case ~/^(develop)/:
+            return 'snapshot'
+        default:
+            return 'none'
+    }
+}
+
+// Fail the build if the version is not compatible with the branch type, for example:
+// master must be a release version, i.e. non-SNAPSHOT
+// release must be a release version, i.e. non-SNAPSHOT and branch name pattern matches version
+// hotfix must be a release version, i.e. non-SNAPSHOT and branch name pattern matches version
+// Everything except master, release and hotfix must be a SNAPSHOT version
+//if ((branchType == "master" || branchType == "release" || branchType == "hotfix") && isSnapshotVersion) {
+if (branchType == "master" || branchType == "release" || branchType == "hotfix") {
+    if (isSnapshotVersion) {
+        throw new GradleException("\n*** GIT branch [$branch] is not allowed to publish a SNAPSHOT version ***")
+    }
+} else {
+    if (!isSnapshotVersion) {
+        throw new GradleException("\n*** GIT branch [$branch] is not allowed to publish a RELEASE version ***")
+    }
+}
+if ((branchType == "release" || branchType == "hotfix") && branch != branchType + "/" + version) {
+    throw new GradleException("\n*** GIT branch [$branch] version does not match gradle version [$version] ***")
+}
+
+// Disable publishing to maven if we are building a version not destined for a nexus repo,
+// for example, a feature or bugfix branch
+if (mavenDeployTarget == "none") {
+    publish.onlyIf { false }
+    // Task publishMavenJavaPublicationToMavenRepository is added dynamically during the
+    // configuration phase. Disable it with the following closure.
+    tasks.whenTaskAdded { t ->
+        if (t.name == "publishMavenJavaPublicationToMavenRepository") {
+            t.onlyIf { false }
+        }
+    }
+}

@@ -1,63 +1,19 @@
 // Define repos
 repositories {
-    maven { url "http://pooh:8081/repository/maven-public" }
+    maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
     mavenLocal()
 }
 
 // Properties
 group = "uk.co.serin.thule"
 
-// Integration test configuration
-configurations {
-    itestCompile.extendsFrom testCompile
-    itestRuntime.extendsFrom testRuntime
-}
-sourceSets {
-    itest {
-        compileClasspath += main.output + test.output
-        runtimeClasspath += main.output + test.output
+// Include bespoke gradle config
+apply from: "${rootDir}/../gradle/build-gitflow-config.gradle"
+apply from: "${rootDir}/../gradle/build-itest-config.gradle"
+apply from: "${rootDir}/../gradle/build-test-config.gradle"
 
-        java.srcDir file("src/itest/java")
-        resources.srcDir file("src/itest/resources")
-    }
-}
-task itest(type: Test) {
-    testClassesDirs = sourceSets.itest.output.classesDirs
-    classpath = sourceSets.itest.runtimeClasspath
-
-    // Propogate any system properties to the integration tests, e.g. spring.profiles.include
-    systemProperties(System.getProperties())
-
-    // Must after the unit tests
-    mustRunAfter tasks.test
-}
-
-// Test configuration
-// Log test results summary
-tasks.withType(Test) {
-    testLogging {
-        // Set options for log level LIFECYCLE
-        events "passed", "skipped", "failed", "standardOut"
-        exceptionFormat "short"
-        showCauses true
-        showExceptions true
-        showStackTraces true
-
-        // Set options for log level DEBUG and INFO
-        debug {
-            events "started", "passed", "skipped", "failed", "standardOut", "standardError"
-            exceptionFormat "full"
-        }
-        info.events = debug.events
-        info.exceptionFormat = debug.exceptionFormat
-
-        afterSuite { desc, result ->
-            if (!desc.parent) { // Will match the outermost suite
-                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
-                def startItem = "|  ", endItem = "  |"
-                def repeatLength = startItem.length() + output.length() + endItem.length()
-                println("\n" + ("-" * repeatLength) + "\n" + startItem + output + endItem + "\n" + ("-" * repeatLength))
-            }
-        }
-    }
-}
+// Include bespoke gradle plugin config
+apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-sonarqube-config.gradle"
+apply from: "${rootDir}/../gradle/plugin-spring-boot-config.gradle"

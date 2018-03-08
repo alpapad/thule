@@ -1,7 +1,7 @@
 ext {
-    // Set default values for properties that can be overridden
-    nexusHost = project.hasProperty("nexusHost") ? project.getProperty("nexusHost") : "pooh"
-    nexusPort = project.hasProperty("nexusPort") ? project.getProperty("nexusPort") : 8081
+    defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
+    mavenDeployTarget = project.hasProperty("mavenDeployTarget") ? project.getProperty("mavenDeployTarget").toLowerCase() : defaultMavenRepoType
+    mavenRepoUrl = "http://$nexusHost:$nexusPort/repository/maven-$mavenDeployTarget"
 }
 
 publishing {
@@ -12,7 +12,7 @@ publishing {
     }
     repositories {
         maven {
-            url("http://${nexusHost}:${nexusPort}/repository/maven-${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}")
+            url(mavenRepoUrl)
             credentials {
                 username = "admin"
                 password = "admin123"
