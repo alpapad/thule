@@ -17,7 +17,7 @@ def getDeployTarget(branch) {
         case ~/^(release.*|hotfix.*)/:
             return 'staging'
         case ~/^(develop)/:
-            return 'snapshot'
+            return 'snapshots'
         default:
             return 'none'
     }
