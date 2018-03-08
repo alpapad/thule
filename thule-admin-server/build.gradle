@@ -22,9 +22,7 @@ plugins {
 apply plugin: "io.spring.dependency-management"
 
 // Standard Serin gradle plugin config
-apply from: "${rootDir}/../gradle/build-config.gradle"
-apply from: "${rootDir}/../gradle/plugin-docker-with-spring-boot-1.5.x-config.gradle"
-apply from: "${rootDir}/../gradle/plugin-spring-boot-with-spring-boot-1.5.x-config.gradle"
+apply from: "${rootDir}/../gradle/build-config-with-spring-boot-1.5.x-config.gradle"
 
 dependencyManagement {
     imports {

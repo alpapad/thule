@@ -12,6 +12,7 @@ buildscript {
 
 plugins {
     id "com.github.ben-manes.versions" version "0.17.0"
+    id "com.palantir.docker" version "0.19.2"
     id "jacoco"
     id "java"
     id "maven-publish"
@@ -24,6 +25,7 @@ apply plugin: "io.spring.dependency-management"
 apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Non-standard Serin gradle plugin config
+tasks.docker.onlyIf { false } // Don't need a docker container
 bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
 jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 sonarqube {
