@@ -19,6 +19,7 @@ plugins {
 
 subprojects {
     apply plugin: "com.github.ben-manes.versions"
+    apply plugin: "com.palantir.docker"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "jacoco"
     apply plugin: "java"
