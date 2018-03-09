@@ -24,6 +24,7 @@ apply plugin: "io.spring.dependency-management"
 // Standard Serin gradle plugin config
 apply from: "${rootDir}/../gradle/build-config-with-spring-boot-1.5.x-config.gradle"
 
+// Dependencies
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:Edgware.RELEASE")

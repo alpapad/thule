@@ -16,9 +16,6 @@ task itest(type: Test) {
     testClassesDirs = sourceSets.itest.output.classesDirs
     classpath = sourceSets.itest.runtimeClasspath
 
-    // Propogate any system properties to the integration tests, e.g. spring.profiles.include
-    systemProperties(System.getProperties())
-
-    // Must after the unit tests
+    // Must run after the unit tests
     mustRunAfter tasks.test
 }
