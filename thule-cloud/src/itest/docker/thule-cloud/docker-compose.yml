@@ -1,11 +1,11 @@
 version: "3.5"
 services:
   ################################  thule-admin-server  ################################
-  thule-cloud-admin-server:
+  thule-admin-server:
     image: pooh:8082/thule-admin-server
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
-      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
+      THULE_CONFIG_SERVICE_HOST: thule-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
@@ -18,10 +18,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   ################################  thule-config-service  ################################
-  thule-cloud-config-service:
+  thule-config-service:
     image: pooh:8082/thule-config-service
     environment:
-      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
@@ -34,10 +34,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   ################################  thule-discovery-service  ################################
-  thule-cloud-discovery-service:
+  thule-discovery-service:
     image: pooh:8082/thule-discovery-service
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
+      THULE_CONFIG_SERVICE_HOST: thule-config-service
       TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
@@ -50,11 +50,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   ################################  thule-edge-server  ################################
-  thule-cloud-edge-server:
+  thule-edge-server:
     image: pooh:8082/thule-edge-server
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
-      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
+      THULE_CONFIG_SERVICE_HOST: thule-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
@@ -67,11 +67,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   ################################  thule-email-server  ################################
-  thule-cloud-email-service:
+  thule-email-service:
     image: pooh:8082/thule-email-service
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
-      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
+      THULE_CONFIG_SERVICE_HOST: thule-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
@@ -84,11 +84,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
   ################################  thule-people-service  ################################
-  thule-cloud-people-service:
+  thule-people-service:
     image: pooh:8082/thule-people-service
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-cloud-config-service
-      THULE_DISCOVERY_SERVICE_HOST: thule-cloud-discovery-service
+      THULE_CONFIG_SERVICE_HOST: thule-config-service
+      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       TZ: UTC
     extra_hosts:
       - logstash-host:172.17.0.1
