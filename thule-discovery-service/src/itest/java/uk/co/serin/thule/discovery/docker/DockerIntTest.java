@@ -15,7 +15,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
     private static final ActuatorUri DISCOVERY_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8761/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-discovery-service/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {

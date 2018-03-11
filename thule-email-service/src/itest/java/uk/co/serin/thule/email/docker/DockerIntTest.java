@@ -15,7 +15,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class DockerIntTest {
     private static final ActuatorUri EMAIL_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8091/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-email-service/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
