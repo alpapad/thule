@@ -140,15 +140,11 @@ public class PersonRepositoryIntTest {
             int mongodbPort = env.getRequiredProperty("thule.thule-repository-mongodb.mongodb-port", Integer.class);
 
             // Wait until MongoDB is available
-            with().pollInterval(fibonacci()).
+            with().ignoreExceptions().pollInterval(fibonacci()).
                     await().timeout(Duration.FIVE_MINUTES).
                     until(() -> {
-                        try {
-                            new Socket(mongodbHost, mongodbPort).close();
-                            return true;
-                        } catch (Exception e) {
-                            return false;
-                        }
+                        new Socket(mongodbHost, mongodbPort).close();
+                        return true;
                     });
             mongodbIsUp = true;
         }
