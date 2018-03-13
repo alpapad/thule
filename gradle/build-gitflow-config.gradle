@@ -7,13 +7,19 @@ ext {
 }
 
 def getBranch() {
-    return "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+    def branch = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "rev-parse", "--abbrev-ref", "HEAD"
+        standardOutput = branch
+    }
+
+    return branch.toString().trim()
 }
 
 def getDeployTarget(branch) {
     switch (branch) {
         case ~/^(master)/:
-            return 'release'
+            return 'releases'
         case ~/^(release.*|hotfix.*)/:
             return 'staging'
         case ~/^(develop)/:
@@ -27,8 +33,7 @@ def getDeployTarget(branch) {
 // master must be a release version, i.e. non-SNAPSHOT
 // release must be a release version, i.e. non-SNAPSHOT and branch name pattern matches version
 // hotfix must be a release version, i.e. non-SNAPSHOT and branch name pattern matches version
-// Everything except master, release and hotfix must be a SNAPSHOT version
-//if ((branchType == "master" || branchType == "release" || branchType == "hotfix") && isSnapshotVersion) {
+// everything except master, release and hotfix must be a SNAPSHOT version
 if (branchType == "master" || branchType == "release" || branchType == "hotfix") {
     if (isSnapshotVersion) {
         throw new GradleException("\n*** GIT branch [$branch] is not allowed to publish a SNAPSHOT version ***")
@@ -48,9 +53,68 @@ if (mavenDeployTarget == "none") {
     publish.onlyIf { false }
     // Task publishMavenJavaPublicationToMavenRepository is added dynamically during the
     // configuration phase. Disable it with the following closure.
-    tasks.whenTaskAdded { t ->
-        if (t.name == "publishMavenJavaPublicationToMavenRepository") {
-            t.onlyIf { false }
+    tasks.whenTaskAdded { task ->
+        if (task.name == "publishMavenJavaPublicationToMavenRepository") {
+            task.onlyIf { false }
+        }
+    }
+}
+
+// Download the pre-built artifact from Nexus staging ready for publishing to Nexus release
+if (branchType == "master") {
+    // Disable any build related tasks if the branch is master
+    afterEvaluate { project ->
+        project.tasks.collect { task ->
+            if (task.name != "clean" && !task.name.startsWith("publish") && !task.name.startsWith("gitflow")) {
+                task.onlyIf { false }
+            }
+        }
+    }
+
+    // Download the pre-built artifact from Nexus staging
+    task gitflowDownloadArtifactFromStaging() {
+        publish.dependsOn tasks.gitflowDownloadArtifactFromStaging
+
+        doLast {
+            // Define the dependencies configuration ignoring all transitive dependencies, i.e. we only
+            // require the actual uber jar that has been pre-built and deployed into Nexus staging
+            configurations {
+                staging { transitive = false }
+            }
+
+            // Gradle will not resolve the artifact from Nexus if the artifact is built by this module,
+            // i.e. the group, name and version we need to download matches the group, name and version of
+            // this module. To overcome this restriction, we will 'hide' this group name from gradle to
+            // fool it into allowing us to download the pre-built artifact from Nexus
+            def actualProjectGroup=project.group
+            project.group = "hidden"
+
+            // Define the pre-built artifact to download from Nexus staging
+            dependencies {
+                staging("$actualProjectGroup:$project.name:$project.version") { changing = true }
+            }
+
+            copy {
+                from configurations.staging
+                into "$buildDir/libs"
+            }
+
+            // Unhide the group name
+            project.group=actualProjectGroup
+        }
+    }
+
+    // Tag the version
+    task gitflowTag(dependsOn: publish) {
+        publish.finalizedBy gitflowTag
+
+        doLast {
+            exec {
+                commandLine "git", "tag", "--force", "--annotate", "$version", "--message", "$version"
+            }
+            exec {
+                commandLine "git", "push", "--force", "--tags"
+            }
         }
     }
 }
