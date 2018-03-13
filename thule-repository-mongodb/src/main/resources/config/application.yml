@@ -8,4 +8,4 @@ logging:
 spring:
   data:
     mongodb:
-      uri: mongodb://mongo-host/test
+      uri: mongodb://docker-host/test

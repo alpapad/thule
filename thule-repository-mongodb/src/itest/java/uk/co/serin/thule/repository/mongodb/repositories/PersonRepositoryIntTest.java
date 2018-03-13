@@ -1,6 +1,8 @@
 package uk.co.serin.thule.repository.mongodb.repositories;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.repository.mongodb.domain.Person;
 import uk.co.serin.thule.repository.mongodb.domain.PersonFactory;
+import uk.co.serin.thule.utils.utils.DockerCompose;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
@@ -19,8 +23,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonRepositoryIntTest {
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-repository-mongodb/docker-compose.yml");
     @Autowired
     private PersonRepository personRepository;
+
+    @BeforeClass
+    public static void setUpClass() throws IOException {
+        dockerCompose.downAndUp();
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws IOException {
+        dockerCompose.down();
+    }
 
     @Test
     public void create() {

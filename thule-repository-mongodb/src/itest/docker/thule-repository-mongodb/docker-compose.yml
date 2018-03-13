@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  ################################  Servers and Databases Required By Integration Tests  ################################
+  mongo:
+    image: mongo
+    environment:
+      TZ: UTC
+    ports:
+      - 27017:27017
+    restart: always
+    volumes:
+      # Set localtime on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
+
