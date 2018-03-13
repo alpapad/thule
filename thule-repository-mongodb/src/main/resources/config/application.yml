@@ -8,4 +8,9 @@ logging:
 spring:
   data:
     mongodb:
-      uri: mongodb://docker-host/test
+      uri: mongodb://${thule.thule-repository-mongodb.mongodb-host}:${thule.thule-repository-mongodb.mongodb-port}/test
+
+thule:
+  thule-repository-mongodb:
+    mongodb-host: docker-host
+    mongodb-port: 27017
