@@ -142,10 +142,7 @@ public class PersonRepositoryIntTest {
             // Wait until MongoDB is available
             with().ignoreExceptions().pollInterval(fibonacci()).
                     await().timeout(Duration.FIVE_MINUTES).
-                    until(() -> {
-                        new Socket(mongodbHost, mongodbPort).close();
-                        return true;
-                    });
+                    untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
             mongodbIsUp = true;
         }
 
