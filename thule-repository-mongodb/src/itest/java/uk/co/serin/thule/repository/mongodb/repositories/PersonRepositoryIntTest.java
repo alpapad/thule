@@ -21,7 +21,7 @@ import java.util.Optional;
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.with;
+import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 @RunWith(SpringRunner.class)
@@ -140,7 +140,7 @@ public class PersonRepositoryIntTest {
             int mongodbPort = env.getRequiredProperty("thule.thule-repository-mongodb.mongodb-port", Integer.class);
 
             // Wait until MongoDB is available
-            with().ignoreExceptions().pollInterval(fibonacci()).
+            given().ignoreExceptions().pollInterval(fibonacci()).
                     await().timeout(Duration.FIVE_MINUTES).
                     untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
             mongodbIsUp = true;
