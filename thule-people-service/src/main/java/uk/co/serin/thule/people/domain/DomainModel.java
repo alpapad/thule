@@ -94,8 +94,8 @@ public abstract class DomainModel {
     @Column
     @LastModifiedDate
     private LocalDateTime updatedAt;
-    @Column(length = UPDATED_BY_MAX_LENGTH)
 
+    @Column(length = UPDATED_BY_MAX_LENGTH)
     @LastModifiedBy
     private String updatedBy;
 
