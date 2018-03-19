@@ -56,7 +56,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles({"itest", "${spring.profiles.include:itest}"})
+@ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 // Spring doc very clear but to override the default location (src/test/resources) of the response
 // files, you *must* specify them under META-INF!
 @AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)
