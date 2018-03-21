@@ -25,7 +25,6 @@ import javax.validation.constraints.Size;
 @Table(name = DomainModel.ENTITY_NAME_PHOTOGRAPHS)
 public final class Photograph extends DomainModel {
     private static final int HASH_MAX_LENGTH = 255;
-    private static final int PHOTO_MAX_LENGTH = 4096;
 
     @Column
     @NotNull

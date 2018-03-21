@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -85,6 +87,7 @@ public abstract class DomainModel {
 
     @Column
     @CreatedDate
+    @NotNull
     private LocalDateTime createdAt;
 
     @Id
@@ -93,10 +96,13 @@ public abstract class DomainModel {
 
     @Column
     @LastModifiedDate
+    @NotNull
     private LocalDateTime updatedAt;
 
     @Column
     @LastModifiedBy
+    @NotNull
+    @Size(max = UPDATED_BY_MAX_LENGTH)
     private String updatedBy;
 
     @Version
