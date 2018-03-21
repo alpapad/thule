@@ -1,19 +1,23 @@
 package uk.co.serin.thule.people.repository.repositories;
 
-import org.hibernate.LazyInitializationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
+import uk.co.serin.thule.people.ApplicationConfigurer;
+import uk.co.serin.thule.people.FlywayConfigurer;
 import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactories.TestDataFactory;
@@ -22,9 +26,8 @@ import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.Photograph;
-import uk.co.serin.thule.people.domain.role.Role;
+import uk.co.serin.thule.people.repository.support.SpringSecurityAuditorAware;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +37,20 @@ import javax.validation.ConstraintViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+/**
+ * Abstract class for tetsing the repository in both MySql and H2
+ *
+ * This test uses @DataJpaTest to test boot just the required parts of Spring Boot for JPA
+ * repository testing. It does this by disabling auto configuration (including the use of
+ *
+ * @Configuration) and using select auto configuration classes. However, this results in JPA
+ * Auditing not being configured because it is enabled in a @Configuration class! Therefore
+ * it needs to be enabled here.
+ */
+@DataJpaTest
+@Commit
+@Transactional
+@Import({ApplicationConfigurer.class, FlywayConfigurer.class})
 @RunWith(SpringRunner.class)
 public abstract class AbstractPersonRepositoryIntTest {
     @Autowired
@@ -49,47 +65,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
 
-    @Test(expected = LazyInitializationException.class)
-    public void access_lazy_associated_photographs_outside_transaction() {
-        // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
-        Optional<Person> person = personRepository.findById(testPerson.getId());
-
-        // When
-        new HashSet<>(person.get().getPhotographs());
-
-        // Then (see expected in @Test annotation)
-    }
-
-    @Test(expected = LazyInitializationException.class)
-    public void access_lazy_associated_roles_outside_transaction() {
-        // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
-        Optional<Person> person = personRepository.findById(testPerson.getId());
-
-        // When
-        new HashSet<>(person.get().getPhotographs());
-
-        // Then (see expected in @Test annotation)
-    }
-
     @Test
-    public void access_prefetched_associations_outside_transaction() {
-        // Given
-        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
-        person = personRepository.findByIdAndFetchAllAssociations(person.getId());
-
-        // When
-        Set<Photograph> photographs = person.getPhotographs();
-        Set<Role> roles = person.getRoles();
-
-        // Then
-        assertThat(new HashSet<>(photographs)).isNotEmpty();
-        assertThat(new HashSet<>(roles)).isNotEmpty();
-    }
-
-    @Test
-    @Transactional
     public void create() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithAllAssociations();
@@ -128,6 +104,7 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
+    @Rollback
     public void create_a_person_violating_validation_constraints() {
         // Given
         Person person = new Person("userId");
@@ -148,7 +125,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void delete() {
         // Given
         Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -162,7 +138,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void findAll() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -176,7 +151,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void find_by_criteria() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -190,7 +164,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void find_by_id() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -205,7 +178,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void find_by_id_and_fetch_all_associations() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -219,7 +191,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void find_by_updated_by() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -233,7 +204,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void find_by_userid() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -247,7 +217,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void search_people() {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -276,7 +245,6 @@ public abstract class AbstractPersonRepositoryIntTest {
     }
 
     @Test
-    @Transactional
     public void update() throws InterruptedException {
         // Given
         Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
@@ -304,5 +272,12 @@ public abstract class AbstractPersonRepositoryIntTest {
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    }
+
+    private static class PersonRepositoryIntTestConfiguration {
+        @Bean
+        public SpringSecurityAuditorAware springSecurityAuditorAware() {
+            return new SpringSecurityAuditorAware();
+        }
     }
 }
