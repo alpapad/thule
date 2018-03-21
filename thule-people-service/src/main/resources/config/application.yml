@@ -32,9 +32,8 @@ server:
 spring:
   application:
     name: thule-people-service
-  datasource:
-    driver-class-name: net.sf.log4jdbc.DriverSpy
-    url: jdbc:log4jdbc:h2:mem:testdb
+  flyway:
+    enabled: false
   security:
     user:
       password: user

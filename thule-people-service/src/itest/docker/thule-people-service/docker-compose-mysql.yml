@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  ################################  Servers and Databases Required By Integration Tests  ################################
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: UTC
+    ports:
+      - 3307:3306
+    restart: always
+    volumes:
+      # Set localtime on container to be the same as the host
+      - /etc/localtime:/etc/localtime:ro
