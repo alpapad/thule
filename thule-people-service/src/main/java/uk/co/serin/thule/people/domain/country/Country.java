@@ -20,22 +20,22 @@ public final class Country extends DomainModel {
     private static final int ISO_CODE_TWO_DIGIT_MAX_LENGTH = 2;
     private static final int ISO_NAME_MAX_LENGTH = 100;
 
-    @Column(length = ISO_CODE_THREE_DIGIT_MAX_LENGTH, nullable = false, unique = true)
+    @Column
     @NotNull
     @Size(max = ISO_CODE_THREE_DIGIT_MAX_LENGTH)
     private String isoCodeThreeDigit;
 
-    @Column(length = ISO_CODE_TWO_DIGIT_MAX_LENGTH, nullable = false, unique = true)
+    @Column
     @NotNull
     @Size(max = ISO_CODE_TWO_DIGIT_MAX_LENGTH)
     private String isoCodeTwoDigit;
 
-    @Column(length = ISO_NAME_MAX_LENGTH, nullable = false, unique = true)
+    @Column
     @NotNull
     @Size(max = ISO_NAME_MAX_LENGTH)
     private String isoName;
 
-    @Column(length = ISO_CODE_THREE_DIGIT_MAX_LENGTH, nullable = false, unique = true)
+    @Column
     @NotNull
     @Size(max = ISO_CODE_THREE_DIGIT_MAX_LENGTH)
     private String isoNumber;

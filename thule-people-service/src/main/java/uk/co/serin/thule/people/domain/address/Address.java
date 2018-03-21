@@ -29,12 +29,12 @@ public abstract class Address extends DomainModel {
     private static final int POSTCODE_MAX_LENGTH = 9;
     private static final int TOWN_MAX_LENGTH = 30;
 
-    @Column(length = ADDRESS_LINE1_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = ADDRESS_LINE1_MAX_LENGTH)
     private String addressLine1;
 
-    @Column(length = ADDRESS_LINE2_MAX_LENGTH)
+    @Column
     @Size(max = ADDRESS_LINE2_MAX_LENGTH)
     private String addressLine2;
 
@@ -43,12 +43,12 @@ public abstract class Address extends DomainModel {
     @NotNull
     private Country country;
 
-    @Column(length = COUNTY_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = COUNTY_MAX_LENGTH)
     private String county;
 
-    @Column(length = POSTCODE_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = POSTCODE_MAX_LENGTH)
     private String postCode;
@@ -58,7 +58,7 @@ public abstract class Address extends DomainModel {
     @NotNull
     private State state;
 
-    @Column(length = TOWN_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = TOWN_MAX_LENGTH)
     private String town;

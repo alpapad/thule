@@ -20,11 +20,11 @@ public final class Role extends DomainModel {
     private static final int DESCRIPTION_MAX_LENGTH = 30;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
+    @Column
     @NotNull
     private RoleCode code;
 
-    @Column(length = DESCRIPTION_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = DESCRIPTION_MAX_LENGTH)
     private String description;

@@ -55,25 +55,25 @@ public final class Person extends DomainModel {
     @NotNull
     private final Set<Role> roles = new HashSet<>();
 
-    @Column(nullable = false)
+    @Column
     @NotNull
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false)
+    @Column
     @NotNull
     private LocalDate dateOfExpiry;
 
-    @Column(nullable = false)
+    @Column
     @NotNull
     private LocalDate dateOfPasswordExpiry;
 
-    @Column(length = EMAIL_ADDRESS_MAX_LENGTH, nullable = false)
+    @Column
     @Pattern(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
     @NotNull
     @Size(max = EMAIL_ADDRESS_MAX_LENGTH)
     private String emailAddress;
 
-    @Column(length = FIRST_NAME_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = FIRST_NAME_MAX_LENGTH)
     private String firstName;
@@ -82,17 +82,17 @@ public final class Person extends DomainModel {
     @JoinColumn(name = DATABASE_COLUMN_HOME_ADDRESS_ID)
     private HomeAddress homeAddress;
 
-    @Column(length = LAST_NAME_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = LAST_NAME_MAX_LENGTH)
     private String lastName;
 
-    @Column(length = PASSWORD_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
 
-    @Column(length = SECOND_NAME_MAX_LENGTH)
+    @Column
     @Size(max = SECOND_NAME_MAX_LENGTH)
     private String secondName;
 
@@ -101,11 +101,11 @@ public final class Person extends DomainModel {
     @NotNull
     private State state;
 
-    @Column(length = TITLE_MAX_LENGTH)
+    @Column
     @Size(max = TITLE_MAX_LENGTH)
     private String title;
 
-    @Column(length = USER_ID_MAX_LENGTH, nullable = false, unique = true)
+    @Column
     @NotNull
     @Size(max = USER_ID_MAX_LENGTH)
     private String userId;

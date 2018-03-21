@@ -27,7 +27,7 @@ public final class Photograph extends DomainModel {
     private static final int HASH_MAX_LENGTH = 255;
     private static final int PHOTO_MAX_LENGTH = 4096;
 
-    @Column(length = HASH_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = HASH_MAX_LENGTH)
     private String hash;
@@ -38,7 +38,7 @@ public final class Photograph extends DomainModel {
     @Transient
     private Person person;
 
-    @Column(length = PHOTO_MAX_LENGTH, nullable = false)
+    @Column
     @Lob
     @NotNull
     private byte[] photo;

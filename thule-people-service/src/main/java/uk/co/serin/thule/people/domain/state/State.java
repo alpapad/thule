@@ -43,11 +43,11 @@ public final class State extends DomainModel {
     private final Set<Action> actions = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
+    @Column
     @NotNull
     private StateCode code;
 
-    @Column(length = DESCRIPTION_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = DESCRIPTION_MAX_LENGTH)
     private String description;

@@ -95,12 +95,12 @@ public abstract class DomainModel {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Column(length = UPDATED_BY_MAX_LENGTH)
+    @Column
     @LastModifiedBy
     private String updatedBy;
 
     @Version
-    @Column(nullable = false)
+    @Column
     private Long version;
 
     public LocalDateTime getCreatedAt() {

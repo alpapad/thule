@@ -25,11 +25,11 @@ public final class Action extends DomainModel {
     private static final int DESCRIPTION_MAX_LENGTH = 100;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
+    @Column
     @NotNull
     private ActionCode code;
 
-    @Column(length = DESCRIPTION_MAX_LENGTH, nullable = false)
+    @Column
     @NotNull
     @Size(max = DESCRIPTION_MAX_LENGTH)
     private String description;
