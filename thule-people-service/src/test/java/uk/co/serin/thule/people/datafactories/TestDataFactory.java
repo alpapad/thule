@@ -143,7 +143,7 @@ public class TestDataFactory implements ReferenceDataFactory {
 
     public Photograph buildPhotographMissScarlett(Person person) {
         try {
-            Resource resource = new DefaultResourceLoader().getResource("db/photographs/missScarlet.jpg");
+            Resource resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
             return Photograph.PhotographBuilder.aPhotograph().
                     withPerson(person).
                     withPhoto(FileCopyUtils.copyToByteArray(resource.getInputStream())).
