@@ -12,6 +12,3 @@ services:
     hostname: config-service-1
     ports:
       - 8888:8888
-    volumes:
-      # Set localtime on container to be the same as the host
-      - /etc/localtime:/etc/localtime:ro

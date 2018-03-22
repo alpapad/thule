@@ -14,6 +14,3 @@ services:
     hostname: edge-server-1
     ports:
       - 8080:8080
-    volumes:
-      # Set localtime on container to be the same as the host
-      - /etc/localtime:/etc/localtime:ro

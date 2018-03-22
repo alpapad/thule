@@ -14,6 +14,3 @@ services:
     hostname: people-service-1
     ports:
       - 8090:8090
-    volumes:
-      # Set localtime on container to be the same as the host
-      - /etc/localtime:/etc/localtime:ro

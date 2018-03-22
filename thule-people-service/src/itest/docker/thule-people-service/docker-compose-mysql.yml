@@ -9,6 +9,3 @@ services:
     ports:
       - 3307:3306
     restart: always
-    volumes:
-      # Set localtime on container to be the same as the host
-      - /etc/localtime:/etc/localtime:ro
