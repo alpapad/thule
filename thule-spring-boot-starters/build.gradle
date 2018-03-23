@@ -16,6 +16,7 @@ plugins {
     id "org.sonarqube" version "2.6.2" apply(false)
     id "org.springframework.boot" version "2.0.0.RELEASE" apply(false)
 }
+apply plugin: "io.spring.dependency-management"
 
 subprojects {
     apply plugin: "com.github.ben-manes.versions"
@@ -37,6 +38,12 @@ subprojects {
 }
 
 // Dependencies
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.M9")
+    }
+}
+
 project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
     dependencies {
@@ -44,7 +51,7 @@ project("thule-spring-boot-starter-test") {
         compile("nl.jqno.equalsverifier:equalsverifier:2.4.5")
         compile("org.awaitility:awaitility:3.1.0")
         compile("org.springframework.boot:spring-boot-starter-test")
-        compile("org.springframework.cloud:spring-cloud-contract-wiremock:2.0.0.M7")
+        compile("org.springframework.cloud:spring-cloud-contract-wiremock:2.0.0.M8")
         compile("pl.pojo:pojo-tester:0.7.6")
     }
 }
