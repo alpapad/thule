@@ -101,6 +101,7 @@ public class DockerIntTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void edge_server_proxies_people_service() {
         // Given
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
@@ -112,8 +113,8 @@ public class DockerIntTest {
         ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE);
 
         // Then
-        Map embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
-        List people = List.class.cast(embedded.get("people"));
+        Map<String,String> embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
+        List<String> people = List.class.cast(embedded.get("people"));
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(people).hasSize(7);
