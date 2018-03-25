@@ -108,11 +108,13 @@ public class RestfulServiceIntTest {
         assertThat(actualPerson.getId()).isNotNull();
         assertThat(actualPerson.getUpdatedAt()).isNotNull();
         assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
+        assertThat(actualPerson.getCreatedBy()).isNotNull();
         assertThat(actualPerson.getUpdatedBy()).isNotNull();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_BY,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }

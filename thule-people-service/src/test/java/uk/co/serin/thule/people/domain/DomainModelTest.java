@@ -19,7 +19,7 @@ public class DomainModelTest {
         // When
 
         // Then
-        assertPojoMethodsFor(DomainModel.class, FieldPredicate.exclude("createdAt", "id", "updatedAt", "updatedBy", "version")).
+        assertPojoMethodsFor(DomainModel.class, FieldPredicate.exclude("createdAt", "createdBy", "id", "updatedAt", "updatedBy", "version")).
                 testing(Method.SETTER).areWellImplemented();
 
         assertPojoMethodsFor(DomainModel.class).

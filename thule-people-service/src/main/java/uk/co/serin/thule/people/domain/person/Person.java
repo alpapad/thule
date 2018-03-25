@@ -357,6 +357,7 @@ public final class Person extends DomainModel {
     public static final class PersonBuilder {
         protected Long version;
         private LocalDateTime createdAt;
+        private String createdBy;
         private LocalDate dateOfBirth;
         private LocalDate dateOfExpiry;
         private LocalDate dateOfPasswordExpiry;
@@ -386,6 +387,7 @@ public final class Person extends DomainModel {
         public Person build() {
             Person person = new Person(userId);
             person.setCreatedAt(createdAt);
+            person.setCreatedBy(createdBy);
             person.setDateOfBirth(dateOfBirth);
             person.setDateOfExpiry(dateOfExpiry);
             person.setDateOfPasswordExpiry(dateOfPasswordExpiry);
@@ -409,6 +411,11 @@ public final class Person extends DomainModel {
 
         public PersonBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public PersonBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

@@ -1,5 +1,6 @@
 package uk.co.serin.thule.people.domain;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -45,6 +46,7 @@ public abstract class DomainModel {
     public static final String ENTITY_ATTRIBUTE_NAME_COUNTRY = "country";
     public static final String ENTITY_ATTRIBUTE_NAME_COUNTY = "county";
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
+    public static final String ENTITY_ATTRIBUTE_NAME_CREATED_BY = "createdBy";
     public static final String ENTITY_ATTRIBUTE_NAME_CREDENTIALS = "password";
     public static final String ENTITY_ATTRIBUTE_NAME_DATE_OF_BIRTH = "dateOfBirth";
     public static final String ENTITY_ATTRIBUTE_NAME_DESCRIPTION = "description";
@@ -83,12 +85,19 @@ public abstract class DomainModel {
     public static final String ENTITY_NAME_ROLES = "roles";
     public static final String ENTITY_NAME_STATE = "state";
     public static final String ENTITY_NAME_STATES = "states";
+    private static final int CREATED_BY_MAX_LENGTH = 100;
     private static final int UPDATED_BY_MAX_LENGTH = 100;
 
     @Column
     @CreatedDate
     @NotNull
     private LocalDateTime createdAt;
+
+    @Column
+    @CreatedBy
+    @NotNull
+    @Size(max = CREATED_BY_MAX_LENGTH)
+    private String createdBy;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,6 +124,14 @@ public abstract class DomainModel {
 
     protected void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    protected void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Long getId() {
@@ -153,6 +170,7 @@ public abstract class DomainModel {
     public String toString() {
         return new StringJoiner(", ", "DomainModel{", "}")
                 .add(String.format("createdAt=%s", createdAt))
+                .add(String.format("createdBy=%s", createdBy))
                 .add(String.format("id=%s", id))
                 .add(String.format("updatedAt=%s", updatedAt))
                 .add(String.format("updatedBy=%s", updatedBy))
