@@ -4,12 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -34,7 +31,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void default_constructor_creates_instance_successfully() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        assertThat(BeanUtils.instantiateClass(Application.class)).isNotNull();
+    public void default_constructor_creates_instance_successfully() {
+        assertThat(new Application()).isNotNull();
     }
 }
