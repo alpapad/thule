@@ -1,5 +1,6 @@
 package uk.co.serin.thule.repository.mongodb.domain;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 public final class Person {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
     public static final String ENTITY_ATTRIBUTE_NAME_CREATED_AT = "createdAt";
+    public static final String ENTITY_ATTRIBUTE_NAME_CREATED_BY = "createdBy";
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_AT = "updatedAt";
     public static final String ENTITY_ATTRIBUTE_NAME_UPDATED_BY = "updatedBy";
     public static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
@@ -31,10 +33,10 @@ public final class Person {
     @NotNull
     @Size(max = USER_ID_MAX_LENGTH)
     private final String userId;
-
     @CreatedDate
     private LocalDateTime createdAt;
-
+    @CreatedBy
+    private String createdBy;
     @NotNull
     private LocalDate dateOfBirth;
 
@@ -55,16 +57,21 @@ public final class Person {
 
     @Id
     private Long id;
+
     @NotNull
     @Size(max = LAST_NAME_MAX_LENGTH)
     private String lastName;
+
     @NotNull
     @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
+
     @Size(max = SECOND_NAME_MAX_LENGTH)
     private String secondName;
+
     @Size(max = TITLE_MAX_LENGTH)
     private String title;
+
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
@@ -109,6 +116,14 @@ public final class Person {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public LocalDate getDateOfBirth() {
@@ -239,6 +254,8 @@ public final class Person {
     @Override
     public String toString() {
         return new StringJoiner(", ", "Person{", "}")
+                .add(String.format("userId=%s", userId))
+                .add(String.format("createdBy=%s", createdBy))
                 .add(String.format("createdAt=%s", createdAt))
                 .add(String.format("dateOfBirth=%s", dateOfBirth))
                 .add(String.format("dateOfExpiry=%s", dateOfExpiry))
@@ -247,11 +264,11 @@ public final class Person {
                 .add(String.format("firstName=%s", firstName))
                 .add(String.format("id=%s", id))
                 .add(String.format("lastName=%s", lastName))
+                .add(String.format("credential=%s", password))
                 .add(String.format("secondName=%s", secondName))
                 .add(String.format("title=%s", title))
                 .add(String.format("updatedAt=%s", updatedAt))
                 .add(String.format("updatedBy=%s", updatedBy))
-                .add(String.format("userId=%s", userId))
                 .add(String.format("version=%s", version))
                 .toString();
     }
@@ -266,6 +283,7 @@ public final class Person {
 
     public static final class PersonBuilder {
         private LocalDateTime createdAt;
+        private String createdBy;
         private LocalDate dateOfBirth;
         private LocalDate dateOfExpiry;
         private LocalDate dateOfPasswordExpiry;
@@ -290,25 +308,31 @@ public final class Person {
 
         public Person build() {
             Person person = new Person(userId);
-            person.createdAt = this.createdAt;
-            person.dateOfBirth = this.dateOfBirth;
-            person.dateOfExpiry = this.dateOfExpiry;
-            person.dateOfPasswordExpiry = this.dateOfPasswordExpiry;
-            person.emailAddress = this.emailAddress;
-            person.firstName = this.firstName;
-            person.id = this.id;
-            person.password = this.password;
-            person.title = this.title;
-            person.secondName = this.secondName;
-            person.lastName = this.lastName;
-            person.updatedAt = this.updatedAt;
-            person.updatedBy = this.updatedBy;
-            person.version = this.version;
+            person.setCreatedAt(createdAt);
+            person.setCreatedBy(createdBy);
+            person.setDateOfBirth(dateOfBirth);
+            person.setDateOfExpiry(dateOfExpiry);
+            person.setDateOfPasswordExpiry(dateOfPasswordExpiry);
+            person.setEmailAddress(emailAddress);
+            person.setFirstName(firstName);
+            person.setId(id);
+            person.setLastName(lastName);
+            person.setPassword(password);
+            person.setSecondName(secondName);
+            person.setTitle(title);
+            person.setUpdatedAt(updatedAt);
+            person.setUpdatedBy(updatedBy);
+            person.setVersion(version);
             return person;
         }
 
         public PersonBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public PersonBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

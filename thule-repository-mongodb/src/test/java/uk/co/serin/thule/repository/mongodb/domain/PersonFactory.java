@@ -11,6 +11,7 @@ public class PersonFactory {
     public static Person newPerson(Person person) {
         return Person.PersonBuilder.aPerson().
                 withCreatedAt(person.getCreatedAt()).
+                withCreatedBy(person.getCreatedBy()).
                 withDateOfBirth(person.getDateOfBirth()).
                 withDateOfExpiry(person.getDateOfExpiry()).
                 withDateOfPasswordExpiry(person.getDateOfPasswordExpiry()).

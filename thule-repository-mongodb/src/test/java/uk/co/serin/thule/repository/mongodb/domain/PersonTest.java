@@ -17,6 +17,7 @@ public class PersonTest {
         // When
         Person actualPerson = Person.PersonBuilder.aPerson().
                 withCreatedAt(expectedPerson.getCreatedAt()).
+                withCreatedBy(expectedPerson.getCreatedBy()).
                 withDateOfBirth(expectedPerson.getDateOfBirth()).
                 withDateOfExpiry(expectedPerson.getDateOfExpiry()).
                 withDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry()).
@@ -34,6 +35,7 @@ public class PersonTest {
 
         // Then
         assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(expectedPerson.getCreatedBy());
         assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
         assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
@@ -80,6 +82,7 @@ public class PersonTest {
         // When
         Person actualPerson = new Person(expectedPerson.getUserId());
         actualPerson.setCreatedAt(expectedPerson.getCreatedAt());
+        actualPerson.setCreatedBy(expectedPerson.getCreatedBy());
         actualPerson.setDateOfBirth(expectedPerson.getDateOfBirth());
         actualPerson.setDateOfExpiry(expectedPerson.getDateOfExpiry());
         actualPerson.setDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry());
@@ -96,6 +99,7 @@ public class PersonTest {
 
         // Then
         assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(expectedPerson.getCreatedBy());
         assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
         assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());

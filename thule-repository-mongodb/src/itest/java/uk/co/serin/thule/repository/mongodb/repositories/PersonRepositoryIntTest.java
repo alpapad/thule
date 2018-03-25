@@ -54,11 +54,13 @@ public class PersonRepositoryIntTest {
         assertThat(actualPerson).isNotSameAs(expectedPerson);
 
         assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
+        assertThat(actualPerson.getCreatedBy()).isNotEmpty();
         assertThat(actualPerson.getUpdatedAt()).isNotNull();
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
                 Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
+                Person.ENTITY_ATTRIBUTE_NAME_CREATED_BY,
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
@@ -162,7 +164,7 @@ public class PersonRepositoryIntTest {
         assertThat(actualPerson.getUpdatedBy()).isNotEqualTo(expectedPerson.getUpdatedBy());
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT, // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
+//                Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT, // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
