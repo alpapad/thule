@@ -5,4 +5,3 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("oracle")
 public class PersonRepositoryOracleIntTest extends AbstractPersonRepositoryIntTest {
 }
-
