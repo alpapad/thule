@@ -22,7 +22,7 @@ public class FlywayConfigurer {
             // resulting in the application context not loading
             if (!flywayMigrated) {
                 given().ignoreExceptions().pollInterval(fibonacci()).
-                        await().timeout(Duration.FIVE_MINUTES).
+                        await().timeout(Duration.TWO_MINUTES).
                         untilAsserted(() -> {
                             Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
                             JdbcUtils.closeConnection(connection);
