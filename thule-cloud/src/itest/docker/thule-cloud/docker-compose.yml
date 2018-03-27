@@ -6,7 +6,7 @@ services:
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
@@ -19,7 +19,7 @@ services:
     image: pooh:8082/thule-config-service
     environment:
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
@@ -32,7 +32,7 @@ services:
     image: pooh:8082/thule-discovery-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
@@ -46,7 +46,7 @@ services:
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
@@ -60,7 +60,7 @@ services:
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1
@@ -74,7 +74,7 @@ services:
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1

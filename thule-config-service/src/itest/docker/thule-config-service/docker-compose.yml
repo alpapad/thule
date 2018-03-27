@@ -5,7 +5,7 @@ services:
     image: pooh:8082/thule-config-service
     environment:
       EUREKA_CLIENT_ENABLED: "false"
-      TZ: UTC
+      TZ: Europe/London
     extra_hosts:
       - logstash-host:172.17.0.1
       - zipkin-host:172.17.0.1

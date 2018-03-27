@@ -4,7 +4,7 @@ services:
   mongo:
     image: mongo
     environment:
-      TZ: UTC
+      TZ: Europe/London
     ports:
       - 27017:27017
     restart: always

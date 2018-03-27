@@ -49,7 +49,6 @@ import static org.junit.Assert.fail;
  */
 @DataJpaTest
 @Commit
-@Transactional
 @Import({ApplicationConfigurer.class, FlywayConfigurer.class})
 @RunWith(SpringRunner.class)
 public abstract class AbstractPersonRepositoryIntTest {
