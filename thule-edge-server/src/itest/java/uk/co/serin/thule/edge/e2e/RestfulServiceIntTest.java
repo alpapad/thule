@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin.rest;
+package uk.co.serin.thule.edge.e2e;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class RestfulServiceIntTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/actuator/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
