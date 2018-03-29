@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.docker;
+package uk.co.serin.thule.people.container;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -10,12 +10,13 @@ import uk.co.serin.thule.utils.utils.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DockerIntTest {
+public class ContainerTest {
     private static final ActuatorUri PEOPLE_SERVICE_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8090/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-people-service/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-people-service/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -29,6 +30,6 @@ public class DockerIntTest {
 
     @Test
     public void people_service_is_up() {
-        assertThat(PEOPLE_SERVICE_STATUS_URI).withCredentials("user", "user").hasStatus(Status.UP);
+        assertThat(PEOPLE_SERVICE_STATUS_URI).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }
