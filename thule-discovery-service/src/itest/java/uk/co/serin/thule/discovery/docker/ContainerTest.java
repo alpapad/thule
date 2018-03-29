@@ -1,4 +1,4 @@
-package uk.co.serin.thule.email.docker;
+package uk.co.serin.thule.discovery.docker;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -10,12 +10,13 @@ import uk.co.serin.thule.utils.utils.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DockerIntTest {
-    private static final ActuatorUri EMAIL_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8091/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-email-service/docker-compose.yml");
+public class ContainerTest {
+    private static final ActuatorUri DISCOVERY_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8761/actuator/health"));
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-discovery-service/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -28,7 +29,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void admin_server_is_up() {
-        assertThat(EMAIL_SERVER_STATUS_URI).hasStatus(Status.UP);
+    public void discovery_service_is_up() {
+        assertThat(DISCOVERY_SERVER_STATUS_URI).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }

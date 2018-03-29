@@ -1,4 +1,4 @@
-package uk.co.serin.thule.config.docker;
+package uk.co.serin.thule.edge.docker;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -10,12 +10,13 @@ import uk.co.serin.thule.utils.utils.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DockerIntTest {
-    private static final ActuatorUri CONFIG_SERVICE_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8888/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-config-service/docker-compose.yml");
+public class ContainerTest {
+    private static final ActuatorUri EDGE_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8080/actuator/health"));
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-edge-server/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -28,7 +29,7 @@ public class DockerIntTest {
     }
 
     @Test
-    public void config_service_is_up() {
-        assertThat(CONFIG_SERVICE_STATUS_URI).hasStatus(Status.UP);
+    public void edge_server_is_up() {
+        assertThat(EDGE_SERVER_STATUS_URI).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }

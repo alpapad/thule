@@ -1,4 +1,4 @@
-package uk.co.serin.thule.email.rest;
+package uk.co.serin.thule.email.e2e;
 
 import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;

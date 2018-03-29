@@ -21,13 +21,14 @@ import uk.co.serin.thule.utils.utils.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DockerIntTest {
+public class ContainerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
     private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:9071";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:9888";
@@ -54,20 +55,20 @@ public class DockerIntTest {
     @Test
     public void admin_server_is_up() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(ADMIN_SERVER_URL_PREFIX + HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(ADMIN_SERVER_URL_PREFIX + HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
     public void config_service_is_up() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
@@ -75,39 +76,39 @@ public class DockerIntTest {
         // Given
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_is_up() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
     public void edge_server_proxies_email_service() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + THULE_EMAIL_SERVICE + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void edge_server_proxies_people_service() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).withCredentials("user", "user").hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EDGE_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When
         ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE);
@@ -152,20 +153,20 @@ public class DockerIntTest {
     @Test
     public void email_service_is_up() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
     public void people_service_is_up() {
         // Given
-        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
-        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).withCredentials("user", "user").hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }

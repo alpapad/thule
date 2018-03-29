@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/emails")
-class EmailController {
+public class EmailController {
     private final EmailService emailService;
 
     public EmailController(EmailService emailService) {
