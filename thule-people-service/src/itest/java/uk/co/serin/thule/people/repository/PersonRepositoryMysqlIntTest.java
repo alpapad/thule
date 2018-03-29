@@ -14,7 +14,7 @@ import uk.co.serin.thule.people.MySqlDockerContainer;
  * <code>@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)</code>
  */
 
-@ActiveProfiles("mysql")
+@ActiveProfiles({"itest", "itest-mysql"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonRepositoryMysqlIntTest extends PersonRepositoryBaseIntTest {
     @BeforeClass

@@ -13,4 +13,4 @@ services:
       - zipkin-host:172.17.0.1
     hostname: email-server-1
     ports:
-      - 8091:8091
+      - 8091:8080

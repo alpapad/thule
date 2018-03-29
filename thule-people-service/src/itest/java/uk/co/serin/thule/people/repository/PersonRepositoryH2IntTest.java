@@ -1,6 +1,7 @@
 package uk.co.serin.thule.people.repository;
 
-//@ActiveProfiles({"itest", "itest-h2", "${spring.profiles.include:default}"})
-//@ActiveProfiles({"itest", "itest-h2", "${spring.profiles.include:default}"})
+import org.springframework.test.context.ActiveProfiles;
+
+@ActiveProfiles("itest")
 public class PersonRepositoryH2IntTest extends PersonRepositoryBaseIntTest {
 }

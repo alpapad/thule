@@ -13,4 +13,4 @@ services:
       - zipkin-host:172.17.0.1
     hostname: admin-server-1
     ports:
-      - 8071:8071
+      - 8071:8080

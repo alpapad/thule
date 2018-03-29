@@ -13,4 +13,4 @@ services:
       - zipkin-host:172.17.0.1
     hostname: people-service-1
     ports:
-      - 8090:8090
+      - 8090:8080

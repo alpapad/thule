@@ -2,6 +2,6 @@ package uk.co.serin.thule.people.repository;
 
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("hsql")
+@ActiveProfiles({"itest", "itest-hsql"})
 public class PersonRepositoryHsqlIntTest extends PersonRepositoryBaseIntTest {
 }

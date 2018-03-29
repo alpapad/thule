@@ -12,4 +12,4 @@ services:
       - zipkin-host:172.17.0.1
     hostname: discovery-service-1
     ports:
-      - 8761:8761
+      - 8761:8080

@@ -11,4 +11,4 @@ services:
       - zipkin-host:172.17.0.1
     hostname: config-service-1
     ports:
-      - 8888:8888
+      - 8888:8080

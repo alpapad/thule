@@ -21,7 +21,7 @@ logging:
 
 # Spring server configuration
 server:
-  port: 8071
+  port: 8080
 
 # Spring boot configuration
 spring:
