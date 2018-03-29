@@ -1,0 +1,1 @@
+-- V1__baseline.sql is intentionally left empty and acts as a baseline for flyway when baseline-on-migrate: true

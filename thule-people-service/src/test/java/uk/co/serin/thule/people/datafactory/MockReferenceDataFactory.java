@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.datafactories;
+package uk.co.serin.thule.people.datafactory;
 
 import org.springframework.util.StringUtils;
 

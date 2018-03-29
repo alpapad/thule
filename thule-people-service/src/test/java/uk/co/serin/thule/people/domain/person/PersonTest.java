@@ -7,7 +7,7 @@ import org.junit.Test;
 import pl.pojo.tester.api.FieldPredicate;
 import pl.pojo.tester.api.assertion.Method;
 
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.StateCode;

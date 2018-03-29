@@ -16,6 +16,6 @@ task itest(type: Test) {
     testClassesDirs = sourceSets.itest.output.classesDirs
     classpath = sourceSets.itest.runtimeClasspath
 
-    // Must run after the unit tests
-    mustRunAfter tasks.test
+    // Should run after the unit tests
+    shouldRunAfter tasks.test
 }

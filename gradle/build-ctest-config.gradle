@@ -1,0 +1,21 @@
+// Integration test configuration
+configurations {
+    ctestCompile.extendsFrom testCompile
+    ctestRuntime.extendsFrom testRuntime
+}
+sourceSets {
+    ctest {
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+
+        java.srcDir file("src/ctest/java")
+        resources.srcDir file("src/ctest/resources")
+    }
+}
+task ctest(type: Test, dependsOn: tasks.docker) {
+    testClassesDirs = sourceSets.ctest.output.classesDirs
+    classpath = sourceSets.ctest.runtimeClasspath
+
+    // Should run after the integration tests
+    shouldRunAfter tasks.itest
+}

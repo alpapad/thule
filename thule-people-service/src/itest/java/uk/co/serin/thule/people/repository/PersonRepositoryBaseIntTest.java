@@ -1,12 +1,16 @@
-package uk.co.serin.thule.people.repository.repositories;
+package uk.co.serin.thule.people.repository;
 
+import org.awaitility.Duration;
+import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.Commit;
@@ -14,20 +18,23 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.transaction.annotation.Transactional;
 
-import uk.co.serin.thule.people.ApplicationConfigurer;
-import uk.co.serin.thule.people.FlywayConfigurer;
-import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
+import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
+import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.Photograph;
+import uk.co.serin.thule.people.repository.repositories.ActionRepository;
+import uk.co.serin.thule.people.repository.repositories.CountryRepository;
+import uk.co.serin.thule.people.repository.repositories.PersonRepository;
+import uk.co.serin.thule.people.repository.repositories.RoleRepository;
+import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.repository.support.SpringSecurityAuditorAware;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +42,8 @@ import java.util.Set;
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static org.junit.Assert.fail;
 
 /**
@@ -42,16 +51,14 @@ import static org.junit.Assert.fail;
  *
  * This test uses @DataJpaTest to test boot just the required parts of Spring Boot for JPA
  * repository testing. It does this by disabling auto configuration (including the use of
- *
  * @Configuration) and using select auto configuration classes. However, this results in JPA
  * Auditing not being configured because it is enabled in a @Configuration class! Therefore
- * it needs to be enabled here.
+ * it is enabled in the inner configuration class.
  */
 @DataJpaTest
 @Commit
-@Import({ApplicationConfigurer.class, FlywayConfigurer.class})
 @RunWith(SpringRunner.class)
-public abstract class AbstractPersonRepositoryIntTest {
+public abstract class PersonRepositoryBaseIntTest {
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
@@ -275,7 +282,24 @@ public abstract class AbstractPersonRepositoryIntTest {
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
-    private static class PersonRepositoryIntTestConfiguration {
+    @EnableJpaAuditing
+    @TestConfiguration
+    static class IdtFileRepositoryBaseIntTestConfiguration {
+        @Bean
+        public FlywayMigrationStrategy flywayMigrationStrategy() {
+            return flyway -> {
+                // Wait until the database is available because otherwise flyway migrate will fail
+                // resulting in the application context not loading
+                given().ignoreExceptions().pollInterval(fibonacci()).
+                        await().timeout(Duration.ONE_MINUTE).
+                        untilAsserted(() -> {
+                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
+                            JdbcUtils.closeConnection(connection);
+                        });
+                flyway.migrate();
+            };
+        }
+
         @Bean
         public SpringSecurityAuditorAware springSecurityAuditorAware() {
             return new SpringSecurityAuditorAware();

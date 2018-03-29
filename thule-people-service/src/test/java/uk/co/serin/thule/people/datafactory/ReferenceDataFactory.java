@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.datafactories;
+package uk.co.serin.thule.people.datafactory;
 
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.role.Role;

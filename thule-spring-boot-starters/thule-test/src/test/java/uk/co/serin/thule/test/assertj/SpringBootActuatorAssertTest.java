@@ -16,6 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 
@@ -112,6 +113,36 @@ public class SpringBootActuatorAssertTest {
 
         // When
         SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.hasStatus(Status.UP);
+
+        // Then
+        assertThat(actualSpringBootActuatorAssert).isNotNull();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void waitingForMaximum_of_zero_minutes_throws_exception() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+
+        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+
+        // When
+        springBootActuatorAssert.waitingForMaximum(Duration.ZERO);
+
+        // Then (see expected in @Test annotation)
+    }
+
+
+    @Test
+    public void waitingForMaximum_of_1_minute_applies() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+
+        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+
+        // When
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.waitingForMaximum(Duration.ofMinutes(1));
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();

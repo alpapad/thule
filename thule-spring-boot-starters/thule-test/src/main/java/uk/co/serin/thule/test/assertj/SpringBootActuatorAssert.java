@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.NeverRetryPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +30,8 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
 
     public SpringBootActuatorAssert(ActuatorUri actual) {
         super(actual, SpringBootActuatorAssert.class);
-        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
-        retryPolicy.setTimeout(600000);
 
-        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
-        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setRetryPolicy(new NeverRetryPolicy());
     }
 
     public static SpringBootActuatorAssert assertThat(ActuatorUri actual) {
@@ -76,6 +75,19 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         interceptors.removeIf(BasicAuthorizationInterceptor.class::isInstance);
         interceptors.add(new BasicAuthorizationInterceptor(username, password));
         restTemplate.setInterceptors(interceptors);
+
+        return this;
+    }
+
+
+    public SpringBootActuatorAssert waitingForMaximum(Duration duration) {
+        Assert.isTrue(duration.getSeconds() > 0, "timeout must be positive");
+
+        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        retryPolicy.setTimeout(duration.getSeconds() * 1000);
+
+        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
+        retryTemplate.setRetryPolicy(retryPolicy);
 
         return this;
     }

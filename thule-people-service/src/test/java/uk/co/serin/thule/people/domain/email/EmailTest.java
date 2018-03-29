@@ -5,7 +5,7 @@ import org.junit.Test;
 import pl.pojo.tester.api.FieldPredicate;
 import pl.pojo.tester.api.assertion.Method;
 
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;

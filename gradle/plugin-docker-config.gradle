@@ -1,11 +1,21 @@
 docker {
-    name "pooh:8082/${jar.baseName}"
+    name "$nexusHost:$nexusDockerRegistryPort/${jar.baseName}"
     dockerfile project.file("src/main/docker/Dockerfile")
-    files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
     buildArgs(["JAR_FILE": "${jar.archiveName}"])
+    files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
 
-    dependsOn bootJar
+    tasks.docker.dependsOn bootJar
+    tasks.docker.shouldRunAfter test, itest
+    assemble.dependsOn tasks.docker
 }
 
-tasks.docker.shouldRunAfter jacocoTestCoverageVerification
-assemble.dependsOn tasks.docker
+// https://github.com/palantir/gradle-docker/issues/139
+task dockerTag(dependsOn: tasks.docker) {
+    tasks.docker.finalizedBy dockerTag
+
+    doLast {
+        exec {
+            commandLine "docker", "tag", docker.name, docker.name + ":" + project.version
+        }
+    }
+}

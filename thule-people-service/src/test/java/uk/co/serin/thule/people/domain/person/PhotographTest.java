@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import pl.pojo.tester.api.FieldPredicate;
 import pl.pojo.tester.api.assertion.Method;
 
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 
 import javax.validation.ValidationException;
 

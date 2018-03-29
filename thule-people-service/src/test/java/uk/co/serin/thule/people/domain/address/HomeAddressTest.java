@@ -2,7 +2,7 @@ package uk.co.serin.thule.people.domain.address;
 
 import org.junit.Test;
 
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest;
+package uk.co.serin.thule.people.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -27,9 +27,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import uk.co.serin.thule.people.datafactories.ReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.datafactories.TestDataFactory;
+import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
+import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.state.StateCode;
