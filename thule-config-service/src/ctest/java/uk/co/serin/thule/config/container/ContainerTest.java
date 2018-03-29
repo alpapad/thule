@@ -1,4 +1,4 @@
-package uk.co.serin.thule.config.docker;
+package uk.co.serin.thule.config.container;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,7 +16,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
     private static final ActuatorUri CONFIG_SERVICE_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8888/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-config-service/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-config-service/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
