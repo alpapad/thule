@@ -2,10 +2,3 @@
 springBoot {
     buildInfo()
 }
-
-// Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing
-dependencyManagement {
-    resolutionStrategy {
-        cacheChangingModulesFor 0, 'seconds'
-    }
-}

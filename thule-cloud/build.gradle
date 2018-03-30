@@ -3,11 +3,6 @@ buildscript {
         maven { url "http://$nexusHost:$nexusPort/repository/maven-public" }
         mavenLocal()
     }
-
-    // Changing modules are cached by default for 24 hours, change the default to never and mark snapshots as changing (must be within the buildscript)
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
 }
 
 plugins {
@@ -32,8 +27,8 @@ jar.enabled = true // Don't need an "über-jar" but still want the rest of the s
 
 // Dependencies
 dependencies {
-    ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT") { changing = true }
-    ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT") { changing = true }
+    ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
     ctestCompile("org.springframework.boot:spring-boot-starter-actuator")
     ctestCompile("org.springframework.boot:spring-boot-starter-logging")
     ctestCompile("org.springframework.boot:spring-boot-starter-web")
