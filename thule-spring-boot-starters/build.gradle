@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url "http://pooh:8081/repository/maven-public" }
+        maven { url "http://$nexusHost:$nexusPort/repository/maven-public" }
         mavenLocal()
     }
 
