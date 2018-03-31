@@ -15,16 +15,20 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 public class MongoDockerContainer {
     private static boolean mongoAvailable;
     private static boolean mongoContainerStarted;
-    private Environment env;
+    private static MongoDockerContainer mongoDockerContainer = new MongoDockerContainer();
+    private final DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-repository-mongodb/docker-compose-mongo.yml");
 
-    public MongoDockerContainer(Environment env) {
-        this.env = env;
+    private MongoDockerContainer() {
     }
 
-    public static void startRabbitContainerIfDown() {
+    public static MongoDockerContainer instance() {
+        return mongoDockerContainer;
+    }
+
+    public void startMongoContainerIfDown() {
         try {
             if (!mongoContainerStarted) {
-                new DockerCompose("src/itest/docker/thule-repository-mongodb/docker-compose-mongo.yml").downAndUp();
+                dockerCompose.downAndUp();
                 mongoContainerStarted = true;
             }
         } catch (IOException e) {
@@ -32,19 +36,19 @@ public class MongoDockerContainer {
         }
     }
 
-    public static void stopMongoContainerIfUp() {
+    public void stopMongoContainerIfUp() {
         try {
             if (mongoContainerStarted) {
-                mongoAvailable = false;
-                new DockerCompose("src/itest/docker/thule-repository-mongodb/docker-compose-mongo.yml").down();
+                dockerCompose.downAndUp();
                 mongoContainerStarted = false;
+                mongoAvailable = false;
             }
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public void waitForMongoAvailabilty() {
+    public void waitForMongoAvailabilty(Environment env) {
         // Ideally, this would be done as a static @BeforeClass method. However, we need access to
         // the spring environment which is autowired and hence cannot be static
         if (!mongoAvailable) {

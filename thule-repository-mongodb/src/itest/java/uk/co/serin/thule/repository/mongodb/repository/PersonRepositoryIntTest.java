@@ -30,12 +30,12 @@ public class PersonRepositoryIntTest {
 
     @BeforeClass
     public static void setUpClass() {
-        MongoDockerContainer.startRabbitContainerIfDown();
+        MongoDockerContainer.instance().startMongoContainerIfDown();
     }
 
     @AfterClass
     public static void tearDownClass() {
-        MongoDockerContainer.stopMongoContainerIfUp();
+        MongoDockerContainer.instance().stopMongoContainerIfUp();
     }
 
     @Test
@@ -131,8 +131,7 @@ public class PersonRepositoryIntTest {
 
     @Before
     public void setUp() {
-        MongoDockerContainer rabbitDockerContainer = new MongoDockerContainer(env);
-        rabbitDockerContainer.waitForMongoAvailabilty();
+        MongoDockerContainer.instance().waitForMongoAvailabilty(env);
         personRepository.deleteAll();
     }
 
