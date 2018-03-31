@@ -24,7 +24,7 @@ public class StateTest {
         State actualState = State.StateBuilder.aState().
                 withCode(expectedState.getCode()).
                 withCreatedAt(expectedState.getCreatedAt()).
-//                withCreatedBy(expectedState.getCreatedBy()).
+                withCreatedBy(expectedState.getCreatedBy()).
                 withDescription(expectedState.getDescription()).
                 withId(expectedState.getId()).
                 withUpdatedAt(expectedState.getUpdatedAt()).
@@ -35,7 +35,7 @@ public class StateTest {
         // Then
         assertThat(actualState.getCode()).isEqualTo(expectedState.getCode());
         assertThat(actualState.getCreatedAt()).isEqualTo(expectedState.getCreatedAt());
-//        assertThat(actualState.getCreatedBy()).isEqualTo(expectedState.getCreatedBy());
+        assertThat(actualState.getCreatedBy()).isEqualTo(expectedState.getCreatedBy());
         assertThat(actualState.getId()).isEqualTo(expectedState.getId());
         assertThat(actualState.getDescription()).isEqualTo(expectedState.getDescription());
         assertThat(actualState.getUpdatedAt()).isEqualTo(expectedState.getUpdatedAt());
