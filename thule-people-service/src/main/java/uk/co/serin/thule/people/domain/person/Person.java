@@ -27,6 +27,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -106,6 +107,7 @@ public final class Person extends DomainModel {
     private String title;
 
     @Column
+    @NotEmpty
     @NotNull
     @Size(max = USER_ID_MAX_LENGTH)
     private String userId;

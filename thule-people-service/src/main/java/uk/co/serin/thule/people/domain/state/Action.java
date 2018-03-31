@@ -108,11 +108,11 @@ public final class Action extends DomainModel {
     public static final class ActionBuilder {
         private ActionCode code;
         private LocalDateTime createdAt;
+        private String createdBy;
         private String description;
         private Long id;
         private State nextState;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -128,6 +128,7 @@ public final class Action extends DomainModel {
             action.setDescription(description);
             action.setNextState(nextState);
             action.setCreatedAt(createdAt);
+            action.setCreatedBy(createdBy);
             action.setId(id);
             action.setUpdatedAt(updatedAt);
             action.setUpdatedBy(updatedBy);
@@ -142,6 +143,11 @@ public final class Action extends DomainModel {
 
         public ActionBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public ActionBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

@@ -20,6 +20,7 @@ import uk.co.serin.thule.utils.utils.RandomGenerators;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Map;
@@ -51,9 +52,12 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildJUnitTest() {
+        LocalDateTime now = LocalDateTime.now();
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
 
         return Person.PersonBuilder.aPerson().withUserId(JUNIT_TEST).
+                withCreatedAt(now).
+                withCreatedBy(JUNIT_TEST).
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(dateOfExpiry).
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -65,6 +69,8 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withSecondName("Unit").
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
                 withTitle("Mr").
+                withUpdatedAt(now).
+                withUpdatedBy(JUNIT_TEST).
                 build();
     }
 
@@ -94,10 +100,13 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildPersonWithAllAssociations() {
+        LocalDateTime now = LocalDateTime.now();
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         Person person = Person.PersonBuilder.aPerson().withUserId(userId).
+                withCreatedAt(now).
+                withCreatedBy(JUNIT_TEST).
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -111,6 +120,8 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
                 withTitle("Miss").
                 withWorkAddress(buildRegentStreetWorkAddress()).
+                withUpdatedAt(now).
+                withUpdatedBy(JUNIT_TEST).
                 build();
 
         person.addPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
@@ -119,7 +130,10 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public HomeAddress buildOxfordStreetHomeAddress() {
+        LocalDateTime now = LocalDateTime.now();
         return HomeAddress.HomeAddressBuilder.aHomeAddress().
+                withCreatedAt(now).
+                withCreatedBy(JUNIT_TEST).
                 withAddressLine1("Oxford Street").
                 withAddressLine2("Green").
                 withCountry(referenceDataFactory.getCountries().get(Country.GBR)).
@@ -127,11 +141,16 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withPostCode("EC3").
                 withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
                 withTown(LONDON).
+                withUpdatedAt(now).
+                withUpdatedBy(JUNIT_TEST).
                 build();
     }
 
     public WorkAddress buildRegentStreetWorkAddress() {
+        LocalDateTime now = LocalDateTime.now();
         return WorkAddress.WorkAddressBuilder.aWorkAddress().
+                withCreatedAt(now).
+                withCreatedBy(JUNIT_TEST).
                 withAddressLine1("Regent Street").
                 withAddressLine2("Green").
                 withCountry(referenceDataFactory.getCountries().get(Country.GBR)).
@@ -139,16 +158,23 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withPostCode("EC4").
                 withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
                 withTown(LONDON).
+                withUpdatedAt(now).
+                withUpdatedBy(JUNIT_TEST).
                 build();
     }
 
     public Photograph buildPhotographMissScarlett(Person person) {
         try {
+            LocalDateTime now = LocalDateTime.now();
             Resource resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
             return Photograph.PhotographBuilder.aPhotograph().
+                    withCreatedAt(now).
+                    withCreatedBy(JUNIT_TEST).
                     withPerson(person).
                     withPhoto(FileCopyUtils.copyToByteArray(resource.getInputStream())).
                     withPosition(1).
+                    withUpdatedAt(now).
+                    withUpdatedBy(JUNIT_TEST).
                     build();
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -156,10 +182,13 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildPersonWithoutAnyAssociations() {
+        LocalDateTime now = LocalDateTime.now();
         LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         return Person.PersonBuilder.aPerson().
+                withCreatedAt(now).
+                withCreatedBy(JUNIT_TEST).
                 withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
                 withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -170,6 +199,8 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withSecondName("K").
                 withTitle("Miss").
                 withUserId(userId).
+                withUpdatedAt(now).
+                withUpdatedBy(JUNIT_TEST).
                 build();
     }
 

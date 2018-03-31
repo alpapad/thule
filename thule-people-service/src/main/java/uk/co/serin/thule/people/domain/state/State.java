@@ -126,10 +126,10 @@ public final class State extends DomainModel {
         private Set<Action> actions = new HashSet<>();
         private StateCode code;
         private LocalDateTime createdAt;
+        private String createdBy;
         private String description;
         private Long id;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -144,6 +144,7 @@ public final class State extends DomainModel {
             State state = new State(code);
             state.setDescription(description);
             state.setCreatedAt(createdAt);
+            state.setCreatedBy(createdBy);
             state.setId(id);
             state.setUpdatedAt(updatedAt);
             state.setUpdatedBy(updatedBy);
@@ -164,6 +165,11 @@ public final class State extends DomainModel {
 
         public StateBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public StateBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

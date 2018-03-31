@@ -23,6 +23,7 @@ public class CountryTest {
         // When
         Country actualCountry = Country.CountryBuilder.aCountry().
                 withCreatedAt(expectedCountry.getCreatedAt()).
+                withCreatedBy(expectedCountry.getCreatedBy()).
                 withId(expectedCountry.getId()).
                 withIsoCodeThreeDigit(expectedCountry.getIsoCodeThreeDigit()).
                 withIsoCodeTwoDigit(expectedCountry.getIsoCodeTwoDigit()).
@@ -36,6 +37,7 @@ public class CountryTest {
 
         // Then
         assertThat(actualCountry.getCreatedAt()).isEqualTo(expectedCountry.getCreatedAt());
+        assertThat(actualCountry.getCreatedBy()).isEqualTo(expectedCountry.getCreatedBy());
         assertThat(actualCountry.getId()).isEqualTo(expectedCountry.getId());
         assertThat(actualCountry.getIsoCodeThreeDigit()).isEqualTo(expectedCountry.getIsoCodeThreeDigit());
         assertThat(actualCountry.getIsoCodeTwoDigit()).isEqualTo(expectedCountry.getIsoCodeTwoDigit());

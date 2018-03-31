@@ -39,12 +39,12 @@ public final class WorkAddress extends Address {
         private Country country;
         private String county;
         private LocalDateTime createdAt;
+        private String createdBy;
         private Long id;
         private String postCode;
         private State state;
         private String town;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -62,6 +62,7 @@ public final class WorkAddress extends Address {
             workAddress.setState(state);
             workAddress.setTown(town);
             workAddress.setCreatedAt(createdAt);
+            workAddress.setCreatedBy(createdBy);
             workAddress.setId(id);
             workAddress.setUpdatedAt(updatedAt);
             workAddress.setUpdatedBy(updatedBy);
@@ -91,6 +92,11 @@ public final class WorkAddress extends Address {
 
         public WorkAddressBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public WorkAddressBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

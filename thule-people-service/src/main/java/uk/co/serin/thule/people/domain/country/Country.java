@@ -117,13 +117,13 @@ public final class Country extends DomainModel {
 
     public static final class CountryBuilder {
         private LocalDateTime createdAt;
+        private String createdBy;
         private Long id;
         private String isoCodeThreeDigit;
         private String isoCodeTwoDigit;
         private String isoName;
         private String isoNumber;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -136,11 +136,12 @@ public final class Country extends DomainModel {
 
         public Country build() {
             Country country = new Country(isoCodeThreeDigit);
-            country.setCreatedAt(createdAt);
-            country.setId(id);
             country.setIsoCodeTwoDigit(isoCodeTwoDigit);
             country.setIsoName(isoName);
             country.setIsoNumber(isoNumber);
+            country.setCreatedAt(createdAt);
+            country.setCreatedBy(createdBy);
+            country.setId(id);
             country.setUpdatedAt(updatedAt);
             country.setUpdatedBy(updatedBy);
             country.setVersion(version);
@@ -149,6 +150,11 @@ public final class Country extends DomainModel {
 
         public CountryBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public CountryBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

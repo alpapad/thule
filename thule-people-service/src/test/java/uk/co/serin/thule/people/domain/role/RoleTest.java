@@ -24,6 +24,7 @@ public class RoleTest {
         Role actualRole = Role.RoleBuilder.aRole().
                 withCode(expectedRole.getCode()).
                 withCreatedAt(expectedRole.getCreatedAt()).
+                withCreatedBy(expectedRole.getCreatedBy()).
                 withId(expectedRole.getId()).
                 withDescription(expectedRole.getDescription()).
                 withUpdatedAt(expectedRole.getUpdatedAt()).
@@ -34,6 +35,7 @@ public class RoleTest {
         // Then
         assertThat(actualRole.getCode()).isEqualTo(expectedRole.getCode());
         assertThat(actualRole.getCreatedAt()).isEqualTo(expectedRole.getCreatedAt());
+        assertThat(actualRole.getCreatedBy()).isEqualTo(expectedRole.getCreatedBy());
         assertThat(actualRole.getId()).isEqualTo(expectedRole.getId());
         assertThat(actualRole.getDescription()).isEqualTo(expectedRole.getDescription());
         assertThat(actualRole.getUpdatedAt()).isEqualTo(expectedRole.getUpdatedAt());

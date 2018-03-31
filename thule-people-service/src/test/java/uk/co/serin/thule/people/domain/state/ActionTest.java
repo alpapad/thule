@@ -24,6 +24,7 @@ public class ActionTest {
         Action actualAction = Action.ActionBuilder.anAction().
                 withCode(expectedAction.getCode()).
                 withCreatedAt(expectedAction.getCreatedAt()).
+                withCreatedBy(expectedAction.getCreatedBy()).
                 withDescription(expectedAction.getDescription()).
                 withId(expectedAction.getId()).
                 withNextState(expectedAction.getNextState()).
@@ -35,6 +36,7 @@ public class ActionTest {
         // Then
         assertThat(actualAction.getCode()).isEqualTo(expectedAction.getCode());
         assertThat(actualAction.getCreatedAt()).isEqualTo(expectedAction.getCreatedAt());
+        assertThat(actualAction.getCreatedBy()).isEqualTo(expectedAction.getCreatedBy());
         assertThat(actualAction.getId()).isEqualTo(expectedAction.getId());
         assertThat(actualAction.getDescription()).isEqualTo(expectedAction.getDescription());
         assertThat(actualAction.getNextState()).isEqualTo(expectedAction.getNextState());

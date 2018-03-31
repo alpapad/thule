@@ -141,13 +141,13 @@ public final class Photograph extends DomainModel {
 
     public static final class PhotographBuilder {
         private LocalDateTime createdAt;
+        private String createdBy;
         private Long id;
         private Person person;
         private byte[] photo;
         // Don't call this position because 'position' is a reserved word in HSQL
         private long position;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -162,6 +162,7 @@ public final class Photograph extends DomainModel {
             Photograph photograph = new Photograph(photo, person);
             photograph.setPosition(position);
             photograph.setCreatedAt(createdAt);
+            photograph.setCreatedBy(createdBy);
             photograph.setId(id);
             photograph.setUpdatedAt(updatedAt);
             photograph.setUpdatedBy(updatedBy);
@@ -171,6 +172,11 @@ public final class Photograph extends DomainModel {
 
         public PhotographBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public PhotographBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

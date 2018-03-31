@@ -22,6 +22,7 @@ public class WorkAddressTest {
                 withCountry(expectedWorkAddress.getCountry()).
                 withCounty(expectedWorkAddress.getCounty()).
                 withCreatedAt(expectedWorkAddress.getCreatedAt()).
+                withCreatedBy(expectedWorkAddress.getCreatedBy()).
                 withId(expectedWorkAddress.getId()).
                 withPostCode(expectedWorkAddress.getPostCode()).
                 withState(expectedWorkAddress.getState()).
@@ -36,6 +37,7 @@ public class WorkAddressTest {
         assertThat(actualWorkAddress.getCountry()).isEqualTo(expectedWorkAddress.getCountry());
         assertThat(actualWorkAddress.getCounty()).isEqualTo(expectedWorkAddress.getCounty());
         assertThat(actualWorkAddress.getCreatedAt()).isEqualTo(expectedWorkAddress.getCreatedAt());
+        assertThat(actualWorkAddress.getCreatedBy()).isEqualTo(expectedWorkAddress.getCreatedBy());
         assertThat(actualWorkAddress.getId()).isEqualTo(expectedWorkAddress.getId());
         assertThat(actualWorkAddress.getPostCode()).isEqualTo(expectedWorkAddress.getPostCode());
         assertThat(actualWorkAddress.getState()).isEqualTo(expectedWorkAddress.getState());

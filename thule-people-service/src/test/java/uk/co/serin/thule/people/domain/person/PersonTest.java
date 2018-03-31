@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.domain.person;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import pl.pojo.tester.api.FieldPredicate;
 import pl.pojo.tester.api.assertion.Method;
@@ -13,6 +14,12 @@ import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.StateCode;
 
 import java.time.LocalDate;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
@@ -244,6 +251,38 @@ public class PersonTest {
         person.recover();
 
         // Then (see expected in @Test annotation)
+    }
+
+    @Test
+    public void validation_fails_when_userid_is_empty() {
+        // Given
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Person person = testDataFactory.buildPersonWithAllAssociations();
+        ReflectionTestUtils.setField(person, "userId", "");
+
+        // When
+        Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
+
+        // Then
+        assertThat(constraintViolations).hasSize(1);
+        assertThat(constraintViolations.iterator().next().getMessage()).isEqualTo("must not be empty");
+    }
+
+    @Test
+    public void validation_when_all_fields_are_valid() {
+        // Given
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Person person = testDataFactory.buildPersonWithAllAssociations();
+
+        // When
+        Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
+
+        // Then
+        assertThat(constraintViolations).hasSize(0);
     }
 
     @Test

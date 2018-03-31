@@ -39,12 +39,12 @@ public final class HomeAddress extends Address {
         private Country country;
         private String county;
         private LocalDateTime createdAt;
+        private String createdBy;
         private Long id;
         private String postCode;
         private State state;
         private String town;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -62,6 +62,7 @@ public final class HomeAddress extends Address {
             homeAddress.setState(state);
             homeAddress.setTown(town);
             homeAddress.setCreatedAt(createdAt);
+            homeAddress.setCreatedBy(createdBy);
             homeAddress.setId(id);
             homeAddress.setUpdatedAt(updatedAt);
             homeAddress.setUpdatedBy(updatedBy);
@@ -91,6 +92,11 @@ public final class HomeAddress extends Address {
 
         public HomeAddressBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public HomeAddressBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

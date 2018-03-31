@@ -28,6 +28,7 @@ public class PhotographTest {
         // When
         Photograph actualPhotograph = Photograph.PhotographBuilder.aPhotograph().
                 withCreatedAt(expectedPhotograph.getCreatedAt()).
+                withCreatedBy(expectedPhotograph.getCreatedBy()).
                 withId(expectedPhotograph.getId()).
                 withPerson(expectedPhotograph.getPerson()).
                 withPhoto(expectedPhotograph.getPhoto()).
@@ -39,6 +40,7 @@ public class PhotographTest {
 
         // Then
         assertThat(actualPhotograph.getCreatedAt()).isEqualTo(expectedPhotograph.getCreatedAt());
+        assertThat(actualPhotograph.getCreatedBy()).isEqualTo(expectedPhotograph.getCreatedBy());
         assertThat(actualPhotograph.getHash()).isEqualTo(expectedPhotograph.getHash());
         assertThat(actualPhotograph.getId()).isEqualTo(expectedPhotograph.getId());
         assertThat(actualPhotograph.getPerson()).isEqualTo(expectedPhotograph.getPerson());

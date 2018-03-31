@@ -89,10 +89,10 @@ public final class Role extends DomainModel {
     public static final class RoleBuilder {
         private RoleCode code;
         private LocalDateTime createdAt;
+        private String createdBy;
         private String description;
         private Long id;
         private LocalDateTime updatedAt;
-
         private String updatedBy;
         private Long version;
 
@@ -107,6 +107,7 @@ public final class Role extends DomainModel {
             Role role = new Role(code);
             role.setDescription(description);
             role.setCreatedAt(createdAt);
+            role.setCreatedBy(createdBy);
             role.setId(id);
             role.setUpdatedAt(updatedAt);
             role.setUpdatedBy(updatedBy);
@@ -121,6 +122,11 @@ public final class Role extends DomainModel {
 
         public RoleBuilder withCreatedAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+
+        public RoleBuilder withCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 

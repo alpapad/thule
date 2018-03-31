@@ -22,6 +22,7 @@ public class HomeAddressTest {
                 withCountry(expectedHomeAddress.getCountry()).
                 withCounty(expectedHomeAddress.getCounty()).
                 withCreatedAt(expectedHomeAddress.getCreatedAt()).
+                withCreatedBy(expectedHomeAddress.getCreatedBy()).
                 withId(expectedHomeAddress.getId()).
                 withPostCode(expectedHomeAddress.getPostCode()).
                 withState(expectedHomeAddress.getState()).
@@ -36,6 +37,7 @@ public class HomeAddressTest {
         assertThat(actualHomeAddress.getCountry()).isEqualTo(expectedHomeAddress.getCountry());
         assertThat(actualHomeAddress.getCounty()).isEqualTo(expectedHomeAddress.getCounty());
         assertThat(actualHomeAddress.getCreatedAt()).isEqualTo(expectedHomeAddress.getCreatedAt());
+        assertThat(actualHomeAddress.getCreatedBy()).isEqualTo(expectedHomeAddress.getCreatedBy());
         assertThat(actualHomeAddress.getId()).isEqualTo(expectedHomeAddress.getId());
         assertThat(actualHomeAddress.getPostCode()).isEqualTo(expectedHomeAddress.getPostCode());
         assertThat(actualHomeAddress.getState()).isEqualTo(expectedHomeAddress.getState());
