@@ -16,6 +16,6 @@ task itest(type: Test) {
     testClassesDirs = sourceSets.itest.output.classesDirs
     classpath = sourceSets.itest.runtimeClasspath
 
-    // Should run after the unit tests
-    shouldRunAfter tasks.test
+    // Should run after the unit tests and jacoco
+    shouldRunAfter test, jacocoTestReport
 }

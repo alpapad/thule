@@ -28,8 +28,9 @@ jacocoTestCoverageVerification {
         }
     }
     // Always create a report even if jacocoTestCoverageVerification fails
-    dependsOn jacocoTestReport
+    jacocoTestReport.finalizedBy jacocoTestCoverageVerification
 }
 jacoco.toolVersion = "0.8.1"
 
-check.dependsOn jacocoTestCoverageVerification
+// Always run jacoco after running the unit tests
+test.finalizedBy jacocoTestReport

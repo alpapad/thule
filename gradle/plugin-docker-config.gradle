@@ -9,7 +9,8 @@ docker {
     assemble.dependsOn tasks.docker
 }
 
-// https://github.com/palantir/gradle-docker/issues/139
+// The docker plugin should be able to tag an image but fails to do so due to bug https://github.com/palantir/gradle-docker/issues/139
+// This task is a workaround whereby we tag it ourselves
 task dockerTag(dependsOn: tasks.docker) {
     tasks.docker.finalizedBy dockerTag
 
