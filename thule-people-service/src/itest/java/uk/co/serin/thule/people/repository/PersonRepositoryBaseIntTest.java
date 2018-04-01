@@ -291,7 +291,7 @@ public abstract class PersonRepositoryBaseIntTest {
                 // Wait until the database is available because otherwise flyway migrate will fail
                 // resulting in the application context not loading
                 given().ignoreExceptions().pollInterval(fibonacci()).
-                        await().timeout(Duration.TWO_MINUTES).
+                        await().timeout(Duration.FIVE_MINUTES).
                         untilAsserted(() -> {
                             Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
                             JdbcUtils.closeConnection(connection);
