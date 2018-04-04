@@ -1,7 +1,7 @@
 ext {
     defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
-    mavenDeployTarget = project.hasProperty("mavenDeployTarget") ? project.getProperty("mavenDeployTarget").toLowerCase() : defaultMavenRepoType
-    mavenRepoUrl = "http://$nexusHost:$nexusPort/repository/maven-$mavenDeployTarget"
+    nexusDeployTarget = project.hasProperty("nexusDeployTarget") ? project.getProperty("nexusDeployTarget").toLowerCase() : defaultMavenRepoType
+    mavenRepoUrl = "http://$nexusHost:$nexusPort/repository/maven-$nexusDeployTarget"
 }
 
 publishing {
