@@ -1,4 +1,6 @@
-if (new File("src/main/docker/Dockerfile").exists()) {
+if (! new File("src/main/docker/Dockerfile").exists()) {
+    tasks.docker.onlyIf { false }
+} else {
     // Define variables
     ext {
         defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
