@@ -29,6 +29,7 @@ subprojects {
     // Non-standard Serin gradle plugin config
     tasks.docker.enabled = false // Don't need a docker image created
     tasks.dockerTag.enabled = false // Don't need a docker image created
+    tasks.dockerPush.enabled = false // Don't need a docker image created
     bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
     jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 }
