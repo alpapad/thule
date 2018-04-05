@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-admin-server  ################################
   thule-admin-server:
-    image: pooh:8082/thule-admin-server
+    image: thule-admin-server
     environment:
       EUREKA_CLIENT_ENABLED: "false"
       SPRING_CLOUD_CONFIG_ENABLED: "false"

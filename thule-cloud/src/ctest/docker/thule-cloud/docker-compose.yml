@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-admin-server  ################################
   thule-admin-server:
-    image: pooh:8082/thule-admin-server
+    image: thule-admin-server
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -18,7 +18,7 @@ services:
 
   ################################  thule-config-service  ################################
   thule-config-service:
-    image: pooh:8082/thule-config-service
+    image: thule-config-service
     environment:
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       THULE_DISCOVERY_SERVICE_PORT: 8080
@@ -32,7 +32,7 @@ services:
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
-    image: pooh:8082/thule-discovery-service
+    image: thule-discovery-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -46,7 +46,7 @@ services:
 
   ################################  thule-edge-server  ################################
   thule-edge-server:
-    image: pooh:8082/thule-edge-server
+    image: thule-edge-server
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -62,7 +62,7 @@ services:
 
   ################################  thule-email-server  ################################
   thule-email-service:
-    image: pooh:8082/thule-email-service
+    image: thule-email-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -78,7 +78,7 @@ services:
 
   ################################  thule-people-service  ################################
   thule-people-service:
-    image: pooh:8082/thule-people-service
+    image: thule-people-service
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
