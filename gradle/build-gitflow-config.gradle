@@ -115,10 +115,10 @@ if (branchType == "master") {
 
         doLast {
             exec {
-                commandLine "docker", "pull", "$nexusHost:8084/${jar.baseName}:${project.version}"
+                commandLine "docker", "pull", "$nexusHost:8085/${jar.baseName}:${project.version}"
             }
             exec {
-                commandLine "docker", "tag", "$nexusHost:8084/${jar.baseName}:${project.version}", "$nexusHost:8085/${jar.baseName}:${project.version}"
+                commandLine "docker", "tag", "$nexusHost:8085/${jar.baseName}:${project.version}", "$nexusHost:8086/${jar.baseName}:${project.version}"
             }
         }
     }

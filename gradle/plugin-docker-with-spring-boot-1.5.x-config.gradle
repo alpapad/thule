@@ -8,16 +8,16 @@ if (! new File("src/main/docker/Dockerfile").exists()) {
 
         switch (nexusDeployTarget) {
             case "none":
-                dockerRegistryPort = "8083"
-                break
-            case "snapshots":
-                dockerRegistryPort = "8083"
-                break
-            case "staging":
                 dockerRegistryPort = "8084"
                 break
-            case "releases":
+            case "snapshots":
+                dockerRegistryPort = "8084"
+                break
+            case "staging":
                 dockerRegistryPort = "8085"
+                break
+            case "releases":
+                dockerRegistryPort = "8086"
                 break
             default:
                 throw new GradleException("\n*** Unknown nexusDeployTarget [$nexusDeployTarget] ***")
