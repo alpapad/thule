@@ -4,7 +4,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "thule-spring-boot-starters"
+rootProject.name = "thule-shared"
 
 include "thule-spring-boot-starter-test"
 include "thule-spring-boot-starter-utils"
