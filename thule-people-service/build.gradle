@@ -33,7 +33,7 @@ itest {
     afterSuite { descriptor ->
         if (descriptor.getName().contains("Gradle Test Executor")) {
             exec {
-                commandLine "docker-compose", "-f", "src/itest/docker/$project.name/docker-compose-mysql.yml", "rm", "-fsv"
+                commandLine "docker-compose", "-f", "src/itest/docker/$project.name/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
             }
         }
     }
