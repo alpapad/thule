@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.utils.aspects.LogException;
+import uk.co.serin.thule.utils.aop.LogException;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
 
