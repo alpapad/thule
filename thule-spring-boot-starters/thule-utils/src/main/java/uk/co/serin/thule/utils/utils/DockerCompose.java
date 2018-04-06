@@ -24,7 +24,7 @@ public class DockerCompose {
     }
 
     public void down() throws IOException {
-        String[] command = Stream.of(dockerComposeCommandPrefix, new String[]{"rm", "-fsv"}).flatMap(Stream::of).toArray(String[]::new);
+        String[] command = Stream.of(dockerComposeCommandPrefix, new String[]{"down", "-v"}).flatMap(Stream::of).toArray(String[]::new);
         Process dockerComposeDown = processBuilder.command(command).start();
         try {
             dockerComposeDown.waitFor();

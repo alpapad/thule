@@ -40,7 +40,7 @@ public class DockerComposeTest {
     public void downAndUp_stops_and_starts_docker_compose_process() throws IOException {
         // Given
         ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
-        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "rm", "-fsv")).willReturn(processBuilder);
+        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v")).willReturn(processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
 
@@ -55,22 +55,7 @@ public class DockerComposeTest {
     public void down_stops_docker_compose_process() throws IOException, InterruptedException {
         // Given
         ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
-        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "rm", "-fsv")).willReturn(processBuilder);
-        given(processBuilder.start()).willReturn(process);
-        given(process.waitFor()).willThrow(InterruptedException.class);
-
-        // Then
-        dockerCompose.down();
-
-        // When
-        verify(processBuilder).start();
-    }
-
-    @Test
-    public void down_stops_docker_compose_process_ignoring_interrupt() throws IOException, InterruptedException {
-        // Given
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
-        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "rm", "-fsv")).willReturn(processBuilder);
+        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
         given(process.waitFor()).willThrow(InterruptedException.class);
 
@@ -86,7 +71,7 @@ public class DockerComposeTest {
         // Given
         ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
-        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "rm", "-fsv")).willReturn(processBuilder);
+        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
 
         // Then
@@ -102,7 +87,7 @@ public class DockerComposeTest {
         // Given
         ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
-        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "rm", "-fsv")).willReturn(processBuilder);
+        given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
         given(process.waitFor()).willThrow(InterruptedException.class).willThrow(InterruptedException.class);
 
