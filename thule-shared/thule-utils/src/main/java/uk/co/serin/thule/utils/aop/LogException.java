@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.aspects;
+package uk.co.serin.thule.utils.aop;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

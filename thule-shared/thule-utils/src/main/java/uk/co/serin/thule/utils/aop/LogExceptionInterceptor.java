@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.aspects;
+package uk.co.serin.thule.utils.aop;
 
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,12 +21,12 @@ public class LogExceptionInterceptor {
         logger.error(throwable.getMessage(), throwable);
     }
 
-    @Pointcut("@annotation(uk.co.serin.thule.utils.aspects.LogException)")
+    @Pointcut("@annotation(uk.co.serin.thule.utils.aop.LogException)")
     public void pointcutDefinitionBasedOnAnnotationForMethod() {
         // Pointcut definition only.
     }
 
-    @Pointcut("within(@uk.co.serin.thule.utils.aspects.LogException *)")
+    @Pointcut("within(@uk.co.serin.thule.utils.aop.LogException *)")
     public void pointcutDefinitionBasedOnAnnotationForType() {
         // Pointcut definition only.
     }

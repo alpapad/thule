@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.aspects;
+package uk.co.serin.thule.utils.aop;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

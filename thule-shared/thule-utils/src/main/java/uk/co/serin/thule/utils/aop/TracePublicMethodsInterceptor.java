@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.aspects;
+package uk.co.serin.thule.utils.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -13,12 +13,12 @@ import java.lang.reflect.Proxy;
 @Aspect
 @Component
 public class TracePublicMethodsInterceptor {
-    @Pointcut("@annotation(uk.co.serin.thule.utils.aspects.TracePublicMethods)")
+    @Pointcut("@annotation(uk.co.serin.thule.utils.aop.TracePublicMethods)")
     public void pointcutDefinitionBasedOnAnnotationForMethod() {
         // Pointcut definition only
     }
 
-    @Pointcut("within(@uk.co.serin.thule.utils.aspects.TracePublicMethods *)")
+    @Pointcut("within(@uk.co.serin.thule.utils.aop.TracePublicMethods *)")
     public void pointcutDefinitionBasedOnAnnotationForType() {
         // Pointcut definition only
     }
