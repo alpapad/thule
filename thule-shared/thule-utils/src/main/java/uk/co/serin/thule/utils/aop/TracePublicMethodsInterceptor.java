@@ -46,7 +46,7 @@ public class TracePublicMethodsInterceptor {
             Object arg = args[index];
             parameters.append('[').append(arg).append((index == args.length - 1) ? ']' : "], ");
         }
-        String params = (parameters.length() == 0) ? "with no parameters" : "with parameters " + parameters;
+        String params = (parameters.length() == 0) ? "using no parameters" : "using parameters " + parameters;
         logger.trace("Entering [{}] with method name of [{}] {}", target, methodName, params);
 
         long start = System.currentTimeMillis();
