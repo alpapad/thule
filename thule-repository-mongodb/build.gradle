@@ -32,7 +32,6 @@ sonarqube {
 // Dependencies
 dependencies {
     compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
-    compile("net.logstash.logback:logstash-logback-encoder:5.0")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-logging")
     compile("org.springframework.boot:spring-boot-starter-validation")

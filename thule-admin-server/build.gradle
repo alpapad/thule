@@ -30,7 +30,6 @@ dependencies {
     compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
     compile("de.codecentric:spring-boot-admin-server:1.5.7")
     compile("de.codecentric:spring-boot-admin-server-ui:1.5.7")
-    compile("net.logstash.logback:logstash-logback-encoder:5.0")
     compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-logging")
