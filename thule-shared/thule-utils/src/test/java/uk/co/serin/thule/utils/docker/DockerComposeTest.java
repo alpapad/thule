@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.utils;
+package uk.co.serin.thule.utils.docker;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

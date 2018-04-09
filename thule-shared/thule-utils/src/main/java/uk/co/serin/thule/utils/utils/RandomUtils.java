@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public final class RandomGenerators {
+public final class RandomUtils {
     static final int RANDOM_STRING_DEFAULT_MAX_LENGTH = 100;
     private static final int FIFTY = 50;
     private static final String RAMDOM_STRING_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -16,7 +16,7 @@ public final class RandomGenerators {
     private static final Set<Long> RANDOM_LONGS = Collections.synchronizedSet(new HashSet<>());
     private static final Set<String> RANDOM_STRINGS = Collections.synchronizedSet(new HashSet<>());
 
-    private RandomGenerators() {
+    private RandomUtils() {
     }
 
     public static <T extends Enum> T generateRandomEnum(Class<T> enumeration) {

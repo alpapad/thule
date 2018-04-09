@@ -16,7 +16,7 @@ import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
-import uk.co.serin.thule.utils.utils.RandomGenerators;
+import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -53,14 +53,14 @@ public class TestDataFactory implements ReferenceDataFactory {
 
     public Person buildJUnitTest() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
+        LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
 
         return Person.PersonBuilder.aPerson().withUserId(JUNIT_TEST).
                 withCreatedAt(now).
                 withCreatedBy(JUNIT_TEST).
-                withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
+                withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(dateOfExpiry).
-                withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(JUNIT_TEST + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("J").
                 withLastName("Tester").
@@ -101,15 +101,15 @@ public class TestDataFactory implements ReferenceDataFactory {
 
     public Person buildPersonWithAllAssociations() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
+        LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
+        String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         Person person = Person.PersonBuilder.aPerson().withUserId(userId).
                 withCreatedAt(now).
                 withCreatedBy(JUNIT_TEST).
-                withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
-                withDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
-                withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
+                withDateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
+                withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
                 withHomeAddress(buildOxfordStreetHomeAddress()).
@@ -183,15 +183,15 @@ public class TestDataFactory implements ReferenceDataFactory {
 
     public Person buildPersonWithoutAnyAssociations() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDate dateOfExpiry = RandomGenerators.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
+        LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
+        String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         return Person.PersonBuilder.aPerson().
                 withCreatedAt(now).
                 withCreatedBy(JUNIT_TEST).
-                withDateOfBirth(RandomGenerators.generateUniqueRandomDateInThePast()).
-                withDateOfExpiry(RandomGenerators.generateUniqueRandomDateInTheFuture()).
-                withDateOfPasswordExpiry(RandomGenerators.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
+                withDateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
+                withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
                 withLastName("Scarlett").

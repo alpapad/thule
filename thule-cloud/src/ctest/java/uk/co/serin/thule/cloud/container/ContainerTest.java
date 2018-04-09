@@ -17,7 +17,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.utils.DockerCompose;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;

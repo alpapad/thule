@@ -4,7 +4,7 @@ package uk.co.serin.thule.repository.mongodb;
 import org.awaitility.Duration;
 import org.springframework.core.env.Environment;
 
-import uk.co.serin.thule.utils.utils.DockerCompose;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.Socket;

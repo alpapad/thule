@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.boot.actuate.health.Status;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.utils.DockerCompose;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.utils;
+package uk.co.serin.thule.utils.docker;
 
 import java.io.IOException;
 import java.util.stream.Stream;

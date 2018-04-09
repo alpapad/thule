@@ -8,22 +8,22 @@ import java.time.Month;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RandomGeneratorsTest {
+public class RandomUtilsTest {
     private LocalDate NOW = LocalDate.now();
 
     @Test
     public void generate_random_enum_of_required_type() {
-        assertThat(RandomGenerators.generateRandomEnum(Month.class)).isInstanceOf(Month.class);
+        assertThat(RandomUtils.generateRandomEnum(Month.class)).isInstanceOf(Month.class);
     }
 
     @Test
     public void generate_unique_random_date_is_after_today() {
-        assertThat(RandomGenerators.generateUniqueRandomDateAfter(NOW)).isAfter(NOW);
+        assertThat(RandomUtils.generateUniqueRandomDateAfter(NOW)).isAfter(NOW);
     }
 
     @Test
     public void generate_unique_random_date_is_before_today() {
-        assertThat(RandomGenerators.generateUniqueRandomDateBefore(NOW)).isBefore(NOW);
+        assertThat(RandomUtils.generateUniqueRandomDateBefore(NOW)).isBefore(NOW);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class RandomGeneratorsTest {
         LocalDate inFiftyYearsTime = LocalDate.now().plusYears(50);
 
         // When
-        LocalDate date = RandomGenerators.generateUniqueRandomDateBetween(NOW, inFiftyYearsTime);
+        LocalDate date = RandomUtils.generateUniqueRandomDateBetween(NOW, inFiftyYearsTime);
 
         // Then
         assertThat(date).isAfter(NOW).isBefore(inFiftyYearsTime);
@@ -40,36 +40,36 @@ public class RandomGeneratorsTest {
 
     @Test
     public void generate_unique_random_date_is_in_the_future() {
-        assertThat(RandomGenerators.generateUniqueRandomDateInTheFuture()).isAfter(NOW);
+        assertThat(RandomUtils.generateUniqueRandomDateInTheFuture()).isAfter(NOW);
     }
 
     @Test
     public void generate_unique_random_date_is_in_the_past() {
-        assertThat(RandomGenerators.generateUniqueRandomDateInThePast()).isBefore(NOW);
+        assertThat(RandomUtils.generateUniqueRandomDateInThePast()).isBefore(NOW);
     }
 
     @Test
     public void generate_unique_random_integer_is_not_null() {
-        assertThat(RandomGenerators.generateUniqueRandomInteger()).isNotNull();
+        assertThat(RandomUtils.generateUniqueRandomInteger()).isNotNull();
     }
 
     @Test
     public void generate_unique_random_long_is_not_null() {
-        assertThat(RandomGenerators.generateUniqueRandomLong()).isNotNull();
+        assertThat(RandomUtils.generateUniqueRandomLong()).isNotNull();
     }
 
     @Test
     public void generate_unique_random_string_of_explicit_maximum_length_does_exceed_required_length() {
-        assertThat(RandomGenerators.generateUniqueRandomString(999).length()).isLessThanOrEqualTo(999);
+        assertThat(RandomUtils.generateUniqueRandomString(999).length()).isLessThanOrEqualTo(999);
     }
 
     @Test
     public void generate_unique_random_string_with_default_maximum_length_is_not_greater_than_that_length() {
-        assertThat(RandomGenerators.generateUniqueRandomString().length()).isLessThanOrEqualTo(RandomGenerators.RANDOM_STRING_DEFAULT_MAX_LENGTH);
+        assertThat(RandomUtils.generateUniqueRandomString().length()).isLessThanOrEqualTo(RandomUtils.RANDOM_STRING_DEFAULT_MAX_LENGTH);
     }
 
     @Test
     public void private_constructor_executes_without_exception() {
-        assertThat(BeanUtils.instantiateClass(RandomGenerators.class)).isNotNull();
+        assertThat(BeanUtils.instantiateClass(RandomUtils.class)).isNotNull();
     }
 }

@@ -3,7 +3,7 @@ package uk.co.serin.thule.repository.mongodb.support;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
-import uk.co.serin.thule.utils.utils.RandomGenerators;
+import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.util.Optional;
 
@@ -16,6 +16,6 @@ public class RandomUsernameAuditorAware implements AuditorAware<String> {
      */
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of(RandomGenerators.generateUniqueRandomString());
+        return Optional.of(RandomUtils.generateUniqueRandomString());
     }
 }

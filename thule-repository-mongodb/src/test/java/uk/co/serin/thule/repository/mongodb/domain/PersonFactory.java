@@ -1,6 +1,6 @@
 package uk.co.serin.thule.repository.mongodb.domain;
 
-import uk.co.serin.thule.utils.utils.RandomGenerators;
+import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.time.LocalDate;
 
@@ -30,9 +30,9 @@ public class PersonFactory {
 
     public static Person newPerson() {
         // Set the attributes
-        final LocalDate dob = RandomGenerators.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomGenerators.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomGenerators.generateUniqueRandomString(SUFFIX_LENGTH);
+        final LocalDate dob = RandomUtils.generateUniqueRandomDateInThePast();
+        final LocalDate expiryDate = RandomUtils.generateUniqueRandomDateInTheFuture();
+        String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(SUFFIX_LENGTH);
 
         return Person.PersonBuilder.aPerson().
                 withDateOfBirth(dob).
@@ -40,7 +40,7 @@ public class PersonFactory {
                 withDateOfPasswordExpiry(expiryDate).
                 withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
                 withFirstName("Elizabeth").
-                withId(RandomGenerators.generateUniqueRandomLong()).
+                withId(RandomUtils.generateUniqueRandomLong()).
                 withLastName("Scarlett").
                 withPassword(userId).
                 withSecondName("K").
