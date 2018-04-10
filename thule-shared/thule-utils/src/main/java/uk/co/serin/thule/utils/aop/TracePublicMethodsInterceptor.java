@@ -1,9 +1,11 @@
 package uk.co.serin.thule.utils.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,10 +32,14 @@ public class TracePublicMethodsInterceptor {
 
     @Around("(publicMethod() && pointcutDefinitionBasedOnAnnotationForType()) || pointcutDefinitionBasedOnAnnotationForMethod()")
     public Object trace(ProceedingJoinPoint joinPoint) {
-        return trace(joinPoint.getTarget(), joinPoint.getSignature().getName(), joinPoint.getArgs(), new ProceedingJoinPointTraceCallback(joinPoint));
+        return trace(joinPoint.getTarget(), joinPoint.getSignature(), joinPoint.getArgs(), new ProceedingJoinPointTraceCallback(joinPoint));
     }
 
-    private Object trace(Object target, String methodName, Object[] args, PerformanceTraceCallback performanceTraceCallback) {
+    private Object trace(Object target, Signature signature, Object[] args, PerformanceTraceCallback performanceTraceCallback) {
+        String methodName =  signature.getName();
+        Class returnType = ((MethodSignature) signature).getReturnType();
+
+
         Class loggingClass;
         if (Proxy.isProxyClass(target.getClass())) {
             loggingClass = target.getClass().getInterfaces()[0];
@@ -55,7 +61,8 @@ public class TracePublicMethodsInterceptor {
             returnValue = performanceTraceCallback.proceed();
         } finally {
             long elapsed = System.currentTimeMillis() - start;
-            logger.trace("Exiting [{}] with method name of [{}] returning [{}] in {} ms", target, methodName, returnValue, elapsed);
+            Object returnMessage = (returnType == Void.TYPE) ? "void" : returnValue;
+            logger.trace("Exiting [{}] with method name of [{}] returning [{}] in {} ms", target, methodName, returnMessage, elapsed);
         }
 
         return returnValue;

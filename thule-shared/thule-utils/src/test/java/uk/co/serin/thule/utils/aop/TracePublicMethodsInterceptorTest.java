@@ -1,13 +1,11 @@
 package uk.co.serin.thule.utils.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import uk.co.serin.thule.utils.aop.TracePublicMethodsInterceptor;
 
 import java.lang.reflect.Proxy;
 import java.util.Collection;
@@ -21,7 +19,7 @@ public class TracePublicMethodsInterceptorTest {
     @Mock
     private ProceedingJoinPoint proceedingJoinPoint;
     @Mock
-    private Signature signature;
+    private MethodSignature signature;
 
     @Test
     public void empty_pointcuts_do_not_throw_an_exception() {
@@ -98,6 +96,21 @@ public class TracePublicMethodsInterceptorTest {
 
         // Then
         assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
+    }
+
+    @Test
+    public void trace_method_with_void_return() throws Throwable {
+        // Given
+        given(proceedingJoinPoint.getTarget()).willReturn(new Object());
+        given(proceedingJoinPoint.getSignature()).willReturn(signature);
+        given(proceedingJoinPoint.getArgs()).willReturn(new Object[]{});
+        given(signature.getReturnType()).willReturn(void.class);
+
+        // When
+        Object actualReturnValue = tracePublicMethodsInterceptor.trace(proceedingJoinPoint);
+
+        // Then
+        assertThat(actualReturnValue).isNull();
     }
 
     @Test
