@@ -59,6 +59,30 @@ public class RandomUtilsTest {
     }
 
     @Test
+    public void generate_unique_random_numeric_string_of_explicit_maximum_length_does_exceed_required_length() {
+        // Given
+
+        // When
+        String randomNumericString = RandomUtils.generateUniqueRandomNumericString(999);
+
+        // Then
+        assertThat(randomNumericString).containsOnlyDigits();
+        assertThat(randomNumericString.length()).isLessThanOrEqualTo(999);
+    }
+
+    @Test
+    public void generate_unique_random_numeric_string_with_default_maximum_length_is_not_greater_than_that_length() {
+        // Given
+
+        // When
+        String randomNumericString = RandomUtils.generateUniqueRandomNumericString();
+
+        // Then
+        assertThat(randomNumericString).containsOnlyDigits();
+        assertThat(randomNumericString.length()).isLessThanOrEqualTo(RandomUtils.RANDOM_STRING_DEFAULT_MAX_LENGTH);
+    }
+
+    @Test
     public void generate_unique_random_string_of_explicit_maximum_length_does_exceed_required_length() {
         assertThat(RandomUtils.generateUniqueRandomString(999).length()).isLessThanOrEqualTo(999);
     }

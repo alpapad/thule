@@ -3,13 +3,13 @@ package uk.co.serin.thule.utils.utils;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class RandomUtils {
     static final int RANDOM_STRING_DEFAULT_MAX_LENGTH = 100;
     private static final int FIFTY = 50;
+    private static final String RAMDOM_NUMERIC_CHARACTERS = "0123456789";
     private static final String RAMDOM_STRING_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final Set<LocalDate> RANDOM_DATES = Collections.synchronizedSet(new HashSet<>());
     private static final Set<Integer> RANDOM_INTEGERS = Collections.synchronizedSet(new HashSet<>());
@@ -77,28 +77,49 @@ public final class RandomUtils {
         return randomLong;
     }
 
+    public static String generateUniqueRandomNumericString() {
+        return generateUniqueRandomNumericString(RANDOM_STRING_DEFAULT_MAX_LENGTH);
+    }
+
+    public static String generateUniqueRandomNumericString(int maxLength) {
+        return generateUniqueFixedLengthRandomNumericString(ThreadLocalRandom.current().nextInt(maxLength));
+    }
+
+    public static String generateUniqueFixedLengthRandomNumericString(int length) {
+        StringBuilder randomString = new StringBuilder();
+        boolean uniqueFound = false;
+
+        while (!uniqueFound) {
+            while (randomString.length() <= length) {
+                int randomIndex = ThreadLocalRandom.current().nextInt(RAMDOM_NUMERIC_CHARACTERS.length());
+                randomString.append(RAMDOM_NUMERIC_CHARACTERS.charAt(randomIndex));
+            }
+            uniqueFound = RANDOM_STRINGS.add(randomString.toString());
+        }
+
+        return randomString.toString();
+    }
+
     public static String generateUniqueRandomString() {
         return generateUniqueRandomString(RANDOM_STRING_DEFAULT_MAX_LENGTH);
     }
 
     public static String generateUniqueRandomString(int maxLength) {
-        String randomString = null;
+        return generateUniqueFixedLengthRandomString(ThreadLocalRandom.current().nextInt(maxLength));
+    }
+
+    public static String generateUniqueFixedLengthRandomString(int length) {
+        StringBuilder randomString = new StringBuilder();
         boolean uniqueFound = false;
 
         while (!uniqueFound) {
-            randomString = generateFixedLengthRandomString(ThreadLocalRandom.current().nextInt(maxLength));
-            uniqueFound = RANDOM_STRINGS.add(randomString);
+            while (randomString.length() <= length) {
+                int randomIndex = ThreadLocalRandom.current().nextInt(RAMDOM_STRING_CHARACTERS.length());
+                randomString.append(RAMDOM_STRING_CHARACTERS.charAt(randomIndex));
+            }
+            uniqueFound = RANDOM_STRINGS.add(randomString.toString());
         }
-        return randomString;
-    }
 
-    public static String generateFixedLengthRandomString(int length) {
-        StringBuilder randomString = new StringBuilder();
-        Random rnd = new Random();
-        while (randomString.length() <= length) {
-            int randomIndex = rnd.nextInt(RAMDOM_STRING_CHARACTERS.length());
-            randomString.append(RAMDOM_STRING_CHARACTERS.charAt(randomIndex));
-        }
         return randomString.toString();
     }
 }
