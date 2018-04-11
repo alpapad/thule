@@ -10,7 +10,12 @@ spring:
     mongodb:
       uri: mongodb://${thule.thule-repository-mongodb.mongodb-host}:${thule.thule-repository-mongodb.mongodb-port}/test
 
+# Thule configuration
 thule:
+  logging:
+    logstash:
+      host: logstash-host
+      port: 5400
   thule-repository-mongodb:
     mongodb-host: docker-host
     mongodb-port: 27017
