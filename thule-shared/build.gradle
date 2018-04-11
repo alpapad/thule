@@ -22,15 +22,15 @@ subprojects {
     apply plugin: "org.sonarqube"
     apply plugin: "org.springframework.boot"
 
+    // Standard Serin gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
     // Dependencies
     dependencyManagement {
         imports {
             mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.M9")
         }
     }
-
-    // Standard Serin gradle plugin config
-    apply from: "${rootDir}/../gradle/build-config.gradle"
 
     // Non-standard Serin gradle plugin config
     bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
