@@ -11,7 +11,6 @@ plugins {
     id "org.sonarqube" version "2.6.2" apply(false)
     id "org.springframework.boot" version "2.0.1.RELEASE" apply(false)
 }
-apply plugin: "io.spring.dependency-management"
 
 subprojects {
     apply plugin: "com.github.ben-manes.versions"
@@ -23,6 +22,13 @@ subprojects {
     apply plugin: "org.sonarqube"
     apply plugin: "org.springframework.boot"
 
+    // Dependencies
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.M9")
+        }
+    }
+
     // Standard Serin gradle plugin config
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
@@ -31,12 +37,6 @@ subprojects {
     jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 }
 
-// Dependencies
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.M9")
-    }
-}
 
 project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
@@ -45,7 +45,7 @@ project("thule-spring-boot-starter-test") {
         compile("nl.jqno.equalsverifier:equalsverifier:2.4.5")
         compile("org.awaitility:awaitility:3.1.0")
         compile("org.springframework.boot:spring-boot-starter-test")
-        compile("org.springframework.cloud:spring-cloud-contract-wiremock:2.0.0.M8")
+        compile("org.springframework.cloud:spring-cloud-contract-wiremock")
         compile("pl.pojo:pojo-tester:0.7.6")
     }
 }
