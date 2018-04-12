@@ -6,9 +6,6 @@ services:
     environment:
       EUREKA_CLIENT_ENABLED: "false"
       TZ: Europe/London
-    extra_hosts:
-      - logstash-host:172.17.0.1
-      - zipkin-host:172.17.0.1
     hostname: config-service-1
     ports:
       - 8888:8080

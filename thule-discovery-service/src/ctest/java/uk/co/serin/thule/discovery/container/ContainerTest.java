@@ -15,7 +15,7 @@ import java.time.Duration;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
-    private static final ActuatorUri DISCOVERY_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8761/actuator/health"));
+    private static final ActuatorUri DISCOVERY_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://172.17.0.1:8761/actuator/health"));
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-discovery-service/docker-compose.yml");
 
     @BeforeClass

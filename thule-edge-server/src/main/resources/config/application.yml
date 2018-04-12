@@ -29,7 +29,7 @@ spring:
       sampler:
         percentage: 1.0
   zipkin:
-    baseUrl: http://zipkin-host:9411
+    baseUrl: http://172.17.0.1:9411 # Docker bridge IP address
 
 # Zuul configuration
 zuul:
@@ -39,7 +39,8 @@ zuul:
 
 # Thule configuration
 thule:
-  logging:
-    logstash:
-      host: logstash-host
-      port: 5400
+  shared:
+    logging:
+      logstash:
+        host: 172.17.0.1 # Docker bridge IP address
+        port: 5400

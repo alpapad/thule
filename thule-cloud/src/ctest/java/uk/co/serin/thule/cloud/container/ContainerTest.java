@@ -30,14 +30,14 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
-    private static final String ADMIN_SERVER_URL_PREFIX = "http://docker-host:9071";
-    private static final String CONFIG_SERVICE_URL_PREFIX = "http://docker-host:9888";
-    private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://docker-host:9761";
-    private static final String EDGE_SERVER_URL_PREFIX = "http://docker-host:9080";
-    private static final String EMAIL_SERVICE_URL_PREFIX = "http://docker-host:9091";
+    private static final String ADMIN_SERVER_URL_PREFIX = "http://172.17.0.1:9071";
+    private static final String CONFIG_SERVICE_URL_PREFIX = "http://172.17.0.1:9888";
+    private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://172.17.0.1:9761";
+    private static final String EDGE_SERVER_URL_PREFIX = "http://172.17.0.1:9080";
+    private static final String EMAIL_SERVICE_URL_PREFIX = "http://172.17.0.1:9091";
     private static final String HEALTH = "/health";
     private static final String PEOPLE = "/people";
-    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://docker-host:9090";
+    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://172.17.0.1:9090";
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
     private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-cloud/docker-compose.yml");

@@ -8,9 +8,6 @@ services:
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
       TZ: Europe/London
-    extra_hosts:
-      - logstash-host:172.17.0.1
-      - zipkin-host:172.17.0.1
     hostname: admin-server-1
     ports:
       - 8071:8080

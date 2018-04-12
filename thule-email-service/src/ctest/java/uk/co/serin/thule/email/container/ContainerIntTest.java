@@ -15,7 +15,7 @@ import java.time.Duration;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerIntTest {
-    private static final ActuatorUri EMAIL_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://docker-host:8091/actuator/health"));
+    private static final ActuatorUri EMAIL_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://172.17.0.1:8091/actuator/health"));
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-email-service/docker-compose.yml");
 
     @BeforeClass
