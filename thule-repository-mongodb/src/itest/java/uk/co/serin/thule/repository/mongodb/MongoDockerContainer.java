@@ -52,8 +52,8 @@ public class MongoDockerContainer {
         // Ideally, this would be done as a static @BeforeClass method. However, we need access to
         // the spring environment which is autowired and hence cannot be static
         if (!mongoAvailable) {
-            String mongodbHost = env.getRequiredProperty("thule.thule-repository-mongodb.mongodb-host");
-            int mongodbPort = env.getRequiredProperty("thule.thule-repository-mongodb.mongodb-port", Integer.class);
+            String mongodbHost = env.getRequiredProperty("thule.repositorymongodb.mongodb.host");
+            int mongodbPort = env.getRequiredProperty("thule.repositorymongodb.mongodb.port", Integer.class);
 
             // Wait until MongoDb is up by checking that the port is available
             given().ignoreExceptions().pollInterval(fibonacci()).

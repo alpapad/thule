@@ -8,14 +8,16 @@ logging:
 spring:
   data:
     mongodb:
-      uri: mongodb://${thule.thule-repository-mongodb.mongodb-host}:${thule.thule-repository-mongodb.mongodb-port}/test
+      uri: mongodb://${thule.repositorymongodb.mongodb.host}:${thule.repositorymongodb.mongodb.port}/test
 
 # Thule configuration
 thule:
-  logging:
-    logstash:
-      host: logstash-host
-      port: 5400
-  thule-repository-mongodb:
-    mongodb-host: docker-host
-    mongodb-port: 27017
+  shared:
+    logging:
+      logstash:
+        host: 172.17.0.1 # Docker bridge IP address
+        port: 5400
+  repositorymongodb:
+    mongodb:
+      host: 172.17.0.1 # Docker bridge IP address
+      port: 27017
