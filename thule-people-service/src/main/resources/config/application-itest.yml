@@ -9,6 +9,10 @@ spring:
     baseline-on-migrate: true
 
 # Thule configuration
+thule:
+  peopleservice:
+    mysql:
+      port: 3307
 
 ######################################### NESTED INTEGRATION TEST PROFILES #######################################
 ---
