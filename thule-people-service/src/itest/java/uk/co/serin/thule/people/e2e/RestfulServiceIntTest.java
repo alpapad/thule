@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.awaitility.Duration;
 import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import uk.co.serin.thule.people.MySqlDockerContainer;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
@@ -86,6 +88,11 @@ public class RestfulServiceIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
+
+    @BeforeClass
+    public static void setUpClass() {
+        MySqlDockerContainer.instance().startMySqlContainerIfDown();
+    }
 
     @Test
     public void create_person() {
