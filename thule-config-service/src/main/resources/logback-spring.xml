@@ -10,7 +10,7 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
-        <if condition='isDefined("thuleLoggingLogstashHost") &amp;&amp; isDefined("thuleLoggingLogstashPort")'>
+        <if condition='isDefined("thuleSharedLoggingLogstashHost") &amp;&amp; isDefined("thuleSharedLoggingLogstashPort")'>
             <then>
                 <appender-ref ref="LOGSTASH"/>
             </then>

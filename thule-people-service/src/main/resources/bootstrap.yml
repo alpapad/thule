@@ -14,7 +14,7 @@ spring:
   cloud:
     config:
       # Must set this to true when attempting retry otherwise it will not retry connecting to the config server if not available at startup
-      failFast: true
+      failfast: true
       # When to retry accessing the config service if it not available at startup
       retry:
         maxAttempts: 9999
