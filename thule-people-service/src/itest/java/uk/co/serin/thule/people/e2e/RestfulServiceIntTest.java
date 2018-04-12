@@ -4,14 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
+import org.awaitility.Duration;
+import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
@@ -39,6 +44,7 @@ import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -54,6 +60,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
@@ -144,8 +152,8 @@ public class RestfulServiceIntTest {
         assertThat(deletedPerson).isNotPresent();
     }
 
-    private Person createTestPerson(Person expectedPerson) {
-        Person person = testDataFactory.buildPerson(expectedPerson);
+    private Person createTestPerson(Person person) {
+//        Person testPerson = testDataFactory.buildPerson(person);
         person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
         return personRepository.save(person);
     }
@@ -226,7 +234,7 @@ public class RestfulServiceIntTest {
     }
 
     @Test
-    public void update_person() {
+    public void update_person() throws InterruptedException {
         // Given
         stubFor(post(
                 urlEqualTo(URL_FOR_EMAILS)).
@@ -251,6 +259,8 @@ public class RestfulServiceIntTest {
         expectedPerson.setState(null);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
 
+        Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
+
         // When
         restTemplate.put(URL_FOR_PEOPLE + ID, testPerson, id);
 
@@ -264,7 +274,26 @@ public class RestfulServiceIntTest {
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    }
+
+    @TestConfiguration
+    static class BankTransferRequestIntTestConfiguration {
+        @Bean
+        public FlywayMigrationStrategy flywayMigrationStrategy() {
+            return flyway -> {
+                // Wait until the database is available because otherwise flyway migrate will fail
+                // resulting in the application context not loading
+                given().ignoreExceptions().pollInterval(fibonacci()).
+                        await().timeout(Duration.FIVE_MINUTES).
+                        untilAsserted(() -> {
+                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
+                            JdbcUtils.closeConnection(connection);
+                        });
+                flyway.migrate();
+            };
+        }
     }
 }

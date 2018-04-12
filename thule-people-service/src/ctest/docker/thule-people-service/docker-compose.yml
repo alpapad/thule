@@ -4,13 +4,22 @@ services:
   thule-people-service:
     image: thule-people-service
     environment:
-      EUREKA_CLIENT_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_FAILFAST: "false"
+      SPRING_PROFILES_INCLUDE: ctest
       TZ: Europe/London
-    extra_hosts:
-      - logstash-host:172.17.0.1
-      - zipkin-host:172.17.0.1
     hostname: people-service-1
     ports:
       - 8090:8080
+
+  ################################  Servers and Databases Required By Container Tests  ################################
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: UTC
+    networks:
+      default:
+        aliases:
+          - mysql-host
+    ports:
+      - 3307:3306 # Required to allow container tests to test that the database has been written to when testing the api
+    restart: always

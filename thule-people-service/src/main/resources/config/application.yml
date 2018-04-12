@@ -32,21 +32,35 @@ server:
 spring:
   application:
     name: thule-people-service
+  datasource:
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    password: thule
+    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}/thule
+    username: thule
   flyway:
-    enabled: false
+    password: root
+    url: jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}/mysql
+    user: root
   security:
     user:
       password: user
       roles: USER,ADMIN
   sleuth:
       sampler:
-        percentage: 1.0
+        probability: 1.0 # 1.0 = 100%
   zipkin:
-    baseUrl: http://zipkin-host:9411
+    baseUrl: http://172.17.0.1:9411 # Docker bridge IP address
+    sender:
+      type: web
 
 # Thule configuration
 thule:
-  logging:
-    logstash:
-      host: logstash-host
-      port: 5400
+  peopleservice:
+    mysql:
+      host: 172.17.0.1 # Docker bridge IP address
+      port: 3306
+  shared:
+    logging:
+      logstash:
+        host: 172.17.0.1 # Docker bridge IP address
+        port: 5400

@@ -1,0 +1,11 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
+# Spring boot configuration
+spring:
+  cloud:
+    config:
+      enabled: false
+      failfast: false
