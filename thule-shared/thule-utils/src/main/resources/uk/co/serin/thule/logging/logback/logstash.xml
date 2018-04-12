@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-    <springProperty name="thuleLoggingLogstashHost" source="thule.logging.logstash.host"/>
-    <springProperty name="thuleLoggingLogstashPort" source="thule.logging.logstash.port"/>
-    <if condition='isDefined("thuleLoggingLogstashHost") &amp;&amp; isDefined("thuleLoggingLogstashPort")'>
+    <springProperty name="thuleSharedLoggingLogstashHost" source="thule.shared.logging.logstash.host"/>
+    <springProperty name="thuleSharedLoggingLogstashPort" source="thule.shared.logging.logstash.port"/>
+    <if condition='isDefined("thuleSharedLoggingLogstashHost") &amp;&amp; isDefined("thuleSharedLoggingLogstashPort")'>
         <then>
-            <springProperty name="thuleLoggingLogstashSslEnabled"
+            <springProperty name="thuleSharedLoggingLogstashSslEnabled"
                             source="thule.logging.logstash.ssl-enabled" defaultValue="false"/>
             <springProperty name="springApplicationName" source="spring.application.name"
                             defaultValue="spring.application.name-not-set"/>
             <appender name="LOGSTASH"
                       class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-                <destination>${thuleLoggingLogstashHost}:${thuleLoggingLogstashPort}</destination>
+                <destination>${thuleSharedLoggingLogstashHost}:${thuleSharedLoggingLogstashPort}</destination>
                 <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                     <providers>
                         <arguments/>
@@ -40,7 +40,7 @@
                 <keepAliveDuration>5 minutes</keepAliveDuration>
                 <reconnectionDelay>10 second</reconnectionDelay>
                 <ringBufferSize>16384</ringBufferSize>
-                <if condition='property("thuleLoggingLogstashSslEnabled").equals("true")'>
+                <if condition='property("thuleSharedLoggingLogstashSslEnabled").equals("true")'>
                     <then>
                         <ssl/>
                     </then>
