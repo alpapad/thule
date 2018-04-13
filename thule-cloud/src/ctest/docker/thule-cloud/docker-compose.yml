@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-admin-server  ################################
   thule-admin-server:
-    image: thule-admin-server
+    image: pooh:8082/thule-admin-server:1.0.0-SNAPSHOT
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -15,7 +15,7 @@ services:
 
   ################################  thule-config-service  ################################
   thule-config-service:
-    image: thule-config-service
+    image: pooh:8082/thule-config-service:1.0.0-SNAPSHOT
     environment:
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
       THULE_DISCOVERY_SERVICE_PORT: 8080
@@ -26,7 +26,7 @@ services:
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
-    image: thule-discovery-service
+    image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -37,7 +37,7 @@ services:
 
   ################################  thule-edge-server  ################################
   thule-edge-server:
-    image: thule-edge-server
+    image: pooh:8082/thule-edge-server:1.0.0-SNAPSHOT
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -50,7 +50,7 @@ services:
 
   ################################  thule-email-server  ################################
   thule-email-service:
-    image: thule-email-service
+    image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
     environment:
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
@@ -63,8 +63,9 @@ services:
 
   ################################  thule-people-service  ################################
   thule-people-service:
-    image: thule-people-service
+    image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
     environment:
+      SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true"
       THULE_CONFIG_SERVICE_HOST: thule-config-service
       THULE_CONFIG_SERVICE_PORT: 8080
       THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
@@ -73,4 +74,14 @@ services:
     hostname: people-service-1
     ports:
       - 9090:8080
+    restart: always
+
+  ################################  Servers and Databases Required By Container Tests  ################################
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/London
+    ports:
+      - 3306:3306
     restart: always
