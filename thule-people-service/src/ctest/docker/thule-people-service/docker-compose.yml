@@ -9,6 +9,7 @@ services:
     hostname: people-service-1
     ports:
       - 8090:8080
+    restart: always
 
   ################################  Servers and Databases Required By Container Tests  ################################
   mysql:
