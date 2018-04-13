@@ -74,15 +74,3 @@ services:
     ports:
       - 9090:8080
     restart: always
-
-  ################################  Servers and Databases Required By Container Tests  ################################
-  mysql:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      TZ: UTC
-    networks:
-      default:
-        aliases:
-          - mysql-host
-    restart: always
