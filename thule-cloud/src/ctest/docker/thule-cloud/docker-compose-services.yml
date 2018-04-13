@@ -73,6 +73,7 @@ services:
     hostname: people-service-1
     ports:
       - 9090:8080
+    restart: always
 
   ################################  Servers and Databases Required By Container Tests  ################################
   mysql:
@@ -84,6 +85,4 @@ services:
       default:
         aliases:
           - mysql-host
-    ports:
-      - 3307:3306 # Required to allow container tests to test that the database has been written to when testing the api
     restart: always

@@ -20,12 +20,15 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
@@ -40,16 +43,23 @@ public class ContainerTest {
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://172.17.0.1:9090";
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
     private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
-    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-cloud/docker-compose.yml");
+    private static DockerCompose dockerComposeMySql = new DockerCompose("src/ctest/docker/thule-cloud/docker-compose-mysql.yml");
+    private static DockerCompose dockerComposeServices = new DockerCompose("src/ctest/docker/thule-cloud/docker-compose-services.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
+        dockerComposeMySql.downAndUp();
+        // Wait until MySql is up by checking that the port is available
+        given().ignoreExceptions().pollInterval(fibonacci()).
+                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                untilAsserted(() -> new Socket("172.17.0.1", 3306).close());
+        dockerComposeServices.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerCompose.down();
+        dockerComposeServices.down();
+        dockerComposeMySql.down();
     }
 
     @Test
@@ -114,7 +124,7 @@ public class ContainerTest {
         ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(EDGE_SERVER_URL_PREFIX + THULE_PEOPLE_SERVICE + PEOPLE);
 
         // Then
-        Map<String,String> embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
+        Map<String, String> embedded = Map.class.cast(responseEntity.getBody().get("_embedded"));
         List<String> people = List.class.cast(embedded.get("people"));
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

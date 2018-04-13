@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+  ################################  Servers and Databases Required By Container Tests  ################################
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: UTC
+    ports:
+      - 3306:3306
+    restart: always
