@@ -6,6 +6,5 @@ services:
     environment:
       EUREKA_CLIENT_ENABLED: "false"
       TZ: Europe/London
-    hostname: config-service-1
     ports:
       - 8888:8080

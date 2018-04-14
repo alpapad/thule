@@ -7,6 +7,5 @@ services:
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
       TZ: Europe/London
-    hostname: discovery-service-1
     ports:
       - 8761:8080

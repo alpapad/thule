@@ -8,6 +8,5 @@ services:
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
       TZ: Europe/London
-    hostname: admin-server-1
     ports:
       - 8071:8080

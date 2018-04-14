@@ -4,12 +4,15 @@ services:
   thule-people-service:
     image: thule-people-service
     environment:
-      SPRING_PROFILES_INCLUDE: ctest
+      EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
+      LOGGING_LEVEL_uk.co.serin: trace
+      SPRING_CLOUD_BOOTSTRAP_ENABLED: "false" # Disable spring cloud features such as config server and service discovery
+      SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true" # Allow for case where the schema exists but Flyway did not create it
+      THULE_PEOPLESERVICE_MYSQL_HOST: mysql-host
       TZ: Europe/London
-    hostname: people-service-1
     ports:
       - 8090:8080
-    restart: always
+    restart: always # Spring context will fail to initialize if MySql is not ready because Flyway is dependent upon its availability
 
   ################################  Servers and Databases Required By Container Tests  ################################
   mysql:
@@ -23,4 +26,3 @@ services:
           - mysql-host
     ports:
       - 3307:3306 # Required to allow container tests to test that the database has been written to when testing the api
-    restart: always

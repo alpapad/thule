@@ -4,74 +4,73 @@ services:
   thule-admin-server:
     image: pooh:8082/thule-admin-server:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service
-      THULE_CONFIG_SERVICE_PORT: 8080
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERY_SERVICE_PORT: 8080
+      THULE_CONFIGSERVICE_HOST: thule-config-service
+      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
+      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
-    hostname: admin-server-1
     ports:
       - 9071:8080
+    restart: always
 
   ################################  thule-config-service  ################################
   thule-config-service:
     image: pooh:8082/thule-config-service:1.0.0-SNAPSHOT
     environment:
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERY_SERVICE_PORT: 8080
+      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
+      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
-    hostname: config-service-1
     ports:
       - 9888:8080
+    restart: always
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
     image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service
-      THULE_CONFIG_SERVICE_PORT: 8080
+      THULE_CONFIGSERVICE_HOST: thule-config-service
+      THULE_CONFIGSERVICE_PORT: 8080
       TZ: Europe/London
-    hostname: discovery-service-1
     ports:
       - 9761:8080
+    restart: always
 
   ################################  thule-edge-server  ################################
   thule-edge-server:
     image: pooh:8082/thule-edge-server:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service
-      THULE_CONFIG_SERVICE_PORT: 8080
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERY_SERVICE_PORT: 8080
+      THULE_CONFIGSERVICE_HOST: thule-config-service
+      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
+      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
-    hostname: edge-server-1
     ports:
       - 9080:8080
+    restart: always
 
   ################################  thule-email-server  ################################
   thule-email-service:
     image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIG_SERVICE_HOST: thule-config-service
-      THULE_CONFIG_SERVICE_PORT: 8080
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERY_SERVICE_PORT: 8080
+      THULE_CONFIGSERVICE_HOST: thule-config-service
+      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
+      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
-    hostname: email-server-1
     ports:
       - 9091:8080
+    restart: always
 
   ################################  thule-people-service  ################################
   thule-people-service:
     image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
     environment:
       SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true"
-      THULE_CONFIG_SERVICE_HOST: thule-config-service
-      THULE_CONFIG_SERVICE_PORT: 8080
-      THULE_DISCOVERY_SERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERY_SERVICE_PORT: 8080
+      THULE_CONFIGSERVICE_HOST: thule-config-service
+      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
+      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
-    hostname: people-service-1
     ports:
       - 9090:8080
     restart: always

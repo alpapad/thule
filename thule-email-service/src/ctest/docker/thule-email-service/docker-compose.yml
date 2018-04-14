@@ -8,6 +8,5 @@ services:
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
       TZ: Europe/London
-    hostname: email-server-1
     ports:
       - 8091:8080

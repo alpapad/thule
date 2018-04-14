@@ -6,7 +6,7 @@ eureka:
   client:
     serviceUrl:
       # Location of the discovery service to register this service
-      defaultZone: http://${thule.discovery.service.host:localhost}:${thule.discovery.service.port:8761}/eureka/
+      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8761}/eureka/
 
 # Spring actuator configuration
 info:

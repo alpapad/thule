@@ -20,7 +20,6 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -45,11 +44,12 @@ import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
+import java.net.URI;
 import java.sql.Connection;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -61,9 +61,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
@@ -91,6 +91,9 @@ public class RestfulServiceIntTest {
 
     @BeforeClass
     public static void setUpClass() {
+        // Disable spring cloud features such as config server and service discovery
+        System.setProperty("spring.cloud.bootstrap.enabled", "false");
+
         MySqlDockerContainer.instance().startMySqlContainerIfDown();
     }
 
@@ -160,9 +163,9 @@ public class RestfulServiceIntTest {
     }
 
     private Person createTestPerson(Person person) {
-//        Person testPerson = testDataFactory.buildPerson(person);
-        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(person);
+        Person testPerson = testDataFactory.buildPerson(person);
+        testPerson.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        return personRepository.save(testPerson);
     }
 
     @Test
@@ -203,15 +206,10 @@ public class RestfulServiceIntTest {
     @Test
     public void is_status_up() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/actuator/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().get("status")).isEqualTo(Status.UP.getCode());
+        // When/Then
+        assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Before

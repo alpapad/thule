@@ -1,7 +1,12 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
 # Spring logging configuration
 logging:
   level:
-    uk.co.serin.thule: trace
+    uk.co.serin: trace
 
 # Spring boot configuration
 spring:
