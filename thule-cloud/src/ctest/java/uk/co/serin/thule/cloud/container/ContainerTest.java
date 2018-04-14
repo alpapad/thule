@@ -44,6 +44,7 @@ public class ContainerTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
+        dockerCompose.command("pull");
         dockerCompose.downAndUp();
     }
 
