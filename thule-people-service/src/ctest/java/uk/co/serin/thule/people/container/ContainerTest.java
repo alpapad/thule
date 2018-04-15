@@ -69,6 +69,8 @@ public class ContainerTest {
     @AfterClass
     public static void tearDownClass() throws IOException {
         dockerCompose.down();
+
+        System.clearProperty("spring.cloud.bootstrap.enabled");
     }
 
     @Test

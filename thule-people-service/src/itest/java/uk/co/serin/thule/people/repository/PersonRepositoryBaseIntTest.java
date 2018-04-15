@@ -2,7 +2,9 @@ package uk.co.serin.thule.people.repository;
 
 import org.awaitility.Duration;
 import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ import static org.junit.Assert.fail;
  *
  * This test uses @DataJpaTest to test boot just the required parts of Spring Boot for JPA
  * repository testing. It does this by disabling auto configuration (including the use of
+ *
  * @Configuration) and using select auto configuration classes. However, this results in JPA
  * Auditing not being configured because it is enabled in a @Configuration class! Therefore
  * it is enabled in the inner configuration class.
@@ -70,6 +73,18 @@ public abstract class PersonRepositoryBaseIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
+
+    @BeforeClass
+    public static void setupClass() {
+        // Disable spring cloud features such as config server and service discovery
+        // Spring cloud features are not disabled by Spring integration test slices!
+        System.setProperty("spring.cloud.bootstrap.enabled", "false");
+    }
+
+    @AfterClass
+    public static void teardownClass() {
+        System.clearProperty("spring.cloud.bootstrap.enabled");
+    }
 
     @Test
     public void create() {
