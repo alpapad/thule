@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,7 +54,6 @@ import static org.junit.Assert.fail;
  *
  * This test uses @DataJpaTest to test boot just the required parts of Spring Boot for JPA
  * repository testing. It does this by disabling auto configuration (including the use of
- *
  * @Configuration) and using select auto configuration classes. However, this results in JPA
  * Auditing not being configured because it is enabled in a @Configuration class! Therefore
  * it is enabled in the inner configuration class.
@@ -73,6 +73,8 @@ public abstract class PersonRepositoryBaseIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
+    @Autowired
+    private EntityManager entityManager;
 
     @BeforeClass
     public static void setupClass() {
@@ -260,6 +262,7 @@ public abstract class PersonRepositoryBaseIntTest {
         // Delete previous test data
         Set<Person> people = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
         personRepository.deleteAll(people);
+        entityManager.flush();
 
         // Setup security context
         Person jUnitTestPerson = testDataFactory.buildJUnitTest();
