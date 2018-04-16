@@ -18,7 +18,6 @@
                         <loggerName/>
                         <logLevel/>
                         <logstashMarkers/>
-                        <mdc/>
                         <message/>
                         <stackTrace/>
                         <threadName/>
@@ -26,11 +25,11 @@
                         <pattern>
                             <pattern>
                                 {
-                                "exportable": "%mdc{X-Span-Export:-}",
-                                "parent": "%mdc{X-B3-ParentSpanId:-}",
+                                "parentId": "%mdc{X-B3-ParentSpanId:-}",
                                 "service":"${springApplicationName}",
-                                "span": "%mdc{X-B3-SpanId:-}",
-                                "trace": "%mdc{X-B3-TraceId:-}",
+                                "spanExportable": "%mdc{X-Span-Export:-}",
+                                "spanId": "%mdc{X-B3-SpanId:-}",
+                                "traceId": "%mdc{X-B3-TraceId:-}",
                                 "pid": "${PID:-}"
                                 }
                             </pattern>
