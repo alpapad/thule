@@ -24,7 +24,6 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
@@ -53,9 +52,12 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 public class ContainerTest {
     private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-people-service/docker-compose.yml");
+
     @Autowired
     private Environment env;
+
     private String peopleServiceBaseUrl;
+
     private RestTemplate restTemplate = new RestTemplate();
 
     @BeforeClass
@@ -105,9 +107,6 @@ public class ContainerTest {
         String peopleServiceApiHost = env.getRequiredProperty("thule.peopleservice.api.host");
         int peopleServiceApiPort = env.getRequiredProperty("thule.peopleservice.api.port", Integer.class);
         peopleServiceBaseUrl = "http://" + peopleServiceApiHost + ":" + peopleServiceApiPort;
-
-        // Add base url to rest template
-        restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(peopleServiceBaseUrl));
 
         // Add credentials to rest template
         List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
