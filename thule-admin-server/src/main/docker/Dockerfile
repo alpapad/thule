@@ -1,8 +1,8 @@
 FROM openjdk:8-jre
 
 ################################  Create user  ################################
-ENV GID 1001
-ENV UID 1001
+ENV GID 1000
+ENV UID 1000
 ENV USER spring
 
 RUN \
