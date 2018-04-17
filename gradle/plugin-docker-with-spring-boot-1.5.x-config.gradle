@@ -33,6 +33,7 @@ if (! new File("src/main/docker/Dockerfile").exists()) {
         dockerfile project.file("src/main/docker/Dockerfile")
         buildArgs(["JAR_FILE": "${jar.archiveName}"])
         files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
+        pull true
 
         tasks.docker.dependsOn bootRepackage
         tasks.docker.shouldRunAfter test, itest
