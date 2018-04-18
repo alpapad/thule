@@ -29,13 +29,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.Socket;
 import java.net.URI;
 import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
