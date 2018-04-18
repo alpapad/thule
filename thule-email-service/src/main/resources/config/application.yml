@@ -13,10 +13,6 @@ info:
   description: Thule Email Service
   name: ${spring.application.name}
 
-# Spring server configuration
-server:
-  port: 8080
-
 # Spring boot configuration
 spring:
   application:
