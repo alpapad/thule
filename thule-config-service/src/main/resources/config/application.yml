@@ -17,8 +17,8 @@ spring:
         native:
           searchLocations: classpath:/config/{application}
   sleuth:
-      sampler:
-        probability: 1.0
+    sampler:
+      probability: 1.0
   zipkin:
     baseUrl: http://172.17.0.1:9411 # Docker bridge IP address
 
