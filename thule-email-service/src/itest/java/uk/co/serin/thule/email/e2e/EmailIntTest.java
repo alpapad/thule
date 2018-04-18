@@ -4,11 +4,8 @@ import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +18,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,7 +28,6 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.Socket;
 import java.net.URI;
-import java.util.Collections;
 
 import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -55,10 +49,28 @@ public class EmailIntTest {
     @Test
     public void is_status_up() {
         // Given
+        stopAndStartEmbeddedSmtpServer();
+
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+    }
+
+    private void stopAndStartEmbeddedSmtpServer() {
+        stopEmbeddedServer();
+
+        ServerOptions serverOptions = new ServerOptions();
+        serverOptions.port = env.getRequiredProperty(SPRING_MAIL_PORT, Integer.class);
+        smtpServer = SmtpServerFactory.startServer(serverOptions);
+    }
+
+    @After
+    public void stopEmbeddedServer() {
+        if (null != smtpServer) {
+            smtpServer.stop();
+            smtpServer = null;
+        }
     }
 
     @Test
@@ -76,14 +88,6 @@ public class EmailIntTest {
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
         assertThat(isSmtpServerUp()).isFalse();
-    }
-
-    @After
-    public void stopEmbeddedServer() {
-        if (null != smtpServer) {
-            smtpServer.stop();
-            smtpServer = null;
-        }
     }
 
     private boolean isSmtpServerUp() {
@@ -122,25 +126,5 @@ public class EmailIntTest {
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
-    }
-
-    private void stopAndStartEmbeddedSmtpServer() {
-        stopEmbeddedServer();
-
-        ServerOptions serverOptions = new ServerOptions();
-        serverOptions.port = env.getRequiredProperty(SPRING_MAIL_PORT, Integer.class);
-        smtpServer = SmtpServerFactory.startServer(serverOptions);
-    }
-
-    @Before
-    public void setUp() {
-        Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder = new Jackson2ObjectMapperBuilder();
-        ObjectMapper objectMapper = jackson2ObjectMapperBuilder.createXmlMapper(false).build();
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // Enforce java.time objects objects to be serialized in ISO-8601 format
-
-        MappingJackson2HttpMessageConverter httpMessageConverter = new MappingJackson2HttpMessageConverter();
-        httpMessageConverter.setObjectMapper(objectMapper);
-
-        restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(httpMessageConverter));
     }
 }
