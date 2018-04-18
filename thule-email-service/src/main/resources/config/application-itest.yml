@@ -1,3 +1,8 @@
+# Spring logging configuration
+logging:
+  level:
+    uk.co.serin: trace
+
 # Spring boot configuration
 spring:
   mail:
