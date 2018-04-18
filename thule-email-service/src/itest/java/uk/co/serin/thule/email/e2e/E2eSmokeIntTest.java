@@ -31,8 +31,8 @@ import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
 
 import java.net.Socket;
+import java.net.URI;
 import java.util.Collections;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -40,7 +40,7 @@ import static org.awaitility.Awaitility.await;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
-public class RestfulServiceIntTest {
+public class E2eSmokeIntTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
     private static final String SPRING_MAIL_PORT = "spring.mail.port";
     private String emailServiceUrl = "/" + Email.ENTITY_NAME_EMAILS;
@@ -54,16 +54,10 @@ public class RestfulServiceIntTest {
     @Test
     public void is_status_up() {
         // Given
-        stopAndStartEmbeddedSmtpServer();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/actuator/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().get("status")).isEqualTo(Status.UP.getCode());
+        // When/Then
+        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
