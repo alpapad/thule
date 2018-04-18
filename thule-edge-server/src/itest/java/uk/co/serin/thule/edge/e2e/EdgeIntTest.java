@@ -16,7 +16,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-public class E2eSmokeIntTest {
+public class EdgeIntTest {
     @Autowired
     private TestRestTemplate restTemplate;
 

@@ -71,7 +71,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 // files, you *must* specify them under META-INF!
 @AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)
 @RunWith(SpringRunner.class)
-public class E2eSmokeIntTest {
+public class PeopleIntTest {
     private static final String ID = "/{id}";
     private static final String URL_FOR_EMAILS = "/" + DomainModel.ENTITY_NAME_EMAILS;
     private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;

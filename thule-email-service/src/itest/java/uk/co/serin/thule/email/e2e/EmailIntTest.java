@@ -40,7 +40,7 @@ import static org.awaitility.Awaitility.await;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
-public class E2eSmokeIntTest {
+public class EmailIntTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
     private static final String SPRING_MAIL_PORT = "spring.mail.port";
     private String emailServiceUrl = "/" + Email.ENTITY_NAME_EMAILS;

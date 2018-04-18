@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-public class E2eSmokeIntTest {
+public class AdminIntTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
