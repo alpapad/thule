@@ -24,6 +24,10 @@ logging:
     org.springframework: info
     uk.co.serin: trace
 
+# Spring server configuration
+server:
+  port: 8080
+
 # Spring boot configuration
 spring:
   sleuth:
