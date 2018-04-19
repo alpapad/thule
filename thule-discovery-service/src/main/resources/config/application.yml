@@ -1,17 +1,8 @@
 # Eureka configuration
 eureka:
   instance:
-    hostname: localhost
     # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
     preferIpAddress: true
-  client:
-    # Don't fetch registry, this is only required by discovery service clients that are not also a discovery service server
-    fetchRegistry: false
-    # Register with iself so that the thule-admin-server can administrate all servers, including the thule-discovery-service
-    registerWithEureka: true
-    serviceUrl:
-      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 # Spring actuator configuration
 info:
