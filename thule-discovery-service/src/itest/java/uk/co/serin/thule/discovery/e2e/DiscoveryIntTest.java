@@ -1,6 +1,6 @@
 package uk.co.serin.thule.discovery.e2e;
 
-import org.assertj.core.api.Assertions;
+import org.awaitility.Duration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +8,8 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,6 +18,8 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import java.net.URI;
 import java.util.Map;
 
+import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FixedPollInterval.fixed;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -28,26 +27,26 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 public class DiscoveryIntTest {
     @Autowired
-    private EchoServiceClient echoServiceClient;
+    private ActuatorClient actuatorClient;
+    @Autowired
+    private DiscoveryClient discoveryClient;
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void can_discover_a_service() throws InterruptedException {
+    public void can_invoke_a_service_via_discovery() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
-
-        String expectedMessage = "Hello world";
+        given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
+                await().timeout(Duration.FIVE_MINUTES).
+                untilAsserted(() -> {
+                    assertThat(discoveryClient.getServices()).contains("thule-discovery-service");
+                });
 
         // When
-        ResponseEntity<Map<String, String>> echoResponseEntity
-                = restTemplate.exchange("/echo/{message}", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Map<String, String>>() {
-        }, expectedMessage);
+        Map<String, Object> actualHealth = actuatorClient.health();
 
         // Then
-        String actualMessage = echoResponseEntity.getBody().get("echo");
-        Assertions.assertThat(actualMessage).isEqualTo(expectedMessage);
+        assertThat(actualHealth.get("status")).isEqualTo(Status.UP.getCode());
     }
 
     @Test

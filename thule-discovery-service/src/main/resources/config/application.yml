@@ -1,7 +1,7 @@
 # Eureka configuration
 eureka:
   instance:
-    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    # Hostname will be the docker hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
     preferIpAddress: true
 
 # Spring actuator configuration

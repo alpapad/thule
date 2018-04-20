@@ -1,3 +1,12 @@
+# Eureka configuration
+eureka:
+  client:
+    serviceUrl:
+      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    hostname: localhost
+
 # Spring logging configuration
 logging:
   level:
