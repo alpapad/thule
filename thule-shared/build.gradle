@@ -28,7 +28,7 @@ subprojects {
     // Dependencies
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:FINCHLEY.RC1")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.RC1")
         }
     }
 
