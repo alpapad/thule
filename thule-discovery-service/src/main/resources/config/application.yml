@@ -1,8 +1,9 @@
 # Eureka configuration
 eureka:
-  instance:
-    # Hostname will be the docker hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
-    preferIpAddress: true
+  client:
+    serviceUrl:
+      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
+      defaultZone: http://${thule.discoveryservice.host}:${thule.discoveryservice.port}/eureka/
 
 # Spring actuator configuration
 info:
@@ -29,6 +30,9 @@ spring:
 
 # Thule configuration
 thule:
+  discoveryservice:
+    host: 172.17.0.1 # Docker bridge IP address
+    port: ${server.port}
   shared:
     logging:
       logstash:

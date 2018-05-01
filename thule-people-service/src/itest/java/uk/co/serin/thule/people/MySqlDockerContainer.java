@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class MySqlDockerContainer {
     private static MySqlDockerContainer mySqlDockerContainer = new MySqlDockerContainer();
-    private final DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-people-service/docker-compose-mysql.yml");
+    private final DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-people-service-integration-tests/docker-compose-mysql.yml");
     private boolean mySqlContainerStarted;
 
     private MySqlDockerContainer() {

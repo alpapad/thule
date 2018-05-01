@@ -16,7 +16,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
     private static final ActuatorUri EDGE_SERVER_STATUS_URI = new ActuatorUri(URI.create("http://172.17.0.1:8080/actuator/health"));
-    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-edge-server/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-edge-server-container-tests/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {

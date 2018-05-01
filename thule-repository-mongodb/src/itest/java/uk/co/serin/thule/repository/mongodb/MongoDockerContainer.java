@@ -16,7 +16,7 @@ public class MongoDockerContainer {
     private static boolean mongoAvailable;
     private static boolean mongoContainerStarted;
     private static MongoDockerContainer mongoDockerContainer = new MongoDockerContainer();
-    private final DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-repository-mongodb/docker-compose-mongo.yml");
+    private final DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-repository-mongodb-integration-tests/docker-compose-mongo.yml");
 
     private MongoDockerContainer() {
     }

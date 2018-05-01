@@ -40,7 +40,7 @@ public class ContainerTest {
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://172.17.0.1:9090";
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
     private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
-    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-cloud/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-cloud-container-tests/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {

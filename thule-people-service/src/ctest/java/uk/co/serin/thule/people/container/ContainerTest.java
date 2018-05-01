@@ -51,7 +51,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 public class ContainerTest {
     private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;
-    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-people-service/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-people-service-container-tests/docker-compose.yml");
 
     @Autowired
     private Environment env;

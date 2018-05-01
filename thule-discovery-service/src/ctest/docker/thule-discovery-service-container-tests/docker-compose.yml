@@ -4,8 +4,13 @@ services:
   thule-discovery-service:
     image: thule-discovery-service
     environment:
+      EUREKA_INSTANCE_HOSTNAME: 172.17.0.1 # Docker bridge IP address
+      EUREKA_INSTANCE_NONSECUREPORT: 8761
+      LOGGING_LEVEL_COM_GOHENRY: trace
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
+      THULE_DISCOVERYSERVICE_HOST: 172.17.0.1 # Docker bridge IP address
+      THULE_DISCOVERYSERVICE_PORT: 8761
       TZ: Europe/London
     ports:
       - 8761:8080
