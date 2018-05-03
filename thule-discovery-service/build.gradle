@@ -24,8 +24,8 @@ apply from: "${rootDir}/../gradle/build-config.gradle"
 configurations {
     ctestCompile {
         extendsFrom testCompile
-        exclude group: "org.springframework.cloud", module: "spring-cloud-starter-netflix-eureka-server"
         exclude group: "org.springframework.cloud", module: "spring-cloud-starter-config"
+        exclude group: "org.springframework.cloud", module: "spring-cloud-starter-netflix-eureka-server"
     }
 }
 // Required for Java9

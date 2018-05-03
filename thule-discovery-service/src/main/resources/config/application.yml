@@ -1,9 +1,15 @@
 # Eureka configuration
 eureka:
+  # All eureka config parameters (eureka.client.fetch-registry, eureka.client.register-with-eureka,
+  # eureka.client.serviceUrl.defaultZone and  eureka.instance.hostname) are to set up eureka to operate in 'standalone' mode
+  # (see https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html)
   client:
+    fetch-registry: false
+    register-with-eureka: false
     serviceUrl:
-      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host}:${thule.discoveryservice.port}/eureka/
+      defaultZone: http://localhost:${server.port}/eureka/
+  instance:
+    hostname: localhost
 
 # Spring actuator configuration
 info:
@@ -30,9 +36,6 @@ spring:
 
 # Thule configuration
 thule:
-  discoveryservice:
-    host: 172.17.0.1 # Docker bridge IP address
-    port: ${server.port}
   shared:
     logging:
       logstash:
