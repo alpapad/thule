@@ -1,12 +1,12 @@
 # Eureka configuration
 eureka:
-  instance:
-    # Hostname will be the docker generated hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
-    preferIpAddress: true
   client:
     serviceUrl:
-      # Location of the discovery service to register this service
-      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8761}/eureka/
+      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
+      defaultZone: http://${gohenry.discoveryservice.host:localhost}:${gohenry.discoveryservice.port:8761}/eureka/
+  instance:
+    # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    prefer-ip-address: true
 
 # Spring actuator configuration
 info:
