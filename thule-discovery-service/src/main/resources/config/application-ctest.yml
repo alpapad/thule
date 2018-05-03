@@ -4,15 +4,9 @@ eureka:
     fetch-registry: true
     serviceUrl:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host}:${thule.discoveryservice.port}/eureka/
+      defaultZone: http://${gohenry.discoveryservice.host:localhost}:${gohenry.discoveryservice.port:8761}/eureka/
 
 # Spring logging configuration
 logging:
   level:
     uk.co.serin: trace
-
-# Thule configuration
-thule:
-  discoveryservice:
-    host: 172.17.0.1 # Docker bridge IP address
-    port: 8761
