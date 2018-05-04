@@ -75,7 +75,7 @@ project("thule-test") {
 project("thule-utils") {
     description = "Thule Utils"
     dependencies {
-        compile("net.logstash.logback:logstash-logback-encoder:5.0")
+        compile("net.logstash.logback:logstash-logback-encoder:5.1")
         compile("org.codehaus.janino:janino:3.0.8") // Required by logback if-condition statements in the xml configuration
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
