@@ -11,7 +11,7 @@ logging:
   level:
     uk.co.serin: trace
 
-# GoHenry configuration
+# Thule configuration
 thule:
   discoveryservice:
     host: 172.17.0.1 # Docker bridge IP address
