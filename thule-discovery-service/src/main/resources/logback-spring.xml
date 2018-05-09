@@ -10,7 +10,7 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
-        <if condition='isDefined("thuleSharedLoggingLogstashHost") &amp;&amp; isDefined("thuleSharedLoggingLogstashPort")'>
+        <if condition='property("gohenrySharedLoggingLogstashEnabled").equals("true")'>
             <then>
                 <appender-ref ref="LOGSTASH"/>
             </then>
