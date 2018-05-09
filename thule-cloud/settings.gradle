@@ -3,3 +3,5 @@ pluginManagement {
         maven { url "http://$nexusHost:$nexusPort/repository/maven-public" }
     }
 }
+
+rootProject.name = "thule-cloud"
