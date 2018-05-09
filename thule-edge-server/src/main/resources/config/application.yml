@@ -17,7 +17,7 @@ info:
 logging:
   level:
     org.springframework: info
-    uk.co.serin: trace
+    uk.co.serin: info
 
 # Spring boot configuration
 spring:
@@ -38,5 +38,5 @@ thule:
   shared:
     logging:
       logstash:
+        enabled: true
         host: 172.17.0.1 # Docker bridge IP address
-        port: 5400

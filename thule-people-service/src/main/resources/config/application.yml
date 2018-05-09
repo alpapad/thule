@@ -31,11 +31,11 @@ spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.DriverSpy
     password: thule
-    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}/thule
+    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}/thule
     username: thule
   flyway:
     password: root
-    url: jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}/mysql
+    url: jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}/mysql
     user: root
   security:
     user:
@@ -54,9 +54,8 @@ thule:
   peopleservice:
     mysql:
       host: 172.17.0.1 # Docker bridge IP address
-      port: 3306
   shared:
     logging:
       logstash:
+        enabled: true
         host: 172.17.0.1 # Docker bridge IP address
-        port: 5400

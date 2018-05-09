@@ -44,5 +44,5 @@ thule:
   shared:
     logging:
       logstash:
+        enabled: true
         host: 172.17.0.1 # Docker bridge IP address
-        port: 5400
