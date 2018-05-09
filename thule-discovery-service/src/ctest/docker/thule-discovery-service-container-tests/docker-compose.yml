@@ -13,4 +13,4 @@ services:
       SPRING_CLOUD_CONFIG_FAILFAST: "false"
       TZ: Europe/London
     ports:
-      - 8761:8080
+      - 8761:8761
