@@ -65,7 +65,7 @@ services:
   thule-people-service:
     image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
     environment:
-      SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true"
+      SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true" # Allow for case where the schema exists but Flyway did not create it
       THULE_CONFIGSERVICE_HOST: thule-config-service
       THULE_CONFIGSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
