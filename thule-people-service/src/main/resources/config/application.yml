@@ -3,7 +3,7 @@ eureka:
   client:
     serviceUrl:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8761}/eureka/
+      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8080}/eureka/
   instance:
     # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
     prefer-ip-address: true
