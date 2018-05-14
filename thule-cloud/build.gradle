@@ -28,7 +28,6 @@ dependencies {
     ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
     ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
     ctestCompile("org.springframework.boot:spring-boot-starter-actuator")
-    ctestCompile("org.springframework.boot:spring-boot-starter-logging")
     ctestCompile("org.springframework.boot:spring-boot-starter-web")
     ctestCompile("org.springframework.retry:spring-retry")
 }
