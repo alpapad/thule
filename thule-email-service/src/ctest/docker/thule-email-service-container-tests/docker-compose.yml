@@ -4,9 +4,9 @@ services:
   thule-email-service:
     image: thule-email-service
     environment:
-      EUREKA_CLIENT_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_FAILFAST: "false"
+      EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
+      LOGGING_LEVEL_UK_CO_SERIN: trace
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
       TZ: Europe/London
     ports:
-      - 8091:8080
+      - 8092:8080
