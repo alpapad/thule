@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import org.awaitility.Duration;
 import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -65,12 +66,12 @@ import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 // Spring doc very clear but to override the default location (src/test/resources) of the response
 // files, you *must* specify them under META-INF!
 @AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)
 @RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PeopleIntTest {
     private static final String ID = "/{id}";
     private static final String URL_FOR_EMAILS = "/" + DomainModel.ENTITY_NAME_EMAILS;
@@ -91,9 +92,6 @@ public class PeopleIntTest {
 
     @BeforeClass
     public static void setUpClass() {
-        // Disable spring cloud features such as config server and service discovery
-        System.setProperty("spring.cloud.bootstrap.enabled", "false");
-
         MySqlDockerContainer.instance().startMySqlContainerIfDown();
     }
 

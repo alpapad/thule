@@ -2,9 +2,7 @@ package uk.co.serin.thule.people.repository;
 
 import org.awaitility.Duration;
 import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,18 +73,6 @@ public abstract class PersonRepositoryBaseIntTest {
     private TestDataFactory testDataFactory;
     @Autowired
     private EntityManager entityManager;
-
-    @BeforeClass
-    public static void setupClass() {
-        // Disable spring cloud features such as config server and service discovery
-        // Spring cloud features are not disabled by Spring integration test slices!
-        System.setProperty("spring.cloud.bootstrap.enabled", "false");
-    }
-
-    @AfterClass
-    public static void teardownClass() {
-        System.clearProperty("spring.cloud.bootstrap.enabled");
-    }
 
     @Test
     public void create() {

@@ -1,3 +1,8 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
 # Spring logging configuration
 logging:
   level:
@@ -15,7 +20,7 @@ thule:
   peopleservice:
     api:
       host: 172.17.0.1 # Docker bridge IP address
-      port: 8090
+      port: 8091
     mysql:
       host: 172.17.0.1 # Docker bridge IP address
-      port: 3307
+      port: 3308 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required

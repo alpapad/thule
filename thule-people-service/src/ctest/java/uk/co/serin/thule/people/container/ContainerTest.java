@@ -45,9 +45,9 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
-@DataJpaTest
-@Commit
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Commit
+@DataJpaTest
 @RunWith(SpringRunner.class)
 public class ContainerTest {
     private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;
@@ -62,17 +62,12 @@ public class ContainerTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        // Disable spring cloud features such as config server and service discovery
-        System.setProperty("spring.cloud.bootstrap.enabled", "false");
-
         dockerCompose.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
         dockerCompose.down();
-
-        System.clearProperty("spring.cloud.bootstrap.enabled");
     }
 
     @Test
