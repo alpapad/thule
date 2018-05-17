@@ -12,4 +12,4 @@ services:
       SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
       TZ: Europe/London
     ports:
-      - 8761:8080
+      - 9761:8080

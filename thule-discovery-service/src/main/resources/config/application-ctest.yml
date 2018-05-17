@@ -15,4 +15,4 @@ logging:
 thule:
   discoveryservice:
     host: 172.17.0.1 # Docker bridge IP address
-    port: 8761
+    port: 9761
