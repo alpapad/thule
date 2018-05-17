@@ -1,0 +1,18 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
+# Spring logging configuration
+logging:
+  level:
+    uk.co.serin: trace
+
+# Spring boot configuration
+
+# Thule configuration
+thule:
+  edgeserver:
+    api:
+      host: 172.17.0.1 # Docker bridge IP address
+      port: 9091

@@ -4,9 +4,9 @@ services:
   thule-edge-server:
     image: thule-edge-server
     environment:
-      EUREKA_CLIENT_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_FAILFAST: "false"
+      EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
+      LOGGING_LEVEL_UK_CO_SERIN: trace
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
       TZ: Europe/London
     ports:
-      - 8080:8080
+      - 9091:8080 # Required to allow container tests to call the restful api

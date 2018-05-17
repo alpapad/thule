@@ -21,6 +21,8 @@ logging:
 
 # Spring boot configuration
 spring:
+  application:
+    name: thule-edge-server
   sleuth:
     sampler:
       probability: 1.0
