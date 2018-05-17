@@ -9,9 +9,10 @@ logging:
     uk.co.serin: trace
 
 # Spring boot configuration
-spring:
-  mail:
-    host: localhost
-    port: 1025
 
 # Thule configuration
+thule:
+  emailservice:
+    api:
+      host: 172.17.0.1 # Docker bridge IP address
+      port: 9094
