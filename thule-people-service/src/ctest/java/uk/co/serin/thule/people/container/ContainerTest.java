@@ -50,9 +50,9 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @DataJpaTest
 @RunWith(SpringRunner.class)
 public class ContainerTest {
+    private static final String ACTUATOR_HEALTH = "/actuator/health";
     private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-people-service-container-tests/docker-compose.yml");
-
     @Autowired
     private Environment env;
 
@@ -73,6 +73,8 @@ public class ContainerTest {
     @Test
     public void get_all_people() {
         // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + ACTUATOR_HEALTH));
+        assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When
         ResponseEntity<Map<String, Object>> personResponseEntity
@@ -90,7 +92,7 @@ public class ContainerTest {
     @Test
     public void health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + "/actuator/health"));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
