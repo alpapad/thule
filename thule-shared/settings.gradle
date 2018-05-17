@@ -1,6 +1,6 @@
 pluginManagement {
     repositories {
-        maven { url "http://$nexusHost:$nexusPort/repository/maven-public" }
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
     }
 }
 

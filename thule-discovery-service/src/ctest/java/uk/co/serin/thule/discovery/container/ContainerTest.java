@@ -40,8 +40,8 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
  * </ul>
  */
 @ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
-@SpringBootTest
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class ContainerTest {
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-discovery-service-container-tests/docker-compose.yml");
     @Autowired
