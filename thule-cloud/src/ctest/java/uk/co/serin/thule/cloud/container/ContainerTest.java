@@ -30,14 +30,14 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
-    private static final String ADMIN_SERVER_URL_PREFIX = "http://172.17.0.1:9071";
+    private static final String ADMIN_SERVER_URL_PREFIX = "http://172.17.0.1:9092";
     private static final String CONFIG_SERVICE_URL_PREFIX = "http://172.17.0.1:9888";
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://172.17.0.1:9761";
-    private static final String EDGE_SERVER_URL_PREFIX = "http://172.17.0.1:9080";
-    private static final String EMAIL_SERVICE_URL_PREFIX = "http://172.17.0.1:9091";
+    private static final String EDGE_SERVER_URL_PREFIX = "http://172.17.0.1:9091";
+    private static final String EMAIL_SERVICE_URL_PREFIX = "http://172.17.0.1:9094";
     private static final String HEALTH = "/health";
     private static final String PEOPLE = "/people";
-    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://172.17.0.1:9090";
+    private static final String PEOPLE_SERVICE_URL_PREFIX = "http://172.17.0.1:9093";
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
     private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-cloud-container-tests/docker-compose.yml");
@@ -54,7 +54,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void admin_server_is_up() {
+    public void admin_server_health_status_is_up() {
         // Given
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -64,7 +64,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void config_service_is_up() {
+    public void config_service_health_status_is_up() {
         // Given
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
@@ -73,7 +73,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void discovery_service_is_up() {
+    public void discovery_service_health_status_is_up() {
         // Given
 
         // When/Then
@@ -81,7 +81,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void edge_server_is_up() {
+    public void edge_server_health_status_is_up() {
         // Given
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -152,7 +152,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void email_service_is_up() {
+    public void email_service_health_status_is_up() {
         // Given
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -162,7 +162,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void people_service_is_up() {
+    public void people_service_health_status_is_up() {
         // Given
         assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);

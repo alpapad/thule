@@ -10,7 +10,7 @@ services:
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
-      - 9071:8080
+      - 9092:8080
     restart: always
 
   ################################  thule-config-service  ################################
@@ -45,7 +45,7 @@ services:
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
-      - 9080:8080
+      - 9091:8080
     restart: always
 
   ################################  thule-email-server  ################################
@@ -58,7 +58,7 @@ services:
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
-      - 9091:8080
+      - 9094:8080
     restart: always
 
   ################################  thule-people-service  ################################
@@ -72,7 +72,7 @@ services:
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
-      - 9090:8080
+      - 9093:8080
     restart: always
 
   ################################  Servers and Databases Required By Container Tests  ################################
@@ -82,5 +82,5 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/London
     ports:
-      - 3306:3306
+      - 3308:3306 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
     restart: always
