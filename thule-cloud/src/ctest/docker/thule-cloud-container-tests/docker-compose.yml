@@ -70,6 +70,7 @@ services:
       THULE_CONFIGSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
+      THULE_PEOPLESERVICE_MYSQL_HOST: mysql
       TZ: Europe/London
     ports:
       - 9093:8080
