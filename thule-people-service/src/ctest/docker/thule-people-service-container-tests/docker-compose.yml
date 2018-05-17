@@ -11,7 +11,7 @@ services:
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql
       TZ: Europe/London
     ports:
-      - 8091:8080 # Required to allow container tests to call the restful api
+      - 9093:8080 # Required to allow container tests to call the restful api
     restart: always # Spring context will fail to initialize if MySql is not ready because Flyway is dependent upon its availability
 
   ################################  Servers and Databases Required By Container Tests  ################################

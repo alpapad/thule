@@ -88,7 +88,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void people_service_is_up() {
+    public void health_status_is_up() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + "/actuator/health"));
 
