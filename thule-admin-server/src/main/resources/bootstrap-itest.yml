@@ -1,0 +1,5 @@
+# Spring cloud configuration
+spring:
+  cloud:
+    config:
+      enabled: false
