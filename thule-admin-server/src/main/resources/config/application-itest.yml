@@ -1,13 +1,13 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
 # Spring logging configuration
 logging:
   level:
     uk.co.serin: trace
 
-# Spring server configuration
-server:
-  port: 8092
+# Spring boot configuration
 
 # Thule configuration
-thule:
-  discoveryservice:
-    port: 8761
