@@ -1,17 +1,6 @@
-# Eureka configuration
-eureka:
-  client:
-    serviceUrl:
-      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8080}/eureka/
-  instance:
-    # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
-    prefer-ip-address: true
-
 # Spring cloud config client configuration
 spring:
   application:
-    # Required by the discovery service as the key to enable other services to lookup and access this service
     name: thule-configuration-service
   profiles:
     # By default, thule-config-server will use git as a repository for all config, we will override for demo purposes to use native, i.e. classpath or filesystem

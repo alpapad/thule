@@ -15,9 +15,9 @@ import java.net.URI;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConfigIntTest {
     @Autowired
     private TestRestTemplate restTemplate;
