@@ -17,6 +17,7 @@ spring:
 thule:
   peopleservice:
     mysql:
+      host: 172.17.0.1 # Docker bridge IP address
       port: 3307 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
 
 ######################################### NESTED INTEGRATION TEST PROFILES #######################################
