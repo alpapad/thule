@@ -6,17 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Map;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.net.URI;
+import java.time.Duration;
+
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
+
 
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
@@ -28,14 +27,9 @@ public class AdminIntTest {
     @Test
     public void is_status_up() {
         // Given
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange("/health", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().get("status")).isEqualTo(Status.UP.getCode());
+        // When/Then
+        assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }

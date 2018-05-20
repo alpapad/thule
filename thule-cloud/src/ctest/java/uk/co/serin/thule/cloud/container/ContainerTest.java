@@ -35,7 +35,6 @@ public class ContainerTest {
     private static final String DISCOVERY_SERVICE_URL_PREFIX = "http://172.17.0.1:9761";
     private static final String EDGE_SERVER_URL_PREFIX = "http://172.17.0.1:9091";
     private static final String EMAIL_SERVICE_URL_PREFIX = "http://172.17.0.1:9094";
-    private static final String HEALTH = "/health";
     private static final String PEOPLE = "/people";
     private static final String PEOPLE_SERVICE_URL_PREFIX = "http://172.17.0.1:9093";
     private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
@@ -60,7 +59,7 @@ public class ContainerTest {
         assertThat(new ActuatorUri(URI.create(CONFIG_SERVICE_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
 
         // When/Then
-        assertThat(new ActuatorUri(URI.create(ADMIN_SERVER_URL_PREFIX + HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(ADMIN_SERVER_URL_PREFIX + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test

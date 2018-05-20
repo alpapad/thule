@@ -18,6 +18,7 @@ import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
@@ -25,6 +26,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ContainerTest {
+    private static final String ACTUATOR_HEALTH = "/actuator/health";
     private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-admin-server-container-tests/docker-compose.yml");
 
     private String adminServerBaseUrl;
@@ -45,10 +47,10 @@ public class ContainerTest {
     @Test
     public void health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(adminServerBaseUrl + "/health"));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(adminServerBaseUrl + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Before
