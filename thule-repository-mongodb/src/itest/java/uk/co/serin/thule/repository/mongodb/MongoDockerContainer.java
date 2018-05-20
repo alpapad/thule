@@ -38,11 +38,9 @@ public class MongoDockerContainer {
 
     public void stopMongoContainerIfUp() {
         try {
-            if (mongoContainerStarted) {
-                dockerCompose.downAndUp();
-                mongoContainerStarted = false;
-                mongoAvailable = false;
-            }
+            dockerCompose.down();
+            mongoContainerStarted = false;
+            mongoAvailable = false;
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
