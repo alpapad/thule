@@ -22,10 +22,7 @@ public class ContainerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/ctest/docker/thule-cloud-container-tests/docker-compose.yml");
     private static final String EDGE_SERVER_BASE_URL = "http://172.17.0.1:9091";
     private static final String EMAIL_SERVICE_BASE_URL = "http://172.17.0.1:9094";
-    private static final String PEOPLE = "/people";
     private static final String PEOPLE_SERVICE_BASE_URL = "http://172.17.0.1:9093";
-    private static final String THULE_EMAIL_SERVICE = "/thule-email-service";
-    private static final String THULE_PEOPLE_SERVICE = "/thule-people-service";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -49,7 +46,7 @@ public class ContainerTest {
     @Test
     public void admin_server_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(ADMIN_SERVER_BASE_URL + "/gohenry-config-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-admin-server" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -103,7 +100,7 @@ public class ContainerTest {
     @Test
     public void email_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EMAIL_SERVICE_BASE_URL + "/gohenry-config-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-email-service" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -121,7 +118,7 @@ public class ContainerTest {
     @Test
     public void people_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(PEOPLE_SERVICE_BASE_URL + "/gohenry-config-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-people-service" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
