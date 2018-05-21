@@ -1,0 +1,7 @@
+# Spring cloud config client configuration
+spring:
+  application:
+    name: thule-configuration-service
+  profiles:
+    # By default, thule-config-server will use git as a repository for all config, we will override for demo purposes to use native, i.e. classpath or filesystem
+    include: native
