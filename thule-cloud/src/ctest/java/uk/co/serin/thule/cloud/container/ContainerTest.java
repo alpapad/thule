@@ -46,7 +46,7 @@ public class ContainerTest {
     @Test
     public void admin_server_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-admin-server" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-admin-server" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -64,7 +64,7 @@ public class ContainerTest {
     @Test
     public void config_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-config-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-config-service" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -100,7 +100,7 @@ public class ContainerTest {
     @Test
     public void email_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-email-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-email-service" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
@@ -118,7 +118,7 @@ public class ContainerTest {
     @Test
     public void people_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/gohenry-people-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
