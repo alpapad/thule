@@ -1,9 +1,0 @@
-# Eureka configuration
-eureka:
-  client:
-    enabled: false
-
-# Spring logging configuration
-logging:
-  level:
-    uk.co.serin: trace
