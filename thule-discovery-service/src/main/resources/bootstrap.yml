@@ -12,4 +12,4 @@ spring:
         maxAttempts: 9999
         initialInterval: 3000
       # Location of the config service
-      uri: http://${thule.configservice.host:localhost}:${thule.configservice.port:8888}/
+      uri: http://${thule.configurationservice.host:localhost}:${thule.configurationservice.port:8888}/

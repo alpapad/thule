@@ -1,4 +1,4 @@
-package uk.co.serin.thule.config;
+package uk.co.serin.thule.admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
