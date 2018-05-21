@@ -4,8 +4,8 @@ services:
   thule-admin-server:
     image: pooh:8082/thule-admin-server:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIGSERVICE_HOST: thule-config-service
-      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
+      THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
@@ -13,9 +13,9 @@ services:
       - 9092:8080
     restart: always
 
-  ################################  thule-config-service  ################################
-  thule-config-service:
-    image: pooh:8082/thule-config-service:1.0.0-SNAPSHOT
+  ################################  thule-configuration-service  ################################
+  thule-configuration-service:
+    image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
     environment:
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
@@ -28,8 +28,8 @@ services:
   thule-discovery-service:
     image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIGSERVICE_HOST: thule-config-service
-      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
+      THULE_CONFIGURATIONSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
       - 9761:8080
@@ -39,8 +39,8 @@ services:
   thule-edge-server:
     image: pooh:8082/thule-edge-server:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIGSERVICE_HOST: thule-config-service
-      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
+      THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
@@ -52,8 +52,8 @@ services:
   thule-email-service:
     image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
     environment:
-      THULE_CONFIGSERVICE_HOST: thule-config-service
-      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
+      THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
@@ -66,8 +66,8 @@ services:
     image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
     environment:
       SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true" # Allow for case where the schema exists but Flyway did not create it
-      THULE_CONFIGSERVICE_HOST: thule-config-service
-      THULE_CONFIGSERVICE_PORT: 8080
+      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
+      THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql

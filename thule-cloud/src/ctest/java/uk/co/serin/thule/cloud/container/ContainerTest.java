@@ -64,7 +64,7 @@ public class ContainerTest {
     @Test
     public void config_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-config-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
