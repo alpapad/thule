@@ -18,6 +18,7 @@ import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
@@ -54,7 +55,7 @@ public class ContainerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(configurationserviceBaseUrl + "/actuator/health"));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @TestConfiguration
