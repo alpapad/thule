@@ -121,6 +121,6 @@ public class ContainerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(EDGE_SERVER_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }
