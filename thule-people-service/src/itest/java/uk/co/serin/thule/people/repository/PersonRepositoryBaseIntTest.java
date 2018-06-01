@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -57,7 +56,6 @@ import static org.junit.Assert.fail;
  * it is enabled in the inner configuration class.
  */
 @DataJpaTest
-@Commit
 @RunWith(SpringRunner.class)
 public abstract class PersonRepositoryBaseIntTest {
     @Autowired
