@@ -243,11 +243,6 @@ public abstract class PersonRepositoryBaseIntTest {
         ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
 
-        // Delete previous test data
-        Set<Person> people = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
-        personRepository.deleteAll(people);
-        entityManager.flush();
-
         // Setup security context
         Person jUnitTestPerson = testDataFactory.buildJUnitTest();
         SecurityContextHolder.getContext().setAuthentication(
