@@ -134,7 +134,6 @@ public class PersonRepositoryIntTest {
     @Before
     public void setUp() {
         MongoDockerContainer.instance().waitForMongoAvailabilty(env);
-        personRepository.deleteAll();
     }
 
     @Test
