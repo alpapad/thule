@@ -34,6 +34,7 @@ spring:
     url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}/thule
     username: thule
   flyway:
+    baseline-on-migrate: true # Allow for case where the schema exists but Flyway did not create it. ***DO NOT*** leave set to true in prod environments
     password: root
     url: jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}/mysql
     user: root
