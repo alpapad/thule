@@ -22,7 +22,7 @@ logging:
     jdbc.sqlonly: error
     jdbc.sqltiming: error
     org.springframework: info
-    uk.co.serin: info
+    uk.co.serin: trace
 
 # Spring boot configuration
 spring:

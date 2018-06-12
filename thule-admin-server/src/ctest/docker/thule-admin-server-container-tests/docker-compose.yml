@@ -5,7 +5,6 @@ services:
     image: thule-admin-server
     environment:
       EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
-      LOGGING_LEVEL_UK_CO_SERIN: trace
       SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
       TZ: Europe/London
     ports:

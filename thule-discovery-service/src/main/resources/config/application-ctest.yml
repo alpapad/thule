@@ -6,11 +6,6 @@ eureka:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
       defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8080}/eureka/
 
-# Spring logging configuration
-logging:
-  level:
-    uk.co.serin: trace
-
 # Thule configuration
 thule:
   discoveryservice:

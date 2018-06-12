@@ -8,7 +8,6 @@ services:
       EUREKA_INSTANCE_HOSTNAME: 172.17.0.1 # Set hostname so that the container tests can reach the discovery-service as a 'target' micro-service
       EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5 # By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
       EUREKA_INSTANCE_NON_SECURE_PORT: 9761 # Set port so that the container tests can reach the discovery-service as a 'target' micro-service
-      LOGGING_LEVEL_UK_CO_SERIN_THULE: trace
       SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
       TZ: Europe/London
     ports:

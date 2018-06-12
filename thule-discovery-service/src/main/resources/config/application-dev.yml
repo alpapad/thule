@@ -1,7 +1,2 @@
-# Spring logging configuration
-logging:
-  level:
-    uk.co.serin: trace
-
 server:
   port: 8761

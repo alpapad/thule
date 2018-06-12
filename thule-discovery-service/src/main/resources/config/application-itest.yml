@@ -6,8 +6,3 @@ eureka:
   instance:
     # By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
     leaseRenewalIntervalInSeconds: 5
-
-# Spring logging configuration
-logging:
-  level:
-    uk.co.serin: trace

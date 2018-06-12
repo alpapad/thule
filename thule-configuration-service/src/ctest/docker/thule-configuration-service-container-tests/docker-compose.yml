@@ -5,7 +5,6 @@ services:
     image: thule-configuration-service
     environment:
       EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
-      LOGGING_LEVEL_UK_CO_SERIN: trace
       TZ: Europe/London
     ports:
       - 9888:8080 # Required to allow container tests to call the restful api
