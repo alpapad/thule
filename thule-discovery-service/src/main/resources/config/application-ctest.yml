@@ -9,5 +9,4 @@ eureka:
 # Thule configuration
 thule:
   discoveryservice:
-    host: localhost
     port: 9761

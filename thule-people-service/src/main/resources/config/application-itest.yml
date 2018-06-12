@@ -7,7 +7,6 @@ eureka:
 thule:
   peopleservice:
     mysql:
-      host: localhost
       port: 3307 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
 
 ######################################### NESTED INTEGRATION TEST PROFILES #######################################
