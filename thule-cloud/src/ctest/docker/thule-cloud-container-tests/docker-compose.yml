@@ -4,6 +4,7 @@ services:
   thule-admin-server:
     image: pooh:8082/thule-admin-server:1.0.0-SNAPSHOT
     environment:
+      SPRING_PROFILES_ACTIVE: cit
       THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
       THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
@@ -17,6 +18,7 @@ services:
   thule-configuration-service:
     image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
     environment:
+      SPRING_PROFILES_ACTIVE: cit
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
       THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
@@ -28,6 +30,7 @@ services:
   thule-discovery-service:
     image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
     environment:
+      SPRING_PROFILES_ACTIVE: cit
       THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
       THULE_CONFIGURATIONSERVICE_PORT: 8080
       TZ: Europe/London
@@ -39,6 +42,7 @@ services:
   thule-edge-server:
     image: pooh:8082/thule-edge-server:1.0.0-SNAPSHOT
     environment:
+      SPRING_PROFILES_ACTIVE: cit
       THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
       THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
@@ -52,6 +56,7 @@ services:
   thule-email-service:
     image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
     environment:
+      SPRING_PROFILES_ACTIVE: cit
       THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
       THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
@@ -65,7 +70,7 @@ services:
   thule-people-service:
     image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
     environment:
-      SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true" # Allow for case where the schema exists but Flyway did not create it
+      SPRING_PROFILES_ACTIVE: cit
       THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
       THULE_CONFIGURATIONSERVICE_PORT: 8080
       THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
