@@ -39,4 +39,3 @@ thule:
     logging:
       logstash:
         enabled: true
-        host: localhost
