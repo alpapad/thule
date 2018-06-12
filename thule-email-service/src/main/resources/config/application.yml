@@ -30,8 +30,6 @@ spring:
   sleuth:
     sampler:
       probability: 1.0
-  zipkin:
-    baseUrl: http://172.17.0.1:9411 # Docker bridge IP address
 
 # Thule configuration
 thule:
@@ -39,4 +37,4 @@ thule:
     logging:
       logstash:
         enabled: true
-        host: 172.17.0.1 # Docker bridge IP address
+        host: localhost

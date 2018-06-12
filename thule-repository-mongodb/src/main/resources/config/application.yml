@@ -14,9 +14,9 @@ spring:
 thule:
   repositorymongodb:
     mongodb:
-      host: 172.17.0.1 # Docker bridge IP address
+      host: localhost
   shared:
     logging:
       logstash:
         enabled: true
-        host: 172.17.0.1 # Docker bridge IP address
+        host: localhost

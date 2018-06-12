@@ -16,13 +16,13 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class ContainerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
-    private static final String ADMIN_SERVER_BASE_URL = "http://172.17.0.1:9092";
-    private static final String CONFIG_SERVICE_BASE_URL = "http://172.17.0.1:9888";
-    private static final String DISCOVERY_SERVICE_BASE_URL = "http://172.17.0.1:9761";
+    private static final String ADMIN_SERVER_BASE_URL = "http://localhost:9092";
+    private static final String CONFIG_SERVICE_BASE_URL = "http://localhost:9888";
+    private static final String DISCOVERY_SERVICE_BASE_URL = "http://localhost:9761";
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/ctest/docker/thule-cloud-container-tests/docker-compose.yml");
-    private static final String EDGE_SERVER_BASE_URL = "http://172.17.0.1:9091";
-    private static final String EMAIL_SERVICE_BASE_URL = "http://172.17.0.1:9094";
-    private static final String PEOPLE_SERVICE_BASE_URL = "http://172.17.0.1:9093";
+    private static final String EDGE_SERVER_BASE_URL = "http://localhost:9091";
+    private static final String EMAIL_SERVICE_BASE_URL = "http://localhost:9094";
+    private static final String PEOPLE_SERVICE_BASE_URL = "http://localhost:9093";
 
     @BeforeClass
     public static void setUpClass() throws IOException {

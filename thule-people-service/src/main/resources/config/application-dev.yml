@@ -8,4 +8,4 @@ thule:
     port: 8761
   peopleservice:
     mysql:
-      host: 172.17.0.1 # Docker bridge IP address
+      host: localhost

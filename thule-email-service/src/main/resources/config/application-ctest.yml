@@ -7,5 +7,5 @@ eureka:
 thule:
   emailservice:
     api:
-      host: 172.17.0.1 # Docker bridge IP address
+      host: localhost
       port: 9094
