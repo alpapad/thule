@@ -5,10 +5,6 @@ services:
     image: pooh:8082/thule-admin-server:1.0.0-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: cit
-      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
-      THULE_CONFIGURATIONSERVICE_PORT: 8080
-      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
       - 9092:8080
@@ -19,8 +15,6 @@ services:
     image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: cit
-      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
       - 9888:8080
@@ -31,8 +25,6 @@ services:
     image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: cit
-      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
-      THULE_CONFIGURATIONSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
       - 9761:8080
@@ -43,10 +35,6 @@ services:
     image: pooh:8082/thule-edge-server:1.0.0-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: cit
-      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
-      THULE_CONFIGURATIONSERVICE_PORT: 8080
-      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
       - 9091:8080
@@ -57,10 +45,6 @@ services:
     image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: cit
-      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
-      THULE_CONFIGURATIONSERVICE_PORT: 8080
-      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERYSERVICE_PORT: 8080
       TZ: Europe/London
     ports:
       - 9094:8080
@@ -71,11 +55,6 @@ services:
     image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: cit
-      THULE_CONFIGURATIONSERVICE_HOST: thule-configuration-service
-      THULE_CONFIGURATIONSERVICE_PORT: 8080
-      THULE_DISCOVERYSERVICE_HOST: thule-discovery-service
-      THULE_DISCOVERYSERVICE_PORT: 8080
-      THULE_PEOPLESERVICE_MYSQL_HOST: mysql
       TZ: Europe/London
     ports:
       - 9093:8080

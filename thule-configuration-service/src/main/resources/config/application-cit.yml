@@ -1,0 +1,10 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: true
+
+# Thule configuration
+thule:
+  discoveryservice:
+    host: thule-discovery-service
+    port: 8080
