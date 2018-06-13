@@ -1,11 +1,10 @@
 # Spring cloud config client configuration
 spring:
   application:
-    # Required by the discovery service as the key to enable other services to lookup and access this service
     name: thule-discovery-service
   cloud:
     config:
-      enabled: false
+      enabled: false # Most environments (test) do no need a configuration service so it is disabled by default
       # Must set this to true when attempting retry otherwise it will not retry connecting to the config server if not available at startup
       failFast: true
       # When to retry accessing the config service if it not available at startup
