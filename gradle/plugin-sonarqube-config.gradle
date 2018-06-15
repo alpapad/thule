@@ -1,7 +1,7 @@
 if (project.tasks.findByName("sonarqube")) {
     ext {
         // Set default values for properties that can be overridden
-        sonarHost = project.hasProperty("sonarHost") ? project.getProperty("sonarHost") : "ci.gohenry.co.uk"
+        sonarHost = project.hasProperty("sonarHost") ? project.getProperty("sonarHost") : "pooh"
         sonarPort = project.hasProperty("sonarPort") ? project.getProperty("sonarPort") : 9000
         sonarProjectNameSuffix = project.hasProperty("sonarProjectNameSuffix") ? project.getProperty("sonarProjectNameSuffix") : System.properties["user.name"]
     }
