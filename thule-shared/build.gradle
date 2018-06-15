@@ -6,7 +6,7 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.17.0" apply(false)
+    id "com.github.ben-manes.versions" version "0.18.0" apply(false)
     id "com.palantir.docker" version "0.19.2" apply(false)
     id "org.sonarqube" version "2.6.2" apply(false)
     id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
