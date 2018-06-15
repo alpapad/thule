@@ -1,21 +1,23 @@
-ext {
-    defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
-    nexusDeployTarget = project.hasProperty("nexusDeployTarget") ? project.getProperty("nexusDeployTarget").toLowerCase() : defaultMavenRepoType
-    mavenRepoUrl = "http://${nexusHost}:${nexusPort}/repository/maven-$nexusDeployTarget"
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
+if (project.tasks.findByName("publish")) {
+    ext {
+        defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
+        nexusDeployTarget = project.hasProperty("nexusDeployTarget") ? project.getProperty("nexusDeployTarget").toLowerCase() : defaultMavenRepoType
+        mavenRepoUrl = "http://${nexusHost}:${nexusPort}/repository/maven-$nexusDeployTarget"
     }
-    repositories {
-        maven {
-            url(mavenRepoUrl)
-            credentials {
-                username = "admin"
-                password = "admin123"
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url(mavenRepoUrl)
+                credentials {
+                    username = "admin"
+                    password = "admin123"
+                }
             }
         }
     }

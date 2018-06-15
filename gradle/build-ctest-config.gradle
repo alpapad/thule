@@ -1,4 +1,4 @@
-// Integration test configuration
+// Contract test configuration
 configurations {
     ctestCompile.extendsFrom testCompile
     ctestRuntime.extendsFrom testRuntime
@@ -12,7 +12,7 @@ sourceSets {
         resources.srcDir file("src/ctest/resources")
     }
 }
-task ctest(type: Test, dependsOn: tasks.docker) {
+task ctest(type: Test) {
     testClassesDirs = sourceSets.ctest.output.classesDirs
     classpath = sourceSets.ctest.runtimeClasspath
 

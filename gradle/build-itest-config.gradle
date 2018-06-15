@@ -17,5 +17,8 @@ task itest(type: Test) {
     classpath = sourceSets.itest.runtimeClasspath
 
     // Should run after the unit tests and jacoco
-    shouldRunAfter test, jacocoTestReport
+    if (project.tasks.findByName("jacocoTestReport")) {
+        shouldRunAfter jacocoTestReport
+    }
+    shouldRunAfter test
 }

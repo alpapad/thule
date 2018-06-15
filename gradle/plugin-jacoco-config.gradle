@@ -1,36 +1,38 @@
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                counter = "BRANCH"
-                minimum = 1.0 // 100% coverage
-            }
-            limit {
-                counter = "CLASS"
-                minimum = 1.0 // 100% coverage
-            }
-            limit {
-                counter = "COMPLEXITY"
-                minimum = 1.0 // 100% coverage
-            }
-            limit {
-                counter = "INSTRUCTION"
-                minimum = 1.0 // 100% coverage
-            }
-            limit {
-                counter = "LINE"
-                minimum = 1.0 // 100% coverage
-            }
-            limit {
-                counter = "METHOD"
-                minimum = 1.0 // 100% coverage
+if (project.tasks.findByName("jacocoTestReport")) {
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    counter = "BRANCH"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "CLASS"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "COMPLEXITY"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "INSTRUCTION"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "LINE"
+                    minimum = 1.0 // 100% coverage
+                }
+                limit {
+                    counter = "METHOD"
+                    minimum = 1.0 // 100% coverage
+                }
             }
         }
+        // Always create a report even if jacocoTestCoverageVerification fails
+        jacocoTestReport.finalizedBy jacocoTestCoverageVerification
     }
-    // Always create a report even if jacocoTestCoverageVerification fails
-    jacocoTestReport.finalizedBy jacocoTestCoverageVerification
-}
-jacoco.toolVersion = "0.8.1"
+    jacoco.toolVersion = "0.8.1"
 
-// Always run jacoco after running the unit tests
-test.finalizedBy jacocoTestReport
+    // Always run jacoco after running the unit tests
+    test.finalizedBy jacocoTestReport
+}

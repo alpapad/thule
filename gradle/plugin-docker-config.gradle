@@ -1,58 +1,92 @@
-if (! new File("src/main/docker/Dockerfile").exists()) {
-    tasks.docker.onlyIf { false }
-} else {
-    // Define variables
-    ext {
-        defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
-        nexusDeployTarget =  project.hasProperty("nexusDeployTarget") ? project.getProperty("nexusDeployTarget").toLowerCase() : defaultMavenRepoType
+if (project.tasks.findByName("docker")) {
+    if (!file("src/main/docker/Dockerfile").exists()) {
+        // Disable docker task if the docker plugin exists and there is a Dockerfile
+        tasks.docker.onlyIf { false }
+    } else {
+        // Define variables
+        ext {
+            defaultMavenRepoType = project.version.endsWith("-SNAPSHOT") ? "snapshots" : "releases"
+            nexusDeployTarget = project.hasProperty("nexusDeployTarget") ? project.getProperty("nexusDeployTarget").toLowerCase() : defaultMavenRepoType
 
-        switch (nexusDeployTarget) {
-            case "none":
-                dockerRegistryPort = "8084"
-                break
-            case "snapshots":
-                dockerRegistryPort = "8084"
-                break
-            case "staging":
-                dockerRegistryPort = "8085"
-                break
-            case "releases":
-                dockerRegistryPort = "8086"
-                break
-            default:
-                throw new GradleException("\n*** Unknown nexusDeployTarget [$nexusDeployTarget] ***")
-                break
+            switch (nexusDeployTarget) {
+                case "none":
+                    dockerRegistryPort = "8084"
+                    break
+                case "snapshots":
+                    dockerRegistryPort = "8084"
+                    break
+                case "staging":
+                    dockerRegistryPort = "8085"
+                    break
+                case "releases":
+                    dockerRegistryPort = "8086"
+                    break
+                default:
+                    throw new GradleException("\n*** Unknown nexusDeployTarget [$nexusDeployTarget] ***")
+                    break
+            }
+
+            dockerImageName = "$nexusHost:$dockerRegistryPort/${jar.baseName}:${project.version}"
         }
 
-        dockerImageName = "$nexusHost:$dockerRegistryPort/${jar.baseName}:${project.version}"
+        // Configure docker plugin
+        docker {
+            name "$dockerImageName"
+            dockerfile project.file("src/main/docker/Dockerfile")
+            buildArgs(["JAR_FILE": "${jar.archiveName}"])
+            files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
+            pull true
+
+            tasks.docker.dependsOn bootJar
+            tasks.docker.shouldRunAfter test, itest, ctest
+            assemble.dependsOn tasks.docker
+        }
+
+        // The docker plugin should be able to tag an image but fails to do so due to bug https://github.com/palantir/gradle-docker/issues/139
+        // This task is a workaround whereby we tag it ourselves.
+        task dockerTag(dependsOn: tasks.docker) {
+            tasks.docker.finalizedBy dockerTag
+
+            doLast {
+                exec {
+                    // Tag as the "latest", i.e. the default tag when no explicit tag is specified
+                    commandLine "docker", "tag", "$dockerImageName", "${jar.baseName}"
+                }
+            }
+        }
+
+        // Ensure the docker image is pushed to the docker registry whenever we publish
+        tasks.publish.dependsOn dockerPush
     }
+}
 
-    // Configure docker plugin
-    docker {
-        name "$dockerImageName"
-        dockerfile project.file("src/main/docker/Dockerfile")
-        buildArgs(["JAR_FILE": "${jar.archiveName}"])
-        files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
-        pull true
-
-        tasks.docker.dependsOn bootJar
-        tasks.docker.shouldRunAfter test, itest
-        assemble.dependsOn tasks.docker
-    }
-
-    // The docker plugin should be able to tag an image but fails to do so due to bug https://github.com/palantir/gradle-docker/issues/139
-    // This task is a workaround whereby we tag it ourselves.
-    task dockerTag(dependsOn: tasks.docker) {
-        tasks.docker.finalizedBy dockerTag
-
+// Create a docker volume containing the config for config projects
+if ("$project.name".endsWith("-config")) {
+    jar {
+        // Build Docker volume containing the spring boot configuration (used by container tests)
         doLast {
+            // Delete the volume from a previous build
             exec {
-                // Tag as the "latest", i.e. the default tag when no explicit tag is specified
-                commandLine "docker", "tag", "$dockerImageName", "${jar.baseName}"
+                ignoreExitValue true
+                commandLine "docker", "volume", "rm", "-f", "$project.name"
+            }
+            // Delete the temporary container in case it still exists
+            exec {
+                ignoreExitValue true
+                commandLine "docker", "rm", "-f", "$project.name"
+            }
+            // Create a temporary container with the new volume so that the spring boot config can be copied to the volume via this container
+            exec {
+                commandLine "docker", "container", "create", "--name", "$project.name", "-v", "$project.name:/config", "alpine"
+            }
+            // Copy the spring boot config to the volume
+            exec {
+                commandLine "docker", "cp", "$buildDir/resources/main/config", "$project.name:/"
+            }
+            // Delete the temporary container
+            exec {
+                commandLine "docker", "rm", "-f", "$project.name"
             }
         }
     }
-
-    // Ensure the docker image is pushed to the docker registry whenever we publish
-    tasks.publish.dependsOn dockerPush
 }

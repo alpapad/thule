@@ -1,0 +1,22 @@
+// Docker test configuration
+configurations {
+    dtestCompile
+    dtestRuntime
+}
+sourceSets {
+    dtest {
+        java.srcDir file("src/dtest/java")
+        resources.srcDir file("src/dtest/resources")
+    }
+}
+task dtest(type: Test) {
+    testClassesDirs = sourceSets.dtest.output.classesDirs
+    classpath = sourceSets.dtest.runtimeClasspath
+
+    if (project.tasks.findByName("docker")) {
+        dependsOn tasks.docker
+    }
+
+    // Should run after the contract tests
+    shouldRunAfter tasks.ctest
+}

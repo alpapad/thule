@@ -3,7 +3,7 @@ ext {
     branch = getBranch()
     branchType = (branch =~ /([^\/]+)/)[0][1]
     nexusDeployTarget = getDeployTarget(branch)
-    isSnapshotVersion = project.version.endsWith('-SNAPSHOT')
+    isSnapshotVersion = project.version.endsWith("-SNAPSHOT")
 }
 
 def getBranch() {
@@ -19,13 +19,13 @@ def getBranch() {
 def getDeployTarget(branch) {
     switch (branch) {
         case ~/^(master)/:
-            return 'releases'
+            return "releases"
         case ~/^(release.*|hotfix.*)/:
-            return 'staging'
+            return "staging"
         case ~/^(develop)/:
-            return 'snapshots'
+            return "snapshots"
         default:
-            return 'none'
+            return "none"
     }
 }
 
@@ -89,7 +89,7 @@ if (branchType == "master") {
 
             // Gradle will not resolve the artifact from Nexus if the artifact is built by this module,
             // i.e. the group, name and version we need to download matches the group, name and version of
-            // this module. To overcome this restriction, we will 'hide' this group name from gradle to
+            // this module. To overcome this restriction, we will "hide" this group name from gradle to
             // fool it into allowing us to download the pre-built artifact from Nexus
             def actualProjectGroup=project.group
             project.group = "hidden"

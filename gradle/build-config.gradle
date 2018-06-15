@@ -8,6 +8,7 @@ repositories {
 apply from: "${rootDir}/../gradle/build-gitflow-config.gradle"
 apply from: "${rootDir}/../gradle/build-itest-config.gradle"
 apply from: "${rootDir}/../gradle/build-ctest-config.gradle"
+apply from: "${rootDir}/../gradle/build-dtest-config.gradle"
 apply from: "${rootDir}/../gradle/build-test-config.gradle"
 
 // Include bespoke gradle plugin config
