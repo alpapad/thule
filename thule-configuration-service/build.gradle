@@ -61,7 +61,7 @@ task processResourcesFromMicroServices {
 // Dependencies
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.RC2")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:FINCHLEY.RELEASE")
     }
 }
 
