@@ -66,6 +66,4 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/London
-    ports:
-      - 3308:3306 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
     restart: always
