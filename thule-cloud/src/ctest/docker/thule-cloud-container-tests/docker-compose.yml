@@ -7,7 +7,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 9092:8080
+      - 7092:8080
     restart: always
 
   ################################  thule-configuration-service  ################################
@@ -17,7 +17,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 9888:8080
+      - 7888:8080
     restart: always
 
   ################################  thule-discovery-service  ################################
@@ -27,7 +27,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 9761:8080
+      - 7761:8080
     restart: always
 
   ################################  thule-edge-server  ################################
@@ -37,7 +37,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 9091:8080
+      - 7091:8080
     restart: always
 
   ################################  thule-email-server  ################################
@@ -47,7 +47,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 9094:8080
+      - 7094:8080
     restart: always
 
   ################################  thule-people-service  ################################
@@ -57,7 +57,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 9093:8080
+      - 7093:8080
     restart: always
 
   ################################  Servers and Databases Required By Container Tests  ################################
