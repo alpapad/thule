@@ -38,4 +38,8 @@ dependencies {
     compile("org.springframework.retry:spring-retry")
 
     testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+
+    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    dtestCompile("org.springframework.boot:spring-boot-starter-web")
 }
