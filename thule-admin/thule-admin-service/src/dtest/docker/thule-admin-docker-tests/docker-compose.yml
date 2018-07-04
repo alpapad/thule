@@ -4,7 +4,7 @@ services:
   thule-admin-service:
     image: pooh:8084/thule-admin-service
     environment:
-      TZ: UTC
+      TZ: Europe/London
     ports:
       - 9092:8080 # Required to allow docker tests to call the restful api
     volumes:
