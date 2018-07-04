@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
+    }
+}
+
+rootProject.name = "thule-admin"
+
+include "thule-admin-config"
+include "thule-admin-service"

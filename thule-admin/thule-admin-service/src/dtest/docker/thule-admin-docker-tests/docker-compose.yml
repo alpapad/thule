@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  ################################  thule-admin-service  ################################
+  thule-admin-service:
+    image: pooh:8084/thule-admin-service
+    environment:
+      TZ: UTC
+    ports:
+      - 9092:8080 # Required to allow docker tests to call the restful api
+    volumes:
+      # Since we are not using the config service to provide spring config, we add the config to the
+      # docker containers file system in a standard spring boot location that spring boot uses to search for the config by default
+      - thule-admin-config:/config
+
+volumes:
+  thule-admin-config:
+    external: true

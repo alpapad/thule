@@ -1,0 +1,10 @@
+# Spring cloud configuration
+spring:
+  cloud:
+    config:
+      enabled: true
+
+# Thule configuration
+thule:
+  configurationservice:
+    port: 8888
