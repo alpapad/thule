@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin.container;
+package uk.co.serin.thule.admin.docker;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -25,9 +25,9 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ContainerTest {
+public class DockerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
-    private static DockerCompose dockerCompose = new DockerCompose("src/ctest/docker/thule-admin-server-container-tests/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-admin-server-docker-tests/docker-compose.yml");
 
     private String adminServerBaseUrl;
 

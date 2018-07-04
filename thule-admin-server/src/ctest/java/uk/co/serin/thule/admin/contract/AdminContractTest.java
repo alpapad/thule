@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin.e2e;
+package uk.co.serin.thule.admin.contract;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @ActiveProfiles({"itest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AdminIntTest {
+public class AdminContractTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
