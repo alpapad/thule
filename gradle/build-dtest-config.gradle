@@ -17,6 +17,6 @@ task dtest(type: Test) {
         dependsOn tasks.docker
     }
 
-    // Should run after the contract tests
+    // Should run after the docker tests
     shouldRunAfter tasks.ctest
 }

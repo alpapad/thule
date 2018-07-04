@@ -2,18 +2,18 @@ version: "3.5"
 services:
   ################################  thule-people-service  ################################
   thule-people-service:
-    image: thule-people-service
+    image: pooh:8084/thule-people-service
     environment:
-      EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
-      SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
+      EUREKA_CLIENT_ENABLED: "false" # Standalone docker tests do not need a discovery service
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone docker tests do not need a config server
       SPRING_FLYWAY_BASELINE-ON-MIGRATE: "true" # Allow for case where the schema exists but Flyway did not create it
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql
       TZ: Europe/London
     ports:
-      - 9093:8080 # Required to allow container tests to call the restful api
+      - 9093:8080 # Required to allow docker tests to call the restful api
     restart: always # Spring context will fail to initialize if MySql is not ready because Flyway is dependent upon its availability
 
-  ################################  Servers and Databases Required By Container Tests  ################################
+  ################################  Servers and Databases Required By Docker tests  ################################
   mysql:
     image: mysql
     environment:

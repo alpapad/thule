@@ -2,9 +2,9 @@ version: "3.5"
 services:
   ################################  thule-configuration-service  ################################
   thule-configuration-service:
-    image: thule-configuration-service
+    image: pooh:8084/thule-configuration-service
     environment:
-      EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
+      EUREKA_CLIENT_ENABLED: "false" # Standalone docker tests do not need a discovery service
       TZ: Europe/London
     ports:
-      - 9888:8080 # Required to allow container tests to call the restful api
+      - 9888:8080 # Required to allow docker tests to call the restful api

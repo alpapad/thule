@@ -2,10 +2,10 @@ version: "3.5"
 services:
   ################################  thule-edge-server  ################################
   thule-edge-server:
-    image: thule-edge-server
+    image: pooh:8084/thule-edge-server
     environment:
-      EUREKA_CLIENT_ENABLED: "false" # Standalone container tests do not need a discovery service
-      SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone container tests do not need a config server
+      EUREKA_CLIENT_ENABLED: "false" # Standalone docker tests do not need a discovery service
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Standalone docker tests do not need a config server
       TZ: Europe/London
     ports:
-      - 9091:8080 # Required to allow container tests to call the restful api
+      - 9091:8080 # Required to allow docker tests to call the restful api

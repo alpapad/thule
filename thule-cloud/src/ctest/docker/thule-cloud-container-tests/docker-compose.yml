@@ -60,7 +60,7 @@ services:
       - 7093:8080
     restart: always
 
-  ################################  Servers and Databases Required By Container Tests  ################################
+  ################################  Servers and Databases Required By Docker tests  ################################
   mysql:
     image: mysql
     environment:

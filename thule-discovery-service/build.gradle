@@ -20,7 +20,7 @@ apply plugin: "io.spring.dependency-management"
 apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Non-standard Serin gradle plugin config
-// Exclude the config and eureka server from the container tests (client side)
+// Exclude the config and eureka server from the docker tests (client side)
 configurations {
     ctestCompile {
         extendsFrom testCompile
