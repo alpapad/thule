@@ -19,8 +19,6 @@ apply plugin: "io.spring.dependency-management"
 apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Non-standard Serin gradle plugin config
-bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
-jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 sonarqube {
     properties {
         // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
