@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
+        mavenLocal()
+    }
+}
+
+plugins {
+    id "com.github.ben-manes.versions" version "0.20.0" apply(false)
+    id "com.palantir.docker" version "0.20.1" apply(false)
+    id "org.sonarqube" version "2.6.2" apply(false)
+    id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
+}
+
+project("thule-discovery-config") {
+    description = "Thule Discovery Config"
+
+    // Plugins
+    apply plugin: "java"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+}
+
+project("thule-discovery-service") {
+    description = "Thule Discovery Service"
+
+    // Plugins
+    apply plugin: "com.github.ben-manes.versions"
+    apply plugin: "com.palantir.docker"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: "org.sonarqube"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+
+    // Dependencies
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.RELEASE")
+        }
+    }
+
+    dependencies {
+        compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+        compile("org.springframework.boot:spring-boot-starter-actuator")
+        compile("org.springframework.boot:spring-boot-starter-web")
+        compile("org.springframework.cloud:spring-cloud-starter-config")
+        compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server")
+        compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
+        // Required to retry connecting to the configuration service when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
+
+        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+
+        itestCompile project(":thule-discovery-config")
+
+        ctestCompile project(":thule-discovery-config")
+        ctestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+        dtestCompile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+        dtestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
+    }
+}

@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
+    }
+}
+
+rootProject.name = "thule-discovery"
+
+include "thule-discovery-config"
+include "thule-discovery-service"
