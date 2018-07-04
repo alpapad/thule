@@ -1,11 +1,6 @@
-# Eureka configuration
-eureka:
-  client:
-    enabled: false
-
 # Thule configuration
 thule:
-  adminserver:
+  adminservice:
     api:
       host: localhost
       port: 9092

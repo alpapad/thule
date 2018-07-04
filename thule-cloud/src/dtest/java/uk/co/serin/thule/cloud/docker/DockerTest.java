@@ -1,4 +1,4 @@
-package uk.co.serin.thule.cloud.container;
+package uk.co.serin.thule.cloud.docker;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,12 +14,12 @@ import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class ContainerTest {
+public class DockerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
     private static final String ADMIN_SERVER_BASE_URL = "http://localhost:7092";
     private static final String CONFIG_SERVICE_BASE_URL = "http://localhost:7888";
     private static final String DISCOVERY_SERVICE_BASE_URL = "http://localhost:7761";
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/ctest/docker/thule-cloud-container-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/ctest/docker/thule-cloud-docker-tests/docker-compose.yml");
     private static final String EDGE_SERVER_BASE_URL = "http://localhost:7091";
     private static final String EMAIL_SERVICE_BASE_URL = "http://localhost:7094";
     private static final String PEOPLE_SERVICE_BASE_URL = "http://localhost:7093";

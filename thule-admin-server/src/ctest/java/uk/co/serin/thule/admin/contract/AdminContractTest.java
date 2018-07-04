@@ -17,7 +17,7 @@ import java.time.Duration;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 
-@ActiveProfiles({"itest", "${spring.profiles.include:default}"})
+@ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AdminContractTest {

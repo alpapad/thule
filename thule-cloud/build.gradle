@@ -25,9 +25,9 @@ jar.enabled = true // Don't need an "über-jar" but still want the rest of the s
 
 // Dependencies
 dependencies {
-    ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
-    ctestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
-    ctestCompile("org.springframework.boot:spring-boot-starter-actuator")
-    ctestCompile("org.springframework.boot:spring-boot-starter-web")
-    ctestCompile("org.springframework.retry:spring-retry")
+    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    dtestCompile("org.springframework.boot:spring-boot-starter-actuator")
+    dtestCompile("org.springframework.boot:spring-boot-starter-web")
+    dtestCompile("org.springframework.retry:spring-retry")
 }

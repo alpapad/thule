@@ -2,7 +2,7 @@ version: "3.5"
 services:
   ################################  thule-admin-server  ################################
   thule-admin-server:
-    image: pooh:8082/thule-admin-server:1.0.0-SNAPSHOT
+    image: pooh:8082/thule-admin-server
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -12,7 +12,7 @@ services:
 
   ################################  thule-configuration-service  ################################
   thule-configuration-service:
-    image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
+    image: pooh:8082/thule-configuration-service
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -22,7 +22,7 @@ services:
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
-    image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
+    image: pooh:8082/thule-discovery-service
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -32,7 +32,7 @@ services:
 
   ################################  thule-edge-server  ################################
   thule-edge-server:
-    image: pooh:8082/thule-edge-server:1.0.0-SNAPSHOT
+    image: pooh:8082/thule-edge-server
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -42,7 +42,7 @@ services:
 
   ################################  thule-email-server  ################################
   thule-email-service:
-    image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
+    image: pooh:8082/thule-email-service
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -52,7 +52,7 @@ services:
 
   ################################  thule-people-service  ################################
   thule-people-service:
-    image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
+    image: pooh:8082/thule-people-service
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
