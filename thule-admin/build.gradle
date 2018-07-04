@@ -6,6 +6,7 @@ buildscript {
 }
 
 plugins {
+    id "com.github.ben-manes.versions" version "0.20.0" apply(false)
     id "com.palantir.docker" version "0.20.1" apply(false)
     id "org.sonarqube" version "2.6.2" apply(false)
     id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
@@ -28,6 +29,7 @@ project("thule-admin-service") {
     description = "Thule Admin Service"
 
     // Plugins
+    apply plugin: "com.github.ben-manes.versions"
     apply plugin: "com.palantir.docker"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "java"
