@@ -29,6 +29,7 @@ project("thule-gateway-service") {
     description = "Thule Gateway Service"
 
     // Plugins
+    apply plugin: "com.github.ben-manes.versions"
     apply plugin: "com.palantir.docker"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "java"
