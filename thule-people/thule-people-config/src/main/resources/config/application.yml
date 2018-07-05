@@ -47,6 +47,12 @@ spring:
     sampler:
       probability: 1.0
 
+# Zuul configuration
+zuul:
+  # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication header will not Propagate to the people service,
+  # hence Authorization has been removed from the sensitive headers
+  sensitiveHeaders: Cookie,Set-Cookie
+
 # Thule configuration
 thule:
   shared:
