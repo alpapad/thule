@@ -22,6 +22,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,6 +31,8 @@ public class SpringBootActuatorAssertTest {
     private ResponseEntity<Map<String, Object>> responseEntity;
     @Mock
     private RestTemplate restTemplate;
+    @Mock
+    private Map response;
     private RetryTemplate retryTemplate = new RetryTemplate();
 
     @Test
@@ -64,6 +67,32 @@ public class SpringBootActuatorAssertTest {
         // When
         try {
             springBootActuatorAssert.hasStatus(Status.UP);
+            fail();
+        } catch (AssertionError error) {
+            // Then
+            assertThat(error).hasMessageContaining("not successful [503]");
+        }
+    }
+
+    @Test
+    public void setUpHttpEntityForOauthTest(){
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+
+        retryTemplate.setRetryPolicy(new NeverRetryPolicy());
+
+        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(springBootActuatorAssert, "retryTemplate", retryTemplate);
+
+        given(restTemplate.postForObject(any(String.class), any(), any())).willReturn(response);
+        given(response.get("access_token")).willReturn("ACCESS_TOKEN");
+        given(restTemplate.exchange(any(URI.class), any(), any( ),  any(ParameterizedTypeReference.class))).willReturn(responseEntity);
+        given(responseEntity.getStatusCode()).willReturn(HttpStatus.SERVICE_UNAVAILABLE);
+
+        // When
+        try {
+            springBootActuatorAssert.withOAuth("gohenry-authentication-service","authenticate", "TEST", "TEST").hasStatus(Status.UP);
             fail();
         } catch (AssertionError error) {
             // Then
@@ -149,7 +178,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void withCredentials() {
+    public void withHttpBasicCredentials() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
 
@@ -157,7 +186,22 @@ public class SpringBootActuatorAssertTest {
         ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
 
         // When
-        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.withCredentials("username", "password");
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.withHttpBasic("username", "password");
+
+        // Then
+        assertThat(actualSpringBootActuatorAssert).isNotNull();
+    }
+
+    @Test
+    public void withOAuthCredentials() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+
+        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+
+        // When
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.withOAuth("clientId", "clientSecret","username","password");
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();
