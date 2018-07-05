@@ -80,15 +80,6 @@ public class CloudDockerTest {
     }
 
     @Test
-    public void discovery_service_via_gateway_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-discovery-service" + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
-    }
-
-    @Test
     public void email_service_health_status_is_up() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(EMAIL_SERVICE_BASE_URL + ACTUATOR_HEALTH));
