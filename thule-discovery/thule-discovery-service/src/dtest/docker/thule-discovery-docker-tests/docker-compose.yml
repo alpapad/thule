@@ -12,7 +12,7 @@ services:
       - 9761:8080
     restart: always # Spring context will fail to initialize if MySql is not ready because Flyway is dependent upon its availability
     volumes:
-      # Since we are not using the config service to provide spring config, we add the config to the
+      # Since we are not using the configuration service to provide spring config, we add the config to the
       # docker containers file system in a standard spring boot location that spring boot uses to search for the config by default
       - thule-discovery-config:/config
 

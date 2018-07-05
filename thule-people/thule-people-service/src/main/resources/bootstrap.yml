@@ -7,9 +7,9 @@ spring:
       enabled: false # Most environments (test) do no need a configuration service so it is disabled by default
       # Must set this to true when attempting retry otherwise it will not retry connecting to the config server if not available at startup
       failFast: true
-      # When to retry accessing the config service if it not available at startup
+      # When to retry accessing the configuration service if it not available at startup
       retry:
         maxAttempts: 9999
         initialInterval: 3000
-      # Location of the config service
+      # Location of the configuration service
       uri: http://${thule.configurationservice.host:localhost}:${thule.configurationservice.port:8888}/

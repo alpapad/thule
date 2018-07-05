@@ -11,7 +11,7 @@ eureka:
 
 # Spring actuator configuration
 info:
-  description: Thule Config Service
+  description: Thule Configuration service
   name: ${spring.application.name}
 
 # Spring logging
