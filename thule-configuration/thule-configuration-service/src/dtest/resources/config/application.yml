@@ -1,0 +1,6 @@
+# Thule configuration
+thule:
+  configurationservice:
+    api:
+      host: localhost
+      port: 9888

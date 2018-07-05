@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  ################################  thule-configuration-service  ################################
+  thule-configuration-service:
+    image: pooh:8084/thule-configuration-service
+    environment:
+      TZ: Europe/London
+    ports:
+      - 9888:8080 # Required to allow docker tests to call the restful api
+    volumes:
+      # Since we are not using the config service to provide spring config, we add the config to the
+      # docker containers file system in a standard spring boot location that spring boot uses to search for the config by default
+      - thule-configuration-config:/config
+
+volumes:
+  thule-configuration-config:
+    external: true

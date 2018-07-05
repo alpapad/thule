@@ -1,0 +1,15 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: true
+
+# Spring server configuration
+server:
+  port: 8888
+
+# Thule configuration
+thule:
+  configurationservice:
+    search-locations: ../thule-configuration-config/out/production/resources/config
+  discoveryservice:
+    port: 8761

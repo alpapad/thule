@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
+        mavenLocal()
+    }
+}
+
+plugins {
+    id "com.github.ben-manes.versions" version "0.20.0" apply(false)
+    id "com.palantir.docker" version "0.20.1" apply(false)
+    id "org.sonarqube" version "2.6.2" apply(false)
+    id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
+}
+
+project("thule-configuration-config") {
+    description = "Thule Configuration Config"
+
+    // Plugins
+    apply plugin: "java"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+    def thuleMicroServicesConfig = "$buildDir/generated-resources/thule-micro-services-config"
+    // Add Spring boot config from each thule micro-service
+    sourceSets {
+        main {
+            // Register an output folder for thuleMicroServicesConfig, it will then be on the
+            // 'main' classpath and will be added into the jar
+            output.dir(thuleMicroServicesConfig, builtBy: "processResourcesFromMicroServices")
+            // Add the thuleMicroServicesConfig as a resource source directory, not strictly required
+            // for gradle but will enable the thuleMicroServicesConfig to be added to the classpath used by IntelliJ
+            resources.srcDirs += thuleMicroServicesConfig
+        }
+    }
+    // Collect Spring boot config from individual micro-services
+    task processResourcesFromMicroServices {
+        doLast {
+            configurations.compile.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+                copy {
+                    from zipTree(artifact.file)
+                    into thuleMicroServicesConfig + "/config/" + artifact.moduleVersion.id.name.replaceFirst("config", "service")
+                    include "config/**"
+                    eachFile { f ->
+                        f.path = f.path.replaceFirst("config", "")
+                    }
+                    includeEmptyDirs false
+                }
+            }
+        }
+    }
+
+    // Dependencies
+    dependencies {
+        compile("uk.co.serin.thule:thule-admin-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-discovery-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-email-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-gateway-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-people-config:1.0.0-SNAPSHOT")
+    }
+}
+
+project("thule-configuration-service") {
+    description = "Thule Configuration Service"
+
+    // Plugins
+    apply plugin: "com.github.ben-manes.versions"
+    apply plugin: "com.palantir.docker"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: "org.sonarqube"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+
+    // Dependencies
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.RELEASE")
+        }
+    }
+
+    dependencies {
+        compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+        compile("org.springframework.boot:spring-boot-starter-actuator")
+        compile("org.springframework.cloud:spring-cloud-config-server")
+        compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+        compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
+
+        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+
+        itestCompile project(":thule-configuration-config")
+
+        ctestCompile project(":thule-configuration-config")
+
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+    }
+}
