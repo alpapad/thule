@@ -6,28 +6,68 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.20.0"
-    id "com.palantir.docker" version "0.20.1"
-    id "jacoco"
-    id "java"
-    id "maven-publish"
-    id "org.sonarqube" version "2.6.2"
-    id "org.springframework.boot" version "2.0.3.RELEASE"
+    id "com.github.ben-manes.versions" version "0.20.0" apply(false)
+    id "com.palantir.docker" version "0.20.1" apply(false)
+    id "org.sonarqube" version "2.6.2" apply(false)
+    id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
 }
-apply plugin: "io.spring.dependency-management"
 
-// Standard Serin gradle plugin config
-apply from: "${rootDir}/../gradle/build-config.gradle"
+project("thule-cloud-config") {
+    description = "thule Cloud Config"
 
-// Non-standard Serin gradle plugin config
-bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
-jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
+    // Plugins
+    apply plugin: "java"
+    apply plugin: "maven-publish"
 
-// Dependencies
-dependencies {
-    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
-    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
-    dtestCompile("org.springframework.boot:spring-boot-starter-actuator")
-    dtestCompile("org.springframework.boot:spring-boot-starter-web")
-    dtestCompile("org.springframework.retry:spring-retry")
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard thule gradle plugin config
+    // Add Spring boot config from thule-configuration-config
+    processResources {
+        doLast {
+            copy {
+                from zipTree(configurations.compile.singleFile)
+                into "$buildDir/resources/main"
+            }
+        }
+    }
+
+    // Dependencies
+    dependencies {
+        compile("uk.co.serin.thule:thule-configuration-config:1.0.0-SNAPSHOT") { transitive = false}
+    }
+}
+
+project("thule-cloud-service") {
+    description = "thule Cloud Service"
+
+    // Plugins
+    apply plugin: "com.github.ben-manes.versions"
+    apply plugin: "com.palantir.docker"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: "org.sonarqube"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+
+    // Dependencies
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.RELEASE")
+        }
+    }
+
+    dependencies {
+        dtestCompile project(":thule-cloud-config")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+        dtestCompile("org.springframework.boot:spring-boot-starter-web")
+    }
 }

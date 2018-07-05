@@ -1,8 +1,8 @@
 version: "3.5"
 services:
-  ################################  thule-admin-server  ################################
-  thule-admin-server:
-    image: pooh:8082/thule-admin-server
+  ################################  thule-admin-service  ################################
+  thule-admin-service:
+    image: pooh:8082/thule-admin-service
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -19,6 +19,8 @@ services:
     ports:
       - 7888:8080
     restart: always
+    volumes:
+      - thule-cloud-config:/config
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
@@ -30,9 +32,9 @@ services:
       - 7761:8080
     restart: always
 
-  ################################  thule-edge-server  ################################
-  thule-edge-server:
-    image: pooh:8082/thule-edge-server
+  ################################  thule-gateway -service ################################
+  thule-gateway-service:
+    image: pooh:8082/thule-gateway-service
     environment:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
@@ -40,7 +42,7 @@ services:
       - 7091:8080
     restart: always
 
-  ################################  thule-email-server  ################################
+  ################################  thule-email-service  ################################
   thule-email-service:
     image: pooh:8082/thule-email-service
     environment:
@@ -67,3 +69,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/London
     restart: always
+
+volumes:
+  thule-cloud-config:
+    external: true
