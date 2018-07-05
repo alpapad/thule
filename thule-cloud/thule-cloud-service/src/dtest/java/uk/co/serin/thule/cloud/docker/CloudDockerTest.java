@@ -32,7 +32,7 @@ public class CloudDockerTest {
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        DOCKER_COMPOSE.down();
+//        DOCKER_COMPOSE.down();
     }
 
     @Test
