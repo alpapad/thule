@@ -52,7 +52,9 @@ project("thule-cloud-service") {
     // Standard Thule gradle plugin config
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
-    // Non-standard Thule gradle plugin config
+    // Non-standard GoHenry gradle plugin config
+    bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
+    jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 
     // Dependencies
     dependencyManagement {
