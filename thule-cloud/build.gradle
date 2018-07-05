@@ -7,6 +7,7 @@ buildscript {
 
 plugins {
     id "com.github.ben-manes.versions" version "0.20.0" apply(false)
+    id "org.sonarqube" version "2.6.2" apply(false)
     id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
 }
 
@@ -44,15 +45,14 @@ project("thule-cloud-service") {
     apply plugin: "com.github.ben-manes.versions"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "java"
+    apply plugin: "org.sonarqube"
     apply plugin: "org.springframework.boot"
     apply plugin: "maven-publish"
 
     // Standard Thule gradle plugin config
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
-    // Non-standard GoHenry gradle plugin config
-    bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
-    jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
+    // Non-standard Thule gradle plugin config
 
     // Dependencies
     dependencyManagement {
