@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+  ################################  thule-email  ################################
+  thule-email:
+    image: pooh:8084/thule-email-service
+    environment:
+      TZ: Europe/London
+    ports:
+      - 9094:8080 # Required to allow docker tests to call the restful api
+    restart: always # Spring context will fail to initialize if MySql is not ready because Flyway is dependent upon its availability
+    volumes:
+      # Since we are not using the config service to provide spring config, we add the config to the
+      # docker containers file system in a standard spring boot location that spring boot uses to search for the config by default
+      - thule-email-config:/config
+
+volumes:
+  thule-email-config:
+    external: true

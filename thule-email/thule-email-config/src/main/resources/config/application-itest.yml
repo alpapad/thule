@@ -1,0 +1,12 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
+# Spring boot configuration
+spring:
+  mail:
+    host: localhost
+    port: 1025
+
+# Thule configuration
