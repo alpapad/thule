@@ -1,0 +1,13 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: true
+
+# Thule configuration
+thule:
+  peopleservice:
+    mysql:
+      host: mysql
+  discoveryservice:
+    host: thule-discovery-service
+    port: 8080

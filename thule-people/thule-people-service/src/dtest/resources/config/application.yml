@@ -1,0 +1,16 @@
+# Spring boot configuration
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    password: thule
+    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}/thule
+    username: thule
+
+# Thule configuration
+thule:
+  peopleservice:
+    api:
+      host: localhost
+      port: 9093
+    mysql:
+      port: 3308 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required

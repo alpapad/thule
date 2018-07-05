@@ -1,0 +1,99 @@
+buildscript {
+    repositories {
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
+        mavenLocal()
+    }
+}
+
+plugins {
+    id "com.github.ben-manes.versions" version "0.20.0" apply(false)
+    id "com.palantir.docker" version "0.20.1" apply(false)
+    id "org.sonarqube" version "2.6.2" apply(false)
+    id "org.springframework.boot" version "2.0.3.RELEASE" apply(false)
+}
+
+project("thule-people-config") {
+    description = "Thule People Config"
+
+    // Plugins
+    apply plugin: "java"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+}
+
+project("thule-people-service") {
+    description = "Thule People Service"
+
+    // Plugins
+    apply plugin: "com.github.ben-manes.versions"
+    apply plugin: "com.palantir.docker"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: "org.sonarqube"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "maven-publish"
+
+    // Standard Thule gradle plugin config
+    apply from: "${rootDir}/../gradle/build-config.gradle"
+
+    // Non-standard Thule gradle plugin config
+    sonarqube {
+        properties {
+            // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
+            property "sonar.cpd.exclusions", "**/domain/**"
+        }
+    }
+    // Required for Java9
+    //    tasks.withType(Test) {
+    //        jvmArgs += ["--add-modules", "java.xml.bind"]
+    //    }
+
+    // Dependencies
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Finchley.RELEASE")
+        }
+    }
+
+    dependencies {
+        compile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+        compile("com.googlecode.log4jdbc:log4jdbc:1.2")
+        compile("mysql:mysql-connector-java")
+        compile("org.flywaydb:flyway-core")
+        compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
+        compile("org.springframework.boot:spring-boot-starter-actuator")
+        compile("org.springframework.boot:spring-boot-starter-data-jpa")
+        compile("org.springframework.boot:spring-boot-starter-data-rest")
+        compile("org.springframework.boot:spring-boot-starter-security")
+        compile("org.springframework.boot:spring-boot-starter-validation")
+        compile("org.springframework.cloud:spring-cloud-starter-config")
+        compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+        compile("org.springframework.cloud:spring-cloud-starter-openfeign")
+        compile("org.springframework.cloud:spring-cloud-starter-sleuth")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
+        compile("org.springframework.data:spring-data-rest-hal-browser")
+        // Required to retry connecting to the configuration service when it is not available at startup
+        compile("org.springframework.retry:spring-retry")
+
+        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+
+        itestCompile project(":thule-people-config")
+        itestCompile("com.h2database:h2")
+        itestCompile("com.oracle:ojdbc6:11.2.0.1.0")
+        itestCompile("org.hsqldb:hsqldb")
+
+        ctestCompile project(":thule-people-config")
+
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
+        dtestCompile("com.googlecode.log4jdbc:log4jdbc:1.2")
+        dtestCompile("mysql:mysql-connector-java")
+        dtestCompile("org.springframework.boot:spring-boot-starter-jdbc")
+        dtestCompile("org.springframework.boot:spring-boot-starter-web")
+    }
+}
