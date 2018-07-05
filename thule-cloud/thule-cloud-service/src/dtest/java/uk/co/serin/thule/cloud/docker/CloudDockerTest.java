@@ -14,7 +14,7 @@ import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DockerTest {
+public class CloudDockerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
     private static final String ADMIN_SERVICE_BASE_URL = "http://localhost:7092";
     private static final String CONFIGURATION_SERVICE_BASE_URL = "http://localhost:7888";
@@ -112,7 +112,7 @@ public class DockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(PEOPLE_SERVICE_BASE_URL + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Test
@@ -121,6 +121,6 @@ public class DockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).withCredentials("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }
