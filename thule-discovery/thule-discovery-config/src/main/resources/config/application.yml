@@ -22,6 +22,16 @@ logging:
     uk.co.serin.thule: trace
     org.springframework: info
 
+# Management endpoint configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
 # Spring boot configuration
 spring:
   sleuth:
