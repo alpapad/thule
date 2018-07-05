@@ -1,0 +1,6 @@
+# Thule configuration
+thule:
+  gatewayservice:
+    api:
+      host: localhost
+      port: 9091

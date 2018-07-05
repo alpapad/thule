@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
+    }
+}
+
+rootProject.name = "thule-gateway"
+
+include "thule-gateway-config"
+include "thule-gateway-service"

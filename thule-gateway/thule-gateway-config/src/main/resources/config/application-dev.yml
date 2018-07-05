@@ -1,0 +1,13 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: true
+
+# Spring server configuration
+server:
+  port: 8091
+
+# Thule configuration
+thule:
+  discoveryservice:
+    port: 8761
