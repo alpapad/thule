@@ -10,4 +10,4 @@ thule:
       host: mysql
   discoveryservice:
     host: thule-discovery-service
-    port: 8080
+

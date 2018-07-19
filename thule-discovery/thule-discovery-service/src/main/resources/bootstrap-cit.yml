@@ -8,4 +8,3 @@ spring:
 thule:
   configurationservice:
     host: thule-configuration-service
-    port: 8080
