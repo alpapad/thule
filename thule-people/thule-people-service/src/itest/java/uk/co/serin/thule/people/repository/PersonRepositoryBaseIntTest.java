@@ -47,7 +47,7 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static org.junit.Assert.fail;
 
 /**
- * Abstract class for tetsing the repository in both MySql and H2
+ * Abstract class for testing the repository in both MySql and H2
  *
  * This test uses @DataJpaTest to test boot just the required parts of Spring Boot for JPA
  * repository testing. It does this by disabling auto configuration (including the use of
