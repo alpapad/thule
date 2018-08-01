@@ -42,7 +42,7 @@ project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
     dependencies {
         compile project(":thule-test")
-        compile("nl.jqno.equalsverifier:equalsverifier:2.4.8")
+        compile("nl.jqno.equalsverifier:equalsverifier:2.5")
         compile("org.awaitility:awaitility:3.1.2")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.cloud:spring-cloud-contract-wiremock")
@@ -62,7 +62,6 @@ project("thule-spring-boot-starter-utils") {
 project("thule-test") {
     description = "Thule Test"
     dependencies {
-        compile("org.assertj:assertj-core")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-web")
