@@ -10,4 +10,3 @@ import uk.co.serin.thule.people.domain.role.RoleCode;
 public interface RoleRepository extends PagingAndSortingRepository<Role, Long> {
     Role findByCode(RoleCode roleCode);
 }
-
