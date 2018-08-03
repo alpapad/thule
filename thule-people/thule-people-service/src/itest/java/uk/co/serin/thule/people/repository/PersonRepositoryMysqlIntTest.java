@@ -14,7 +14,7 @@ import uk.co.serin.thule.people.docker.MySqlDockerContainer;
  *
  * <code>@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)</code>
  */
-@ActiveProfiles({"itest", "${spring.profiles.include:default}"})
+@ActiveProfiles("itest")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonRepositoryMysqlIntTest extends PersonRepositoryBaseIntTest {
     @BeforeClass

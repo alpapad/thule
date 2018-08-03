@@ -21,7 +21,7 @@ import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles({"itest", "${spring.profiles.include:default}"})
+@ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonRepositoryIntTest {

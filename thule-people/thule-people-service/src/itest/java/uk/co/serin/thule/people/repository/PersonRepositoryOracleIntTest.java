@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
  *
  * <code>@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)</code>
  */
-@ActiveProfiles({"itest", "itest-oracle", "${spring.profiles.include:default}"})
+@ActiveProfiles({"itest", "itest-oracle"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonRepositoryOracleIntTest extends PersonRepositoryBaseIntTest {
 }

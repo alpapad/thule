@@ -36,7 +36,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
  * </ul>
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
+@ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
 public class DiscoveryContractTest {
     @Autowired

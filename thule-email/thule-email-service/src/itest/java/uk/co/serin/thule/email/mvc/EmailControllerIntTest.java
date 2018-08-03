@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles({"itest", "${spring.profiles.include:default}"})
+@ActiveProfiles("itest")
 @WebMvcTest(EmailController.class)
 public class EmailControllerIntTest {
     private static final String EMAIL_PATH = "/" + Email.ENTITY_NAME_EMAILS;

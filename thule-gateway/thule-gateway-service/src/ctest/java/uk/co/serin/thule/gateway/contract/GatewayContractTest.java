@@ -16,7 +16,7 @@ import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@ActiveProfiles({"itest", "${spring.profiles.include:default}"})
+@ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GatewayContractTest {

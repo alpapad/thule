@@ -67,7 +67,7 @@ import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
+@ActiveProfiles("ctest")
 // Spring doc very clear but to override the default location (src/test/resources) of the response
 // files, you *must* specify them under META-INF!
 @AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)

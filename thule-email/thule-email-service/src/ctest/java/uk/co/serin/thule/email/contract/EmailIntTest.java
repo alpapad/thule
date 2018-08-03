@@ -33,7 +33,7 @@ import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles({"ctest", "${spring.profiles.include:default}"})
+@ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
 public class EmailIntTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
