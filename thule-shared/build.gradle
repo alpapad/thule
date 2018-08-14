@@ -1,4 +1,6 @@
 buildscript {
+    ext["byte-buddy.version"] = "1.8.17" // Spring boot uses version 1.7.11 but version 1.8.0+ is required for java 10 support
+
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
         mavenLocal()
@@ -74,11 +76,16 @@ project("thule-test") {
 project("thule-utils") {
     description = "Thule Utils"
     dependencies {
+        compile("commons-discovery:commons-discovery:0.4")
         compile("net.logstash.logback:logstash-logback-encoder:5.2")
         compile("org.codehaus.janino:janino:3.0.8") // Required by logback if-condition statements in the xml configuration
+        compile("org.apache.axis:axis:1.4")
+        compile("org.apache.axis:axis-jaxrpc:1.4")
+        compile("org.hibernate:hibernate-core")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
-        compile("org.springframework.boot:spring-boot-starter-web") 
+        compile("org.springframework.boot:spring-boot-starter-web")
+        compile("xml-apis:xml-apis") // Required as part of SOAP (jax) when using java 9+
 
         testCompile project(":thule-spring-boot-starter-test")
     }
