@@ -52,7 +52,8 @@ public class PersonRepositoryIntTest {
         personRepository.save(testPerson);
 
         // Then
-        Person actualPerson = personRepository.findByUserId(expectedPerson.getUserId());
+        Optional<Person> actualOptionalPerson = personRepository.findByUserId(expectedPerson.getUserId());
+        Person actualPerson = actualOptionalPerson.orElseThrow();
         assertThat(actualPerson).isNotSameAs(expectedPerson);
 
         assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
@@ -110,12 +111,14 @@ public class PersonRepositoryIntTest {
         Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
-        Optional<Person> actualPerson = personRepository.findById(expectedPerson.getId());
+        Optional<Person> actualOptionalPerson = personRepository.findById(expectedPerson.getId());
 
         // Then
-        assertThat(actualPerson).isPresent();
-        assertThat(actualPerson.get()).isNotSameAs(expectedPerson);
-        assertThat(actualPerson.get()).isEqualToComparingFieldByField(expectedPerson);
+        Person actualPerson = actualOptionalPerson.orElseThrow();
+        assertThat(actualPerson).isNotSameAs(expectedPerson);
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT, // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
+                Person.ENTITY_ATTRIBUTE_NAME_UPDATED_AT); // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
     }
 
     @Test
@@ -124,11 +127,14 @@ public class PersonRepositoryIntTest {
         Person expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
-        Person actualPerson = personRepository.findByUserId(expectedPerson.getUserId());
+        Optional<Person> actualOptionalPerson = personRepository.findByUserId(expectedPerson.getUserId());
 
         // Then
+        Person actualPerson = actualOptionalPerson.orElseThrow();
         assertThat(actualPerson).isNotSameAs(expectedPerson);
-        assertThat(actualPerson).isEqualToComparingFieldByField(expectedPerson);
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT, // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
+                Person.ENTITY_ATTRIBUTE_NAME_UPDATED_AT); // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
     }
 
     @Before
@@ -156,7 +162,9 @@ public class PersonRepositoryIntTest {
         personRepository.save(testPerson);
 
         // Then
-        Person actualPerson = personRepository.findByUserId(expectedPerson.getUserId());
+        Optional<Person> actualOptionalPerson = personRepository.findByUserId(expectedPerson.getUserId());
+        Person actualPerson = actualOptionalPerson.orElseThrow();
+
         assertThat(actualPerson).isNotSameAs(expectedPerson);
 
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
@@ -164,7 +172,7 @@ public class PersonRepositoryIntTest {
         assertThat(actualPerson.getUpdatedBy()).isNotEqualTo(expectedPerson.getUpdatedBy());
 
         assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-//                Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT, // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
+                Person.ENTITY_ATTRIBUTE_NAME_CREATED_AT, // delete this line once the fix for https://jira.spring.io/browse/DATAMONGO-1639 has been released in version 1.10.2
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
                 Person.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }

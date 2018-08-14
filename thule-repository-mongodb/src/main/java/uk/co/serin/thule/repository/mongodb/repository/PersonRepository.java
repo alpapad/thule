@@ -4,6 +4,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import uk.co.serin.thule.repository.mongodb.domain.Person;
 
+import java.util.Optional;
+
 public interface PersonRepository extends MongoRepository<Person, Long> {
-    Person findByUserId(String userId);
+    Optional<Person> findByUserId(String userId);
 }
