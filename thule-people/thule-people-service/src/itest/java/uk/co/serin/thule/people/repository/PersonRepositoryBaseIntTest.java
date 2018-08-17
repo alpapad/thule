@@ -283,21 +283,6 @@ public abstract class PersonRepositoryBaseIntTest {
     @TestConfiguration
     static class IdtFileRepositoryBaseIntTestConfiguration {
         @Bean
-        public FlywayMigrationStrategy flywayMigrationStrategy() {
-            return flyway -> {
-                // Wait until the database is available because otherwise flyway migrate will fail
-                // resulting in the application context not loading
-                given().ignoreExceptions().pollInterval(fibonacci()).
-                        await().timeout(Duration.FIVE_MINUTES).
-                        untilAsserted(() -> {
-                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
-                            JdbcUtils.closeConnection(connection);
-                        });
-                flyway.migrate();
-            };
-        }
-
-        @Bean
         public SpringSecurityAuditorAware springSecurityAuditorAware() {
             return new SpringSecurityAuditorAware();
         }
