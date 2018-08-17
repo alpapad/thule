@@ -47,14 +47,18 @@ if ((branchType == "release" || branchType == "hotfix") && branch != branchType 
     throw new GradleException("\n*** GIT branch [$branch] version does not match gradle version [$version] ***")
 }
 
-// Disable publishing the jar and docker image to maven if we are building a version not destined
+// Disable publishing the jar and docker image to nexus if we are building a version not destined
 // for a nexus repo, for example, a feature or bugfix branch
 if (nexusDeployTarget == "none") {
-    dockerPush.onlyIf { false }
     publish.onlyIf { false }
-    // Task publishMavenJavaPublicationToMavenRepository is added dynamically during the
-    // configuration phase. Disable it with the following closure
     tasks.whenTaskAdded { task ->
+        // Task dockerPush is added dynamically during the configuration phase. Disable
+        // it with the following closure
+        if (task.name.startsWith("dockerPush")) {
+            tasks.dockerPush.onlyIf { false }
+        }
+        // Task publishMavenJavaPublicationToMavenRepository is added dynamically during the
+        // configuration phase. Disable it with the following closure
         if (task.name == "publishMavenJavaPublicationToMavenRepository") {
             task.onlyIf { false }
         }
