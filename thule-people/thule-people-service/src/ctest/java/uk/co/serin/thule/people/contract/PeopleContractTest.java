@@ -3,6 +3,8 @@ package uk.co.serin.thule.people.contract;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.netflix.loadbalancer.Server;
+import com.netflix.loadbalancer.ServerList;
 
 import org.awaitility.Duration;
 import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
@@ -12,12 +14,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.cloud.netflix.ribbon.StaticServerList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
@@ -47,11 +51,11 @@ import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
-import java.io.IOException;
 import java.net.URI;
 import java.sql.Connection;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -68,15 +72,14 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
-// Spring doc very clear but to override the default location (src/test/resources) of the response
-// files, you *must* specify them under META-INF!
-@AutoConfigureWireMock(files = "classpath:/META-INF", port = 0)
+@AutoConfigureWireMock(port = 0)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PeopleContractTest {
-    private static final String ID = "/{id}";
-    private static final String URL_FOR_EMAILS = "/" + DomainModel.ENTITY_NAME_EMAILS;
-    private static final String URL_FOR_PEOPLE = "/" + DomainModel.ENTITY_NAME_PEOPLE;
+    private static final String ACTUATOR_HEALTH_PATH = "/actuator/health";
+    private static final String EMAILS_PATH = "/" + DomainModel.ENTITY_NAME_EMAILS;
+    private static final String ID_PATH = "/{id}";
+    private static final String PEOPLE_PATH = "/" + DomainModel.ENTITY_NAME_PEOPLE;
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
@@ -97,73 +100,26 @@ public class PeopleContractTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws IOException {
+    public static void tearDownClass() {
         MySqlDockerContainer.instance().stopMySqlContainerIfup();
     }
 
     @Test
-    public void create_person() {
+    public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
-
-        stubFor(post(
-                urlEqualTo(URL_FOR_EMAILS)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
-                willReturn(aResponse().
-                        withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                        withBodyFile("thule-email-service-response.json")));
+        Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(URL_FOR_PEOPLE, testPerson, Person.class);
+        ResponseEntity<Resources<Person>> personResponseEntity
+                = restTemplate.exchange(PEOPLE_PATH + "?page={page}&size={size}", HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Person>>() {
+        }, 0, 1000);
 
         // Then
-        verify(postRequestedFor(
-                urlPathEqualTo(URL_FOR_EMAILS)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-        Person actualPerson = responseEntity.getBody();
-
-        assertThat(actualPerson.getId()).isNotNull();
-        assertThat(actualPerson.getUpdatedAt()).isNotNull();
-        assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
-        assertThat(actualPerson.getCreatedBy()).isNotNull();
-        assertThat(actualPerson.getUpdatedBy()).isNotNull();
-
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_BY,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
-    }
-
-    @Test
-    public void delete_person() {
-        // Given
-        Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
-
-        stubFor(
-                post(urlEqualTo(URL_FOR_EMAILS)).
-                        withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
-                        willReturn(aResponse().
-                                withStatus(HttpStatus.ACCEPTED.value()).
-                                withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                                withBodyFile("thule-email-service-response.json")));
-
-        // When
-        restTemplate.delete(URL_FOR_PEOPLE + ID, person.getId());
-
-        // Then
-        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
-
-        Optional<Person> deletedPerson = personRepository.findById(person.getId());
-
-        assertThat(deletedPerson).isNotPresent();
+        Collection<Person> actualPeople = Objects.requireNonNull(personResponseEntity.getBody()).getContent();
+        assertThat(actualPeople).contains(expectedPerson);
     }
 
     private Person createTestPerson(Person person) {
@@ -173,31 +129,13 @@ public class PeopleContractTest {
     }
 
     @Test
-    public void get_all_people() {
+    public void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
         // Given
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Resources<Person>> personResponseEntity
-                = restTemplate.exchange(URL_FOR_PEOPLE + "?page={page}&size={size}", HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Person>>() {
-        }, 0, 1000);
-
-        // Then
-        assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        Collection<Person> actualPeople = personResponseEntity.getBody().getContent();
-        assertThat(actualPeople).contains(expectedPerson);
-    }
-
-    @Test
-    public void get_person() {
-        // Given
-        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        Person expectedPerson = createTestPerson(testPerson);
-
-        // When
-        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(URL_FOR_PEOPLE + ID, Person.class, expectedPerson.getId());
+        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(PEOPLE_PATH + ID_PATH, Person.class, expectedPerson.getId());
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -205,15 +143,6 @@ public class PeopleContractTest {
         Person actualPerson = responseEntity.getBody();
 
         assertThat(actualPerson).isEqualTo(expectedPerson);
-    }
-
-    @Test
-    public void is_status_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
-
-        // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     @Before
@@ -243,14 +172,14 @@ public class PeopleContractTest {
     }
 
     @Test
-    public void update_person() throws InterruptedException {
+    public void when_updating_a_person_then_that_persons_is_updated() throws InterruptedException {
         // Given
         stubFor(post(
-                urlEqualTo(URL_FOR_EMAILS)).
+                urlEqualTo(EMAILS_PATH)).
                 withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
                 willReturn(aResponse().
                         withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                        withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
                         withBodyFile("thule-email-service-response.json")));
 
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
@@ -271,13 +200,13 @@ public class PeopleContractTest {
         Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
-        restTemplate.put(URL_FOR_PEOPLE + ID, testPerson, id);
+        restTemplate.put(PEOPLE_PATH + ID_PATH, testPerson, id);
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(URL_FOR_EMAILS)).
+        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
                 withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
-        Person actualPerson = restTemplate.getForObject(URL_FOR_PEOPLE + ID, Person.class, id);
+        Person actualPerson = restTemplate.getForObject(PEOPLE_PATH + ID_PATH, Person.class, id);
 
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
@@ -288,8 +217,85 @@ public class PeopleContractTest {
                 DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
+    @Test
+    public void when_checking_health_then_status_up() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + ACTUATOR_HEALTH_PATH));
+
+        // When/Then
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+    }
+
+    @Test
+    public void when_creating_a_person_then_that_person_is_returned() {
+        // Given
+        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+
+        stubFor(post(
+                urlEqualTo(EMAILS_PATH)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
+                willReturn(aResponse().
+                        withStatus(HttpStatus.ACCEPTED.value()).
+                        withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
+                        withBodyFile("thule-email-service-response.json")));
+
+        // When
+        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(PEOPLE_PATH, testPerson, Person.class);
+
+        // Then
+        verify(postRequestedFor(
+                urlPathEqualTo(EMAILS_PATH)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        Person actualPerson = responseEntity.getBody();
+
+        assertThat(actualPerson.getId()).isNotNull();
+        assertThat(actualPerson.getUpdatedAt()).isNotNull();
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
+        assertThat(actualPerson.getCreatedBy()).isNotNull();
+        assertThat(actualPerson.getUpdatedBy()).isNotNull();
+
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_BY,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    }
+
+    @Test
+    public void when_deleting_a_person_then_the_person_no_longer_exists() {
+        // Given
+        Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
+
+        stubFor(
+                post(urlEqualTo(EMAILS_PATH)).
+                        withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
+                        willReturn(aResponse().
+                                withStatus(HttpStatus.ACCEPTED.value()).
+                                withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                                withBodyFile("thule-email-service-response.json")));
+
+        // When
+        restTemplate.delete(PEOPLE_PATH + ID_PATH, person.getId());
+
+        // Then
+        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+
+        Optional<Person> deletedPerson = personRepository.findById(person.getId());
+
+        assertThat(deletedPerson).isNotPresent();
+    }
+
     @TestConfiguration
     static class BankTransferRequestIntTestConfiguration {
+        @Value("${wiremock.server.port}")
+        private int wireMockServerPort;
+
         @Bean
         public FlywayMigrationStrategy flywayMigrationStrategy() {
             return flyway -> {
@@ -304,5 +310,16 @@ public class PeopleContractTest {
                 flyway.migrate();
             };
         }
+
+        /**
+         * When using a Feign client, it will try to use the load balancer (Ribbon) to lookup the
+         * service via a discovery service (Eureka). However, for the integration test, we don't use
+         * Ribbon or Eureka so we need to tell Feign to use a static server, in this case Wiremock.
+         */
+        @Bean
+        public ServerList<Server> ribbonServerList() {
+            return new StaticServerList<>(new Server("localhost", wireMockServerPort));
+        }
+
     }
 }
