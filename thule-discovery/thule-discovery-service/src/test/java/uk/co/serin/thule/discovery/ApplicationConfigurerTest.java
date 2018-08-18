@@ -13,7 +13,7 @@ public class ApplicationConfigurerTest {
     private uk.co.serin.thule.discovery.ApplicationConfigurer applicationConfigurer;
 
     @Test
-    public void applicationConfigurer_instantiates_without_an_exception() {
+    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
         // Given
 
         // When

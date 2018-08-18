@@ -64,7 +64,7 @@ public class PersonTest {
     }
 
     @Test
-    public void default_constructor_creates_instance_successfully() {
+    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
         // Given
 
         // When

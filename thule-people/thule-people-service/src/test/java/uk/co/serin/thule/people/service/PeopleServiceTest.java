@@ -37,11 +37,11 @@ public class PeopleServiceTest {
     private StateRepository stateRepository;
 
     @Test
-    public void after_create() {
+    public void when_after_create_then_email_notification_is_sent() {
         // Given
         Set<Email> actualEmails = new HashSet<>();
         given(emailServiceClient.create(any(Email.class))).willAnswer(invocation -> {
-            Email actualEmail = Email.class.cast(invocation.getArguments()[0]);
+            Email actualEmail = (Email) invocation.getArguments()[0];
             actualEmails.add(actualEmail);
             return actualEmail;
         });
@@ -50,17 +50,17 @@ public class PeopleServiceTest {
         peopleService.afterCreate(new Person("userId"));
 
         // Then
-        Optional<Email> actualEmail = actualEmails.stream().findFirst();
-        assertThat(actualEmail).isPresent();
-        assertThat(actualEmail.get().getSubject()).isEqualTo("Thule people service notification");
+        Optional<Email> actualEmailOptional = actualEmails.stream().findFirst();
+        Email actualEmail = actualEmailOptional.orElseThrow();
+        assertThat(actualEmail.getSubject()).isEqualTo("Thule people service notification");
     }
 
     @Test
-    public void after_delete() {
+    public void when_after_delete_then_email_notification_is_sent() {
         // Given
         Set<Email> actualEmails = new HashSet<>();
         given(emailServiceClient.create(any(Email.class))).willAnswer(invocation -> {
-            Email actualEmail = Email.class.cast(invocation.getArguments()[0]);
+            Email actualEmail = (Email) invocation.getArguments()[0];
             actualEmails.add(actualEmail);
             return actualEmail;
         });
@@ -69,17 +69,17 @@ public class PeopleServiceTest {
         peopleService.afterDelete(new Person("userId"));
 
         // Then
-        Optional<Email> actualEmail = actualEmails.stream().findFirst();
-        assertThat(actualEmail).isPresent();
-        assertThat(actualEmail.get().getSubject()).isEqualTo("Thule people service notification");
+        Optional<Email> actualEmailOptional = actualEmails.stream().findFirst();
+        Email actualEmail = actualEmailOptional.orElseThrow();
+        assertThat(actualEmail.getSubject()).isEqualTo("Thule people service notification");
     }
 
     @Test
-    public void after_save() {
+    public void when_after_save_then_email_notification_is_sent() {
         // Given
         Set<Email> actualEmails = new HashSet<>();
         given(emailServiceClient.create(any(Email.class))).willAnswer(invocation -> {
-            Email actualEmail = Email.class.cast(invocation.getArguments()[0]);
+            Email actualEmail = (Email) invocation.getArguments()[0];
             actualEmails.add(actualEmail);
             return actualEmail;
         });
@@ -88,13 +88,13 @@ public class PeopleServiceTest {
         peopleService.afterSave(new Person("userId"));
 
         // Then
-        Optional<Email> actualEmail = actualEmails.stream().findFirst();
-        assertThat(actualEmail).isPresent();
-        assertThat(actualEmail.get().getSubject()).isEqualTo("Thule people service notification");
+        Optional<Email> actualEmailOptional = actualEmails.stream().findFirst();
+        Email actualEmail = actualEmailOptional.orElseThrow();
+        assertThat(actualEmail.getSubject()).isEqualTo("Thule people service notification");
     }
 
     @Test
-    public void before_create() {
+    public void when_before_create_then_roles_and_state_are_set() {
         // Given
         given(roleRepository.findByCode(any(RoleCode.class))).willReturn(new Role(RoleCode.ROLE_CLERK));
         given(stateRepository.findByCode(any(StateCode.class))).willReturn(new State(StateCode.PERSON_ENABLED));

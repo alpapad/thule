@@ -25,7 +25,7 @@ public class GlobalWebSecurityConfigurerTest {
     private Map<Class<? extends Object>, Object> sharedObjects;
 
     @Test
-    public void configurer_ignores_http_options_method() throws Exception {
+    public void when_configure_http_security_then_no_exceptions_are_thrown() throws Exception {
         // Given
 
         // When

@@ -18,7 +18,7 @@ public class ApplicationTest {
     private SpringApplication springApplication;
 
     @Test
-    public void application_starts_spring_boot() {
+    public void when_application_starts_spring_boot_then_no_exception_is_thrown() {
         // Given
         String[] args = new String[0];
         ReflectionTestUtils.setField(Application.class, "springApplication", springApplication);
@@ -32,7 +32,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void default_constructor_creates_instance_successfully() {
+    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
         assertThat(BeanUtils.instantiateClass(Application.class)).isNotNull();
     }
 }

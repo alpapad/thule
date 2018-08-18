@@ -20,7 +20,7 @@ public class IdExposingRepositoryRestConfigurerTest {
     private RepositoryRestConfiguration repositoryRestConfiguration;
 
     @Test
-    public void configurer_exposes_ids_for_all_domain_models() {
+    public void when_configure_repository_rest_configuration_then_ids_are_exposed_for_all_domain_models() {
         // Given
 
         // When
