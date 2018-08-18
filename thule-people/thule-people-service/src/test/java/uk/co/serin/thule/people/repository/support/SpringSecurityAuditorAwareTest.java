@@ -3,36 +3,33 @@ package uk.co.serin.thule.people.repository.support;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import uk.co.serin.thule.people.datafactory.TestDataFactory;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringSecurityAuditorAwareTest {
-    private static final String AUDITOR = "JUnitTest";
-
     @Test
     public void get_current_auditor_returns_an_auditor() {
         // Given
         SecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(AUDITOR, "password"));
+                new TestingAuthenticationToken(TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME));
 
         SpringSecurityAuditorAware springSecurityAuditorAware = new SpringSecurityAuditorAware();
 
         // When
-        Optional<String> currentAuditor = springSecurityAuditorAware.getCurrentAuditor();
+        Optional<String> optionalCurrentAuditor = springSecurityAuditorAware.getCurrentAuditor();
 
         // Then
-        assertThat(currentAuditor).isPresent();
-        assertThat(currentAuditor.get()).isEqualTo(AUDITOR);
+        String actualCurrentAuditor = optionalCurrentAuditor.orElseThrow();
+        assertThat(actualCurrentAuditor).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
     }
 
     @After
     public void tearDown() {
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof CredentialsContainer) {
-            CredentialsContainer.class.cast(SecurityContextHolder.getContext().getAuthentication()).eraseCredentials();
-        }
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }

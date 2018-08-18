@@ -31,8 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -75,6 +74,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @AutoConfigureWireMock(port = 0)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WithMockUser(username=TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
 public class PeopleContractTest {
     private static final String ACTUATOR_HEALTH_PATH = "/actuator/health";
     private static final String EMAILS_PATH = "/" + DomainModel.ENTITY_NAME_EMAILS;
@@ -150,13 +150,8 @@ public class PeopleContractTest {
         ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
 
-        // Create security context
-        Person jUnitTestPerson = testDataFactory.buildJUnitTest();
-        SecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(jUnitTestPerson.getUserId(), jUnitTestPerson.getPassword()));
-
         // Create restTemplate with Basic Authentication security
-        restTemplate = restTemplate.withBasicAuth("user", "user");
+        restTemplate = restTemplate.withBasicAuth(TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME);
 
         // Create new OjectMapper to create an "excludePasswordFilter" which does not exclude the password so it is serialized into Json for test purposes
         ObjectMapper objectMapper =

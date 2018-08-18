@@ -8,8 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -51,6 +50,7 @@ import static org.junit.Assert.fail;
  */
 @DataJpaTest
 @RunWith(SpringRunner.class)
+@WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
 public abstract class PersonRepositoryBaseIntTest {
     @Autowired
     private ActionRepository actionRepository;
@@ -111,7 +111,7 @@ public abstract class PersonRepositoryBaseIntTest {
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
-        Set<Person> actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST);
+        Set<Person> actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST_USERNAME);
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
@@ -190,11 +190,6 @@ public abstract class PersonRepositoryBaseIntTest {
     public void setUp() {
         ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
-
-        // Setup security context
-        Person jUnitTestPerson = testDataFactory.buildJUnitTest();
-        SecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(jUnitTestPerson.getUserId(), jUnitTestPerson.getPassword()));
     }
 
     @Test

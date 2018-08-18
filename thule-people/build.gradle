@@ -85,8 +85,10 @@ project("thule-people-service") {
         itestCompile("com.h2database:h2")
         itestCompile("com.oracle:ojdbc6:11.2.0.1.0")
         itestCompile("org.hsqldb:hsqldb")
+        itestCompile("org.springframework.security:spring-security-test")
 
         ctestCompile project(":thule-people-config")
+        ctestCompile("org.springframework.security:spring-security-test")
 
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
