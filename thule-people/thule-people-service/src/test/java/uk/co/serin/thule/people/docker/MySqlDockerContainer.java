@@ -16,7 +16,7 @@ public class MySqlDockerContainer {
         return mySqlDockerContainer;
     }
 
-    public void startMySqlContainerIfDown() {
+    public synchronized void startMySqlContainerIfDown() {
         try {
             if (!mySqlContainerStarted) {
                 dockerCompose.downAndUp();
@@ -27,7 +27,7 @@ public class MySqlDockerContainer {
         }
     }
 
-    public void stopMySqlContainerIfup() {
+    public synchronized void stopMySqlContainerIfup() {
         try {
             dockerCompose.down();
             mySqlContainerStarted = false;
