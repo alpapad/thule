@@ -46,7 +46,7 @@ public class ActionTest {
     }
 
     @Test
-    public void when_equals_is_overridden_then_when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
+    public void when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Action.class).
                 withPrefabValues(State.class, new State(StateCode.ADDRESS_DISABLED), new State(StateCode.ADDRESS_ENABLED)).
                 withOnlyTheseFields(Action.ENTITY_ATTRIBUTE_NAME_CODE).
