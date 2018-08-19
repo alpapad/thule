@@ -51,29 +51,6 @@ public class TestDataFactory implements ReferenceDataFactory {
                 build();
     }
 
-    public Person buildJUnitTest() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
-
-        return Person.PersonBuilder.aPerson().withUserId(JUNIT_TEST_USERNAME).
-                withCreatedAt(now).
-                withCreatedBy(JUNIT_TEST_USERNAME).
-                withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
-                withDateOfExpiry(dateOfExpiry).
-                withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
-                withEmailAddress(JUNIT_TEST_USERNAME + EMAIL_ADDRESS_SUFFIX).
-                withFirstName("J").
-                withLastName("Tester").
-                withPassword(JUNIT_TEST_USERNAME).
-                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
-                withSecondName("Unit").
-                withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
-                withTitle("Mr").
-                withUpdatedAt(now).
-                withUpdatedBy(JUNIT_TEST_USERNAME).
-                build();
-    }
-
     public Person buildPerson(Person person) {
         return Person.PersonBuilder.aPerson().
                 withCreatedAt(person.getCreatedAt()).
