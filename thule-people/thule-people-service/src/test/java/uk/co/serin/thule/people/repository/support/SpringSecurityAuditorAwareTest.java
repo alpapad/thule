@@ -12,8 +12,13 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringSecurityAuditorAwareTest {
+    @After
+    public void tearDown() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
+
     @Test
-    public void get_current_auditor_returns_an_auditor() {
+    public void when_get_current_auditor_then_an_auditor_is_returned() {
         // Given
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME));
@@ -26,10 +31,5 @@ public class SpringSecurityAuditorAwareTest {
         // Then
         String actualCurrentAuditor = optionalCurrentAuditor.orElseThrow();
         assertThat(actualCurrentAuditor).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
-    }
-
-    @After
-    public void tearDown() {
-        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }

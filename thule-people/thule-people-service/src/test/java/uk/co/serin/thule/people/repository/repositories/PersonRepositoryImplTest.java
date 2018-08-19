@@ -30,7 +30,7 @@ public class PersonRepositoryImplTest {
     private TypedQuery<Person> typedQuery;
 
     @Test
-    public void find_by_criteria() {
+    public void given_new_person_when_find_by_criteria_then_person_is_found() {
         // Given
         Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withEmailAddress("test@gmail.com").withFirstName("firstName").withLastName("lastName").build();
 
@@ -46,7 +46,7 @@ public class PersonRepositoryImplTest {
     }
 
     @Test
-    public void find_by_null_criteria() {
+    public void given_new_person_when_find_by_null_criteria_then_person_is_found() {
         // Given
         Person expectedPerson = new Person("userId");
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID, null);
@@ -63,23 +63,7 @@ public class PersonRepositoryImplTest {
     }
 
     @Test
-    public void search() {
-        // Given
-        Person expectedPerson = new Person("userId");
-
-        given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
-        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
-        given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
-
-        // When
-        List<Person> actualPeople = personRepositoryImpl.search("anything");
-
-        // Then
-        assertThat(actualPeople).contains(expectedPerson);
-    }
-
-    @Test
-    public void search_by_null_criteria() {
+    public void given_new_person_when_search_by_null_criteria_then_person_is_found() {
         // Given
         Person expectedPerson = new Person("userId");
 
@@ -89,6 +73,22 @@ public class PersonRepositoryImplTest {
 
         // When
         List<Person> actualPeople = personRepositoryImpl.search(null);
+
+        // Then
+        assertThat(actualPeople).contains(expectedPerson);
+    }
+
+    @Test
+    public void given_new_person_when_search_then_person_is_found() {
+        // Given
+        Person expectedPerson = new Person("userId");
+
+        given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
+        given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
+        given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
+
+        // When
+        List<Person> actualPeople = personRepositoryImpl.search("anything");
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);

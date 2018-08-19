@@ -29,8 +29,14 @@ public class ThuleJpaRepositoryTest {
     @Mock
     private TypedQuery<Serializable> typedQuery;
 
+    @Before
+    public void setUp() {
+        given(entityManager.getDelegate()).willReturn(new Object());
+        thuleJpaRepository = new ThuleJpaRepository<>(jpaEntityInformation, entityManager);
+    }
+
     @Test
-    public void delete_by_updated_by() {
+    public void when_delete_by_updated_by_then_delete_is_executed() {
         // Given
         String userId = "userId";
 
@@ -44,11 +50,5 @@ public class ThuleJpaRepositoryTest {
         verify(entityManager).createQuery(anyString());
         verify(typedQuery).setParameter(DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, userId);
         verify(typedQuery).executeUpdate();
-    }
-
-    @Before
-    public void setUp() {
-        given(entityManager.getDelegate()).willReturn(new Object());
-        thuleJpaRepository = new ThuleJpaRepository<>(jpaEntityInformation, entityManager);
     }
 }

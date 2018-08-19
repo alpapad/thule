@@ -13,7 +13,7 @@ import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 public class DomainModelTest {
 
     @Test
-    public void pojo_methods_are_well_implemented() {
+    public void when_pojo_methods_are_not_well_implemented_then_throw_an_exception() {
         // Given
 
         // When

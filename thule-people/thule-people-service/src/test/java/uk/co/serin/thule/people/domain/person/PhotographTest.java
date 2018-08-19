@@ -21,7 +21,7 @@ public class PhotographTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builder_and_getters_operate_on_the_same_field() {
+    public void when_builder_method_then_getters_operate_on_the_same_field() {
         // Given
         Photograph expectedPhotograph = testDataFactory.buildPhotographMissScarlett(testDataFactory.buildPersonWithoutAnyAssociations());
 
@@ -51,8 +51,16 @@ public class PhotographTest {
         assertThat(actualPhotograph.getVersion()).isEqualTo(expectedPhotograph.getVersion());
     }
 
+    @Test
+    public void when_equals_is_overiiden_then_verify_equals_conforms_to_contract() {
+        EqualsVerifier.forClass(Photograph.class).
+                withPrefabValues(Person.class, new Person("userid"), new Person("another-userid")).
+                withOnlyTheseFields(Photograph.ENTITY_ATTRIBUTE_NAME_HASH, Photograph.ENTITY_NAME_PERSON).
+                verify();
+    }
+
     @Test(expected = ValidationException.class)
-    public void business_key_constructor_throws_ValidationException_when_person_is_empty() {
+    public void when_person_is_empty_then_business_key_constructor_throws_validation_exception() {
         // Given
 
         // When
@@ -62,7 +70,7 @@ public class PhotographTest {
     }
 
     @Test(expected = ValidationException.class)
-    public void business_key_constructor_throws_ValidationException_when_photo_is_empty() {
+    public void when_photo_is_empty_then_business_key_constructor_throws_validation_exception() {
         // Given
 
         // When
@@ -72,7 +80,7 @@ public class PhotographTest {
     }
 
     @Test
-    public void pojo_methods_are_well_implemented() {
+    public void when_pojo_methods_are_not_well_implemented_then_throw_an_exception() {
         assertPojoMethodsFor(Photograph.class, FieldPredicate.exclude("hash", "photo", "person")).
                 testing(Method.SETTER).areWellImplemented();
 
@@ -81,13 +89,5 @@ public class PhotographTest {
 
         assertPojoMethodsFor(Photograph.class).
                 testing(Method.CONSTRUCTOR, Method.GETTER).areWellImplemented();
-    }
-
-    @Test
-    public void verify_equals_conforms_to_contract() {
-        EqualsVerifier.forClass(Photograph.class).
-                withPrefabValues(Person.class, new Person("userid"), new Person("another-userid")).
-                withOnlyTheseFields(Photograph.ENTITY_ATTRIBUTE_NAME_HASH, Photograph.ENTITY_NAME_PERSON).
-                verify();
     }
 }

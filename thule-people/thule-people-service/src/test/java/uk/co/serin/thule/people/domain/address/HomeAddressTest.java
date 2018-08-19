@@ -11,7 +11,7 @@ public class HomeAddressTest {
     private final TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builder_and_getters_operate_on_the_same_field() {
+    public void when_builder_method_then_getters_operate_on_the_same_field() {
         // Given
         HomeAddress expectedHomeAddress = testDataFactory.buildOxfordStreetHomeAddress();
 
@@ -48,7 +48,7 @@ public class HomeAddressTest {
     }
 
     @Test
-    public void pojo_methods_are_well_implemented() {
+    public void when_pojo_methods_are_not_well_implemented_then_throw_an_exception() {
         assertPojoMethodsFor(HomeAddress.class).areWellImplemented();
     }
 }

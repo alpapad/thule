@@ -20,7 +20,7 @@ public class PersonEventHandlerTest {
     private PersonEventHandler personEventHandler;
 
     @Test
-    public void handle_person__before_create() {
+    public void when_handle_person__before_create_then_delegate_to_people_service() {
         // Given
 
         // When
@@ -31,7 +31,7 @@ public class PersonEventHandlerTest {
     }
 
     @Test
-    public void handle_person_after_create() {
+    public void when_handle_person_after_create_then_delegate_to_people_service() {
         // Given
 
         // When
@@ -42,7 +42,7 @@ public class PersonEventHandlerTest {
     }
 
     @Test
-    public void handle_person_after_delete() {
+    public void when_handle_person_after_delete_then_delegate_to_people_service() {
         // Given
 
         // When
@@ -53,7 +53,7 @@ public class PersonEventHandlerTest {
     }
 
     @Test
-    public void handle_person_after_save() {
+    public void when_handle_person_after_save_then_delegate_to_people_service() {
         // Given
 
         // When

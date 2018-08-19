@@ -16,7 +16,7 @@ public class ActionTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void builder_and_getters_operate_on_the_same_field() {
+    public void when_builder_method_then_getters_operate_on_the_same_field() {
         // Given
         Action expectedAction = testDataFactory.getActions().get(ActionCode.PERSON_ENABLE);
 
@@ -46,7 +46,15 @@ public class ActionTest {
     }
 
     @Test
-    public void pojo_methods_are_well_implemented() {
+    public void when_equals_is_overiiden_then_verify_equals_conforms_to_contract() {
+        EqualsVerifier.forClass(Action.class).
+                withPrefabValues(State.class, new State(StateCode.ADDRESS_DISABLED), new State(StateCode.ADDRESS_ENABLED)).
+                withOnlyTheseFields(Action.ENTITY_ATTRIBUTE_NAME_CODE).
+                verify();
+    }
+
+    @Test
+    public void when_pojo_methods_are_not_well_implemented_then_throw_an_exception() {
         // Given
 
         // When
@@ -57,13 +65,5 @@ public class ActionTest {
 
         assertPojoMethodsFor(Action.class).
                 testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).areWellImplemented();
-    }
-
-    @Test
-    public void verify_equals_conforms_to_contract() {
-        EqualsVerifier.forClass(Action.class).
-                withPrefabValues(State.class, new State(StateCode.ADDRESS_DISABLED), new State(StateCode.ADDRESS_ENABLED)).
-                withOnlyTheseFields(Action.ENTITY_ATTRIBUTE_NAME_CODE).
-                verify();
     }
 }
