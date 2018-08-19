@@ -9,9 +9,12 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -28,14 +31,15 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.Socket;
 import java.net.URI;
+import java.time.Duration;
 
 import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
-public class EmailIntTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class EmailContractTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
     private static final String SPRING_MAIL_PORT = "spring.mail.port";
     private String emailServiceUrl = "/" + Email.ENTITY_NAME_EMAILS;
@@ -47,14 +51,14 @@ public class EmailIntTest {
     private SmtpServer smtpServer;
 
     @Test
-    public void is_status_up() {
+    public void when_checking_health_then_status_is_up() {
         // Given
         stopAndStartEmbeddedSmtpServer();
 
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 
     private void stopAndStartEmbeddedSmtpServer() {
@@ -74,10 +78,40 @@ public class EmailIntTest {
     }
 
     @Test
-    public void response_should_be_accepted_when_the_smtp_server_is_down() {
+    public void when_sending_an_email_then_email_is_sent_by_the_smtp_server() {
+        //Given
+        stopAndStartEmbeddedSmtpServer();
+        ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
+        };
+        Email expectedEmail = TestDataFactory.buildEmail();
+        Attachment expectedAttachment = expectedEmail.getAttachments().stream().findFirst().orElseThrow(() -> new IllegalStateException("Expected email does not contain any attachments"));
+
+        HttpEntity<Email> entity = new HttpEntity<>(expectedEmail, null);
+
+        // When
+        ResponseEntity<Email> emailServiceResponse = restTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
+
+        //Then
+        await().until(() -> smtpServer.getEmailCount() > 0);
+        assertThat(smtpServer.getEmailCount()).isEqualTo(1);
+
+        assertThat(emailServiceResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+
+        MailMessage actualMailMessage = smtpServer.getMessage(0);
+        assertThat(actualMailMessage.getBody()).contains(expectedEmail.getBody());
+        assertThat(actualMailMessage.getBody()).contains(expectedAttachment.getContent());
+        assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(expectedEmail.getFrom());
+        String[] expectedTos = expectedEmail.getTos().toArray(new String[0]);
+        assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
+        assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
+        assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
+    }
+
+    @Test
+    public void when_smtp_server_is_down_then_response_should_be_accepted() {
         //Given
         stopEmbeddedServer();
-        ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<Email>() {
+        ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
         };
         Email expectedEmail = TestDataFactory.buildEmail();
         HttpEntity<Email> entity = new HttpEntity<>(expectedEmail, null);
@@ -98,33 +132,16 @@ public class EmailIntTest {
         }
     }
 
-    @Test
-    public void send_an_email_results_in_the_email_being_sent_by_the_smtp_server() {
-        //Given
-        stopAndStartEmbeddedSmtpServer();
-        ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<Email>() {
-        };
-        Email expectedEmail = TestDataFactory.buildEmail();
-        Attachment expectedAttachment = expectedEmail.getAttachments().stream().findFirst().orElseThrow(() -> new IllegalStateException("Expected email does not contain any attachments"));
+    @TestConfiguration
+    static class EmailIntTestConfiguration {
+        @Value("${spring.mail.port}")
+        private int smtpServerPort;
 
-        HttpEntity<Email> entity = new HttpEntity<>(expectedEmail, null);
-
-        // When
-        ResponseEntity<Email> emailServiceResponse = restTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
-
-        //Then
-        await().until(() -> smtpServer.getEmailCount() > 0);
-        assertThat(smtpServer.getEmailCount()).isEqualTo(1);
-
-        assertThat(emailServiceResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
-
-        MailMessage actualMailMessage = smtpServer.getMessage(0);
-        assertThat(actualMailMessage.getBody()).contains(expectedEmail.getBody());
-        assertThat(actualMailMessage.getBody()).contains(new String(expectedAttachment.getContent()));
-        assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(expectedEmail.getFrom());
-        String[] expectedTos = expectedEmail.getTos().toArray(new String[expectedEmail.getTos().size()]);
-        assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
-        assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
-        assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
+        @Bean
+        public SmtpServer smtpServer() {
+            ServerOptions serverOptions = new ServerOptions();
+            serverOptions.port = smtpServerPort;
+            return SmtpServerFactory.startServer(serverOptions);
+        }
     }
 }

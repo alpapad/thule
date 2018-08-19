@@ -44,7 +44,7 @@ public class RoleTest {
     }
 
     @Test
-    public void when_equals_is_overiiden_then_verify_equals_conforms_to_contract() {
+    public void when_equals_is_overridden_then_when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Role.class).withOnlyTheseFields(Role.ENTITY_ATTRIBUTE_NAME_CODE).verify();
     }
 

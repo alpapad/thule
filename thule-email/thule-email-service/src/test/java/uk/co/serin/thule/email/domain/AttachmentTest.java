@@ -15,7 +15,7 @@ import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class AttachmentTest {
     @Test(expected = ValidationException.class)
-    public void business_key_constructor_throws_ValidationException_when_content_is_empty() {
+    public void when_content_is_empty_then_business_key_constructor_throws_a_validation_exception() {
         // Given
 
         // When
@@ -24,8 +24,16 @@ public class AttachmentTest {
         // Then (see expected in @Test annotation)
     }
 
+    @Test
+    public void when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
+        EqualsVerifier.forClass(Attachment.class).
+                suppress(Warning.NONFINAL_FIELDS).
+                withOnlyTheseFields(Attachment.ENTITY_ATTRIBUTE_NAME_CONTENT, Attachment.ENTITY_ATTRIBUTE_NAME_LABEL).
+                verify();
+    }
+
     @Test(expected = ValidationException.class)
-    public void business_key_constructor_throws_ValidationException_when_label_is_empty() {
+    public void when_label_is_empty_then_business_key_constructor_throws_a_validation_exception() {
         // Given
 
         // When
@@ -35,7 +43,7 @@ public class AttachmentTest {
     }
 
     @Test
-    public void pojo_methods_are_well_implemented() {
+    public void when_pojo_methods_are_not_well_implemented_then_throw_an_exception() {
         // Given
         Object[] constructorParameters = {"test content", "test label"};
         Class[] constructorParameterTypes = {String.class, String.class};
@@ -49,13 +57,5 @@ public class AttachmentTest {
 
         // Then
         assertThat(throwable).isNull();
-    }
-
-    @Test
-    public void verify_equals_conforms_to_contract() {
-        EqualsVerifier.forClass(Attachment.class).
-                suppress(Warning.NONFINAL_FIELDS).
-                withOnlyTheseFields(Attachment.ENTITY_ATTRIBUTE_NAME_CONTENT, Attachment.ENTITY_ATTRIBUTE_NAME_LABEL).
-                verify();
     }
 }

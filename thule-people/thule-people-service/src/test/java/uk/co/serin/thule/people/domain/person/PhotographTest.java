@@ -52,7 +52,7 @@ public class PhotographTest {
     }
 
     @Test
-    public void when_equals_is_overiiden_then_verify_equals_conforms_to_contract() {
+    public void when_equals_is_overridden_then_when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Photograph.class).
                 withPrefabValues(Person.class, new Person("userid"), new Person("another-userid")).
                 withOnlyTheseFields(Photograph.ENTITY_ATTRIBUTE_NAME_HASH, Photograph.ENTITY_NAME_PERSON).

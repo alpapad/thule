@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonTest {
     @Test
-    public void builder_and_getters_operate_on_the_same_field() {
+    public void when_builder_method_then_getters_operate_on_the_same_field() {
         // Given
         Person expectedPerson = PersonFactory.newPerson();
 
@@ -168,7 +168,7 @@ public class PersonTest {
     }
 
     @Test
-    public void verify_equals_conforms_to_contract() {
+    public void when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Person.class).withOnlyTheseFields(Person.ENTITY_ATTRIBUTE_NAME_USER_ID).verify();
     }
 }

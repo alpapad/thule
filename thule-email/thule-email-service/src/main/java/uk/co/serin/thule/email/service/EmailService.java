@@ -3,6 +3,7 @@ package uk.co.serin.thule.email.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -10,9 +11,9 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.utils.aop.LogException;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.utils.aop.LogException;
 
 import java.util.concurrent.Future;
 
@@ -48,10 +49,10 @@ public class EmailService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         if (!email.getBccs().isEmpty()) {
-            mimeMessageHelper.setBcc(email.getBccs().toArray(new String[email.getBccs().size()]));
+            mimeMessageHelper.setBcc(email.getBccs().toArray(new String[0]));
         }
         if (!email.getCcs().isEmpty()) {
-            mimeMessageHelper.setCc(email.getCcs().toArray(new String[email.getCcs().size()]));
+            mimeMessageHelper.setCc(email.getCcs().toArray(new String[0]));
         }
         if (StringUtils.hasText(email.getFrom())) {
             mimeMessageHelper.setFrom(email.getFrom());
@@ -59,7 +60,7 @@ public class EmailService {
         mimeMessageHelper.setSubject(email.getSubject());
         mimeMessageHelper.setText(email.getBody());
         if (!email.getTos().isEmpty()) {
-            mimeMessageHelper.setTo(email.getTos().toArray(new String[email.getTos().size()]));
+            mimeMessageHelper.setTo(email.getTos().toArray(new String[0]));
         }
         // Add attachments
         for (Attachment attachment : email.getAttachments()) {

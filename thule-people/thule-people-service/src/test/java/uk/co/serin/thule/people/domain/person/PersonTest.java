@@ -162,7 +162,7 @@ public class PersonTest {
     }
 
     @Test
-    public void when_equals_is_overiiden_then_verify_equals_conforms_to_contract() {
+    public void when_equals_is_overridden_then_when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Person.class).
                 withPrefabValues(Action.class, new Action(ActionCode.ADDRESS_DISABLE), new Action(ActionCode.ADDRESS_DISCARD)).
                 withPrefabValues(Person.class, new Person("userid"), new Person("another-userid")).

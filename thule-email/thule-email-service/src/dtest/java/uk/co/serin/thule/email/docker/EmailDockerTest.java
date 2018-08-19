@@ -8,9 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
@@ -41,15 +39,6 @@ public class EmailDockerTest {
         dockerCompose.down();
     }
 
-    @Test
-    public void health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(emailServiceBaseUrl + "/actuator/health"));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
-    }
-
     @Before
     public void setUp() {
         // Create base url
@@ -58,7 +47,12 @@ public class EmailDockerTest {
         emailServiceBaseUrl = "http://" + emailServiceApiHost + ":" + emailServiceApiPort;
     }
 
-    @TestConfiguration
-    static class ContainerTestConfiguration {
+    @Test
+    public void when_checking_health_then_status_is_up() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(emailServiceBaseUrl + "/actuator/health"));
+
+        // When/Then
+        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
     }
 }

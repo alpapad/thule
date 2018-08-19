@@ -33,8 +33,22 @@ public class EmailServiceTest {
     @Mock
     private MimeMessage mimeMessage;
 
+    @Test(expected = EmailServiceException.class)
+    public void given_an_exception_when_creating_an_email_then_a_email_service_exception_is_thrown() {
+        // Given
+        Email expectedEmail = TestDataFactory.buildEmail();
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
+        doThrow(EmailServiceException.class).when(mailSender).send(any(MimeMessage.class));
+
+        // When
+        emailService.createEmail(expectedEmail);
+
+        // Then - see the expected in @Test
+    }
+
     @Test
-    public void create_an_email() throws ExecutionException, InterruptedException {
+    public void when_creating_an_email_then_an_email_is_sent_and_returned() throws ExecutionException, InterruptedException {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
 
@@ -48,22 +62,24 @@ public class EmailServiceTest {
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
-    @Test(expected = EmailServiceException.class)
-    public void create_an_email_that_throws_a_service_exception() {
+    @Test
+    public void when_creating_an_email_without_a_from_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
+        ReflectionTestUtils.setField(expectedEmail, "from", null);
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
-        doThrow(EmailServiceException.class).when(mailSender).send(any(MimeMessage.class));
 
         // When
-        emailService.createEmail(expectedEmail);
+        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
 
-        // Then - see the expected in @Test
+        // Then
+        Email actualEmail = emailFuture.get();
+        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
     @Test(expected = ValidationException.class)
-    public void create_an_email_without_any_recipients() {
+    public void when_creating_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
@@ -75,7 +91,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void create_an_email_without_bccs() throws ExecutionException, InterruptedException {
+    public void when_creating_an_email_without_bccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
@@ -93,23 +109,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void create_an_email_without_from() throws ExecutionException, InterruptedException {
-        // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
-        ReflectionTestUtils.setField(expectedEmail, "from", null);
-
-        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
-
-        // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
-
-        // Then
-        Email actualEmail = emailFuture.get();
-        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
-    }
-
-    @Test
-    public void create_an_email_without_ccs() throws ExecutionException, InterruptedException {
+    public void when_creating_an_email_without_ccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
@@ -127,7 +127,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void create_an_email_without_tos() throws ExecutionException, InterruptedException {
+    public void when_creating_an_email_without_tos_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");

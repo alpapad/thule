@@ -49,7 +49,7 @@ public class CountryTest {
     }
 
     @Test
-    public void when_equals_is_overiiden_then_verify_equals_conforms_to_contract() {
+    public void when_equals_is_overridden_then_when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Country.class).withOnlyTheseFields(Country.ENTITY_ATTRIBUTE_NAME_ISO_CODE_THREE_DIGIT).verify();
     }
 

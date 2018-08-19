@@ -6,7 +6,7 @@ import uk.co.serin.thule.test.ExceptionConstructorTester;
 
 public class ExceptionsTest {
     @Test
-    public void assert_that_all_exception_constructors_exist() {
+    public void when_exceptions_then_all_constructors_should_exist() {
         // Given
 
         // When

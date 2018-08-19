@@ -37,7 +37,7 @@ public class EmailControllerIntTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void create_bank_transfer_request() throws Exception {
+    public void when_create_email_then_email_is_returned_and_status_is_accepted() throws Exception {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
 
