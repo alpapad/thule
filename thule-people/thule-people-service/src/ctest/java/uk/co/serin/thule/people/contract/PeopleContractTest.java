@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.contract;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.gohenry.test.assertj.ActuatorUri;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
 
@@ -48,7 +49,6 @@ import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.URI;
 import java.sql.Connection;
@@ -66,9 +66,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
-import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @AutoConfigureWireMock(port = 0)
@@ -218,7 +217,7 @@ public class PeopleContractTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + ACTUATOR_HEALTH_PATH));
 
         // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(java.time.Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test

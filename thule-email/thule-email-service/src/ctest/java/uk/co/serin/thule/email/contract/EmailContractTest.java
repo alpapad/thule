@@ -4,6 +4,7 @@ import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
+import com.gohenry.test.assertj.ActuatorUri;
 
 import org.junit.After;
 import org.junit.Test;
@@ -27,14 +28,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.Socket;
 import java.net.URI;
 import java.time.Duration;
 
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
@@ -58,7 +58,7 @@ public class EmailContractTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     private void stopAndStartEmbeddedSmtpServer() {

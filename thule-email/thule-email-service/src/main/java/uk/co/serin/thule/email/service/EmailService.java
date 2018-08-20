@@ -1,9 +1,10 @@
 package uk.co.serin.thule.email.service;
 
+import com.gohenry.utils.aop.LogException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -13,7 +14,6 @@ import org.springframework.util.StringUtils;
 
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
-import uk.co.serin.thule.utils.aop.LogException;
 
 import java.util.concurrent.Future;
 
