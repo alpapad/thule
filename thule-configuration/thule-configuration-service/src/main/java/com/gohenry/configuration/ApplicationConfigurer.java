@@ -1,4 +1,4 @@
-package uk.co.serin.thule.configuration;
+package com.gohenry.configuration;
 
 import org.springframework.cloud.config.server.EnableConfigServer;
 import org.springframework.context.annotation.Configuration;

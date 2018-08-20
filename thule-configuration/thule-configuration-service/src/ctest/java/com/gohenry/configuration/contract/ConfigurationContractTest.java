@@ -1,4 +1,4 @@
-package uk.co.serin.thule.configuration.contract;
+package com.gohenry.configuration.contract;
 
 import com.gohenry.test.assertj.ActuatorUri;
 
