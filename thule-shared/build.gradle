@@ -40,7 +40,7 @@ subprojects {
 }
 
 project("thule-spring-boot-starter-oauth2") {
-    description = "GoHenry Spring Boot Starter Oauth2"
+    description = "Thule Spring Boot Starter Oauth2"
     dependencies {
         compile project(":thule-utils")
         compile("org.springframework.cloud:spring-cloud-starter-oauth2")
@@ -52,7 +52,7 @@ project("thule-spring-boot-starter-oauth2") {
 }
 
 project("thule-spring-boot-starter-oauth2-test") {
-    description = "GoHenry Spring Boot Starter Oauth2 Test"
+    description = "Thule Spring Boot Starter Oauth2 Test"
     dependencies {
         compile project(":thule-oauth2-test")
 
@@ -83,7 +83,7 @@ project("thule-spring-boot-starter-utils") {
 }
 
 project("thule-oauth2-test") {
-    description = "GoHenry OAuth2 Test"
+    description = "Thule OAuth2 Test"
     dependencies {
         compile("org.springframework.cloud:spring-cloud-starter-oauth2")
 
@@ -97,7 +97,7 @@ project("thule-test") {
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-web") {
-            // spring-webmvc is not required and actually causes a problem with gohenry-gateway-service
+            // spring-webmvc is not required and actually causes a problem with thule-gateway-service
             // which is incompatible with spring-webmvc, hence it has been excluded
             exclude group: "org.springframework", module: "spring-webmvc"
         }
