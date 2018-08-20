@@ -1,5 +1,8 @@
 package uk.co.serin.thule.people.docker;
 
+import com.gohenry.test.assertj.ActuatorUri;
+import com.gohenry.utils.docker.DockerCompose;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,9 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
-
 import java.io.IOException;
 import java.net.URI;
 import java.sql.Connection;
@@ -33,10 +33,9 @@ import java.util.Objects;
 
 import javax.sql.DataSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -73,18 +72,18 @@ public class PeopleDockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + ACTUATOR_HEALTH_PATH));
 
         // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test
     public void when_finding_all_people_then_at_least_one_person_is_found() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + ACTUATOR_HEALTH_PATH));
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
 
         // When
         ResponseEntity<Map<String, Object>> personResponseEntity
-                = testRestTemplate.withBasicAuth("user", "user").exchange(peopleServiceBaseUrl + PEOPLE_PATH, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Map<String, Object>>() {
+                = testRestTemplate.withBasicAuth("user", "user").exchange(peopleServiceBaseUrl + PEOPLE_PATH, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<>() {
         });
 
         // Then

@@ -1,5 +1,7 @@
 package uk.co.serin.thule.people.datafactory;
 
+import com.gohenry.utils.utils.RandomUtils;
+
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
@@ -16,7 +18,6 @@ import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
-import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;

@@ -1,5 +1,7 @@
 package uk.co.serin.thule.people;
 
+import com.gohenry.utils.utils.ClassUtils;
+
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +10,6 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
 import uk.co.serin.thule.people.domain.DomainModel;
-import uk.co.serin.thule.utils.utils.ClassUtils;
 
 import java.util.Set;
 

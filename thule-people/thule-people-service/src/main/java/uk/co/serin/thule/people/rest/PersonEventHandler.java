@@ -1,5 +1,7 @@
 package uk.co.serin.thule.people.rest;
 
+import com.gohenry.utils.aop.TracePublicMethods;
+
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterDelete;
 import org.springframework.data.rest.core.annotation.HandleAfterSave;
@@ -7,7 +9,6 @@ import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
-import uk.co.serin.thule.utils.aop.TracePublicMethods;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.service.PeopleService;
 

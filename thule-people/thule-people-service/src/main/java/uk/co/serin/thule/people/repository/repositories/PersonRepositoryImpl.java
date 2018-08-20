@@ -1,6 +1,7 @@
 package uk.co.serin.thule.people.repository.repositories;
 
-import uk.co.serin.thule.utils.aop.TracePublicMethods;
+import com.gohenry.utils.aop.TracePublicMethods;
+
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.person.Person;
 
