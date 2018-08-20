@@ -29,7 +29,7 @@ import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ConfigurationDockerTest {
-    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/gohenry-configuration-docker-tests/docker-compose.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-configuration-docker-tests/docker-compose.yml");
     private String configurationServiceBaseUrl;
 
     @Autowired
@@ -49,14 +49,28 @@ public class ConfigurationDockerTest {
     }
 
     @Test
-    public void has_configuration_for_the_bank_transfer_service() {
+    public void has_configuration_for_the_people_service() {
         // Given
         health_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "gohenry-bank-transfer-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-people-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+
+        // Then
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
+    public void has_configuration_for_the_thule_service() {
+        // Given
+        health_status_is_up();
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-thule-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
@@ -69,20 +83,6 @@ public class ConfigurationDockerTest {
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void has_configuration_for_the_card_application_service() {
-        // Given
-        health_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
-
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "gohenry-card-application-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getBody()).isNotEmpty();
     }
 
     @Test
@@ -108,20 +108,6 @@ public class ConfigurationDockerTest {
 
         // When
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-gateway/application.yml", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getBody()).isNotEmpty();
-    }
-
-    @Test
-    public void has_configuration_for_the_statement_service() {
-        // Given
-        health_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
-
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-statement-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
