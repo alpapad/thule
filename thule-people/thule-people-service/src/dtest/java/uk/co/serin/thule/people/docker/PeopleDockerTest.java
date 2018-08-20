@@ -83,7 +83,7 @@ public class PeopleDockerTest {
 
         // When
         ResponseEntity<Map<String, Object>> personResponseEntity
-                = testRestTemplate.withBasicAuth("user", "user").exchange(peopleServiceBaseUrl + PEOPLE_PATH, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<>() {
+                = testRestTemplate.withBasicAuth("user", "user").exchange(peopleServiceBaseUrl + PEOPLE_PATH, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Map<String, Object>>() {
         });
 
         // Then
