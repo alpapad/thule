@@ -40,12 +40,21 @@ spring:
 
 # Zuul configuration
 zuul:
-  # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication header will not Propagate to the people service,
-  # hence Authorization has been removed from the sensitive headers
+  # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication and auth bearer tokens header will not propagate to
+  # down stream services. Hence Authorization has been removed from the sensitive headers blacklist
   sensitiveHeaders: Cookie,Set-Cookie
 
 # Thule configuration
 thule:
+  gatewayservice:
+    healthcheck:
+      services:
+      - "thule-discovery-service"
+      - "thule-configuration-service"
+      - "thule-admin-service"
+      - "thule-authentication-service"
+      - "thule-email-service"
+      - "thule-people-service"
   shared:
     logging:
       logstash:

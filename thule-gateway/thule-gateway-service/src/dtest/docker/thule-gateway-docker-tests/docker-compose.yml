@@ -4,6 +4,7 @@ services:
   thule-gateway:
     image: pooh:8084/thule-gateway-service
     environment:
+      THULE_GATEWAYSERVICE_HEALTHCHECK_SERVICES: "" # Intentionally empty
       TZ: Europe/London
     ports:
       - 9091:8080 # Required to allow docker tests to call the restful api

@@ -4,3 +4,6 @@ thule:
     api:
       host: localhost
       port: 9091
+  shared:
+    oauth2:
+      signing-key: gmjtdvNVmQRz8bzw6ae

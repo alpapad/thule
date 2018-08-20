@@ -1,0 +1,108 @@
+package com.gohenry.gateway.actuator;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.actuate.health.Status;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+
+@RunWith(MockitoJUnitRunner.class)
+public class GohenryServiveInstanceHealthIndicatorTest {
+
+    private Map<String, Object> responseBody = new HashMap<>();
+    @Mock
+    private ServiceInstance serviceInstance;
+    @Mock
+    private ResponseEntity<Map> response;
+    @Mock
+    private RestTemplate restTemplate;
+    @InjectMocks
+    private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
+
+    @Test
+    public void when_microservice_is_up_then_health_status_is_up() throws InterruptedException, ExecutionException {
+        //Given
+        responseBody.put("status", Status.UP);
+        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+
+        given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
+        given(response.hasBody()).willReturn(true);
+        given(response.getBody()).willReturn(responseBody);
+
+        //When
+        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+
+        //Then
+        assertThat(result).isNotNull();
+        assertThat(result.get()).isEqualTo(Status.UP);
+    }
+
+    @Test
+    public void when_response_body_is_null_then_health_status_is_down() throws InterruptedException, ExecutionException {
+        //Given
+        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+
+        given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
+        given(response.hasBody()).willReturn(false);
+
+        //When
+        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+
+        //Then
+        assertThat(result).isNotNull();
+        assertThat(result.get()).isEqualTo(Status.DOWN);
+    }
+
+    @Test
+    public void when_body_status_is_down_then_health_status_is_down() throws InterruptedException, ExecutionException {
+        //Given
+        List<ServiceInstance> serviceInstances = Collections.singletonList(serviceInstance);
+        responseBody.put("status", Status.DOWN);
+
+        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+
+        given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
+        given(response.hasBody()).willReturn(true);
+        given(response.getBody()).willReturn(responseBody);
+
+        //When
+        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+
+        //Then
+        assertThat(result).isNotNull();
+        assertThat(result.get()).isEqualTo(Status.DOWN);
+    }
+
+    @Test
+    public void when_body_status_is_null_then_health_status_is_down() throws InterruptedException, ExecutionException {
+        //Given
+        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+
+        given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
+        given(response.hasBody()).willReturn(true);
+        given(response.getBody()).willReturn(responseBody);
+
+        //When
+        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+
+        //Then
+        assertThat(result).isNotNull();
+        assertThat(result.get()).isEqualTo(Status.DOWN);
+    }
+}
