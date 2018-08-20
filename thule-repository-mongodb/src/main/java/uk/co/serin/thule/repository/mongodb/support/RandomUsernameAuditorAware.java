@@ -1,9 +1,9 @@
 package uk.co.serin.thule.repository.mongodb.support;
 
+import com.gohenry.utils.utils.RandomUtils;
+
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
-
-import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.util.Optional;
 
