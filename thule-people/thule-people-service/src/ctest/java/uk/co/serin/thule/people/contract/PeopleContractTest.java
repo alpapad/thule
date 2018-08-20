@@ -68,6 +68,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 @ActiveProfiles("ctest")
 @AutoConfigureWireMock(port = 0)
