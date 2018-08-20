@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
 
-@FeignClient("gohenry-discovery-service")
+@FeignClient("thule-discovery-service")
 @FunctionalInterface
 public interface ActuatorClient {
     @RequestMapping(path = "/actuator/health", headers = "Content-Type=application/json")

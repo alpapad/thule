@@ -52,7 +52,7 @@ public class DiscoveryContractTest {
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
                 untilAsserted(() -> {
-                    assertThat(discoveryClient.getServices()).contains("gohenry-discovery-service");
+                    assertThat(discoveryClient.getServices()).contains("thule-discovery-service");
                 });
 
         // When
