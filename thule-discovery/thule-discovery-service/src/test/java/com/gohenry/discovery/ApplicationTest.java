@@ -1,4 +1,4 @@
-package uk.co.serin.thule.discovery;
+package com.gohenry.discovery;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,7 +28,7 @@ public class ApplicationTest {
         given(springApplication.run(args)).willReturn(new StaticApplicationContext());
 
         // When
-        uk.co.serin.thule.discovery.Application.main(args);
+        Application.main(args);
 
         // Then (if the test does not throw an exception, it has succeeded)
     }

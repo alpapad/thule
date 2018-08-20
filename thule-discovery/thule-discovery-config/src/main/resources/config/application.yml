@@ -1,15 +1,11 @@
 # Eureka configuration
 eureka:
-  # All eureka config parameters (eureka.client.fetch-registry, eureka.client.register-with-eureka,
-  # eureka.client.serviceUrl.defaultZone and  eureka.instance.hostname) are to set up eureka to operate in 'standalone' mode
-  # (see https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html)
   client:
-    fetch-registry: false
-    register-with-eureka: false
     serviceUrl:
       defaultZone: http://localhost:${server.port:8080}/eureka/
   instance:
-    hostname: localhost
+    # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    prefer-ip-address: true
 
 # Spring actuator configuration
 info:

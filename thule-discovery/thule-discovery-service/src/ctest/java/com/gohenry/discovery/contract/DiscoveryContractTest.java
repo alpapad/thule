@@ -1,4 +1,4 @@
-package uk.co.serin.thule.discovery.contract;
+package com.gohenry.discovery.contract;
 
 import org.awaitility.Duration;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class DiscoveryContractTest {
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
                 untilAsserted(() -> {
-                    assertThat(discoveryClient.getServices()).contains("thule-discovery-service");
+                    assertThat(discoveryClient.getServices()).contains("gohenry-discovery-service");
                 });
 
         // When

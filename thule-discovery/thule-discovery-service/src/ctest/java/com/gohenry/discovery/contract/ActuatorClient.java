@@ -1,11 +1,11 @@
-package uk.co.serin.thule.discovery.docker;
+package com.gohenry.discovery.contract;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
 
-@FeignClient("thule-discovery-service")
+@FeignClient("gohenry-discovery-service")
 @FunctionalInterface
 public interface ActuatorClient {
     @RequestMapping(path = "/actuator/health", headers = "Content-Type=application/json")

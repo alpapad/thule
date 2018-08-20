@@ -4,9 +4,7 @@ services:
   thule-discovery-service:
     image: pooh:8084/thule-discovery-service
     environment:
-      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true" # Register discovery service itself with Eureka so we have a client service available for the docker tests
       EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5 # By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
-      EUREKA_INSTANCE_NON_SECURE_PORT: 9761 # Set port so that the docker tests can reach the discovery-service as a 'target' micro-service
       TZ: Europe/London
     ports:
       - 9761:8080

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.discovery.docker;
+package com.gohenry.discovery.docker;
 
 import com.gohenry.utils.docker.DockerCompose;
 
@@ -62,9 +62,7 @@ public class DiscoveryDockerTest {
         // Given
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
-                untilAsserted(() -> {
-                    assertThat(discoveryClient.getServices()).contains("thule-discovery-service");
-                });
+                untilAsserted(() -> assertThat(discoveryClient.getServices()).contains("thule-discovery-service"));
 
         // When
         Map<String, Object> actualHealth = actuatorClient.health();
