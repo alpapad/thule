@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.gohenry.spring.boot.starter.oauth2.autoconfiguration.Oauth2AutoConfiguration

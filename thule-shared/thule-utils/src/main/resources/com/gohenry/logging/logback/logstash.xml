@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <springProperty name="gohenrySharedLoggingLogstashEnabled" source="gohenry.shared.logging.logstash.enabled"
+                    defaultValue="false"/>
+    <springProperty name="gohenrySharedLoggingLogstashHost" source="gohenry.shared.logging.logstash.host"
+                    defaultValue="localhost"/>
+    <springProperty name="gohenrySharedLoggingLogstashPort" source="gohenry.shared.logging.logstash.port"
+                    defaultValue="5400"/>
+    <if condition='property("gohenrySharedLoggingLogstashEnabled").equals("true")'>
+        <then>
+            <springProperty name="gohenrySharedLoggingLogstashSslEnabled"
+                            source="gohenry.shared.logging.logstash.ssl-enabled" defaultValue="false"/>
+            <springProperty name="springApplicationName" source="spring.application.name"
+                            defaultValue="spring.application.name-not-set"/>
+            <springProperty name="springProfilesActive" source="spring.profiles.active"
+                            defaultValue="default"/>
+            <appender name="LOGSTASH"
+                      class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+                <destination>${gohenrySharedLoggingLogstashHost}:${gohenrySharedLoggingLogstashPort}</destination>
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <arguments/>
+                        <context/>
+                        <loggerName/>
+                        <logLevel/>
+                        <logstashMarkers/>
+                        <message/>
+                        <stackTrace/>
+                        <threadName/>
+                        <timestamp/>
+                        <pattern>
+                            <pattern>
+                                {
+                                "environment": "${springProfilesActive}",
+                                "parentId": "%mdc{X-B3-ParentSpanId:-}",
+                                "service":"${springApplicationName}",
+                                "spanExportable": "%mdc{X-Span-Export:-}",
+                                "spanId": "%mdc{X-B3-SpanId:-}",
+                                "traceId": "%mdc{X-B3-TraceId:-}",
+                                "pid": "${PID:-}"
+                                }
+                            </pattern>
+                        </pattern>
+                    </providers>
+                </encoder>
+                <keepAliveDuration>5 minutes</keepAliveDuration>
+                <reconnectionDelay>10 second</reconnectionDelay>
+                <ringBufferSize>16384</ringBufferSize>
+                <if condition='property("gohenrySharedLoggingLogstashSslEnabled").equals("true")'>
+                    <then>
+                        <ssl/>
+                    </then>
+                </if>
+                <waitStrategyType>sleeping</waitStrategyType>
+            </appender>
+        </then>
+    </if>
+</included>
