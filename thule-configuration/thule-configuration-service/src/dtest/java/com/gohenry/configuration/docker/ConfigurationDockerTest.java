@@ -93,7 +93,7 @@ public class ConfigurationDockerTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "gohenry-discovery-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-discovery-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
@@ -107,7 +107,7 @@ public class ConfigurationDockerTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "gohenry-gateway/application.yml", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-gateway/application.yml", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
@@ -121,7 +121,7 @@ public class ConfigurationDockerTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "gohenry-statement-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-statement-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
@@ -130,8 +130,8 @@ public class ConfigurationDockerTest {
     @Before
     public void setUp() {
         // Create base url
-        String configurationServiceApiHost = env.getRequiredProperty("gohenry.configurationservice.api.host");
-        int configurationServiceApiPort = env.getRequiredProperty("gohenry.configurationservice.api.port", Integer.class);
+        String configurationServiceApiHost = env.getRequiredProperty("thule.configurationservice.api.host");
+        int configurationServiceApiPort = env.getRequiredProperty("thule.configurationservice.api.port", Integer.class);
         configurationServiceBaseUrl = String.format("http://%s:%s", configurationServiceApiHost, configurationServiceApiPort);
     }
 
