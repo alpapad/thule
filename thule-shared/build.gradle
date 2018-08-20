@@ -96,11 +96,7 @@ project("thule-test") {
     dependencies {
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
-        compile("org.springframework.boot:spring-boot-starter-web") {
-            // spring-webmvc is not required and actually causes a problem with thule-gateway-service
-            // which is incompatible with spring-webmvc, hence it has been excluded
-            exclude group: "org.springframework", module: "spring-webmvc"
-        }
+        compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.retry:spring-retry")
 
         testCompile("pl.pojo:pojo-tester:0.7.6")
