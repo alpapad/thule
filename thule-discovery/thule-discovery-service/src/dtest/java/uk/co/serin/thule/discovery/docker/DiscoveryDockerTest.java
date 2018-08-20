@@ -1,5 +1,7 @@
 package uk.co.serin.thule.discovery.docker;
 
+import com.gohenry.utils.docker.DockerCompose;
+
 import org.awaitility.Duration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,14 +15,12 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.utils.docker.DockerCompose;
-
 import java.io.IOException;
 import java.util.Map;
 
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 /**
  * Tests for the Discovery service.

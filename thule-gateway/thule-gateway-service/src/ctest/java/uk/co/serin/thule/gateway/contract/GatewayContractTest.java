@@ -1,5 +1,7 @@
 package uk.co.serin.thule.gateway.contract;
 
+import com.gohenry.test.assertj.ActuatorUri;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-
 import java.net.URI;
 import java.time.Duration;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 
 @ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
@@ -29,6 +29,6 @@ public class GatewayContractTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
         //When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 }

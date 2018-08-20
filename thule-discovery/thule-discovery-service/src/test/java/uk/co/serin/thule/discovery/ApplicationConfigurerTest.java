@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationConfigurerTest {

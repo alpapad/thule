@@ -1,5 +1,7 @@
 package uk.co.serin.thule.configuration.contract;
 
+import com.gohenry.test.assertj.ActuatorUri;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-
 import java.net.URI;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
@@ -28,6 +28,6 @@ public class ConfigurationContractTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 }

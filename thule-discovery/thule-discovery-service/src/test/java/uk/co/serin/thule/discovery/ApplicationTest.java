@@ -11,8 +11,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationTest {

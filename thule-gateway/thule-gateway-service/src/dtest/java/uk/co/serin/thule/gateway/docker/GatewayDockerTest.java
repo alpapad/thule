@@ -1,5 +1,8 @@
 package uk.co.serin.thule.gateway.docker;
 
+import com.gohenry.test.assertj.ActuatorUri;
+import com.gohenry.utils.docker.DockerCompose;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,14 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
-
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
+import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -44,8 +44,7 @@ public class GatewayDockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(gatewayBaseUrl + "/actuator/health"));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasStatus(Status.UP);
-
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Before
