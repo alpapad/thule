@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin;
+package com.gohenry.admin;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 

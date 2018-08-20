@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin.docker;
+package com.gohenry.admin.docker;
 
 import com.gohenry.test.assertj.ActuatorUri;
 import com.gohenry.utils.docker.DockerCompose;
@@ -51,8 +51,8 @@ public class AdminDockerTest {
     @Before
     public void setUp() {
         // Create base url
-        String adminApiHost = env.getRequiredProperty("thule.adminservice.api.host");
-        int adminApiPort = env.getRequiredProperty("thule.adminservice.api.port", Integer.class);
-        adminServiceBaseUrl = "http://" + adminApiHost + ":" + adminApiPort;
+        String adminApiHost = env.getRequiredProperty("gohenry.adminservice.api.host");
+        int adminApiPort = env.getRequiredProperty("gohenry.adminservice.api.port", Integer.class);
+        adminServiceBaseUrl = String.format("http://%s:%s", adminApiHost, adminApiPort);
     }
 }

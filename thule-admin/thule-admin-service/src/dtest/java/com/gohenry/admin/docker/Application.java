@@ -1,4 +1,4 @@
-package uk.co.serin.thule.admin.docker;
+package com.gohenry.admin.docker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

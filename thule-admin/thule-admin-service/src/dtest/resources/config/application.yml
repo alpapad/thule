@@ -1,6 +1,6 @@
-# Thule configuration
-thule:
+# GoHenry configuration
+gohenry:
   adminservice:
     api:
       host: localhost
-      port: 9092
+      port: 9093
