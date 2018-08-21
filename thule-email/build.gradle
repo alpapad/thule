@@ -70,6 +70,7 @@ project("thule-email-service") {
 
         itestCompile project(":thule-email-config")
         testCompile("com.bitmechanic:dumbster:1.9.0.2")
+        itestCompile("org.springframework.security:spring-security-test")
 
         ctestCompile project(":thule-email-config")
         ctestCompile("org.springframework.security:spring-security-test")

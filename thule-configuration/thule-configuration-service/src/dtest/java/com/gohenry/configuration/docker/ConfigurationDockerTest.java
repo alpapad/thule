@@ -77,7 +77,7 @@ public class ConfigurationDockerTest {
     }
 
     @Test
-    public void health_status_is_up() {
+    public void when_checking_health_then_status_is_up() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(configurationServiceBaseUrl + "/actuator/health"));
 

@@ -4,9 +4,11 @@ import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
+import com.gohenry.oauth.Oauth2Utils;
 import com.gohenry.test.assertj.ActuatorUri;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
@@ -22,6 +24,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -32,6 +39,7 @@ import uk.co.serin.thule.email.domain.Email;
 import java.net.Socket;
 import java.net.URI;
 import java.time.Duration;
+import java.util.Collections;
 
 import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -42,20 +50,30 @@ import static org.awaitility.Awaitility.await;
 public class EmailContractTest {
     private static final String SPRING_MAIL_HOST = "spring.mail.host";
     private static final String SPRING_MAIL_PORT = "spring.mail.port";
-    private String emailServiceUrl = "/" + Email.ENTITY_NAME_EMAILS;
+    private String emailServiceUrl;
     @Autowired
     private Environment env;
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private OAuth2RestTemplate oAuth2RestTemplate;
+    @LocalServerPort
+    private int port;
     @Autowired
     private SmtpServer smtpServer;
+
+    @Before
+    public void setUp() {
+        emailServiceUrl = String.format("http://localhost:%s/%s", port, Email.ENTITY_NAME_EMAILS);
+
+        OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
+                "username", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+        oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
+    }
 
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
         stopAndStartEmbeddedSmtpServer();
 
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -81,15 +99,15 @@ public class EmailContractTest {
     public void when_sending_an_email_then_email_is_sent_by_the_smtp_server() {
         //Given
         stopAndStartEmbeddedSmtpServer();
+
         ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
         };
         Email expectedEmail = TestDataFactory.buildEmail();
         Attachment expectedAttachment = expectedEmail.getAttachments().stream().findFirst().orElseThrow(() -> new IllegalStateException("Expected email does not contain any attachments"));
-
         HttpEntity<Email> entity = new HttpEntity<>(expectedEmail, null);
 
         // When
-        ResponseEntity<Email> emailServiceResponse = restTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
+        ResponseEntity<Email> emailServiceResponse = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
 
         //Then
         await().until(() -> smtpServer.getEmailCount() > 0);
@@ -111,13 +129,14 @@ public class EmailContractTest {
     public void when_smtp_server_is_down_then_response_should_be_accepted() {
         //Given
         stopEmbeddedServer();
+
         ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
         };
         Email expectedEmail = TestDataFactory.buildEmail();
         HttpEntity<Email> entity = new HttpEntity<>(expectedEmail, null);
 
         // When
-        ResponseEntity<Email> responseEntity = restTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
+        ResponseEntity<Email> responseEntity = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
