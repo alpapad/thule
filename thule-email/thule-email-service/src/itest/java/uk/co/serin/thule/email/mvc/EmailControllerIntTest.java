@@ -24,9 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("itest")
-@WebMvcTest(EmailController.class)
+@WebMvcTest(value = EmailController.class, secure = false)
 public class EmailControllerIntTest {
-    private static final String EMAIL_PATH = "/" + Email.ENTITY_NAME_EMAILS;
     @MockBean
     private EmailService emailService;
 
@@ -42,7 +41,7 @@ public class EmailControllerIntTest {
         Email expectedEmail = TestDataFactory.buildEmail();
 
         // When
-        mvc.perform(post(EMAIL_PATH)
+        mvc.perform(post(EmailController.EMAIL_SERVICE_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(expectedEmail)))
                 .andDo(print())
