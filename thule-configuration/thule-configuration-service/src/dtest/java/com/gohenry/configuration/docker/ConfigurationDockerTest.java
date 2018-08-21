@@ -51,7 +51,7 @@ public class ConfigurationDockerTest {
     @Test
     public void has_configuration_for_the_people_service() {
         // Given
-        health_status_is_up();
+        when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
@@ -65,7 +65,7 @@ public class ConfigurationDockerTest {
     @Test
     public void has_configuration_for_the_thule_service() {
         // Given
-        health_status_is_up();
+        when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
@@ -88,7 +88,7 @@ public class ConfigurationDockerTest {
     @Test
     public void has_configuration_for_the_discovery_service() {
         // Given
-        health_status_is_up();
+        when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
@@ -102,7 +102,7 @@ public class ConfigurationDockerTest {
     @Test
     public void has_configuration_for_the_gateway() {
         // Given
-        health_status_is_up();
+        when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
