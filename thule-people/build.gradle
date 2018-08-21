@@ -99,5 +99,6 @@ project("thule-people-service") {
         dtestCompile("mysql:mysql-connector-java")
         dtestCompile("org.springframework.boot:spring-boot-starter-jdbc")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
+        dtestCompile("org.springframework.security:spring-security-test")
     }
 }

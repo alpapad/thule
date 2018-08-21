@@ -90,7 +90,7 @@ public class PeopleContractTest {
     private PersonRepository personRepository;
     @LocalServerPort
     private int port;
-    private OAuth2RestTemplate restTemplate;
+    private OAuth2RestTemplate oAuth2RestTemplate;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -116,7 +116,7 @@ public class PeopleContractTest {
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Resources<Person>> personResponseEntity = restTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<Person>>() {
+        ResponseEntity<Resources<Person>> personResponseEntity = oAuth2RestTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<Person>>() {
         }, 0, 1000);
 
         // Then
@@ -139,7 +139,7 @@ public class PeopleContractTest {
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, expectedPerson.getId());
+        ResponseEntity<Person> responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, expectedPerson.getId());
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -161,11 +161,11 @@ public class PeopleContractTest {
         // Setup OAuth2
         OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
-        restTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
+        oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOas support
         // So, add all the message converters from the TestRestTemplate
-        restTemplate.setMessageConverters(testRestTemplate.getRestTemplate().getMessageConverters());
+        oAuth2RestTemplate.setMessageConverters(testRestTemplate.getRestTemplate().getMessageConverters());
     }
 
     @Test
@@ -192,7 +192,7 @@ public class PeopleContractTest {
                         withBodyFile("thule-email-service-response.json")));
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
+        ResponseEntity<Person> responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
 
         // Then
         verify(postRequestedFor(
@@ -231,7 +231,7 @@ public class PeopleContractTest {
                                 withBodyFile("thule-email-service-response.json")));
 
         // When
-        restTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
+        oAuth2RestTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
 
         // Then
         verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
@@ -272,13 +272,13 @@ public class PeopleContractTest {
         Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
-        restTemplate.put(peopleServiceUrl + ID_PATH, testPerson, id);
+        oAuth2RestTemplate.put(peopleServiceUrl + ID_PATH, testPerson, id);
 
         // Then
         verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
                 withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
-        Person actualPerson = restTemplate.getForObject(peopleServiceUrl + ID_PATH, Person.class, id);
+        Person actualPerson = oAuth2RestTemplate.getForObject(peopleServiceUrl + ID_PATH, Person.class, id);
 
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
