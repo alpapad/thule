@@ -7,7 +7,6 @@ import com.gohenry.test.assertj.ActuatorUri;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
 
-import org.awaitility.Duration;
 import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -52,6 +51,7 @@ import uk.co.serin.thule.people.repository.repositories.StateRepository;
 
 import java.net.URI;
 import java.sql.Connection;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -218,7 +218,7 @@ public class PeopleContractTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + ACTUATOR_HEALTH_PATH));
 
         // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(java.time.Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test
@@ -297,7 +297,7 @@ public class PeopleContractTest {
                 // Wait until the database is available because otherwise flyway migrate will fail
                 // resulting in the application context not loading
                 given().ignoreExceptions().pollInterval(fibonacci()).
-                        await().timeout(Duration.FIVE_MINUTES).
+                        await().timeout(org.awaitility.Duration.FIVE_MINUTES).
                         untilAsserted(() -> {
                             Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
                             JdbcUtils.closeConnection(connection);

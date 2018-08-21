@@ -1,3 +1,8 @@
+#Spring boot configuration
+spring:
+  zipkin:
+    enabled: false
+
 # Thule configuration
 thule:
   peopleservice:
