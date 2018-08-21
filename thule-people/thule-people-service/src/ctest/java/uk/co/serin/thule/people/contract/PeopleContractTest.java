@@ -1,8 +1,6 @@
 package uk.co.serin.thule.people.contract;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.gohenry.oauth.Oauth2Utils;
 import com.gohenry.test.assertj.ActuatorUri;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
@@ -20,17 +18,23 @@ import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.cloud.netflix.ribbon.StaticServerList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -56,7 +60,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
@@ -74,25 +77,27 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 @AutoConfigureWireMock(port = 0)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WithMockUser(username=TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
+@WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
 public class PeopleContractTest {
-    private static final String ACTUATOR_HEALTH_PATH = "/actuator/health";
     private static final String EMAILS_PATH = "/" + DomainModel.ENTITY_NAME_EMAILS;
     private static final String ID_PATH = "/{id}";
-    private static final String PEOPLE_PATH = "/" + DomainModel.ENTITY_NAME_PEOPLE;
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
     private CountryRepository countryRepository;
+    private String peopleServiceUrl;
     @Autowired
     private PersonRepository personRepository;
-    @Autowired
-    private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
+    private OAuth2RestTemplate restTemplate;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
+    @Autowired
+    private TestRestTemplate testRestTemplate;
 
     @BeforeClass
     public static void setUpClass() {
@@ -111,8 +116,7 @@ public class PeopleContractTest {
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Resources<Person>> personResponseEntity
-                = restTemplate.exchange(PEOPLE_PATH + "?page={page}&size={size}", HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Person>>() {
+        ResponseEntity<Resources<Person>> personResponseEntity = restTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<Person>>() {
         }, 0, 1000);
 
         // Then
@@ -135,7 +139,7 @@ public class PeopleContractTest {
         Person expectedPerson = createTestPerson(testPerson);
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(PEOPLE_PATH + ID_PATH, Person.class, expectedPerson.getId());
+        ResponseEntity<Person> responseEntity = restTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, expectedPerson.getId());
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -146,79 +150,31 @@ public class PeopleContractTest {
     }
 
     @Before
-    public void setUp() throws Throwable {
+    public void setUp() {
+        // Setup test data factories
         ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
 
-        // Create restTemplate with Basic Authentication security
-        restTemplate = restTemplate.withBasicAuth(TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME);
+        // Set up service url
+        peopleServiceUrl = String.format("http://localhost:%s/%s", port, DomainModel.ENTITY_NAME_PEOPLE);
 
-        // Create new OjectMapper to create an "excludePasswordFilter" which does not exclude the password so it is serialized into Json for test purposes
-        ObjectMapper objectMapper =
-                restTemplate.getRestTemplate().getMessageConverters().stream() // Get all existing MessageConverters
-                        .filter(httpMessageConverter -> httpMessageConverter instanceof MappingJackson2HttpMessageConverter) // Filter out everything that is not a MappingJackson2HttpMessageConverter
-                        .map(MappingJackson2HttpMessageConverter.class::cast) // Cast all to a MappingJackson2HttpMessageConverter
-                        .findFirst() // Find the first MappingJackson2HttpMessageConverter
-                        .orElseThrow((Supplier<Throwable>) () -> new IllegalStateException("RestTemplate does not contain any MappingJackson2HttpMessageConverter converters!")) // Throw an exception if there aren't any MappingJackson2HttpMessageConverters
-                        .getObjectMapper().copy() // Copy the ObjectMapper
-                        .setFilterProvider(new SimpleFilterProvider().addFilter(Person.EXCLUDE_CREDENTIALS_FILTER, SimpleBeanPropertyFilter.serializeAll())); // Set the excludePasswordFilter
+        // Setup OAuth2
+        OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
+                TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+        restTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
-        restTemplate.getRestTemplate().setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
-    }
-
-    @Test
-    public void when_updating_a_person_then_that_persons_is_updated() throws InterruptedException {
-        // Given
-        stubFor(post(
-                urlEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
-                willReturn(aResponse().
-                        withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
-                        withBodyFile("thule-email-service-response.json")));
-
-        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        testPerson = createTestPerson(testPerson);
-        long id = testPerson.getId();
-
-        testPerson.setFirstName("updatedFirstName");
-        testPerson.setSecondName("updatedSecondName");
-        testPerson.setLastName("updatedLastName");
-        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
-        testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
-        testPerson.setPassword("updatedPassword");
-
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
-        expectedPerson.setState(null);
-        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
-
-        Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
-
-        // When
-        restTemplate.put(PEOPLE_PATH + ID_PATH, testPerson, id);
-
-        // Then
-        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
-
-        Person actualPerson = restTemplate.getForObject(PEOPLE_PATH + ID_PATH, Person.class, id);
-
-        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
-
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+        // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOas support
+        // So, add all the message converters from the TestRestTemplate
+        restTemplate.setMessageConverters(testRestTemplate.getRestTemplate().getMessageConverters());
     }
 
     @Test
     public void when_checking_health_then_status_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + ACTUATOR_HEALTH_PATH));
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
 
         // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test
@@ -236,7 +192,7 @@ public class PeopleContractTest {
                         withBodyFile("thule-email-service-response.json")));
 
         // When
-        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(PEOPLE_PATH, testPerson, Person.class);
+        ResponseEntity<Person> responseEntity = restTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
 
         // Then
         verify(postRequestedFor(
@@ -275,7 +231,7 @@ public class PeopleContractTest {
                                 withBodyFile("thule-email-service-response.json")));
 
         // When
-        restTemplate.delete(PEOPLE_PATH + ID_PATH, person.getId());
+        restTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
 
         // Then
         verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
@@ -284,6 +240,53 @@ public class PeopleContractTest {
         Optional<Person> deletedPerson = personRepository.findById(person.getId());
 
         assertThat(deletedPerson).isNotPresent();
+    }
+
+    @Test
+    public void when_updating_a_person_then_that_persons_is_updated() throws InterruptedException {
+        // Given
+        stubFor(post(
+                urlEqualTo(EMAILS_PATH)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
+                willReturn(aResponse().
+                        withStatus(HttpStatus.ACCEPTED.value()).
+                        withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
+                        withBodyFile("thule-email-service-response.json")));
+
+        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
+        testPerson = createTestPerson(testPerson);
+        long id = testPerson.getId();
+
+        testPerson.setFirstName("updatedFirstName");
+        testPerson.setSecondName("updatedSecondName");
+        testPerson.setLastName("updatedLastName");
+        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
+        testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
+        testPerson.setPassword("updatedPassword");
+        testPerson.setState(null);
+
+        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        expectedPerson.setState(null);
+        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
+
+        Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
+
+        // When
+        restTemplate.put(peopleServiceUrl + ID_PATH, testPerson, id);
+
+        // Then
+        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
+                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+
+        Person actualPerson = restTemplate.getForObject(peopleServiceUrl + ID_PATH, Person.class, id);
+
+        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
+
+        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
     }
 
     @TestConfiguration
