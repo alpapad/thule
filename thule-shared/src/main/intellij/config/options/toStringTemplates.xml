@@ -1,13 +1,14 @@
 <application>
-  <component name="ToStringTemplates">
-    <option name="defaultTempalteName" value="Objects.toString (Java8)" />
-    <option name="templates">
-      <list>
-        <TemplateResource>
-          <option name="fileName" value="Objects.toString (Java8)" />
-          <option name="template" value="public java.lang.String toString() {&#10;return new java.util.StringJoiner(&quot;, &quot;, &quot;$classname{&quot;, &quot;}&quot;)&#10;#foreach ($member in $members)&#10;.add(String.format(&quot;$member.name=%s&quot;, $member.accessor))&#10;#end&#10;.toString();&#10;}&#10;" />
-        </TemplateResource>
-      </list>
-    </option>
-  </component>
+    <component name="ToStringTemplates">
+        <option name="defaultTempalteName" value="Objects.toString (Java8)"/>
+        <option name="templates">
+            <list>
+                <TemplateResource>
+                    <option name="fileName" value="Objects.toString (Java8)"/>
+                    <option name="template"
+                            value="public java.lang.String toString() {&#10;return new java.util.StringJoiner(&quot;, &quot;, &quot;$classname{&quot;, &quot;}&quot;)&#10;#foreach ($member in $members)&#10;.add(String.format(&quot;$member.name=%s&quot;, $member.accessor))&#10;#end&#10;.toString();&#10;}&#10;"/>
+                </TemplateResource>
+            </list>
+        </option>
+    </component>
 </application>

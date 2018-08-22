@@ -95,7 +95,7 @@ if (branchType == "master") {
             // i.e. the group, name and version we need to download matches the group, name and version of
             // this module. To overcome this restriction, we will "hide" this group name from gradle to
             // fool it into allowing us to download the pre-built artifact from Nexus
-            def actualProjectGroup=project.group
+            def actualProjectGroup = project.group
             project.group = "hidden"
 
             // Define the pre-built artifact to download from Nexus staging
@@ -109,7 +109,7 @@ if (branchType == "master") {
             }
 
             // Unhide the group name
-            project.group=actualProjectGroup
+            project.group = actualProjectGroup
         }
     }
 

@@ -10,48 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonTest {
     @Test
-    public void when_builder_method_then_getters_operate_on_the_same_field() {
-        // Given
-        Person expectedPerson = PersonFactory.newPerson();
-
-        // When
-        Person actualPerson = Person.PersonBuilder.aPerson().
-                withCreatedAt(expectedPerson.getCreatedAt()).
-                withCreatedBy(expectedPerson.getCreatedBy()).
-                withDateOfBirth(expectedPerson.getDateOfBirth()).
-                withDateOfExpiry(expectedPerson.getDateOfExpiry()).
-                withDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry()).
-                withEmailAddress(expectedPerson.getEmailAddress()).
-                withFirstName(expectedPerson.getFirstName()).
-                withId(expectedPerson.getId()).
-                withLastName(expectedPerson.getLastName()).
-                withPassword(expectedPerson.getPassword()).
-                withSecondName(expectedPerson.getSecondName()).
-                withTitle(expectedPerson.getTitle()).
-                withUpdatedAt(expectedPerson.getUpdatedAt()).
-                withUpdatedBy(expectedPerson.getUpdatedBy()).
-                withUserId(expectedPerson.getUserId()).
-                withVersion(expectedPerson.getVersion()).build();
-
-        // Then
-        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
-        assertThat(actualPerson.getCreatedBy()).isEqualTo(expectedPerson.getCreatedBy());
-        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
-        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
-        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
-        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
-        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
-        assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
-        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
-        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
-        assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
-        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
-        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
-    }
-
-    @Test
     public void business_key_constructor_creates_instance_with_correct_key() {
         // Given
         Person expectedPerson = PersonFactory.newPerson();
@@ -61,17 +19,6 @@ public class PersonTest {
 
         // Then
         assertThat(actualPerson.getUserId()).isEqualTo(expectedPerson.getUserId());
-    }
-
-    @Test
-    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
-        // Given
-
-        // When
-        Person person = new Person();
-
-        // Then
-        assertThat(person).isNotNull();
     }
 
     @Test
@@ -165,6 +112,59 @@ public class PersonTest {
     @Test
     public void toString_is_overridden() {
         assertThat(new Person("userId").toString()).contains(Person.ENTITY_ATTRIBUTE_NAME_USER_ID);
+    }
+
+    @Test
+    public void when_builder_method_then_getters_operate_on_the_same_field() {
+        // Given
+        Person expectedPerson = PersonFactory.newPerson();
+
+        // When
+        Person actualPerson = Person.PersonBuilder.aPerson().
+                withCreatedAt(expectedPerson.getCreatedAt()).
+                                                          withCreatedBy(expectedPerson.getCreatedBy()).
+                                                          withDateOfBirth(expectedPerson.getDateOfBirth()).
+                                                          withDateOfExpiry(expectedPerson.getDateOfExpiry()).
+                                                          withDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry()).
+                                                          withEmailAddress(expectedPerson.getEmailAddress()).
+                                                          withFirstName(expectedPerson.getFirstName()).
+                                                          withId(expectedPerson.getId()).
+                                                          withLastName(expectedPerson.getLastName()).
+                                                          withPassword(expectedPerson.getPassword()).
+                                                          withSecondName(expectedPerson.getSecondName()).
+                                                          withTitle(expectedPerson.getTitle()).
+                                                          withUpdatedAt(expectedPerson.getUpdatedAt()).
+                                                          withUpdatedBy(expectedPerson.getUpdatedBy()).
+                                                          withUserId(expectedPerson.getUserId()).
+                                                          withVersion(expectedPerson.getVersion()).build();
+
+        // Then
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(expectedPerson.getCreatedAt());
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(expectedPerson.getCreatedBy());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getId()).isEqualTo(expectedPerson.getId());
+        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
+    }
+
+    @Test
+    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
+        // Given
+
+        // When
+        Person person = new Person();
+
+        // Then
+        assertThat(person).isNotNull();
     }
 
     @Test

@@ -36,7 +36,9 @@ project("thule-cloud-config") {
 
     // Dependencies
     dependencies {
-        compile("uk.co.serin.thule:thule-configuration-config:1.0.0-SNAPSHOT") { transitive = false}
+        compile("uk.co.serin.thule:thule-configuration-config:1.0.0-SNAPSHOT") {
+            transitive = false
+        }
     }
 }
 

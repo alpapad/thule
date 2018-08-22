@@ -56,7 +56,7 @@ public class MongoDockerContainer {
             // Wait until MongoDb is up by checking that the port is available
             given().ignoreExceptions().pollInterval(fibonacci()).
                     await().timeout(Duration.FIVE_MINUTES).
-                    untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
+                           untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
             mongoAvailable = true;
         }
     }

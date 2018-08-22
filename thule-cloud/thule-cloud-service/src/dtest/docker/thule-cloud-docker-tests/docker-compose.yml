@@ -7,7 +7,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 7092:8080
+    - 7092:8080
     restart: always
 
   ################################  thule-configuration-service  ################################
@@ -17,10 +17,10 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 7888:8080
+    - 7888:8080
     restart: always
     volumes:
-      - thule-cloud-config:/config
+    - thule-cloud-config:/config
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
@@ -29,7 +29,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 7761:8080
+    - 7761:8080
     restart: always
 
   ################################  thule-gateway -service ################################
@@ -39,7 +39,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 7091:8080
+    - 7091:8080
     restart: always
 
   ################################  thule-email-service  ################################
@@ -49,7 +49,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 7094:8080
+    - 7094:8080
     restart: always
 
   ################################  thule-people-service  ################################
@@ -59,7 +59,7 @@ services:
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
-      - 7093:8080
+    - 7093:8080
     restart: always
 
   ################################  Servers and Databases Required By Docker tests  ################################

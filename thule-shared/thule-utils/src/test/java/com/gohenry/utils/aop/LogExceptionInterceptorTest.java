@@ -71,9 +71,9 @@ public class LogExceptionInterceptorTest {
         String message = "Test throwable message";
         ReflectionTestUtils.setField(LogExceptionInterceptor.class, "loggerFactory", iLoggerFactory);
 
-        given(throwable.getStackTrace()).
-                willReturn(new StackTraceElement[]{
-                        new StackTraceElement(LogExceptionInterceptorTest.class.getName(), "testMethodName", "testFileName", 1)});
+        given(throwable.getStackTrace()).willReturn(new StackTraceElement[]{
+                new StackTraceElement(LogExceptionInterceptorTest.class.getName(), "testMethodName", "testFileName",
+                        1)});
         given(iLoggerFactory.getLogger(LogExceptionInterceptorTest.class.getName())).willReturn(logger);
         given(throwable.getMessage()).willReturn(message);
 

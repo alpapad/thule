@@ -15,17 +15,6 @@ public class ApplicationConfigurerTest {
     private ApplicationConfigurer applicationConfigurer;
 
     @Test
-    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
-        // Given
-
-        // When
-        ApplicationConfigurer applicationConfigurer = new ApplicationConfigurer();
-
-        // Then
-        assertThat(applicationConfigurer).isNotNull();
-    }
-
-    @Test
     public void localValidatorFactoryBean_is_configured() {
         // Given
 
@@ -45,5 +34,16 @@ public class ApplicationConfigurerTest {
 
         // Then
         assertThat(validatingMongoEventListener).isNotNull();
+    }
+
+    @Test
+    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
+        // Given
+
+        // When
+        ApplicationConfigurer applicationConfigurer = new ApplicationConfigurer();
+
+        // Then
+        assertThat(applicationConfigurer).isNotNull();
     }
 }
