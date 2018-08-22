@@ -32,8 +32,6 @@ management:
 
 # Spring boot configuration
 spring:
-  application:
-    name: thule-gateway-service
   sleuth:
     sampler:
       probability: 1.0

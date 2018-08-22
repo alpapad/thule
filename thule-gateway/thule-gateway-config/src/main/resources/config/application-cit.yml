@@ -7,4 +7,3 @@ eureka:
 thule:
   discoveryservice:
     host: thule-discovery-service
-
