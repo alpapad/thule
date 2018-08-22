@@ -6,9 +6,9 @@ import com.gohenry.utils.docker.DockerCompose;
 import java.io.IOException;
 
 public class MySqlDockerContainer {
+    private static boolean mySqlContainerStarted;
     private static MySqlDockerContainer mySqlDockerContainer = new MySqlDockerContainer();
     private final DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
-    private boolean mySqlContainerStarted;
 
     private MySqlDockerContainer() {
     }
