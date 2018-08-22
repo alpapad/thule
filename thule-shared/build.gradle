@@ -55,6 +55,7 @@ project("thule-spring-boot-starter-oauth2-test") {
     description = "Thule Spring Boot Starter Oauth2 Test"
     dependencies {
         compile project(":thule-oauth2-test")
+        compile("org.springframework.security:spring-security-test")
 
         testCompile project(":thule-spring-boot-starter-test")
     }
