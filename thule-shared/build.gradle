@@ -119,6 +119,7 @@ project("thule-utils") {
         compile("org.hibernate:hibernate-core")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
+        compile("org.springframework.boot:spring-boot-starter-validation")
         compile("xml-apis:xml-apis") // Required as part of SOAP (jax) when using java 9+
 
         testCompile project(":thule-spring-boot-starter-test")
