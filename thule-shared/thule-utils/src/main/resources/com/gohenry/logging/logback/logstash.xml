@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-    <springProperty name="gohenrySharedLoggingLogstashEnabled" source="gohenry.shared.logging.logstash.enabled"
+    <springProperty name="thuleSharedLoggingLogstashEnabled"
+                    source="thule.shared.logging.logstash.enabled"
                     defaultValue="false"/>
-    <springProperty name="gohenrySharedLoggingLogstashHost" source="gohenry.shared.logging.logstash.host"
+    <springProperty name="thuleSharedLoggingLogstashHost"
+                    source="thule.shared.logging.logstash.host"
                     defaultValue="localhost"/>
-    <springProperty name="gohenrySharedLoggingLogstashPort" source="gohenry.shared.logging.logstash.port"
+    <springProperty name="thuleSharedLoggingLogstashPort"
+                    source="thule.shared.logging.logstash.port"
                     defaultValue="5400"/>
-    <if condition='property("gohenrySharedLoggingLogstashEnabled").equals("true")'>
+    <if condition='property("thuleSharedLoggingLogstashEnabled").equals("true")'>
         <then>
-            <springProperty name="gohenrySharedLoggingLogstashSslEnabled"
-                            source="gohenry.shared.logging.logstash.ssl-enabled" defaultValue="false"/>
+            <springProperty name="thuleSharedLoggingLogstashSslEnabled"
+                            source="thule.shared.logging.logstash.ssl-enabled"
+                            defaultValue="false"/>
             <springProperty name="springApplicationName" source="spring.application.name"
                             defaultValue="spring.application.name-not-set"/>
             <springProperty name="springProfilesActive" source="spring.profiles.active"
                             defaultValue="default"/>
             <appender name="LOGSTASH"
                       class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-                <destination>${gohenrySharedLoggingLogstashHost}:${gohenrySharedLoggingLogstashPort}</destination>
+                <destination>
+                    ${thuleSharedLoggingLogstashHost}:${thuleSharedLoggingLogstashPort}
+                </destination>
                 <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                     <providers>
                         <arguments/>
@@ -46,7 +52,7 @@
                 <keepAliveDuration>5 minutes</keepAliveDuration>
                 <reconnectionDelay>10 second</reconnectionDelay>
                 <ringBufferSize>16384</ringBufferSize>
-                <if condition='property("gohenrySharedLoggingLogstashSslEnabled").equals("true")'>
+                <if condition='property("thuleSharedLoggingLogstashSslEnabled").equals("true")'>
                     <then>
                         <ssl/>
                     </then>

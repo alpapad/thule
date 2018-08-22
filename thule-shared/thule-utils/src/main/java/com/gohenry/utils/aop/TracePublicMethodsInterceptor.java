@@ -36,7 +36,7 @@ public class TracePublicMethodsInterceptor {
     }
 
     private Object trace(Object target, Signature signature, Object[] args, PerformanceTraceCallback performanceTraceCallback) {
-        String methodName =  signature.getName();
+        String methodName = signature.getName();
         Class returnType = ((MethodSignature) signature).getReturnType();
 
 

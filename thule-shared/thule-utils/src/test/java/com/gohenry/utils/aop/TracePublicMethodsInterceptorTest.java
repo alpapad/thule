@@ -99,6 +99,16 @@ public class TracePublicMethodsInterceptorTest {
     }
 
     @Test
+    public void trace_method_with_one_arg() throws Throwable {
+        traceMethod("arg1");
+    }
+
+    @Test
+    public void trace_method_with_two_args() throws Throwable {
+        traceMethod("arg1", "arg2");
+    }
+
+    @Test
     public void trace_method_with_void_return() throws Throwable {
         // Given
         given(proceedingJoinPoint.getTarget()).willReturn(new Object());
@@ -111,15 +121,5 @@ public class TracePublicMethodsInterceptorTest {
 
         // Then
         assertThat(actualReturnValue).isNull();
-    }
-
-    @Test
-    public void trace_method_with_one_arg() throws Throwable {
-        traceMethod("arg1");
-    }
-
-    @Test
-    public void trace_method_with_two_args() throws Throwable {
-        traceMethod("arg1", "arg2");
     }
 }

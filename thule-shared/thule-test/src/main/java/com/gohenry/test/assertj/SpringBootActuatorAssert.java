@@ -44,7 +44,8 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         try {
             ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(actual.getUri());
             if (!responseEntity.getBody().get(STATUS).equals(status.getCode())) {
-                throw new AssertionError(String.format("Expected actuator's health status to be <%s> but was <%s>", status.getCode(), responseEntity.getBody().get(STATUS)));
+                throw new AssertionError(
+                        String.format("Expected actuator's health status to be <%s> but was <%s>", status.getCode(), responseEntity.getBody().get(STATUS)));
             }
         } catch (Exception exception) {
             throw new AssertionError(String.format("Failed to obtain health status from ActuatorUri %s %n%s", actual, exception));

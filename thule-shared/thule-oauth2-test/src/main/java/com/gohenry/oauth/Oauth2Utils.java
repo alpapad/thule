@@ -12,7 +12,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import java.util.Collection;
 
 public interface Oauth2Utils {
-    static OAuth2AccessToken createJwtOauth2AccessToken(String principal, String credentials, Collection<? extends GrantedAuthority> grantedAuthorities, String clientId, String signingKey) {
+    static OAuth2AccessToken createJwtOauth2AccessToken(String principal, String credentials, Collection<? extends GrantedAuthority> grantedAuthorities,
+                                                        String clientId, String signingKey) {
         // Create OAuth2Authentication
         OAuth2Request oAuth2Request = new OAuth2Request(null, clientId, null,
                 true, null, null, null, null, null);

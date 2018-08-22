@@ -63,7 +63,8 @@ public class ResourceServerIntTest {
         // Given
 
         //When
-        ResponseEntity<String> responseEntity = oAuth2RestTemplate.postForEntity(String.format("http://localhost:%s/hello", port), HttpEntity.EMPTY, String.class);
+        ResponseEntity<String> responseEntity =
+                oAuth2RestTemplate.postForEntity(String.format("http://localhost:%s/hello", port), HttpEntity.EMPTY, String.class);
 
         //Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -74,7 +75,9 @@ public class ResourceServerIntTest {
         // Given
 
         //Creates OAuth2Token and sets it within the OAuth2RestTemplate to be used
-        OAuth2AccessToken jwtOauth2AccessToken = createJwtOauth2AccessToken("username", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+        OAuth2AccessToken jwtOauth2AccessToken =
+                createJwtOauth2AccessToken("username", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
+                        "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         String url = String.format("http://localhost:%s/hello", port);
@@ -86,7 +89,8 @@ public class ResourceServerIntTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-    private OAuth2AccessToken createJwtOauth2AccessToken(String principal, String credentials, Collection<? extends GrantedAuthority> grantedAuthorities, String clientId, String signingKey) {
+    private OAuth2AccessToken createJwtOauth2AccessToken(String principal, String credentials, Collection<? extends GrantedAuthority> grantedAuthorities,
+                                                         String clientId, String signingKey) {
         // Create OAuth2Authentication
         OAuth2Request oAuth2Request = new OAuth2Request(null, clientId, null,
                 true, null, null, null, null, null);

@@ -40,7 +40,8 @@ public class ExceptionConstructorTester {
         // Then (throws exception when the test fails)
     }
 
-    private void assertThatConstructorWithMessageExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void assertThatConstructorWithMessageExecutes()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // Given
         String message = "Test message";
 
@@ -52,7 +53,8 @@ public class ExceptionConstructorTester {
     }
 
     @SuppressWarnings({"ThrowableInstanceNeverThrown"})
-    private void assertThatConstructorWithMessageAndThrowableExecutes() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void assertThatConstructorWithMessageAndThrowableExecutes()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // Given
         String message = "Test message";
         RuntimeException cause = new TestException();

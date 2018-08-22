@@ -15,7 +15,6 @@ public class ActuatorUriTest {
         // When
 
         // Then
-        assertPojoMethodsFor(ActuatorUri.class).
-                testing(Method.CONSTRUCTOR, Method.GETTER).areWellImplemented();
+        assertPojoMethodsFor(ActuatorUri.class).testing(Method.CONSTRUCTOR, Method.GETTER).areWellImplemented();
     }
 }
