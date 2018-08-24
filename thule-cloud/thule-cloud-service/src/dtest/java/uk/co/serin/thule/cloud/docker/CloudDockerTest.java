@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.boot.actuate.health.Status;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.net.URI;
@@ -44,12 +45,12 @@ public class CloudDockerTest {
     }
 
     @Test
-    public void admin_server_via_gateway_health_status_is_up() {
+    public void admin_server_via_gateway_health_status_is_not_found() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
     }
 
     @Test
@@ -62,12 +63,12 @@ public class CloudDockerTest {
     }
 
     @Test
-    public void config_service_via_gateway_health_status_is_up() {
+    public void config_service_via_gateway_health_status_is_not_found() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
     }
 
     @Test
