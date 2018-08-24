@@ -12,4 +12,5 @@ thule:
     api:
       host: localhost
       port: 9094
+    mysql:
       port: 3308 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
