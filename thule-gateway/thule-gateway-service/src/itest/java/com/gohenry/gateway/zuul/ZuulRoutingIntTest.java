@@ -1,4 +1,4 @@
-package com.thule.gateway.zuul;
+package com.gohenry.gateway.zuul;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
