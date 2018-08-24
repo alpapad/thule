@@ -61,11 +61,11 @@ public class HealthCheckContractTest {
         // Given
         stubFor(get(
                 urlEqualTo("/actuator/health")).
-                willReturn(aResponse().
-                        withFixedDelay(2000).
-                        withBodyFile("actuator-up-response.json").
-                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                        withStatus(HttpStatus.OK.value())));
+                                                       willReturn(aResponse().
+                                                                                     withFixedDelay(2000).
+                                                                                     withBodyFile("actuator-up-response.json").
+                                                                                     withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                                                                                     withStatus(HttpStatus.OK.value())));
 
         given(discoveryClient.getInstances("thule-admin-service")).willReturn(Collections.singletonList(serviceInstance));
         given(discoveryClient.getInstances("thule-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
@@ -79,7 +79,8 @@ public class HealthCheckContractTest {
         List<ResponseEntity<Map>> responseEntitities = new ArrayList<>();
         Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(Duration.FIVE_SECONDS). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
-                untilAsserted(() -> responseEntitities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
+                                                                untilAsserted(
+                () -> responseEntitities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
 
         // Then
         verify(getRequestedFor(urlPathEqualTo("/actuator/health")));

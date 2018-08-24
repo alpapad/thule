@@ -6,31 +6,31 @@
     "Date": "Wed, 18 Jul 2018 13:00:00 GMT",
     "Connection": "close"
   },
-  "body" : {
+  "body": {
     "status": "UP",
-    "details" : {
-      "gohenryServices" : {
+    "details": {
+      "gohenryServices": {
         "status": "UP"
       },
-      "diskSpace" : {
+      "diskSpace": {
         "status": "UP",
-        "details" : {
+        "details": {
           "total": "116570399999",
           "free": "62296789999",
           "threshold": "104859999"
         }
       },
-      "db" : {
+      "db": {
         "status": "UP",
-        "details" : {
-          "database" : "MySql",
-          "hello" : "1"
+        "details": {
+          "database": "MySql",
+          "hello": "1"
         }
       },
-      "refreshScope" : {
+      "refreshScope": {
         "status": "UP"
       },
-      "hystrix" : {
+      "hystrix": {
         "status": "UP"
       }
     }

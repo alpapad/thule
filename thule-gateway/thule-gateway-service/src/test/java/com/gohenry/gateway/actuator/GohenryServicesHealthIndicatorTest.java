@@ -29,21 +29,27 @@ import static org.mockito.Mockito.verify;
 public class GohenryServicesHealthIndicatorTest {
 
     @Mock
-    private Health.Builder builder;
-    @Mock
-    private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
-    @Mock
     private ApplicationProperties applicationProperties;
     @Mock
-    private ApplicationProperties.HealthCheck healthCheck;
-    @Mock
-    private ServiceInstance serviceInstance;
+    private Health.Builder builder;
     @Mock
     private DiscoveryClient discoveryClient;
     @Mock
     private Future<Status> futureStatus;
-
+    @Mock
+    private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
     private GohenryServicesHealthIndicator gohenryServicesHealthIndicator;
+    @Mock
+    private ApplicationProperties.HealthCheck healthCheck;
+    @Mock
+    private ServiceInstance serviceInstance;
+
+    @Before
+    public void setUp() {
+        given(applicationProperties.getHealthCheck()).willReturn(healthCheck);
+        given(healthCheck.getTimeout()).willReturn(2000L);
+        gohenryServicesHealthIndicator = new GohenryServicesHealthIndicator(gohenryServiceInstanceHealthIndicator, applicationProperties, discoveryClient);
+    }
 
     @Test
     public void when_all_microservices_are_up_then_health_status_should_be_up() throws Exception {
@@ -63,6 +69,48 @@ public class GohenryServicesHealthIndicatorTest {
 
         // Then
         verify(builder).up();
+    }
+
+    @Test
+    public void when_an_interrupted_exception_then_an_ilegal_state_exception_is_thrown() throws ExecutionException, InterruptedException {
+        //Given
+        List<String> serviceIds = Stream.of("Instanceone").collect(Collectors.toList());
+        List<ServiceInstance> serviceInstances = Collections.singletonList(serviceInstance);
+
+        given(healthCheck.getServices()).willReturn(serviceIds);
+        given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
+        given(gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
+        given(futureStatus.isDone()).willReturn(true).willReturn(true);
+        given(futureStatus.get()).willThrow(InterruptedException.class);
+
+        //When
+        try {
+            gohenryServicesHealthIndicator.doHealthCheck(builder);
+            fail();
+        } catch (IllegalStateException e) {
+            //Then
+            assertThat(e.getMessage()).isEqualTo("Unable to determine the status of a micro service");
+        }
+    }
+
+    @Test
+    public void when_no_microservice_instances_exist_then_an_ilegal_state_exception_is_thrown() {
+        //Given
+        List<String> serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
+        List<ServiceInstance> serviceInstances = Collections.emptyList();
+
+        given(healthCheck.getServices()).willReturn(serviceIds);
+        given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
+
+        //When
+        //When
+        try {
+            gohenryServicesHealthIndicator.doHealthCheck(builder);
+            fail();
+        } catch (IllegalStateException e) {
+            //Then
+            assertThat(e.getMessage()).isEqualTo("No instances of [Instanceone] have been registered with the discovery service");
+        }
     }
 
     @Test
@@ -103,54 +151,5 @@ public class GohenryServicesHealthIndicatorTest {
 
         //Then
         verify(futureStatus).cancel(true);
-    }
-
-    @Test
-    public void when_no_microservice_instances_exist_then_an_ilegal_state_exception_is_thrown() {
-        //Given
-        List<String> serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
-        List<ServiceInstance> serviceInstances = Collections.emptyList();
-
-        given(healthCheck.getServices()).willReturn(serviceIds);
-        given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
-
-        //When
-        //When
-        try {
-            gohenryServicesHealthIndicator.doHealthCheck(builder);
-            fail();
-        } catch (IllegalStateException e) {
-            //Then
-            assertThat(e.getMessage()).isEqualTo("No instances of [Instanceone] have been registered with the discovery service");
-        }
-    }
-
-    @Test
-    public void when_an_interrupted_exception_then_an_ilegal_state_exception_is_thrown() throws ExecutionException, InterruptedException {
-        //Given
-        List<String> serviceIds = Stream.of("Instanceone").collect(Collectors.toList());
-        List<ServiceInstance> serviceInstances = Collections.singletonList(serviceInstance);
-
-        given(healthCheck.getServices()).willReturn(serviceIds);
-        given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
-        given(gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
-        given(futureStatus.isDone()).willReturn(true).willReturn(true);
-        given(futureStatus.get()).willThrow(InterruptedException.class);
-
-        //When
-        try {
-            gohenryServicesHealthIndicator.doHealthCheck(builder);
-            fail();
-        } catch (IllegalStateException e) {
-            //Then
-            assertThat(e.getMessage()).isEqualTo("Unable to determine the status of a micro service");
-        }
-    }
-
-    @Before
-    public void setUp() {
-        given(applicationProperties.getHealthCheck()).willReturn(healthCheck);
-        given(healthCheck.getTimeout()).willReturn(2000L);
-        gohenryServicesHealthIndicator = new GohenryServicesHealthIndicator(gohenryServiceInstanceHealthIndicator, applicationProperties, discoveryClient);
     }
 }

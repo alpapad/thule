@@ -41,6 +41,11 @@ zuul:
   # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication and auth bearer tokens header will not propagate to
   # down stream services. Hence Authorization has been removed from the sensitive headers blacklist
   sensitiveHeaders: Cookie,Set-Cookie
+  ignoredServices:
+    - "thule-admin-service"
+    - "thule-configuration-service"
+    - "thule-discovery-service"
+    - "thule-gateway-service"
 
 # Thule configuration
 thule:

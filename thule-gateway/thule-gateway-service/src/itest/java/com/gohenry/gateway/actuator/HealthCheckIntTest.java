@@ -50,10 +50,10 @@ public class HealthCheckIntTest {
         // Given
         stubFor(get(
                 urlEqualTo("/actuator/health")).
-                willReturn(aResponse().
-                        withBodyFile("actuator-up-response.json").
-                        withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                        withStatus(HttpStatus.OK.value())));
+                                                       willReturn(aResponse().
+                                                                                     withBodyFile("actuator-up-response.json").
+                                                                                     withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
+                                                                                     withStatus(HttpStatus.OK.value())));
 
         given(discoveryClient.getInstances("thule-admin-service")).willReturn(Collections.singletonList(serviceInstance));
         given(discoveryClient.getInstances("thule-authentication-service")).willReturn(Collections.singletonList(serviceInstance));

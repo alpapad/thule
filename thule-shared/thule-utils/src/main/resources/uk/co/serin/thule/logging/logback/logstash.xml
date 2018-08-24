@@ -16,9 +16,12 @@
                             defaultValue="false"/>
             <springProperty name="springApplicationName" source="spring.application.name"
                             defaultValue="spring.application.name-not-set"/>
+            <springProperty name="springProfilesActive" source="spring.profiles.active"
+                            defaultValue="default"/>
             <appender name="LOGSTASH"
                       class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-                <destination>${thuleSharedLoggingLogstashHost}:${thuleSharedLoggingLogstashPort}
+                <destination>
+                    ${thuleSharedLoggingLogstashHost}:${thuleSharedLoggingLogstashPort}
                 </destination>
                 <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                     <providers>
@@ -34,6 +37,7 @@
                         <pattern>
                             <pattern>
                                 {
+                                "environment": "${springProfilesActive}",
                                 "parentId": "%mdc{X-B3-ParentSpanId:-}",
                                 "service":"${springApplicationName}",
                                 "spanExportable": "%mdc{X-Span-Export:-}",

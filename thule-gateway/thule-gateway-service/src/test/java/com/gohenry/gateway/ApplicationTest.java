@@ -9,8 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.lang.reflect.InvocationTargetException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -34,7 +32,7 @@ public class ApplicationTest {
     }
 
     @Test
-    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
         assertThat(BeanUtils.instantiateClass(Application.class)).isNotNull();
     }
 }

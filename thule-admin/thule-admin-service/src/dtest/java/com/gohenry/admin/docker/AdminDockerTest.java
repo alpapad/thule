@@ -39,6 +39,14 @@ public class AdminDockerTest {
         dockerCompose.down();
     }
 
+    @Before
+    public void setUp() {
+        // Create base url
+        String adminApiHost = env.getRequiredProperty("gohenry.adminservice.api.host");
+        int adminApiPort = env.getRequiredProperty("gohenry.adminservice.api.port", Integer.class);
+        adminServiceBaseUrl = String.format("http://%s:%s", adminApiHost, adminApiPort);
+    }
+
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
@@ -46,13 +54,5 @@ public class AdminDockerTest {
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Before
-    public void setUp() {
-        // Create base url
-        String adminApiHost = env.getRequiredProperty("gohenry.adminservice.api.host");
-        int adminApiPort = env.getRequiredProperty("gohenry.adminservice.api.port", Integer.class);
-        adminServiceBaseUrl = String.format("http://%s:%s", adminApiHost, adminApiPort);
     }
 }

@@ -49,6 +49,36 @@ public class ConfigurationDockerTest {
     }
 
     @Test
+    public void has_configuration_for_the_discovery_service() {
+        // Given
+        when_checking_health_then_status_is_up();
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity =
+                restTemplate.exchange(configurationServiceBaseUrl + "thule-discovery-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+
+        // Then
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
+    public void has_configuration_for_the_gateway() {
+        // Given
+        when_checking_health_then_status_is_up();
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        // When
+        ResponseEntity<Map<String, Object>> responseEntity =
+                restTemplate.exchange(configurationServiceBaseUrl + "thule-gateway/application.yml", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+
+        // Then
+        assertThat(responseEntity.getBody()).isNotEmpty();
+    }
+
+    @Test
     public void has_configuration_for_the_people_service() {
         // Given
         when_checking_health_then_status_is_up();
@@ -56,21 +86,8 @@ public class ConfigurationDockerTest {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-people-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getBody()).isNotEmpty();
-    }
-
-    @Test
-    public void has_configuration_for_the_thule_service() {
-        // Given
-        when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
-
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-thule-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity =
+                restTemplate.exchange(configurationServiceBaseUrl + "thule-people-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
@@ -86,28 +103,15 @@ public class ConfigurationDockerTest {
     }
 
     @Test
-    public void has_configuration_for_the_discovery_service() {
+    public void has_configuration_for_the_thule_service() {
         // Given
         when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-discovery-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
-
-        // Then
-        assertThat(responseEntity.getBody()).isNotEmpty();
-    }
-
-    @Test
-    public void has_configuration_for_the_gateway() {
-        // Given
-        when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
-
-        // When
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(configurationServiceBaseUrl + "thule-gateway/application.yml", HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        ResponseEntity<Map<String, Object>> responseEntity =
+                restTemplate.exchange(configurationServiceBaseUrl + "thule-thule-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();

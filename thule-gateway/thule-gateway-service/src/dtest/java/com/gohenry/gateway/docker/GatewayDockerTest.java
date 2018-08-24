@@ -38,6 +38,14 @@ public class GatewayDockerTest {
         dockerCompose.down();
     }
 
+    @Before
+    public void setUp() {
+        // Create base url
+        String gatewayApiHost = env.getRequiredProperty("thule.gatewayservice.api.host");
+        int gatewayApiPort = env.getRequiredProperty("thule.gatewayservice.api.port", Integer.class);
+        gatewayBaseUrl = String.format("http://%s:%s", gatewayApiHost, gatewayApiPort);
+    }
+
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
@@ -45,13 +53,5 @@ public class GatewayDockerTest {
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Before
-    public void setUp() {
-        // Create base url
-        String gatewayApiHost = env.getRequiredProperty("thule.gatewayservice.api.host");
-        int gatewayApiPort = env.getRequiredProperty("thule.gatewayservice.api.port", Integer.class);
-        gatewayBaseUrl = String.format("http://%s:%s", gatewayApiHost, gatewayApiPort);
     }
 }

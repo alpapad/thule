@@ -28,14 +28,14 @@ import static org.awaitility.pollinterval.FixedPollInterval.fixed;
  * The objective of these tests is to prove that a service registered within the Discovery Service can be retrieved and executed successfully:
  *
  * <ul>
- *      <li>Start the discovery service</li>
- *      <li>Register a target service in the Discovery Service</li>
- *      Rather than create another service to act as the target to test the Discovery Service, we will use the Discovery Service itself as the target to test the Discovery Service.
- *      To that end the Discovery Service has been configured for these tests to register itself at startup.
- *      <li>Retrieve a target service from the Discovery Service</li>
- *      In other words, retrieve the Discovery Service to act as the target from the Discovery Service
- *      <li>Invoke an endpoint on the target service</li>
- *      Use the actuator on the target Discovery Service
+ * <li>Start the discovery service</li>
+ * <li>Register a target service in the Discovery Service</li>
+ * Rather than create another service to act as the target to test the Discovery Service, we will use the Discovery Service itself as the target to test the Discovery Service.
+ * To that end the Discovery Service has been configured for these tests to register itself at startup.
+ * <li>Retrieve a target service from the Discovery Service</li>
+ * In other words, retrieve the Discovery Service to act as the target from the Discovery Service
+ * <li>Invoke an endpoint on the target service</li>
+ * Use the actuator on the target Discovery Service
  * </ul>
  */
 @RunWith(SpringRunner.class)
@@ -62,7 +62,7 @@ public class DiscoveryDockerTest {
         // Given
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
-                untilAsserted(() -> assertThat(discoveryClient.getServices()).contains("thule-discovery-service"));
+                       untilAsserted(() -> assertThat(discoveryClient.getServices()).contains("thule-discovery-service"));
 
         // When
         Map<String, Object> actualHealth = actuatorClient.health();

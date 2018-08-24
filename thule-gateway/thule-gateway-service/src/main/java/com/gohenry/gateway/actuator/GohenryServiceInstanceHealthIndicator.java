@@ -23,9 +23,6 @@ public class GohenryServiceInstanceHealthIndicator {
      * Forms a url using the single instance's information
      * performs a rest exchange to it's actuator endpoint
      * checks the response is not null and that status is up to return UP, otherwise return DOWN
-     *
-     * @param instance
-     * @return
      */
     @Async
     public Future<Status> doServiceInstanceHealthCheck(ServiceInstance instance) {
