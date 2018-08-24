@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -49,8 +50,13 @@ public class CloudDockerTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH));
 
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        // When
+        try {
+            assertThat(actuatorUri).waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
@@ -67,8 +73,13 @@ public class CloudDockerTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
 
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        // When
+        try {
+            assertThat(actuatorUri).waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
