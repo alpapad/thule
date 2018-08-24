@@ -16,13 +16,13 @@ import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
 
 public class CloudDockerTest {
     private static final String ACTUATOR_HEALTH = "/actuator/health";
-    private static final String ADMIN_SERVICE_BASE_URL = "http://localhost:7092";
+    private static final String ADMIN_SERVICE_BASE_URL = "http://localhost:7093";
     private static final String CONFIGURATION_SERVICE_BASE_URL = "http://localhost:7888";
     private static final String DISCOVERY_SERVICE_BASE_URL = "http://localhost:7761";
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-cloud-docker-tests/docker-compose.yml");
-    private static final String EMAIL_SERVICE_BASE_URL = "http://localhost:7094";
+    private static final String EMAIL_SERVICE_BASE_URL = "http://localhost:7095";
     private static final String GATEWAY_SERVICE_BASE_URL = "http://localhost:7091";
-    private static final String PEOPLE_SERVICE_BASE_URL = "http://localhost:7093";
+    private static final String PEOPLE_SERVICE_BASE_URL = "http://localhost:7094";
 
     @BeforeClass
     public static void setUpClass() throws IOException {

@@ -6,7 +6,7 @@ services:
     environment:
       TZ: Europe/London
     ports:
-      - 9094:8080 # Required to allow docker tests to call the restful api
+      - 9095:8080 # Required to allow docker tests to call the restful api
     restart: always # Spring context will fail to initialize if MySql is not ready because Flyway is dependent upon its availability
     volumes:
       # Since we are not using the configuration service to provide spring config, we add the config to the
