@@ -3,6 +3,7 @@ package uk.co.serin.thule.cloud.docker;
 import com.gohenry.test.assertj.ActuatorUri;
 import com.gohenry.utils.docker.DockerCompose;
 
+import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,101 +39,54 @@ public class CloudDockerTest {
     }
 
     @Test
-    public void admin_server_health_status_is_up() {
-        // Given
-
-        // When/Then
+    public void when_checking_health_then_status_is_up() {
+        // Services without going via the gateway
+        assertThat(new ActuatorUri(URI.create(CONFIGURATION_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5))
+                                                                                                 .hasHealthStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(DISCOVERY_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5))
+                                                                                             .hasHealthStatus(Status.UP);
         assertThat(new ActuatorUri(URI.create(ADMIN_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
+        assertThat(new ActuatorUri(URI.create(EMAIL_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(PEOPLE_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
 
-    @Test
-    public void admin_server_via_gateway_health_status_is_not_found() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH));
+        // Services going via the gateway that should be up
+        assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-email-service" + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5))
+                                                                                                                    .hasHealthStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5))
+                                                                                                                     .hasHealthStatus(Status.UP);
+        assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
 
-        // When
+        // Services going via the gateway that should be ignored
         try {
-            assertThat(actuatorUri).waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
+            assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH)))
+                    .waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
         } catch (HttpClientErrorException e) {
             //Then
-            assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         }
-    }
 
-    @Test
-    public void config_service_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(CONFIGURATION_SERVICE_BASE_URL + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void config_service_via_gateway_health_status_is_not_found() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
-
-        // When
         try {
-            assertThat(actuatorUri).waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
+            assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH)))
+                    .waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
         } catch (HttpClientErrorException e) {
             //Then
-            assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         }
-    }
 
-    @Test
-    public void discovery_service_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(DISCOVERY_SERVICE_BASE_URL + ACTUATOR_HEALTH));
+        try {
+            assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-discovery-service" + ACTUATOR_HEALTH)))
+                    .waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
 
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void email_service_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(EMAIL_SERVICE_BASE_URL + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void email_service_via_gateway_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-email-service" + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void gateway_service_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void people_service_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(PEOPLE_SERVICE_BASE_URL + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void people_service_via_gateway_health_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH));
-
-        // When/Then
-        assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        try {
+            assertThat(new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-gateway-service" + ACTUATOR_HEALTH)))
+                    .waitingForMaximum(Duration.ofSeconds(10)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 }
