@@ -116,7 +116,7 @@ public class CloudDockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class CloudDockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class CloudDockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-discovery-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
     }
 
     @Test
@@ -143,6 +143,6 @@ public class CloudDockerTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-gateway-service" + ACTUATOR_HEALTH));
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.NOT_FOUND);
+        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
     }
 }
