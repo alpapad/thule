@@ -3,6 +3,7 @@ package uk.co.serin.thule.cloud.docker;
 import com.gohenry.test.assertj.ActuatorUri;
 import com.gohenry.utils.docker.DockerCompose;
 
+import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -115,8 +117,13 @@ public class CloudDockerTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH));
 
-        // When/Then
-        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        // When
+        try {
+            assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
@@ -124,8 +131,13 @@ public class CloudDockerTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
 
-        // When/Then
-        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        // When
+        try {
+            assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
@@ -133,8 +145,13 @@ public class CloudDockerTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-discovery-service" + ACTUATOR_HEALTH));
 
-        // When/Then
-        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        // When
+        try {
+            assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
@@ -142,7 +159,12 @@ public class CloudDockerTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-gateway-service" + ACTUATOR_HEALTH));
 
-        // When/Then
-        assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        // When
+        try {
+            assertThat(actuatorUri).hasHttpStatus(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException e) {
+            //Then
+            Assertions.assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 }
