@@ -66,7 +66,7 @@ project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
     dependencies {
         compile project(":thule-test")
-        compile("nl.jqno.equalsverifier:equalsverifier:2.5.1")
+        compile("nl.jqno.equalsverifier:equalsverifier:2.5.2")
         compile("org.awaitility:awaitility:3.1.2")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.cloud:spring-cloud-contract-wiremock")
