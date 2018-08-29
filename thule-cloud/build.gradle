@@ -43,7 +43,7 @@ project("thule-cloud-config") {
 }
 
 project("thule-cloud-service") {
-    description = "thule Cloud Service"
+    description = "Thule Cloud Service"
 
     // Plugins
     apply plugin: "com.github.ben-manes.versions"
