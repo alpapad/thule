@@ -20,6 +20,7 @@ import javax.mail.internet.MimeMessage;
 import javax.validation.ValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -33,7 +34,7 @@ public class EmailServiceTest {
     @Mock
     private MimeMessage mimeMessage;
 
-    @Test(expected = EmailServiceException.class)
+    @Test
     public void given_an_exception_when_creating_an_email_then_a_email_service_exception_is_thrown() {
         // Given
         Email expectedEmail = TestDataFactory.buildEmail();
@@ -42,9 +43,10 @@ public class EmailServiceTest {
         doThrow(EmailServiceException.class).when(mailSender).send(any(MimeMessage.class));
 
         // When
-        emailService.createEmail(expectedEmail);
+        Throwable throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
 
-        // Then - see the expected in @Test
+        // Then
+        assertThat(throwable).isInstanceOf(EmailServiceException.class);
     }
 
     @Test
@@ -78,16 +80,17 @@ public class EmailServiceTest {
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void when_creating_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
         Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
 
         // When
-        emailService.createEmail(expectedEmail);
+        Throwable throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
 
-        // Then - see the expected in the @Test
+        // Then
+        assertThat(throwable).isInstanceOf(ValidationException.class);
     }
 
     @Test

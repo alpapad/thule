@@ -3,7 +3,6 @@ package uk.co.serin.thule.email.domain;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import pl.pojo.tester.api.assertion.Method;
@@ -11,35 +10,38 @@ import pl.pojo.tester.api.assertion.Method;
 import javax.validation.ValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class AttachmentTest {
-    @Test(expected = ValidationException.class)
+    @Test
     public void when_content_is_empty_then_business_key_constructor_throws_a_validation_exception() {
         // Given
 
         // When
-        new Attachment("", "test label");
+        Throwable throwable = catchThrowable(() -> new Attachment("", "test label"));
 
-        // Then (see expected in @Test annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(ValidationException.class);
     }
 
     @Test
     public void when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
         EqualsVerifier.forClass(Attachment.class).
                 suppress(Warning.NONFINAL_FIELDS).
-                withOnlyTheseFields(Attachment.ENTITY_ATTRIBUTE_NAME_CONTENT, Attachment.ENTITY_ATTRIBUTE_NAME_LABEL).
-                verify();
+                              withOnlyTheseFields(Attachment.ENTITY_ATTRIBUTE_NAME_CONTENT, Attachment.ENTITY_ATTRIBUTE_NAME_LABEL).
+                              verify();
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void when_label_is_empty_then_business_key_constructor_throws_a_validation_exception() {
         // Given
 
         // When
-        new Attachment("test content", "");
+        Throwable throwable = catchThrowable(() -> new Attachment("test content", ""));
 
-        // Then (see expected in @Test annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -49,11 +51,11 @@ public class AttachmentTest {
         Class[] constructorParameterTypes = {String.class, String.class};
 
         // When
-        Throwable throwable = Assertions.catchThrowable(() ->
+        Throwable throwable = catchThrowable(() ->
                 assertPojoMethodsFor(Attachment.class).
-                        create(Attachment.class, constructorParameters, constructorParameterTypes).
-                        testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).
-                        areWellImplemented());
+                                                              create(Attachment.class, constructorParameters, constructorParameterTypes).
+                                                              testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).
+                                                              areWellImplemented());
 
         // Then
         assertThat(throwable).isNull();

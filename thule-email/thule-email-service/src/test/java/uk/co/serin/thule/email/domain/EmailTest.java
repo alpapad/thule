@@ -15,6 +15,7 @@ import java.util.Collections;
 import javax.validation.ValidationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class EmailTest {
@@ -80,14 +81,15 @@ public class EmailTest {
                 verify();
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void when_from_is_empty_then_business_key_constructor_throws_a_validation_exception() {
         // Given
 
         // When
-        new Email("", "test subject");
+        Throwable throwable = catchThrowable(() -> new Email("", "test subject"));
 
-        // Then (see expected in @Test annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(ValidationException.class);
     }
 
     @Test
@@ -117,14 +119,15 @@ public class EmailTest {
                 testing(Method.CONSTRUCTOR, Method.GETTER, Method.TO_STRING).areWellImplemented();
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void when_subject_is_empty_then_business_key_constructor_throws_a_validation_exception() {
         // Given
 
         // When
-        new Email("from@test.co.uk", "");
+        Throwable throwable = catchThrowable(() -> new Email("from@test.co.uk", ""));
 
-        // Then (see expected in @Test annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(ValidationException.class);
     }
 
     @Test
