@@ -10,7 +10,7 @@ buildscript {
 plugins {
     id "com.github.ben-manes.versions" version "0.20.0" // Let it apply by default so that the plugin consolidates at the root of the project, otherwise it often hangs when checking dependency versions
     id "org.sonarqube" version "2.6.2" apply(false)
-    id "org.springframework.boot" version "2.0.4.RELEASE" apply(false)
+    id "org.springframework.boot" version "2.0.5.RELEASE" apply(false)
 }
 
 project("thule-cloud-config") {
@@ -46,7 +46,7 @@ project("thule-cloud-service") {
     description = "Thule Cloud Service"
 
     // Plugins
-        apply plugin: "io.spring.dependency-management"
+    apply plugin: "io.spring.dependency-management"
     apply plugin: "java"
     apply plugin: "org.sonarqube"
     apply plugin: "org.springframework.boot"
