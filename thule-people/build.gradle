@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.20.0" apply(false)
+    id "com.github.ben-manes.versions" version "0.20.0" // Let it apply by default so that the plugin consolidates at the root of the project, otherwise it often hangs when checking dependency versions
     id "com.palantir.docker" version "0.20.1" apply(false)
     id "org.sonarqube" version "2.6.2" apply(false)
     id "org.springframework.boot" version "2.0.4.RELEASE" apply(false)
@@ -31,8 +31,7 @@ project("thule-people-service") {
     description = "Thule People Service"
 
     // Plugins
-    apply plugin: "com.github.ben-manes.versions"
-    apply plugin: "com.palantir.docker"
+        apply plugin: "com.palantir.docker"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "java"
     apply plugin: "jacoco"
