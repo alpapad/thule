@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TracePublicMethodsInterceptorTest {
-    private final TracePublicMethodsInterceptor tracePublicMethodsInterceptor = new TracePublicMethodsInterceptor();
+    private final TracePublicMethodsInterceptor sut = new TracePublicMethodsInterceptor();
     @Mock
     private ProceedingJoinPoint proceedingJoinPoint;
     @Mock
@@ -26,9 +26,9 @@ public class TracePublicMethodsInterceptorTest {
         // Given
 
         // When
-        tracePublicMethodsInterceptor.pointcutDefinitionBasedOnAnnotationForMethod();
-        tracePublicMethodsInterceptor.pointcutDefinitionBasedOnAnnotationForType();
-        tracePublicMethodsInterceptor.publicMethod();
+        sut.pointcutDefinitionBasedOnAnnotationForMethod();
+        sut.pointcutDefinitionBasedOnAnnotationForType();
+        sut.publicMethod();
 
         // Then (no exception is a success)
     }
@@ -44,7 +44,7 @@ public class TracePublicMethodsInterceptorTest {
         given(proceedingJoinPoint.proceed()).willReturn(expectedReturnValue);
 
         // When
-        Object actualReturnValue = tracePublicMethodsInterceptor.trace(proceedingJoinPoint);
+        Object actualReturnValue = sut.trace(proceedingJoinPoint);
 
         // Then
         assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
@@ -59,7 +59,7 @@ public class TracePublicMethodsInterceptorTest {
         given(proceedingJoinPoint.proceed()).willThrow(new IllegalStateException());
 
         // When
-        tracePublicMethodsInterceptor.trace(proceedingJoinPoint);
+        sut.trace(proceedingJoinPoint);
 
         // Then (see expected exception in annotation)
     }
@@ -73,7 +73,7 @@ public class TracePublicMethodsInterceptorTest {
         given(proceedingJoinPoint.proceed()).willThrow(new Throwable());
 
         // When
-        tracePublicMethodsInterceptor.trace(proceedingJoinPoint);
+        sut.trace(proceedingJoinPoint);
 
         // Then (see expected exception in annotation)
     }
@@ -92,7 +92,7 @@ public class TracePublicMethodsInterceptorTest {
         given(proceedingJoinPoint.proceed()).willReturn(expectedReturnValue);
 
         // When
-        Object actualReturnValue = tracePublicMethodsInterceptor.trace(proceedingJoinPoint);
+        Object actualReturnValue = sut.trace(proceedingJoinPoint);
 
         // Then
         assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
@@ -117,7 +117,7 @@ public class TracePublicMethodsInterceptorTest {
         given(signature.getReturnType()).willReturn(void.class);
 
         // When
-        Object actualReturnValue = tracePublicMethodsInterceptor.trace(proceedingJoinPoint);
+        Object actualReturnValue = sut.trace(proceedingJoinPoint);
 
         // Then
         assertThat(actualReturnValue).isNull();

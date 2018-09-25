@@ -38,10 +38,10 @@ public class SpringBootActuatorAssertTest {
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
 
         // When
-        SpringBootActuatorAssert actualSpringBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // Then
-        assertThat(actualSpringBootActuatorAssert).isNotNull();
+        assertThat(sut).isNotNull();
     }
 
     @Test
@@ -49,8 +49,8 @@ public class SpringBootActuatorAssertTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
 
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
-        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -61,7 +61,7 @@ public class SpringBootActuatorAssertTest {
 
         // When
         try {
-            springBootActuatorAssert.hasHealthStatus(Status.UP);
+            sut.hasHealthStatus(Status.UP);
             fail();
         } catch (AssertionError error) {
             // Then
@@ -74,8 +74,8 @@ public class SpringBootActuatorAssertTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
 
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
-        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -85,7 +85,7 @@ public class SpringBootActuatorAssertTest {
 
         // When
         try {
-            springBootActuatorAssert.hasHttpStatus(HttpStatus.OK);
+            sut.hasHttpStatus(HttpStatus.OK);
             fail();
         } catch (AssertionError error) {
             // Then
@@ -98,8 +98,8 @@ public class SpringBootActuatorAssertTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
 
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
-        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -108,10 +108,10 @@ public class SpringBootActuatorAssertTest {
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.OK);
 
         // When
-        springBootActuatorAssert = springBootActuatorAssert.hasHttpStatus(HttpStatus.OK);
+        sut = sut.hasHttpStatus(HttpStatus.OK);
 
         // Then
-        assertThat(springBootActuatorAssert).isNotNull();
+        assertThat(sut).isNotNull();
     }
 
     @Test
@@ -121,9 +121,9 @@ public class SpringBootActuatorAssertTest {
 
         retryTemplate.setRetryPolicy(new NeverRetryPolicy());
 
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
-        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
-        ReflectionTestUtils.setField(springBootActuatorAssert, "retryTemplate", retryTemplate);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(sut, "retryTemplate", retryTemplate);
 
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -133,7 +133,7 @@ public class SpringBootActuatorAssertTest {
 
         // When
         try {
-            springBootActuatorAssert.hasHealthStatus(Status.UP);
+            sut.hasHealthStatus(Status.UP);
             fail();
         } catch (AssertionError error) {
             // Then
@@ -146,8 +146,8 @@ public class SpringBootActuatorAssertTest {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
 
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
-        ReflectionTestUtils.setField(springBootActuatorAssert, "restTemplate", restTemplate);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -157,7 +157,7 @@ public class SpringBootActuatorAssertTest {
         given(responseEntity.getBody()).willReturn(Collections.singletonMap("status", "UP"));
 
         // When
-        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.hasHealthStatus(Status.UP);
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = sut.hasHealthStatus(Status.UP);
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();
@@ -167,10 +167,10 @@ public class SpringBootActuatorAssertTest {
     public void uaingRestTemplate_succeeds() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
-        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.usingRestTemplate(new RestTemplate());
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = sut.usingRestTemplate(new RestTemplate());
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();
@@ -180,10 +180,10 @@ public class SpringBootActuatorAssertTest {
     public void waitingForMaximum_of_1_minute_succeeds() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
-        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.waitingForMaximum(Duration.ofMinutes(1));
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = sut.waitingForMaximum(Duration.ofMinutes(1));
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();
@@ -193,10 +193,10 @@ public class SpringBootActuatorAssertTest {
     public void waitingForMaximum_of_zero_minutes_throws_exception() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
-        springBootActuatorAssert.waitingForMaximum(Duration.ZERO);
+        sut.waitingForMaximum(Duration.ZERO);
 
         // Then (see expected in @Test annotation)
     }
@@ -205,10 +205,10 @@ public class SpringBootActuatorAssertTest {
     public void withHttpBasic_succeeds() {
         // Given
         ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
-        SpringBootActuatorAssert springBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
+        SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
-        SpringBootActuatorAssert actualSpringBootActuatorAssert = springBootActuatorAssert.withHttpBasic("username", "password");
+        SpringBootActuatorAssert actualSpringBootActuatorAssert = sut.withHttpBasic("username", "password");
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();

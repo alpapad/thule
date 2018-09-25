@@ -1,11 +1,15 @@
 package com.gohenry.spring.boot.starter.oauth2.autoconfiguration;
 
+import com.gohenry.oauth2.Oauth2Configurer;
+import com.gohenry.oauth2.PhpSpringUserAuthenticationConverter;
+import com.gohenry.oauth2.UserIdJwtAccessTokenConverter;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -15,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @ConditionalOnProperty(name = "gohenry.shared.oauth2.resource-server-enabled", matchIfMissing = true)
 @Configuration
 @EnableConfigurationProperties(Oauth2Properties.class)
+@Import(Oauth2Configurer.class)
 public class Oauth2AutoConfiguration {
     private Oauth2Properties oauthProperties;
 
@@ -36,14 +41,14 @@ public class Oauth2AutoConfiguration {
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        DefaultAccessTokenConverter defaultAccessTokenConverter = new DefaultAccessTokenConverter();
+        UserIdJwtAccessTokenConverter userIdJwtAccessTokenConverter = new UserIdJwtAccessTokenConverter();
         PhpSpringUserAuthenticationConverter javaPhpAuthenticationConverter = new PhpSpringUserAuthenticationConverter();
 
-        defaultAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
+        userIdJwtAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
 
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(oauthProperties.getSigningKey());
-        converter.setAccessTokenConverter(defaultAccessTokenConverter);
+        converter.setAccessTokenConverter(userIdJwtAccessTokenConverter);
         return converter;
     }
 }

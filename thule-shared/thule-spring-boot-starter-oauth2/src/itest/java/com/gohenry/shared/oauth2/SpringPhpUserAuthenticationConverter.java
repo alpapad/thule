@@ -1,6 +1,7 @@
 package com.gohenry.shared.oauth2;
 
-import com.gohenry.spring.boot.starter.oauth2.autoconfiguration.PhpSpringUserAuthenticationConverter;
+import com.gohenry.oauth2.PhpSpringUserAuthenticationConverter;
+import com.gohenry.oauth2.UserAuthenticationDetails;
 
 import org.springframework.security.core.Authentication;
 
@@ -8,10 +9,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
 /**
  * This class is an extension of the PhpSpringUserAuthenticationConverter class located in
- * com.gohenry.spring.boot.starter.oauth2.autoconfiguration.PhpSpringUserAuthenticationConverter.
+ * PhpSpringUserAuthenticationConverter.
  *
  * Provides an additional method of convertUserAuthentication since this method intecepted
  * production environment code where it was only wanted in test environment code.
@@ -26,7 +26,9 @@ public class SpringPhpUserAuthenticationConverter extends PhpSpringUserAuthentic
         //Place inside response to replicate as close
         //to PHP based token
         Map<String, Object> data = new HashMap<>();
-        data.put(userId, authentication.getName());
+        data.put(PHP_USER_NAME, authentication.getName());
+        UserAuthenticationDetails userAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
+        data.put(USER_ID, userAuthenticationDetails.getUserId());
         response.put("data", data);
 
         return response;

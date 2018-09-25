@@ -30,7 +30,7 @@ public class JwtResourceServerConfigurerAdapterTest {
     @InjectMocks
     private HttpSecurity httpSecurity;
     @InjectMocks
-    private JwtResourceServerConfigurerAdapter jwtResourceServerConfigurerAdapter;
+    private JwtResourceServerConfigurerAdapter sut;
     @Mock
     private ObjectPostProcessor objectPostProcessor;
     @Mock
@@ -45,7 +45,7 @@ public class JwtResourceServerConfigurerAdapterTest {
         //Given
 
         //When
-        jwtResourceServerConfigurerAdapter.configure(resourceServerSecurityConfigurer);
+        sut.configure(resourceServerSecurityConfigurer);
 
         //Then
         verify(resourceServerSecurityConfigurer).tokenServices(any());
@@ -56,7 +56,7 @@ public class JwtResourceServerConfigurerAdapterTest {
         //Given
 
         //When
-        jwtResourceServerConfigurerAdapter.configure(httpSecurity);
+        sut.configure(httpSecurity);
 
         //Then
     }

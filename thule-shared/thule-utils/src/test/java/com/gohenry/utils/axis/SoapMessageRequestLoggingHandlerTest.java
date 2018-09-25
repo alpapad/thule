@@ -41,7 +41,7 @@ public class SoapMessageRequestLoggingHandlerTest {
     @Mock
     private MessageContext messageContext;
     @InjectMocks
-    private SoapMessageRequestLoggingHandler soapMessageRequestLoggingHandler;
+    private SoapMessageRequestLoggingHandler sut;
 
     @Test(expected = AxisFault.class)
     public void axisfault_is_thrown_when_retrieving_soap_message() throws IOException, NoSuchFieldException, IllegalAccessException {
@@ -59,7 +59,7 @@ public class SoapMessageRequestLoggingHandlerTest {
         given(dataHandler.getContent()).willThrow(IOException.class);
 
         // When
-        soapMessageRequestLoggingHandler.invoke(messageContext);
+        sut.invoke(messageContext);
 
         // Then (see expected in @Test annotation)
     }
@@ -81,7 +81,7 @@ public class SoapMessageRequestLoggingHandlerTest {
         given(logger.isDebugEnabled()).willReturn(true);
 
         // When
-        soapMessageRequestLoggingHandler.invoke(messageContext);
+        sut.invoke(messageContext);
 
         // Then
         verify(logger, never()).debug(anyString(), anyString());
@@ -103,7 +103,7 @@ public class SoapMessageRequestLoggingHandlerTest {
         given(dataHandler.getContent()).willReturn(soapMessage);
 
         // When
-        soapMessageRequestLoggingHandler.invoke(messageContext);
+        sut.invoke(messageContext);
 
         // Then
         verify(logger, times(2)).debug(anyString(), anyString());
@@ -116,7 +116,7 @@ public class SoapMessageRequestLoggingHandlerTest {
         given(logger.isDebugEnabled()).willReturn(false);
 
         // When
-        soapMessageRequestLoggingHandler.invoke(messageContext);
+        sut.invoke(messageContext);
 
         // Then
         verify(logger, never()).debug(anyString(), anyString());

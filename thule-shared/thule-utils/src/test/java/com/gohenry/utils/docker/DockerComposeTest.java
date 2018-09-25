@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class DockerComposeTest {
     private static final String DOCKER_COMPOSE_FILE = "docker-compose.yml";
-    private DockerCompose dockerCompose = new DockerCompose(DOCKER_COMPOSE_FILE);
+    private DockerCompose sut = new DockerCompose(DOCKER_COMPOSE_FILE);
     @Mock
     private Process process;
     @Mock
@@ -25,12 +25,12 @@ public class DockerComposeTest {
     public void docker_compose_command_starts() throws IOException {
         // Given
         String dockerComposeCommand = "ps";
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
+        ReflectionTestUtils.setField(sut, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, dockerComposeCommand)).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
 
         // Then
-        dockerCompose.command(dockerComposeCommand);
+        sut.command(dockerComposeCommand);
 
         // When
         verify(processBuilder).start();
@@ -39,13 +39,13 @@ public class DockerComposeTest {
     @Test
     public void downAndUp_stops_and_starts_docker_compose_process() throws IOException {
         // Given
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
+        ReflectionTestUtils.setField(sut, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v", "--remove-orphans")).willReturn(processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
 
         // Then
-        dockerCompose.downAndUp();
+        sut.downAndUp();
 
         // When
         verify(processBuilder, times(2)).start();
@@ -54,13 +54,13 @@ public class DockerComposeTest {
     @Test
     public void down_stops_docker_compose_process() throws IOException, InterruptedException {
         // Given
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
+        ReflectionTestUtils.setField(sut, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v", "--remove-orphans")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
         given(process.waitFor()).willThrow(InterruptedException.class);
 
         // Then
-        dockerCompose.down();
+        sut.down();
 
         // When
         verify(processBuilder).start();
@@ -69,14 +69,14 @@ public class DockerComposeTest {
     @Test
     public void upAndDown_stops_and_starts_docker_compose_process() throws IOException, InterruptedException {
         // Given
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
+        ReflectionTestUtils.setField(sut, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v", "--remove-orphans")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
 
         // Then
-        dockerCompose.up();
-        dockerCompose.down();
+        sut.up();
+        sut.down();
 
         // When
         verify(processBuilder, times(2)).start();
@@ -85,15 +85,15 @@ public class DockerComposeTest {
     @Test
     public void upAndDown_stops_and_starts_docker_compose_process_ignoring_interrupt() throws IOException, InterruptedException {
         // Given
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
+        ReflectionTestUtils.setField(sut, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "down", "-v", "--remove-orphans")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
         given(process.waitFor()).willThrow(InterruptedException.class).willThrow(InterruptedException.class);
 
         // Then
-        dockerCompose.up();
-        dockerCompose.down();
+        sut.up();
+        sut.down();
 
         // When
         verify(processBuilder, times(2)).start();
@@ -102,12 +102,12 @@ public class DockerComposeTest {
     @Test
     public void up_starts_docker_compose_process() throws IOException {
         // Given
-        ReflectionTestUtils.setField(dockerCompose, "processBuilder", processBuilder);
+        ReflectionTestUtils.setField(sut, "processBuilder", processBuilder);
         given(processBuilder.command("docker-compose", "-f", DOCKER_COMPOSE_FILE, "up")).willReturn(processBuilder);
         given(processBuilder.start()).willReturn(process);
 
         // Then
-        dockerCompose.up();
+        sut.up();
 
         // When
         verify(processBuilder).start();

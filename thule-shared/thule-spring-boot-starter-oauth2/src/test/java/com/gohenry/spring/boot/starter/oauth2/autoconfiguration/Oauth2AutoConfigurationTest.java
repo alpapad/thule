@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class Oauth2AutoConfigurationTest {
     @InjectMocks
-    private Oauth2AutoConfiguration oauth2AutoConfiguration;
+    private Oauth2AutoConfiguration sut;
     @Mock
     private Oauth2Properties oauth2Properties;
 
@@ -25,7 +25,7 @@ public class Oauth2AutoConfigurationTest {
         given(oauth2Properties.getSigningKey()).willReturn("signingKey");
 
         //When
-        AccessTokenConverter accessTokenConverter = oauth2AutoConfiguration.jwtAccessTokenConverter();
+        AccessTokenConverter accessTokenConverter = sut.jwtAccessTokenConverter();
 
         //Then
         assertThat(accessTokenConverter).isNotNull();
@@ -48,7 +48,7 @@ public class Oauth2AutoConfigurationTest {
         given(oauth2Properties.getSigningKey()).willReturn("signingKey");
 
         //When
-        ResourceServerTokenServices resourceServerTokenServices = oauth2AutoConfiguration.defaultTokenServices();
+        ResourceServerTokenServices resourceServerTokenServices = sut.defaultTokenServices();
 
         //Then
         assertThat(resourceServerTokenServices).isNotNull();
@@ -60,9 +60,10 @@ public class Oauth2AutoConfigurationTest {
         given(oauth2Properties.getSigningKey()).willReturn("signingKey");
 
         //When
-        TokenStore tokenStore = oauth2AutoConfiguration.tokenStore();
+        TokenStore tokenStore = sut.tokenStore();
 
         //Then
         assertThat(tokenStore).isNotNull();
     }
+
 }

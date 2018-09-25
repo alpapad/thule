@@ -1,6 +1,7 @@
 package com.gohenry.shared.oauth2;
 
-import com.gohenry.oauth.Oauth2Utils;
+import com.gohenry.oauth2.Oauth2Utils;
+import com.gohenry.oauth2.UserAuthenticationDetails;
 import com.gohenry.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties;
 import com.gohenry.test.assertj.ActuatorUri;
 
@@ -54,7 +55,7 @@ public class ResourceServerIntTest {
     @Before
     public void setUp() {
         OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                null, null, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", oauth2Properties.getSigningKey());
+                null, null, 1234567890, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", oauth2Properties.getSigningKey());
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 
@@ -95,6 +96,7 @@ public class ResourceServerIntTest {
         OAuth2Request oAuth2Request = new OAuth2Request(null, clientId, null,
                 true, null, null, null, null, null);
         UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
+        userAuthentication.setDetails(new UserAuthenticationDetails(999));
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
 
         // Create OAuth2AccessToken
@@ -137,7 +139,7 @@ public class ResourceServerIntTest {
     }
 
     @TestConfiguration
-    static class BankTransferRequestIntTestConfiguration {
+    static class ResourceServerIntTestConfiguration {
         @RestController
         public class HelloWorldController {
             @RequestMapping(value = "/hello")

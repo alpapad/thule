@@ -41,19 +41,22 @@ subprojects {
 project("thule-spring-boot-starter-oauth2") {
     description = "Thule Spring Boot Starter Oauth2"
     dependencies {
+        compile project(":thule-oauth2")
         compile project(":thule-utils")
+        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
         compile("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         testCompile project(":thule-spring-boot-starter-test")
+        testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
 
-        itestCompile project(":thule-oauth2-test")
+        itestCompile("com.h2database:h2")
+        itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
     }
 }
 
 project("thule-spring-boot-starter-oauth2-test") {
     description = "Thule Spring Boot Starter Oauth2 Test"
     dependencies {
-        compile project(":thule-oauth2-test")
         compile("org.springframework.security:spring-security-test")
 
         testCompile project(":thule-spring-boot-starter-test")
@@ -77,15 +80,6 @@ project("thule-spring-boot-starter-utils") {
     description = "Thule Spring Boot Starter Utils"
     dependencies {
         compile project(":thule-utils")
-
-        testCompile project(":thule-spring-boot-starter-test")
-    }
-}
-
-project("thule-oauth2-test") {
-    description = "Thule OAuth2 Test"
-    dependencies {
-        compile("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         testCompile project(":thule-spring-boot-starter-test")
     }
@@ -123,5 +117,19 @@ project("thule-utils") {
         compile("xml-apis:xml-apis") // Required as part of SOAP (jax) when using java 9+
 
         testCompile project(":thule-spring-boot-starter-test")
+
+        itestCompile("com.h2database:h2")
+        itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
+    }
+}
+
+project("thule-oauth2") {
+    dependencies {
+        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
+        compile("org.springframework.boot:spring-boot-starter-security")
+        compile("org.springframework.cloud:spring-cloud-starter-oauth2")
+
+        testCompile project(":thule-test")
+        testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
     }
 }

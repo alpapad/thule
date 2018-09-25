@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.gohenry.spring.boot.starter.oauth2.autoconfiguration.Oauth2AutoConfiguration
+com.gohenry.spring.boot.starter.oauth2.autoconfiguration.Oauth2AutoConfiguration,\
+com.gohenry.spring.boot.starter.oauth2jpa.autoconfiguration.OAuth2JpaIntegrationAutoConfiguration
