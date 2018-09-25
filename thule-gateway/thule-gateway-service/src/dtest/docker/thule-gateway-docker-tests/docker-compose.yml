@@ -4,7 +4,9 @@ services:
   thule-gateway:
     image: pooh:8084/thule-gateway-service
     environment:
+      EUREKA_CLIENT_ENABLED: "false" # Docker tests do not need a discovery registry
       THULE_GATEWAYSERVICE_HEALTHCHECK_SERVICES: "" # Intentionally empty
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Docker tests do not need a configuration service
       TZ: Europe/London
     ports:
     - 9091:8080 # Required to allow docker tests to call the restful api
