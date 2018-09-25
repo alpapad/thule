@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.contract;
 
-import com.gohenry.oauth.Oauth2Utils;
+import com.gohenry.oauth2.Oauth2Utils;
 import com.gohenry.test.assertj.ActuatorUri;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
@@ -160,7 +160,7 @@ public class PeopleContractTest {
 
         // Setup OAuth2
         OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOas support

@@ -4,7 +4,7 @@ import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
-import com.gohenry.oauth.Oauth2Utils;
+import com.gohenry.oauth2.Oauth2Utils;
 import com.gohenry.test.assertj.ActuatorUri;
 
 import org.junit.After;
@@ -64,7 +64,7 @@ public class EmailContractTest {
         emailServiceUrl = String.format("http://localhost:%s/%s", port, Email.ENTITY_NAME_EMAILS);
 
         OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                "username", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 

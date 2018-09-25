@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.docker;
 
-import com.gohenry.oauth.Oauth2Utils;
+import com.gohenry.oauth2.Oauth2Utils;
 import com.gohenry.test.assertj.ActuatorUri;
 import com.gohenry.utils.docker.DockerCompose;
 
@@ -73,7 +73,7 @@ public class PeopleDockerTest {
 
         // Setup OAuth2
         OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "user", "user", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                "user", "user", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 

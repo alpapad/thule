@@ -79,16 +79,18 @@ project("thule-people-service") {
         // Required to retry connecting to the configuration service when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
-        testCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:1.0.0-SNAPSHOT")
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
 
         itestCompile project(":thule-people-config")
+        itestCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:1.0.0-SNAPSHOT")
         itestCompile("com.h2database:h2")
         itestCompile("com.oracle:ojdbc6:11.2.0.1.0")
         itestCompile("org.hsqldb:hsqldb")
 
         ctestCompile project(":thule-people-config")
+        itestCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:1.0.0-SNAPSHOT")
 
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:1.0.0-SNAPSHOT")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:1.0.0-SNAPSHOT")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-utils:1.0.0-SNAPSHOT")
@@ -96,5 +98,6 @@ project("thule-people-service") {
         dtestCompile("mysql:mysql-connector-java")
         dtestCompile("org.springframework.boot:spring-boot-starter-jdbc")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
+        dtestCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
     }
 }
