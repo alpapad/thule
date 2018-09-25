@@ -4,6 +4,8 @@ services:
   thule-admin-service:
     image: pooh:8084/thule-admin-service
     environment:
+      EUREKA_CLIENT_ENABLED: "false" # Docker tests do not need a discovery registry
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Docker tests do not need a configuration service
       TZ: Europe/London
     ports:
       - 9093:8080 # Required to allow docker tests to call the restful api
