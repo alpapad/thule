@@ -1,5 +1,7 @@
 package uk.co.serin.thule.people.repository;
 
+import com.gohenry.oauth2jpa.SpringSecurityAuditorAware;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -169,7 +171,7 @@ public abstract class PersonRepositoryBaseIntTest {
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, testPerson.getVersion() + 1);
 
-        Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value
+        Thread.sleep(100L); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
         personRepository.save(testPerson);
@@ -268,9 +270,5 @@ public abstract class PersonRepositoryBaseIntTest {
     @EnableJpaAuditing
     @TestConfiguration
     static class IdtFileRepositoryBaseIntTestConfiguration {
-        @Bean
-        public SpringSecurityAuditorAware springSecurityAuditorAware() {
-            return new SpringSecurityAuditorAware();
-        }
     }
 }
