@@ -1,7 +1,7 @@
-# Eureka configuration
-eureka:
-  client:
-    enabled: true
+# Spring logging
+logging:
+  level:
+    uk.co.serin.thule: trace
 
 # Spring server configuration
 server:
@@ -12,4 +12,5 @@ thule:
   configurationservice:
     search-locations: ../thule-configuration-config/out/production/resources/config
   discoveryservice:
+    host: localhost
     port: 8761

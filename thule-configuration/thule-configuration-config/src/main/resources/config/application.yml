@@ -1,7 +1,6 @@
 # Eureka configuration
 eureka:
   client:
-    enabled: false # Most environments (test) do no need a discovery service so it is disabled by default
     serviceUrl:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
       defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8080}/eureka/
@@ -17,7 +16,7 @@ info:
 # Spring logging
 logging:
   level:
-    uk.co.serin.thule: trace
+    uk.co.serin.thule: info
     org.springframework: info
 
 # Management endpoint configuration
