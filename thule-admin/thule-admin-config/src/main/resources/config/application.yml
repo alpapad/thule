@@ -1,7 +1,6 @@
 # Eureka configuration
 eureka:
   client:
-    enabled: false # Most environments (test) do no need a discovery service so it is disabled by default
     serviceUrl:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
       defaultZone: http://${thule.discoveryservice.host:thule-discovery-service}:${thule.discoveryservice.port:8080}/eureka/
