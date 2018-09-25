@@ -27,7 +27,6 @@ import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.people.repository.support.SpringSecurityAuditorAware;
 
 import java.util.List;
 import java.util.Optional;
