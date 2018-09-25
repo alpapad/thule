@@ -28,6 +28,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class GohenryServicesHealthIndicatorTest {
 
+    private GohenryServicesHealthIndicator sut;
     @Mock
     private ApplicationProperties applicationProperties;
     @Mock
@@ -38,7 +39,6 @@ public class GohenryServicesHealthIndicatorTest {
     private Future<Status> futureStatus;
     @Mock
     private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
-    private GohenryServicesHealthIndicator gohenryServicesHealthIndicator;
     @Mock
     private ApplicationProperties.HealthCheck healthCheck;
     @Mock
@@ -48,7 +48,7 @@ public class GohenryServicesHealthIndicatorTest {
     public void setUp() {
         given(applicationProperties.getHealthCheck()).willReturn(healthCheck);
         given(healthCheck.getTimeout()).willReturn(2000L);
-        gohenryServicesHealthIndicator = new GohenryServicesHealthIndicator(gohenryServiceInstanceHealthIndicator, applicationProperties, discoveryClient);
+        sut = new GohenryServicesHealthIndicator(gohenryServiceInstanceHealthIndicator, applicationProperties, discoveryClient);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class GohenryServicesHealthIndicatorTest {
         given(builder.up()).willReturn(builder);
 
         //When
-        gohenryServicesHealthIndicator.doHealthCheck(builder);
+        sut.doHealthCheck(builder);
 
         // Then
         verify(builder).up();
@@ -85,7 +85,7 @@ public class GohenryServicesHealthIndicatorTest {
 
         //When
         try {
-            gohenryServicesHealthIndicator.doHealthCheck(builder);
+            sut.doHealthCheck(builder);
             fail();
         } catch (IllegalStateException e) {
             //Then
@@ -105,7 +105,7 @@ public class GohenryServicesHealthIndicatorTest {
         //When
         //When
         try {
-            gohenryServicesHealthIndicator.doHealthCheck(builder);
+            sut.doHealthCheck(builder);
             fail();
         } catch (IllegalStateException e) {
             //Then
@@ -127,7 +127,7 @@ public class GohenryServicesHealthIndicatorTest {
         given(builder.down()).willReturn(builder);
 
         //When
-        gohenryServicesHealthIndicator.doHealthCheck(builder);
+        sut.doHealthCheck(builder);
 
         //Then
         verify(builder).down();
@@ -147,7 +147,7 @@ public class GohenryServicesHealthIndicatorTest {
         given(builder.down()).willReturn(builder);
 
         //When
-        gohenryServicesHealthIndicator.doHealthCheck(builder);
+        sut.doHealthCheck(builder);
 
         //Then
         verify(futureStatus).cancel(true);

@@ -18,7 +18,7 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
     @InjectMocks
     private HttpSecurity httpSecurity;
     @InjectMocks
-    private MicroServiceDelegatingJwtResourceServerConfigurerAdapter microServiceDelegatingJwtResourceServerConfigurerAdapter;
+    private MicroServiceDelegatingJwtResourceServerConfigurerAdapter sut;
     @Mock
     private ObjectPostProcessor objectPostProcessor;
     @Mock
@@ -29,7 +29,7 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
         //Given
 
         //When
-        microServiceDelegatingJwtResourceServerConfigurerAdapter.configure(httpSecurity);
+        sut.configure(httpSecurity);
 
         //Then
     }

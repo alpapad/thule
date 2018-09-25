@@ -1,7 +1,7 @@
-# Eureka configuration
-eureka:
-  client:
-    enabled: true
+# Spring logging
+logging:
+  level:
+    com.gohenry: trace
 
 # Spring server configuration
 server:
@@ -10,4 +10,5 @@ server:
 # Thule configuration
 thule:
   discoveryservice:
+    host: localhost
     port: 8761

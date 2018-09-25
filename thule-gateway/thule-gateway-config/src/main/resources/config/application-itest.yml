@@ -1,0 +1,9 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
+# Spring logging
+logging:
+  level:
+    uk.co.serin.thule: info

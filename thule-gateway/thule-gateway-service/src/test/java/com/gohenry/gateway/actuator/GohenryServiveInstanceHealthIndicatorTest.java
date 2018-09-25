@@ -28,7 +28,7 @@ import static org.mockito.BDDMockito.given;
 public class GohenryServiveInstanceHealthIndicatorTest {
 
     @InjectMocks
-    private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
+    private GohenryServiceInstanceHealthIndicator sut;
     @Mock
     private ResponseEntity<Map> response;
     private Map<String, Object> responseBody = new HashMap<>();
@@ -43,14 +43,14 @@ public class GohenryServiveInstanceHealthIndicatorTest {
         List<ServiceInstance> serviceInstances = Collections.singletonList(serviceInstance);
         responseBody.put("status", Status.DOWN);
 
-        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
         given(response.hasBody()).willReturn(true);
         given(response.getBody()).willReturn(responseBody);
 
         //When
-        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
@@ -60,14 +60,14 @@ public class GohenryServiveInstanceHealthIndicatorTest {
     @Test
     public void when_body_status_is_null_then_health_status_is_down() throws InterruptedException, ExecutionException {
         //Given
-        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
         given(response.hasBody()).willReturn(true);
         given(response.getBody()).willReturn(responseBody);
 
         //When
-        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
@@ -78,14 +78,14 @@ public class GohenryServiveInstanceHealthIndicatorTest {
     public void when_microservice_is_up_then_health_status_is_up() throws InterruptedException, ExecutionException {
         //Given
         responseBody.put("status", Status.UP);
-        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
         given(response.hasBody()).willReturn(true);
         given(response.getBody()).willReturn(responseBody);
 
         //When
-        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
@@ -95,13 +95,13 @@ public class GohenryServiveInstanceHealthIndicatorTest {
     @Test
     public void when_response_body_is_null_then_health_status_is_down() throws InterruptedException, ExecutionException {
         //Given
-        ReflectionTestUtils.setField(gohenryServiceInstanceHealthIndicator, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
         given(response.hasBody()).willReturn(false);
 
         //When
-        Future<Status> result = gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
