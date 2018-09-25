@@ -15,7 +15,7 @@ info:
 # Spring logging
 logging:
   level:
-    uk.co.serin.thule: trace
+    uk.co.serin.thule: info
     org.springframework: info
 
 # Management endpoint configuration

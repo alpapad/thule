@@ -4,12 +4,11 @@ spring:
     name: thule-discovery-service
   cloud:
     config:
-      enabled: false # Most environments (test) do no need a configuration service so it is disabled by default
-      # Must set this to true when attempting retry otherwise it will not retry connecting to the config server if not available at startup
+      # Must set this to true when attempting retry otherwise it will not retry connecting to the configuration server if not available at startup
       failFast: true
       # When to retry accessing the configuration service if it not available at startup
       retry:
         maxAttempts: 9999
         initialInterval: 3000
       # Location of the configuration service
-      uri: http://${thule.configurationservice.host:localhost}:${thule.configurationservice.port:8080}/
+      uri: http://${thule.configurationservice.host:thule-configuration-service}:${thule.configurationservice.port:8080}/

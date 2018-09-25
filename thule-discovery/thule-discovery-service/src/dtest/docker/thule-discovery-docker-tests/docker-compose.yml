@@ -5,6 +5,7 @@ services:
     image: pooh:8084/thule-discovery-service
     environment:
       EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5 # By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Docker tests do not need a configuration service
       TZ: Europe/London
     ports:
     - 9761:8080

@@ -4,9 +4,4 @@ eureka:
     fetch-registry: true
     serviceUrl:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8080}/eureka/
-
-# Thule configuration
-thule:
-  discoveryservice:
-    port: 9761
+      defaultZone: http://localhost:9761/eureka/
