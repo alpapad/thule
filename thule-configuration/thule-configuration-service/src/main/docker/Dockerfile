@@ -1,4 +1,4 @@
-FROM pooh:8082/oracle-java:10.0.2
+FROM pooh:8082/openjdk:10.0.2
 
 ################################  Create user  ################################
 ENV GID 1000
