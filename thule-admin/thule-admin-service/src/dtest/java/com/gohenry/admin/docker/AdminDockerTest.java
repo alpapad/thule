@@ -1,7 +1,7 @@
-package com.gohenry.admin.docker;
+package uk.co.serin.thule.admin.docker;
 
-import com.gohenry.test.assertj.ActuatorUri;
-import com.gohenry.utils.docker.DockerCompose;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -42,8 +42,8 @@ public class AdminDockerTest {
     @Before
     public void setUp() {
         // Create base url
-        String adminApiHost = env.getRequiredProperty("gohenry.adminservice.api.host");
-        int adminApiPort = env.getRequiredProperty("gohenry.adminservice.api.port", Integer.class);
+        String adminApiHost = env.getRequiredProperty("thule.adminservice.api.host");
+        int adminApiPort = env.getRequiredProperty("thule.adminservice.api.port", Integer.class);
         adminServiceBaseUrl = String.format("http://%s:%s", adminApiHost, adminApiPort);
     }
 

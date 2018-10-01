@@ -1,4 +1,4 @@
-package com.gohenry.discovery.contract;
+package uk.co.serin.thule.discovery.contract;
 
 import org.awaitility.Duration;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
 

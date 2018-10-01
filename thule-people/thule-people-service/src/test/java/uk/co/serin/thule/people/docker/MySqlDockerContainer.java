@@ -1,7 +1,7 @@
 package uk.co.serin.thule.people.docker;
 
 
-import com.gohenry.utils.docker.DockerCompose;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 

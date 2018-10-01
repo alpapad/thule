@@ -4,8 +4,8 @@ import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
-import com.gohenry.oauth2.Oauth2Utils;
-import com.gohenry.test.assertj.ActuatorUri;
+import uk.co.serin.thule.oauth2.Oauth2Utils;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,7 +41,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @ActiveProfiles("ctest")

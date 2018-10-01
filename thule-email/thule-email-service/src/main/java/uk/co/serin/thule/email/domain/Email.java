@@ -1,6 +1,6 @@
 package uk.co.serin.thule.email.domain;
 
-import com.gohenry.utils.validator.PatternJava8;
+import uk.co.serin.thule.utils.validator.PatternJava8;
 
 import org.springframework.util.StringUtils;
 

@@ -1,6 +1,6 @@
 package uk.co.serin.thule.email.service;
 
-import com.gohenry.test.ExceptionConstructorTester;
+import uk.co.serin.thule.test.ExceptionConstructorTester;
 
 import org.junit.Test;
 

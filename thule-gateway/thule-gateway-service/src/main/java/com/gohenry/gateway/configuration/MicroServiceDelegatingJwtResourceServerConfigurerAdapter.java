@@ -1,6 +1,6 @@
-package com.gohenry.gateway.configuration;
+package uk.co.serin.thule.gateway.configuration;
 
-import com.gohenry.spring.boot.starter.oauth2.autoconfiguration.JwtResourceServerConfigurerAdapter;
+import uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.JwtResourceServerConfigurerAdapter;
 
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;

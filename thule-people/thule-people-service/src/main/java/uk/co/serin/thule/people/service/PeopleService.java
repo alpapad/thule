@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.service;
 
-import com.gohenry.utils.aop.TracePublicMethods;
+import uk.co.serin.thule.utils.aop.TracePublicMethods;
 
 import org.springframework.stereotype.Service;
 

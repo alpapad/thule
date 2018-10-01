@@ -1,7 +1,7 @@
 package uk.co.serin.thule.people.contract;
 
-import com.gohenry.oauth2.Oauth2Utils;
-import com.gohenry.test.assertj.ActuatorUri;
+import uk.co.serin.thule.oauth2.Oauth2Utils;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
 
@@ -69,7 +69,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 

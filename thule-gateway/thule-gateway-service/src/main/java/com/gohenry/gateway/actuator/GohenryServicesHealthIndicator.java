@@ -1,6 +1,6 @@
-package com.gohenry.gateway.actuator;
+package uk.co.serin.thule.gateway.actuator;
 
-import com.gohenry.gateway.ApplicationProperties;
+import uk.co.serin.thule.gateway.ApplicationProperties;
 
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
@@ -25,19 +25,19 @@ import java.util.concurrent.Future;
  * else returns Health is up
  */
 @Service("thuleServices")
-public class GohenryServicesHealthIndicator extends AbstractHealthIndicator {
+public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
 
     private ApplicationProperties applicationProperties;
     private DiscoveryClient discoveryClient;
-    private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
+    private ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator;
     private RetryTemplate retryTemplate = new RetryTemplate();
 
     /**
-     * @param gohenryServiceInstanceHealthIndicator Injects the GohenryServiceInstanceHealthIndicator as a bean as so to enable the @Async functionality.
+     * @param thuleServiceInstanceHealthIndicator Injects the ThuleServiceInstanceHealthIndicator as a bean as so to enable the @Async functionality.
      */
-    public GohenryServicesHealthIndicator(GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator,
+    public ThuleServicesHealthIndicator(ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator,
                                           ApplicationProperties applicationProperties, DiscoveryClient discoveryClient) {
-        this.gohenryServiceInstanceHealthIndicator = gohenryServiceInstanceHealthIndicator;
+        this.thuleServiceInstanceHealthIndicator = thuleServiceInstanceHealthIndicator;
         this.applicationProperties = applicationProperties;
         this.discoveryClient = discoveryClient;
 
@@ -79,7 +79,7 @@ public class GohenryServicesHealthIndicator extends AbstractHealthIndicator {
                 throw new IllegalStateException(String.format("No instances of [%s] have been registered with the discovery service", serviceId));
             }
             for (ServiceInstance serviceInstance : serviceInstances) {
-                Future<Status> statusFuture = this.gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+                Future<Status> statusFuture = this.thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
                 instanceFutures.add(statusFuture);
             }
         }

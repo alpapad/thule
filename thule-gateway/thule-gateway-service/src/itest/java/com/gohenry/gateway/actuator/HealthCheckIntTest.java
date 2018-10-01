@@ -1,4 +1,4 @@
-package com.gohenry.gateway.actuator;
+package uk.co.serin.thule.gateway.actuator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.gohenry.discovery.docker;
+package uk.co.serin.thule.discovery.docker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

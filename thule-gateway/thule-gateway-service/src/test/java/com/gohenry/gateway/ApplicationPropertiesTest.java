@@ -1,4 +1,4 @@
-package com.gohenry.gateway;
+package uk.co.serin.thule.gateway;
 
 import org.junit.Test;
 

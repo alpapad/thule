@@ -1,4 +1,4 @@
-package com.gohenry.gateway.actuator;
+package uk.co.serin.thule.gateway.actuator;
 
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.cloud.client.ServiceInstance;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 @Service
-public class GohenryServiceInstanceHealthIndicator {
+public class ThuleServiceInstanceHealthIndicator {
     private RestTemplate restTemplate = new RestTemplate();
 
     /**

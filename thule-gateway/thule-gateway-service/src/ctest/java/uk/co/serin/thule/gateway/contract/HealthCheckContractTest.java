@@ -1,4 +1,4 @@
-package com.gohenry.gateway.contract;
+package uk.co.serin.thule.gateway.contract;
 
 import org.awaitility.Awaitility;
 import org.awaitility.Duration;

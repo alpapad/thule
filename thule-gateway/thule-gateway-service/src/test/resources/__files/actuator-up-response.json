@@ -9,7 +9,7 @@
   "body": {
     "status": "UP",
     "details": {
-      "gohenryServices": {
+      "thuleServices": {
         "status": "UP"
       },
       "diskSpace": {

@@ -1,7 +1,7 @@
-package com.gohenry.gateway.security;
+package uk.co.serin.thule.gateway.security;
 
-import com.gohenry.test.assertj.ActuatorUri;
-import com.gohenry.test.assertj.SpringBootActuatorAssert;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("itest")
 @RunWith(SpringRunner.class)

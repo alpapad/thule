@@ -1,6 +1,6 @@
-package com.gohenry.discovery.docker;
+package uk.co.serin.thule.discovery.docker;
 
-import com.gohenry.utils.docker.DockerCompose;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import org.awaitility.Duration;
 import org.junit.AfterClass;
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
 

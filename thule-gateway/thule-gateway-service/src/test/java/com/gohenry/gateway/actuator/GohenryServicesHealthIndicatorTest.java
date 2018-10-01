@@ -1,6 +1,6 @@
-package com.gohenry.gateway.actuator;
+package uk.co.serin.thule.gateway.actuator;
 
-import com.gohenry.gateway.ApplicationProperties;
+import uk.co.serin.thule.gateway.ApplicationProperties;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,16 +19,16 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GohenryServicesHealthIndicatorTest {
+public class ThuleServicesHealthIndicatorTest {
 
-    private GohenryServicesHealthIndicator sut;
+    private ThuleServicesHealthIndicator sut;
     @Mock
     private ApplicationProperties applicationProperties;
     @Mock
@@ -38,7 +38,7 @@ public class GohenryServicesHealthIndicatorTest {
     @Mock
     private Future<Status> futureStatus;
     @Mock
-    private GohenryServiceInstanceHealthIndicator gohenryServiceInstanceHealthIndicator;
+    private ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator;
     @Mock
     private ApplicationProperties.HealthCheck healthCheck;
     @Mock
@@ -48,7 +48,7 @@ public class GohenryServicesHealthIndicatorTest {
     public void setUp() {
         given(applicationProperties.getHealthCheck()).willReturn(healthCheck);
         given(healthCheck.getTimeout()).willReturn(2000L);
-        sut = new GohenryServicesHealthIndicator(gohenryServiceInstanceHealthIndicator, applicationProperties, discoveryClient);
+        sut = new ThuleServicesHealthIndicator(thuleServiceInstanceHealthIndicator, applicationProperties, discoveryClient);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class GohenryServicesHealthIndicatorTest {
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances).willReturn(serviceInstances);
-        given(gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
+        given(thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
         given(futureStatus.isDone()).willReturn(false).willReturn(true).willReturn(true);
         given(futureStatus.get()).willReturn(Status.UP);
         given(builder.up()).willReturn(builder);
@@ -79,7 +79,7 @@ public class GohenryServicesHealthIndicatorTest {
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
-        given(gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
+        given(thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
         given(futureStatus.isDone()).willReturn(true).willReturn(true);
         given(futureStatus.get()).willThrow(InterruptedException.class);
 
@@ -121,7 +121,7 @@ public class GohenryServicesHealthIndicatorTest {
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
-        given(gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
+        given(thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
         given(futureStatus.isDone()).willReturn(false).willReturn(false).willReturn(true);
         given(futureStatus.get()).willReturn(Status.DOWN);
         given(builder.down()).willReturn(builder);
@@ -141,7 +141,7 @@ public class GohenryServicesHealthIndicatorTest {
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
-        given(gohenryServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
+        given(thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
         given(futureStatus.isDone()).willReturn(true).willReturn(true).willReturn(false);
         given(futureStatus.get()).willReturn(Status.DOWN);
         given(builder.down()).willReturn(builder);

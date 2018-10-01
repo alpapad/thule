@@ -1,5 +1,5 @@
-# GoHenry configuration
-gohenry:
+# Thule configuration
+thule:
   adminservice:
     api:
       host: localhost

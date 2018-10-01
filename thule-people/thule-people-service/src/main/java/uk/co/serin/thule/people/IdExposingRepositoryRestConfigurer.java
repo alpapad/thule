@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people;
 
-import com.gohenry.utils.utils.ClassUtils;
+import uk.co.serin.thule.utils.utils.ClassUtils;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;

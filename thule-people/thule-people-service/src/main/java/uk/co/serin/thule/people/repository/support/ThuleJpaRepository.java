@@ -1,7 +1,7 @@
 package uk.co.serin.thule.people.repository.support;
 
 
-import com.gohenry.utils.aop.TracePublicMethods;
+import uk.co.serin.thule.utils.aop.TracePublicMethods;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

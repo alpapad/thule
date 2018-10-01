@@ -1,4 +1,4 @@
-package com.gohenry.gateway.docker;
+package uk.co.serin.thule.gateway.docker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

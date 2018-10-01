@@ -1,4 +1,4 @@
-package com.gohenry.configuration;
+package uk.co.serin.thule.configuration;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

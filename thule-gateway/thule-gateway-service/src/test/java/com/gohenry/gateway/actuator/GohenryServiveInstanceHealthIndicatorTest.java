@@ -1,4 +1,4 @@
-package com.gohenry.gateway.actuator;
+package uk.co.serin.thule.gateway.actuator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +25,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GohenryServiveInstanceHealthIndicatorTest {
+public class ThuleServiveInstanceHealthIndicatorTest {
 
     @InjectMocks
-    private GohenryServiceInstanceHealthIndicator sut;
+    private ThuleServiceInstanceHealthIndicator sut;
     @Mock
     private ResponseEntity<Map> response;
     private Map<String, Object> responseBody = new HashMap<>();

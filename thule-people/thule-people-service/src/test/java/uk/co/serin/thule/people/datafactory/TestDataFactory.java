@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.datafactory;
 
-import com.gohenry.utils.utils.RandomUtils;
+import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;

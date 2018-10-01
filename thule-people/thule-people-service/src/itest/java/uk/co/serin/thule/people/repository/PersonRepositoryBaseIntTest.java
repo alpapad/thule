@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.repository;
 
-import com.gohenry.oauth2jpa.SpringSecurityAuditorAware;
+import uk.co.serin.thule.oauth2jpa.SpringSecurityAuditorAware;
 
 import org.junit.Before;
 import org.junit.Test;

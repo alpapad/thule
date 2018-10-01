@@ -1,6 +1,6 @@
 package uk.co.serin.thule.email.service;
 
-import com.gohenry.utils.aop.LogException;
+import uk.co.serin.thule.utils.aop.LogException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

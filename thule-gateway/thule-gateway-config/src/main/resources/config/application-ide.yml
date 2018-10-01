@@ -1,7 +1,7 @@
 # Spring logging
 logging:
   level:
-    com.gohenry: trace
+    com.thule: trace
 
 # Spring server configuration
 server:

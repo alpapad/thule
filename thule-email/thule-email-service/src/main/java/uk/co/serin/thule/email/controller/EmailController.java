@@ -1,7 +1,7 @@
 package uk.co.serin.thule.email.controller;
 
 
-import com.gohenry.utils.aop.TracePublicMethods;
+import uk.co.serin.thule.utils.aop.TracePublicMethods;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

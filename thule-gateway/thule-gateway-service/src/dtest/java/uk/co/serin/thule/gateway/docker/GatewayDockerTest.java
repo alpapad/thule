@@ -1,7 +1,7 @@
-package com.gohenry.gateway.docker;
+package uk.co.serin.thule.gateway.docker;
 
-import com.gohenry.test.assertj.ActuatorUri;
-import com.gohenry.utils.docker.DockerCompose;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

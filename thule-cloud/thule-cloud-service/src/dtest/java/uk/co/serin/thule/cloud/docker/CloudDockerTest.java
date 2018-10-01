@@ -1,7 +1,7 @@
 package uk.co.serin.thule.cloud.docker;
 
-import com.gohenry.test.assertj.ActuatorUri;
-import com.gohenry.utils.docker.DockerCompose;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CloudDockerTest {

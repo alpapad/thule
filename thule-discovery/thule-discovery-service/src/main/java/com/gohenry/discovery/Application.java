@@ -1,4 +1,4 @@
-package com.gohenry.discovery;
+package uk.co.serin.thule.discovery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

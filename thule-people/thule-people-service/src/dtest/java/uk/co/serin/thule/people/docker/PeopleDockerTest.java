@@ -1,8 +1,8 @@
 package uk.co.serin.thule.people.docker;
 
-import com.gohenry.oauth2.Oauth2Utils;
-import com.gohenry.test.assertj.ActuatorUri;
-import com.gohenry.utils.docker.DockerCompose;
+import uk.co.serin.thule.oauth2.Oauth2Utils;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import java.util.Objects;
 
 import javax.sql.DataSource;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 

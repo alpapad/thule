@@ -1,6 +1,6 @@
-package com.gohenry.admin.contract;
+package uk.co.serin.thule.admin.contract;
 
-import com.gohenry.test.assertj.ActuatorUri;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.time.Duration;
 
-import static com.gohenry.test.assertj.GoHenryAssertions.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)

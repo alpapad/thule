@@ -1,14 +1,14 @@
 # Spring logging
 logging:
   level:
-    com.gohenry: trace
+    com.thule: trace
 
 # Spring server configuration
 server:
   port: 8093
 
-# GoHenry configuration
-gohenry:
+# Thule configuration
+thule:
   discoveryservice:
     host: localhost
     port: 8761
