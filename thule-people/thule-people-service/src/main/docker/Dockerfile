@@ -1,4 +1,4 @@
-FROM pooh:8082/openjdk:10.0.2-jre
+FROM openjdk:10
 
 ################################  Create user  ################################
 ENV GID 1000
