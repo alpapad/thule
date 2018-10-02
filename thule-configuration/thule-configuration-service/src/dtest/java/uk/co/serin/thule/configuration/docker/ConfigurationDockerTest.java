@@ -1,8 +1,5 @@
 package uk.co.serin.thule.configuration.docker;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,6 +16,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
@@ -64,6 +64,15 @@ public class ConfigurationDockerTest {
     }
 
     @Test
+    public void when_checking_health_then_status_is_up() {
+        // Given
+        ActuatorUri actuatorUri = new ActuatorUri(URI.create(configurationServiceBaseUrl + "/actuator/health"));
+
+        // When/Then
+        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+    }
+
+    @Test
     public void has_configuration_for_the_gateway() {
         // Given
         when_checking_health_then_status_is_up();
@@ -91,15 +100,6 @@ public class ConfigurationDockerTest {
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
-    }
-
-    @Test
-    public void when_checking_health_then_status_is_up() {
-        // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(configurationServiceBaseUrl + "/actuator/health"));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(java.time.Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test
