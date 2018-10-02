@@ -9,7 +9,7 @@ public class ThuleUtilsAutoConfigurationTest {
         // Given
 
         // When
-        new uk.co.serin.thule.spring.bot.starter.utils.autoconfiguration.ThuleUtilsAutoConfiguration();
+        new ThuleUtilsAutoConfiguration();
 
         // Then
     }
