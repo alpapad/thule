@@ -1,7 +1,5 @@
 package uk.co.serin.thule.gateway.actuator;
 
-import uk.co.serin.thule.gateway.ApplicationProperties;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
@@ -11,6 +9,8 @@ import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
+
+import uk.co.serin.thule.gateway.ApplicationProperties;
 
 import java.util.ArrayList;
 import java.util.List;

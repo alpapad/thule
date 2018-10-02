@@ -1,7 +1,5 @@
 package uk.co.serin.thule.gateway.actuator;
 
-import uk.co.serin.thule.gateway.ApplicationProperties;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +10,8 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
+import uk.co.serin.thule.gateway.ApplicationProperties;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,11 +19,11 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ThuleServicesHealthIndicatorTest {
