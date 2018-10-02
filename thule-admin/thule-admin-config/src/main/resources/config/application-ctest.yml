@@ -6,4 +6,4 @@ eureka:
 # Spring logging
 logging:
   level:
-    uk.co.serin.thule: info
+    uk.co.serin.thule: trace
