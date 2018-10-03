@@ -15,7 +15,7 @@ public class Oauth2UtilsTest {
 
         // When
         OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", "password", 1234567890,
+                "userName", "password", 1234567890,
                 Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")),
                 "clientId", "signingKey");
 

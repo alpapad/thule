@@ -12,10 +12,11 @@ import java.util.Collections;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter.PHP_USERID;
 
-public class UserIdJwtAccessTokenConverterTest {
+public class SpringJwtAccessTokenConverterTest {
 
-    private UserIdJwtAccessTokenConverter sut = new UserIdJwtAccessTokenConverter();
+    private SpringJwtAccessTokenConverter sut = new SpringJwtAccessTokenConverter();
 
     @Test
     public void given_non_user_authentication_details_object_contained_in_details_then_map_returned_excludes_user_id() {
@@ -37,6 +38,6 @@ public class UserIdJwtAccessTokenConverterTest {
         //Then
         assertThat(actual).isNotNull();
         assertThat(actual).isNotEmpty();
-        assertThat(actual).doesNotContainKey("userId");
+        assertThat(actual).doesNotContainKey(PHP_USERID);
     }
 }

@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter.JAVA_USERNAME;
 
 public class PhpSpringUserAuthenticationConverterTest {
-
     @Test
     public void when_presented_java_based_map_then_return_java_based_authentication() {
         //Given
@@ -18,16 +18,16 @@ public class PhpSpringUserAuthenticationConverterTest {
         PhpSpringUserAuthenticationConverter sut = new PhpSpringUserAuthenticationConverter();
         Map<String, Object> javaTokenMap = new HashMap<>();
 
-        javaTokenMap.put("user_name", "username");
+        javaTokenMap.put(JAVA_USERNAME, "userName");
         javaTokenMap.put("authorities", Collections.singletonList("grantedAuthority"));
-        javaTokenMap.put("user_id", expectedUserId);
+        javaTokenMap.put(SpringJwtAccessTokenConverter.JAVA_USERID, expectedUserId);
 
         //When
         Authentication authentication = sut.extractAuthentication(javaTokenMap);
 
         //Then
         assertThat(authentication).isNotNull();
-        assertThat(authentication.getName()).isEqualTo("username");
+        assertThat(authentication.getName()).isEqualTo("userName");
         UserAuthenticationDetails actualUserAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
         assertThat(actualUserAuthenticationDetails.getUserId()).isEqualTo(expectedUserId);
     }
@@ -40,7 +40,7 @@ public class PhpSpringUserAuthenticationConverterTest {
         Map<String, Object> phpTokenMap = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        phpTokenMap.put("data", data);
+        phpTokenMap.put(SpringJwtAccessTokenConverter.PHP_DATA, data);
 
         //When
         Authentication authentication = sut.extractAuthentication(phpTokenMap);
@@ -59,17 +59,17 @@ public class PhpSpringUserAuthenticationConverterTest {
         Map<String, Object> phpTokenMap = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("user_id", expectedDetails);
-        data.put("userName", "userName");
+        data.put(SpringJwtAccessTokenConverter.PHP_USERID, expectedDetails);
+        data.put(SpringJwtAccessTokenConverter.PHP_USERNAME, "testUserName");
 
-        phpTokenMap.put("data", data);
+        phpTokenMap.put(SpringJwtAccessTokenConverter.PHP_DATA, data);
 
         //When
         Authentication authentication = sut.extractAuthentication(phpTokenMap);
 
         //Then
         assertThat(authentication).isNotNull();
-        assertThat(authentication.getName()).isEqualTo("userName");
+        assertThat(authentication.getName()).isEqualTo("testUserName");
 
         UserAuthenticationDetails userAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
         assertThat(userAuthenticationDetails.getUserId()).isEqualTo(expectedDetails);
@@ -83,8 +83,8 @@ public class PhpSpringUserAuthenticationConverterTest {
         Map<String, Object> phpTokenMap = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("user_id", 1234567890);
-        phpTokenMap.put("data", data);
+        data.put(SpringJwtAccessTokenConverter.PHP_USERID, 1234567890);
+        phpTokenMap.put(SpringJwtAccessTokenConverter.PHP_DATA, data);
 
         //When
         Authentication authentication = sut.extractAuthentication(phpTokenMap);

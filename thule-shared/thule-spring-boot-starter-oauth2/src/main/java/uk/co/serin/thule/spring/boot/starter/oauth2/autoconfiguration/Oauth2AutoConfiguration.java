@@ -13,17 +13,17 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import uk.co.serin.thule.oauth2.Oauth2Configurer;
 import uk.co.serin.thule.oauth2.PhpSpringUserAuthenticationConverter;
-import uk.co.serin.thule.oauth2.UserIdJwtAccessTokenConverter;
+import uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter;
 
 @ComponentScan
 @ConditionalOnProperty(name = "thule.shared.oauth2.resource-server-enabled", matchIfMissing = true)
 @Configuration
-@EnableConfigurationProperties(uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties.class)
+@EnableConfigurationProperties(Oauth2Properties.class)
 @Import(Oauth2Configurer.class)
 public class Oauth2AutoConfiguration {
-    private uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties oauthProperties;
+    private Oauth2Properties oauthProperties;
 
-    public Oauth2AutoConfiguration(uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties oauthProperties) {
+    public Oauth2AutoConfiguration(Oauth2Properties oauthProperties) {
         this.oauthProperties = oauthProperties;
     }
 
@@ -41,14 +41,14 @@ public class Oauth2AutoConfiguration {
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        UserIdJwtAccessTokenConverter userIdJwtAccessTokenConverter = new UserIdJwtAccessTokenConverter();
+        SpringJwtAccessTokenConverter springJwtAccessTokenConverter = new SpringJwtAccessTokenConverter();
         PhpSpringUserAuthenticationConverter javaPhpAuthenticationConverter = new PhpSpringUserAuthenticationConverter();
 
-        userIdJwtAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
+        springJwtAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
 
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(oauthProperties.getSigningKey());
-        converter.setAccessTokenConverter(userIdJwtAccessTokenConverter);
+        converter.setAccessTokenConverter(springJwtAccessTokenConverter);
         return converter;
     }
 }

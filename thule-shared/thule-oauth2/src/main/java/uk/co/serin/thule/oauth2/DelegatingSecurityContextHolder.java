@@ -29,11 +29,11 @@ public class DelegatingSecurityContextHolder {
         return SecurityContextHolder.getContext();
     }
 
-    public uk.co.serin.thule.oauth2.UserAuthenticationDetails getUserAuthenticationDetails() {
+    public UserAuthenticationDetails getUserAuthenticationDetails() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) securityContext.getAuthentication();
         Authentication authentication = oAuth2Authentication.getUserAuthentication();
-        return (uk.co.serin.thule.oauth2.UserAuthenticationDetails) authentication.getDetails();
+        return (UserAuthenticationDetails) authentication.getDetails();
     }
 
     public void setContext(SecurityContext context) {

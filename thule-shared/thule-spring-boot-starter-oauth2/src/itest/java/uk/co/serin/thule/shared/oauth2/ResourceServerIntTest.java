@@ -1,10 +1,5 @@
 package uk.co.serin.thule.shared.oauth2;
 
-import uk.co.serin.thule.oauth2.Oauth2Utils;
-import uk.co.serin.thule.oauth2.UserAuthenticationDetails;
-import uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,13 +21,18 @@ import org.springframework.security.oauth2.client.token.grant.password.ResourceO
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import uk.co.serin.thule.oauth2.Oauth2Utils;
+import uk.co.serin.thule.oauth2.PhpJwtAccessTokenConverter;
+import uk.co.serin.thule.oauth2.UserAuthenticationDetails;
+import uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.URI;
 import java.time.Duration;
@@ -77,7 +77,7 @@ public class ResourceServerIntTest {
 
         //Creates OAuth2Token and sets it within the OAuth2RestTemplate to be used
         OAuth2AccessToken jwtOauth2AccessToken =
-                createJwtOauth2AccessToken("username", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
+                createJwtOauth2AccessToken("userName", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
                         "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
@@ -105,13 +105,13 @@ public class ResourceServerIntTest {
         OAuth2AccessToken oAuth2AccessToken = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
         //Create DefaultAccessTokenConverter
-        DefaultAccessTokenConverter defaultAccessTokenConverter = new DefaultAccessTokenConverter();
+        PhpJwtAccessTokenConverter phpJwtAccessTokenConverter = new PhpJwtAccessTokenConverter();
         SpringPhpUserAuthenticationConverter javaPhpAuthenticationConverter = new SpringPhpUserAuthenticationConverter();
-        defaultAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
+        phpJwtAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
 
         // Create JwtAccessTokenConverter
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setAccessTokenConverter(defaultAccessTokenConverter);
+        jwtAccessTokenConverter.setAccessTokenConverter(phpJwtAccessTokenConverter);
         jwtAccessTokenConverter.setSigningKey(signingKey);
 
         // Convert the oAuth2AccessToken to JWT format and return it

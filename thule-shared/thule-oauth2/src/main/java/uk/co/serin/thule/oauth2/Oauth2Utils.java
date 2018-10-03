@@ -35,7 +35,7 @@ public interface Oauth2Utils {
         // Create JwtAccessTokenConverter
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setSigningKey(signingKey);
-        jwtAccessTokenConverter.setAccessTokenConverter(new UserIdJwtAccessTokenConverter());
+        jwtAccessTokenConverter.setAccessTokenConverter(new SpringJwtAccessTokenConverter());
 
         // Convert the oAuth2AccessToken to JWT format and return it
         return jwtAccessTokenConverter.enhance(oAuth2AccessToken, oAuth2Authentication);

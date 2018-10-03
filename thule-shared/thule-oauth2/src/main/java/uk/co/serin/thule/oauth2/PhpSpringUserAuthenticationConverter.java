@@ -9,9 +9,6 @@ import java.util.Map;
 
 public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 
-    protected static final String PHP_USER_NAME = "userName";
-    protected static final String USER_ID = "user_id";
-
     /**
      * Creates an Authentication object depending on if the Map argument is Java or PHP based.
      *
@@ -26,26 +23,26 @@ public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticat
      */
     @Override
     public Authentication extractAuthentication(Map<String, ?> map) {
-        if (map.containsKey(USERNAME)) {
+        if (map.containsKey(SpringJwtAccessTokenConverter.JAVA_USERNAME)) {
             Authentication authentication = super.extractAuthentication(map);
-            String userId = map.get(USER_ID).toString();
+            String userId = map.get(SpringJwtAccessTokenConverter.JAVA_USERID).toString();
             UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(userId));
             ((UsernamePasswordAuthenticationToken) authentication).setDetails(userAuthenticationDetails);
             return authentication;
         } else {
             //Extracts data map, assigns the principal and creates a new map in a Spring valid context.
             Map<String, Object> data = createDataStructure(map);
-            String principal = data.containsKey(PHP_USER_NAME) ? data.get(PHP_USER_NAME).toString() : "unavailable";
-            Map<String, Object> mapWithUserName = Collections.singletonMap(USERNAME, principal);
+            String principal = data.containsKey(SpringJwtAccessTokenConverter.PHP_USERNAME) ? data.get(SpringJwtAccessTokenConverter.PHP_USERNAME).toString() : "unavailable";
+            Map<String, Object> mapWithUserName = Collections.singletonMap(SpringJwtAccessTokenConverter.JAVA_USERNAME, principal);
 
             //Creates authentication object
             UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) super.extractAuthentication(mapWithUserName);
 
-            if (!data.containsKey(USER_ID)) {
+            if (!data.containsKey(SpringJwtAccessTokenConverter.PHP_USERID)) {
                 throw new UserIdNotFoundException("token does not contain userId");
             }
 
-            UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(data.get(USER_ID).toString()));
+            UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(data.get(SpringJwtAccessTokenConverter.PHP_USERID).toString()));
             authentication.setDetails(userAuthenticationDetails);
             return authentication;
         }
@@ -53,6 +50,6 @@ public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticat
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> createDataStructure(Map<String, ?> map) {
-        return (Map) map.get("data");
+        return (Map) map.get(SpringJwtAccessTokenConverter.PHP_DATA);
     }
 }

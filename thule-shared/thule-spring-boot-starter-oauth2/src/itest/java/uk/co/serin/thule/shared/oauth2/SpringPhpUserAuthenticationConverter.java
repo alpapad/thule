@@ -1,9 +1,10 @@
 package uk.co.serin.thule.shared.oauth2;
 
-import uk.co.serin.thule.oauth2.PhpSpringUserAuthenticationConverter;
-import uk.co.serin.thule.oauth2.UserAuthenticationDetails;
-
 import org.springframework.security.core.Authentication;
+
+import uk.co.serin.thule.oauth2.PhpSpringUserAuthenticationConverter;
+import uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter;
+import uk.co.serin.thule.oauth2.UserAuthenticationDetails;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -26,10 +27,10 @@ public class SpringPhpUserAuthenticationConverter extends PhpSpringUserAuthentic
         //Place inside response to replicate as close
         //to PHP based token
         Map<String, Object> data = new HashMap<>();
-        data.put(PHP_USER_NAME, authentication.getName());
+        data.put(SpringJwtAccessTokenConverter.PHP_USERNAME, authentication.getName());
         UserAuthenticationDetails userAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
-        data.put(USER_ID, userAuthenticationDetails.getUserId());
-        response.put("data", data);
+        data.put(SpringJwtAccessTokenConverter.PHP_USERID, userAuthenticationDetails.getUserId());
+        response.put(SpringJwtAccessTokenConverter.PHP_DATA, data);
 
         return response;
     }
