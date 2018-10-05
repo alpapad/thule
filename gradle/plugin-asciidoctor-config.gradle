@@ -1,0 +1,23 @@
+if (project.tasks.findByName("asciidoctor")) {
+    asciidoctor {
+        attributes "snippets": file("build/snippets"), "version": project.version, "project-name" : project.description
+        dependsOn itest
+        inputs.dir file("src/itest/resources/asciidoc")
+        sourceDir "src/itest/asciidoctor"
+        outputDir "build/reports/asciidoctor"
+    }
+
+    if (project.tasks.findByName("bootJar")) {
+        bootJar {
+            shouldRunAfter asciidoctor
+            from("${asciidoctor.outputDir}/html5") {
+                into 'static/apidocs'
+            }
+        }
+    }
+
+    // Always run asciidoctor after itest, even if asciidoctor is not explicitly specified on the command line
+    if (project.tasks.findByName("itest")) {
+        itest.finalizedBy asciidoctor
+    }
+}
