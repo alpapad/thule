@@ -12,6 +12,7 @@ apply from: "${rootDir}/../gradle/build-dtest-config.gradle"
 apply from: "${rootDir}/../gradle/build-test-config.gradle"
 
 // Include bespoke gradle plugin config
+apply from: "${rootDir}/../gradle/plugin-asciidoctor-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-docker-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-jacoco-config.gradle"
 apply from: "${rootDir}/../gradle/plugin-maven-publish-config.gradle"

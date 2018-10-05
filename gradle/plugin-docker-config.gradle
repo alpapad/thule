@@ -1,6 +1,6 @@
 if (project.tasks.findByName("docker")) {
     if (!file("src/main/docker/Dockerfile").exists()) {
-        // Disable docker task if the docker plugin exists and there is a Dockerfile
+        // Disable docker task if the docker plugin exists and there isn't a Dockerfile
         tasks.docker.onlyIf { false }
     } else {
         // Define variables
