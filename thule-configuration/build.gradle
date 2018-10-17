@@ -11,7 +11,7 @@ plugins {
     id "com.github.ben-manes.versions" version "0.20.0" // Let it apply by default so that the plugin consolidates at the root of the project, otherwise it often hangs when checking dependency versions
     id "com.palantir.docker" version "0.20.1" apply(false)
     id "org.sonarqube" version "2.6.2" apply(false)
-    id "org.springframework.boot" version "2.0.5.RELEASE" apply(false)
+    id "org.springframework.boot" version "2.0.6.RELEASE" apply(false)
 }
 
 project("thule-configuration-config") {
