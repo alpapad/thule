@@ -137,7 +137,7 @@ public class SpringBootActuatorAssertTest {
             fail();
         } catch (AssertionError error) {
             // Then
-            assertThat(error).hasMessageContaining("not successful [503 SERVICE_UNAVAILABLE]");
+            assertThat(error).hasMessageContaining("not successful [503]");
         }
     }
 
