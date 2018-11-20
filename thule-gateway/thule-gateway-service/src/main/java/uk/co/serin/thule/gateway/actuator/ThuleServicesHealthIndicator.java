@@ -57,7 +57,7 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
      *                builds depending on result of overall
      */
     @Override
-    protected void doHealthCheck(Health.Builder builder) {
+    protected void doHealthCheck(Health.Builder builder) throws InterruptedException {
         List<Future<Status>> instanceFutures = startAllHealthChecks();
 
         Status statusOfMicroServices = getStatusOfMicroServices(instanceFutures);
@@ -86,7 +86,7 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
         return instanceFutures;
     }
 
-    private Status getStatusOfMicroServices(List<Future<Status>> instanceFutures) {
+    private Status getStatusOfMicroServices(List<Future<Status>> instanceFutures) throws InterruptedException {
         return retryTemplate.execute(context -> {
             try {
                 boolean allServicesAreUp = true;
@@ -102,8 +102,8 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
                 }
 
                 return checkAllServicesAreUp(allServicesAreUp);
-            } catch (InterruptedException | ExecutionException e) {
-                throw new IllegalStateException("Unable to determine the status of a micro service", e);
+            } catch (ExecutionException e) {
+                return Status.DOWN;
             }
         });
     }

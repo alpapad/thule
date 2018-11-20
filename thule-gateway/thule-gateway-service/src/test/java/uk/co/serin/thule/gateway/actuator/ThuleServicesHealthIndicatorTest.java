@@ -72,7 +72,7 @@ public class ThuleServicesHealthIndicatorTest {
     }
 
     @Test
-    public void when_an_interrupted_exception_then_an_ilegal_state_exception_is_thrown() throws ExecutionException, InterruptedException {
+    public void when_an_execution_exception_then_health_status_should_be_down() throws ExecutionException, InterruptedException {
         //Given
         List<String> serviceIds = Stream.of("Instanceone").collect(Collectors.toList());
         List<ServiceInstance> serviceInstances = Collections.singletonList(serviceInstance);
@@ -81,20 +81,18 @@ public class ThuleServicesHealthIndicatorTest {
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
         given(thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance)).willReturn(futureStatus);
         given(futureStatus.isDone()).willReturn(true).willReturn(true);
-        given(futureStatus.get()).willThrow(InterruptedException.class);
+        given(futureStatus.get()).willThrow(ExecutionException.class);
+        given(builder.down()).willReturn(builder);
 
         //When
-        try {
-            sut.doHealthCheck(builder);
-            fail();
-        } catch (IllegalStateException e) {
-            //Then
-            assertThat(e.getMessage()).isEqualTo("Unable to determine the status of a micro service");
-        }
+        sut.doHealthCheck(builder);
+
+        // Then
+        verify(builder).down();
     }
 
     @Test
-    public void when_no_microservice_instances_exist_then_an_ilegal_state_exception_is_thrown() {
+    public void when_no_microservice_instances_exist_then_an_illegal_state_exception_is_thrown() throws InterruptedException {
         //Given
         List<String> serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
         List<ServiceInstance> serviceInstances = Collections.emptyList();
@@ -102,7 +100,6 @@ public class ThuleServicesHealthIndicatorTest {
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
 
-        //When
         //When
         try {
             sut.doHealthCheck(builder);
