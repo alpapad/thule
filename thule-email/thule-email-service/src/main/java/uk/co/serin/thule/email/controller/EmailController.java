@@ -18,7 +18,6 @@ import javax.validation.Valid;
 @RequestMapping("/emails")
 @TracePublicMethods
 public class EmailController {
-    public static final String EMAIL_SERVICE_PATH = "/emails";
     private final EmailService emailService;
 
     public EmailController(EmailService emailService) {
