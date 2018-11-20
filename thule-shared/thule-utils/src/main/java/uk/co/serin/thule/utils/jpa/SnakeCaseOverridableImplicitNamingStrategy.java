@@ -24,6 +24,7 @@ import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
  */
 public class SnakeCaseOverridableImplicitNamingStrategy extends SpringImplicitNamingStrategy {
 
+    private static final long serialVersionUID = -2469747889245269145L;
     private CamelCaseToSnakeCaseConverter camelCaseToSnakeCaseConverter;
 
     //Parameterless constructor is required for the hibernate to instantiate the strategy outside of the Spring context
@@ -42,6 +43,7 @@ public class SnakeCaseOverridableImplicitNamingStrategy extends SpringImplicitNa
         return camelCaseToSnakeCaseConverter.convert(transformedEntityName);
     }
 
+    @Override
     protected String transformAttributePath(AttributePath attributePath) {
         var attributeProperty = attributePath.getProperty();
         return camelCaseToSnakeCaseConverter.convert(attributeProperty);

@@ -1,6 +1,10 @@
 package uk.co.serin.thule.utils.jpa;
 
-public class CamelCaseToSnakeCaseConverter {
+import java.io.Serializable;
+
+public class CamelCaseToSnakeCaseConverter implements Serializable {
+
+    private static final long serialVersionUID = 2854806819239451467L;
 
     public String convert(String name) {
 
@@ -10,10 +14,12 @@ public class CamelCaseToSnakeCaseConverter {
 
         var builder = new StringBuilder(name);
 
-        for (int i = 1; i < builder.length() - 1; i++) {
-            if (isUnderscoreRequired(builder.charAt(i - 1), builder.charAt(i))) {
-                builder.insert(i++, '_');
+        int index = 1;
+        while (index < builder.length() - 1) {
+            if (isUnderscoreRequired(builder.charAt(index - 1), builder.charAt(index))) {
+                builder.insert(index++, '_');
             }
+            index++;
         }
 
         return builder.toString().toLowerCase();
