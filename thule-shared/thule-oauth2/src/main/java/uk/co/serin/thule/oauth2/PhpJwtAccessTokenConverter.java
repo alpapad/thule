@@ -10,6 +10,7 @@ import static uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter.PHP_USERID;
 
 public class PhpJwtAccessTokenConverter extends DefaultAccessTokenConverter {
 
+    @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
         Map<String, ?> defaultMap = super.convertAccessToken(token, authentication);
         if (authentication.getUserAuthentication().getDetails() instanceof UserAuthenticationDetails) {

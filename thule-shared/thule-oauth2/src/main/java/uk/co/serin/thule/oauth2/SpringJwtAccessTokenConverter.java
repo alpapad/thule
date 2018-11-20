@@ -15,6 +15,7 @@ public class SpringJwtAccessTokenConverter extends DefaultAccessTokenConverter {
     public static final String PHP_USERID = "userId";
     public static final String PHP_USERNAME = "userName";
 
+    @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
         Map<String, ?> defaultMap = super.convertAccessToken(token, authentication);
         if (authentication.getDetails() instanceof UserAuthenticationDetails) {
