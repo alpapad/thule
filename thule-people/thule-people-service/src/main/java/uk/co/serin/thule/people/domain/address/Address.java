@@ -140,7 +140,7 @@ public abstract class Address extends DomainModel {
         if (this == o) {
             return true;
         }
-        if (o == null || !(o instanceof Address)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Address address = (Address) o;
