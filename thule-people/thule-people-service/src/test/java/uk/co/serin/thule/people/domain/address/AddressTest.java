@@ -18,7 +18,7 @@ public class AddressTest {
         EqualsVerifier.forClass(Address.class).
                 withPrefabValues(Action.class, new Action(ActionCode.ADDRESS_DISABLE), new Action(ActionCode.ADDRESS_DISCARD)).
                 withOnlyTheseFields(Address.ENTITY_ATTRIBUTE_NAME_ADDRESS_LINE_1, Address.ENTITY_ATTRIBUTE_NAME_COUNTRY, Address.ENTITY_ATTRIBUTE_NAME_POST_CODE).
-                verify();
+                usingGetClass().verify();
     }
 
     @Test
