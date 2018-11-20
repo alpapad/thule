@@ -41,7 +41,7 @@ public class EmailControllerIntTest {
         Email expectedEmail = TestDataFactory.buildEmail();
 
         // When
-        mvc.perform(post(EmailController.EMAIL_SERVICE_PATH)
+        mvc.perform(post("/emails")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(expectedEmail)))
                 .andDo(print())
