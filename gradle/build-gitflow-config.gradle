@@ -80,7 +80,7 @@ if (branchType == "master") {
         }
     }
 
-    // Download the pre-built jar artifact from Nexus staging
+    // Download the pre-built jar artifact from Nexus staging ready to be published
     task gitflowDownloadJarArtifactFromStaging() {
         publish.dependsOn tasks.gitflowDownloadJarArtifactFromStaging
 
@@ -113,31 +113,33 @@ if (branchType == "master") {
         }
     }
 
-    // Download the pre-built docker image from Nexus staging and tag it as the correct name ready to publish
-    task gitflowDownloadDockerArtifactFromStaging() {
-        dockerPush.dependsOn tasks.gitflowDownloadDockerArtifactFromStaging
+    // Download the pre-built docker image from Nexus staging, tag and push to release Nexus
+    if ("$project.name".endsWith("-service")) {
+        task gitflowDownloadDockerArtifactFromStagingAndPublishToRelease() {
+            publish.dependsOn tasks.gitflowDownloadDockerArtifactFromStagingAndPublishToRelease
 
-        doLast {
-            exec {
-                commandLine "docker", "pull", "$nexusHost:8085/${jar.baseName}:${project.version}"
-            }
-            exec {
-                commandLine "docker", "tag", "$nexusHost:8085/${jar.baseName}:${project.version}", "$nexusHost:8086/${jar.baseName}:${project.version}"
+            doLast {
+                exec {
+                    commandLine "docker", "pull", "$nexusHost:8085/${jar.baseName}:${project.version}"
+                }
+                exec {
+                    commandLine "docker", "tag", "$nexusHost:8085/${jar.baseName}:${project.version}", "$nexusHost:8086/${jar.baseName}:${project.version}"
+                }
             }
         }
     }
 
     // Tag the version
-    task gitflowTag(dependsOn: publish) {
-        publish.finalizedBy gitflowTag
-
-        doLast {
-            exec {
-                commandLine "git", "tag", "--force", "--annotate", "$version", "--message", "$version"
-            }
-            exec {
-                commandLine "git", "push", "--force", "--tags"
-            }
-        }
-    }
+//    task gitflowTag(dependsOn: publish) {
+//        publish.finalizedBy gitflowTag
+//
+//        doLast {
+//            exec {
+//                commandLine "git", "tag", "--force", "--annotate", "$version", "--message", "$version"
+//            }
+//            exec {
+//                commandLine "git", "push", "--force", "--tags"
+//            }
+//        }
+//    }
 }

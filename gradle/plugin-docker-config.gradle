@@ -34,7 +34,7 @@ if (project.tasks.findByName("docker")) {
             name "$dockerImageName"
             dockerfile project.file("src/main/docker/Dockerfile")
             buildArgs(["JAR_FILE": "${jar.archiveName}"])
-            files jar.archivePath, "src/main/docker/docker-entrypoint.sh"
+            files jar.archivePath, "src/main/docker"
             pull true
             tags "${project.version}"
 
@@ -67,8 +67,9 @@ if ("$project.name".endsWith("-config")) {
             exec {
                 commandLine "docker", "container", "create", "--name", "$project.name", "-v", "$project.name:/config", "alpine"
             }
-            // Copy the spring boot config to the volume
+            // Copy the spring boot config, if there is any, to the volume
             exec {
+                ignoreExitValue true
                 commandLine "docker", "cp", "$buildDir/resources/main/config", "$project.name:/"
             }
             // Delete the temporary container

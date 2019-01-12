@@ -1,0 +1,15 @@
+// Docker test configuration
+configurations {
+    ptestCompile
+    ptestRuntime
+}
+sourceSets {
+    ptest {
+        java.srcDir file("src/ptest/java")
+        resources.srcDir file("src/ptest/resources")
+    }
+}
+task ptest(type: Test) {
+    testClassesDirs = sourceSets.ptest.output.classesDirs
+    classpath = sourceSets.ptest.runtimeClasspath
+}
