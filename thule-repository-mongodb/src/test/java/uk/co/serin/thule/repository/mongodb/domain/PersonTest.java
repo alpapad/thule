@@ -1,6 +1,7 @@
 package uk.co.serin.thule.repository.mongodb.domain;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -42,6 +43,7 @@ public class PersonTest {
         actualPerson.setLastName(expectedPerson.getLastName());
         actualPerson.setUpdatedAt(expectedPerson.getUpdatedAt());
         actualPerson.setUpdatedBy(expectedPerson.getUpdatedBy());
+        actualPerson.setUserId(expectedPerson.getUserId());
         actualPerson.setVersion(expectedPerson.getVersion());
 
         // Then
@@ -58,6 +60,7 @@ public class PersonTest {
         assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(expectedPerson.getUpdatedBy());
+        assertThat(actualPerson.getUserId()).isEqualTo(expectedPerson.getUserId());
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion());
     }
 
@@ -169,6 +172,6 @@ public class PersonTest {
 
     @Test
     public void when_equals_is_overridden_then_verify_equals_conforms_to_contract() {
-        EqualsVerifier.forClass(Person.class).withOnlyTheseFields(Person.ENTITY_ATTRIBUTE_NAME_USER_ID).verify();
+        EqualsVerifier.forClass(Person.class).suppress(Warning.NONFINAL_FIELDS).withOnlyTheseFields(Person.ENTITY_ATTRIBUTE_NAME_USER_ID).verify();
     }
 }

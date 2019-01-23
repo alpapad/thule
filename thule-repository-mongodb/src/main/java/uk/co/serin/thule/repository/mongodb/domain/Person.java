@@ -32,7 +32,7 @@ public final class Person {
 
     @NotNull
     @Size(max = USER_ID_MAX_LENGTH)
-    private final String userId;
+    private String userId;
     @CreatedDate
     private LocalDateTime createdAt;
     @CreatedBy
@@ -224,6 +224,10 @@ public final class Person {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Long getVersion() {
