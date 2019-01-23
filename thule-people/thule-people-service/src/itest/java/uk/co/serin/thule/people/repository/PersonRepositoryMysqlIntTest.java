@@ -1,7 +1,7 @@
 package uk.co.serin.thule.people.repository;
 
 import org.awaitility.Duration;
-import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
+import org.flywaydb.core.internal.jdbc.JdbcUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -47,7 +47,7 @@ public class PersonRepositoryMysqlIntTest extends PersonRepositoryBaseIntTest {
                 given().ignoreExceptions().pollInterval(fibonacci()).
                         await().timeout(Duration.FIVE_MINUTES).
                         untilAsserted(() -> {
-                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
+                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource(), 1);
                             JdbcUtils.closeConnection(connection);
                         });
                 flyway.migrate();

@@ -98,5 +98,7 @@ project("thule-people-service") {
         dtestCompile("org.springframework.boot:spring-boot-starter-jdbc")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
         dtestCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
+        // Required due to a bug in spring cloud which has a dependency on a milestone release for spring-security-oauth2-autoconfigure:2.1.0.M4
+        dtestCompile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE")
     }
 }

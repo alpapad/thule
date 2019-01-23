@@ -1,11 +1,9 @@
 package uk.co.serin.thule.people.contract;
 
-import uk.co.serin.thule.oauth2.Oauth2Utils;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
 
-import org.flywaydb.core.internal.util.jdbc.JdbcUtils;
+import org.flywaydb.core.internal.jdbc.JdbcUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,6 +38,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import uk.co.serin.thule.oauth2.Oauth2Utils;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
@@ -52,6 +51,7 @@ import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.URI;
 import java.sql.Connection;
@@ -69,9 +69,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @AutoConfigureWireMock(port = 0)
@@ -302,7 +302,7 @@ public class PeopleContractTest {
                 given().ignoreExceptions().pollInterval(fibonacci()).
                         await().timeout(org.awaitility.Duration.FIVE_MINUTES).
                         untilAsserted(() -> {
-                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource());
+                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource(), 1);
                             JdbcUtils.closeConnection(connection);
                         });
                 flyway.migrate();
