@@ -62,6 +62,8 @@ project("thule-gateway-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         compile("org.springframework.retry:spring-retry")
+        // Required due to a bug in spring cloud which has a dependency on a milestone release for spring-security-oauth2-autoconfigure:2.1.0.M4
+        compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE")
 
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
 
