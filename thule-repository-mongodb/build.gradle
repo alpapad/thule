@@ -1,7 +1,4 @@
 buildscript {
-    ext["byte-buddy.version"] = "1.8.17"
-    // Spring boot uses version 1.7.11 but version 1.8.0+ is required for java 10 support
-
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
         mavenLocal()
