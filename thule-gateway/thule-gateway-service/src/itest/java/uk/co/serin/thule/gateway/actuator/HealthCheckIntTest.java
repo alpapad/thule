@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -48,7 +48,7 @@ public class HealthCheckIntTest {
     @Test
     public void when_checking_health_then_response_should_be_ok() {
         // Given
-        stubFor(get(
+        givenThat(get(
                 urlEqualTo("/actuator/health")).
                                                        willReturn(aResponse().
                                                                                      withBodyFile("actuator-up-response.json").

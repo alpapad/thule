@@ -32,7 +32,7 @@ import java.util.Map;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
@@ -59,13 +59,9 @@ public class HealthCheckContractTest {
     @Test
     public void given_asynchronous_processing_when_checking_health_then_should_respond_within_5_seconds() {
         // Given
-        stubFor(get(
-                urlEqualTo("/actuator/health")).
-                                                       willReturn(aResponse().
-                                                                                     withFixedDelay(2000).
-                                                                                     withBodyFile("actuator-up-response.json").
-                                                                                     withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                                                                                     withStatus(HttpStatus.OK.value())));
+        givenThat(get(urlEqualTo("/actuator/health")).willReturn(
+                aResponse().withFixedDelay(2000).withBodyFile("actuator-up-response.json").withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                           .withStatus(HttpStatus.OK.value())));
 
         given(discoveryClient.getInstances("thule-admin-service")).willReturn(Collections.singletonList(serviceInstance));
         given(discoveryClient.getInstances("thule-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
@@ -78,7 +74,7 @@ public class HealthCheckContractTest {
         // When
         List<ResponseEntity<Map>> responseEntitities = new ArrayList<>();
         Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.FIVE_SECONDS). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
+                await().timeout(Duration.TEN_SECONDS). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
                                                                 untilAsserted(
                 () -> responseEntitities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
 

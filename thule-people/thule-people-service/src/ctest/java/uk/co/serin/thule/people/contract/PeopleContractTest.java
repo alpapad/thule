@@ -65,7 +65,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
@@ -183,7 +183,7 @@ public class PeopleContractTest {
         Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
-        stubFor(post(
+        givenThat(post(
                 urlEqualTo(EMAILS_PATH)).
                 withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
                 willReturn(aResponse().
@@ -222,7 +222,7 @@ public class PeopleContractTest {
         // Given
         Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
 
-        stubFor(
+        givenThat(
                 post(urlEqualTo(EMAILS_PATH)).
                         withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
                         willReturn(aResponse().
@@ -245,7 +245,7 @@ public class PeopleContractTest {
     @Test
     public void when_updating_a_person_then_that_persons_is_updated() throws InterruptedException {
         // Given
-        stubFor(post(
+        givenThat(post(
                 urlEqualTo(EMAILS_PATH)).
                 withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
                 willReturn(aResponse().
