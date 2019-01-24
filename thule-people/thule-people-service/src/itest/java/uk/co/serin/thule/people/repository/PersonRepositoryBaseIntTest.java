@@ -1,21 +1,19 @@
 package uk.co.serin.thule.people.repository;
 
-import uk.co.serin.thule.oauth2jpa.SpringSecurityAuditorAware;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
 
+import uk.co.serin.thule.people.RepositoryTestConfiguration;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
@@ -50,6 +48,7 @@ import static org.junit.Assert.fail;
  * it is enabled in the inner configuration class.
  */
 @DataJpaTest
+@Import(RepositoryTestConfiguration.class)
 @RunWith(SpringRunner.class)
 @WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
 public abstract class PersonRepositoryBaseIntTest {
@@ -64,11 +63,13 @@ public abstract class PersonRepositoryBaseIntTest {
     @Autowired
     private StateRepository stateRepository;
     private TestDataFactory testDataFactory;
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -81,7 +82,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -95,7 +96,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -108,7 +109,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_updatedBy_then_the_new_person_is_found() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -121,7 +122,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -134,7 +135,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_with_criteria_then_the_new_person_is_found() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -147,7 +148,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_searching_by_email_address_then_the_new_person_is_found() {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
         Person expectedPerson = testDataFactory.buildPerson(testPerson);
 
         // When
@@ -160,7 +161,8 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
         // Given
-        Person testPerson = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var testPerson = createAndPersistPerson();
+
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
         testPerson.setLastName("updatedLastName");
@@ -168,23 +170,34 @@ public abstract class PersonRepositoryBaseIntTest {
         testPerson.setEmailAddress("updated@gmail.com");
         testPerson.setPassword("updatedPassword");
 
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
-        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, testPerson.getVersion() + 1);
-
-        Thread.sleep(100L); // Allow enough time to lapse for the updatedAt to be updated with a different value
+        Thread.sleep(1000L); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
         personRepository.save(testPerson);
+        testEntityManager.flush();
 
         // Then
-        Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
+        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
 
-        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson).isNotSameAs(testPerson);
+        assertThat(actualPerson.getFirstName()).isEqualTo(testPerson.getFirstName());
+        assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
+        assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(testPerson.getDateOfBirth());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(testPerson.getEmailAddress());
+        assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
+        assertThat(actualPerson.getUpdatedAt()).isAfter(testPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
+        assertThat(actualPerson.getVersion()).isEqualTo(testPerson.getVersion() + 1);
+    }
 
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+    private Person createAndPersistPerson() {
+        var testPerson = testDataFactory.buildPersonWithAllAssociations();
+
+        var person = personRepository.saveAndFlush(testPerson);
+        testEntityManager.clear();
+
+        return person;
     }
 
     @Before
@@ -265,10 +278,5 @@ public abstract class PersonRepositoryBaseIntTest {
         // Then
         Optional<Person> deletedPerson = personRepository.findById(person.getId());
         assertThat(deletedPerson).isNotPresent();
-    }
-
-    @EnableJpaAuditing
-    @TestConfiguration
-    static class IdtFileRepositoryBaseIntTestConfiguration {
     }
 }
