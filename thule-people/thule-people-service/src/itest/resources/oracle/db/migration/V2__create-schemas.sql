@@ -1,6 +1,9 @@
 -- Prevent from expiring
 ALTER USER system IDENTIFIED BY oracle;
 
+-- Allow creating/deleting of users without a C## prefix
+ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+
 -- Create user
 CREATE USER thule PROFILE DEFAULT IDENTIFIED BY thule
   DEFAULT TABLESPACE USERS
@@ -8,7 +11,6 @@ CREATE USER thule PROFILE DEFAULT IDENTIFIED BY thule
   QUOTA UNLIMITED ON USERS
   QUOTA UNLIMITED ON USERS
   ACCOUNT UNLOCK;
-
 
 -- Grants
 GRANT CREATE SESSION

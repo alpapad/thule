@@ -1,6 +1,5 @@
 ALTER SESSION SET CURRENT_SCHEMA = THULE;
 
-
 -- States
 
 -- Actions
