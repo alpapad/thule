@@ -1,25 +1,17 @@
 package uk.co.serin.thule.people.contract;
 
-import com.netflix.loadbalancer.Server;
-import com.netflix.loadbalancer.ServerList;
-
-import org.flywaydb.core.internal.jdbc.JdbcUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.cloud.netflix.ribbon.StaticServerList;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
@@ -36,7 +28,6 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import uk.co.serin.thule.oauth2.Oauth2Utils;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
@@ -54,27 +45,28 @@ import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.URI;
-import java.sql.Connection;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.awaitility.Awaitility.given;
-import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @AutoConfigureWireMock(port = 0)
+@Import(RepositoryTestConfiguration.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
@@ -98,6 +90,8 @@ public class PeopleContractTest {
     private TestDataFactory testDataFactory;
     @Autowired
     private TestRestTemplate testRestTemplate;
+    @Autowired
+    private EntityManager entityManager;
 
     @BeforeClass
     public static void setUpClass() {
@@ -253,71 +247,48 @@ public class PeopleContractTest {
                         withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
                         withBodyFile("thule-email-service-response.json")));
 
-        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        testPerson = createTestPerson(testPerson);
-        long id = testPerson.getId();
+        var testPerson = createAndPersistPerson();
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
         testPerson.setLastName("updatedLastName");
-        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
+        testPerson.setDateOfBirth(LocalDate.of(1963, 05, 05));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setPassword("updatedPassword");
         testPerson.setState(null);
 
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
-        expectedPerson.setState(null);
-        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, null);
-
         Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
-        oAuth2RestTemplate.put(peopleServiceUrl + ID_PATH, testPerson, id);
+        oAuth2RestTemplate.put(peopleServiceUrl + ID_PATH, testPerson, testPerson.getId());
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
-        Person actualPerson = oAuth2RestTemplate.getForObject(peopleServiceUrl + ID_PATH, Person.class, id);
+        Person actualPerson = personRepository.findById(testPerson.getId()).get();
 
-        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
+        assertThat(actualPerson).isNotSameAs(testPerson);
+        assertThat(actualPerson.getFirstName()).isEqualTo(testPerson.getFirstName());
+        assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
+        assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(testPerson.getDateOfBirth());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(testPerson.getEmailAddress());
+        assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
+        assertThat(actualPerson.getUpdatedAt()).isAfter(testPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
-
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+        assertThat(actualPerson.getVersion()).isEqualTo(testPerson.getVersion() + 1);
     }
 
-    @TestConfiguration
-    static class BankTransferRequestIntTestConfiguration {
-        @Value("${wiremock.server.port}")
-        private int wireMockServerPort;
+    private Person createAndPersistPerson() {
+        var testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
+        testPerson.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        testPerson.setDateOfBirth(LocalDate.of(1963, 05, 05));
 
-        @Bean
-        public FlywayMigrationStrategy flywayMigrationStrategy() {
-            return flyway -> {
-                // Wait until the database is available because otherwise flyway migrate will fail
-                // resulting in the application context not loading
-                given().ignoreExceptions().pollInterval(fibonacci()).
-                        await().timeout(org.awaitility.Duration.FIVE_MINUTES).
-                        untilAsserted(() -> {
-                            Connection connection = JdbcUtils.openConnection(flyway.getDataSource(), 1);
-                            JdbcUtils.closeConnection(connection);
-                        });
-                flyway.migrate();
-            };
-        }
+        var person = personRepository.saveAndFlush(testPerson);
+        entityManager.clear();
 
-        /**
-         * When using a Feign client, it will try to use the load balancer (Ribbon) to lookup the
-         * service via a discovery service (Eureka). However, for the integration test, we don't use
-         * Ribbon or Eureka so we need to tell Feign to use a static server, in this case Wiremock.
-         */
-        @Bean
-        public ServerList<Server> ribbonServerList() {
-            return new StaticServerList<>(new Server("localhost", wireMockServerPort));
-        }
+        var person2 = personRepository.findById(testPerson.getId());
 
+        return person;
     }
 }
