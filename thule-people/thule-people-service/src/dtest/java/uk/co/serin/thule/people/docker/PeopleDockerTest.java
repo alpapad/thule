@@ -8,15 +8,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -31,17 +28,12 @@ import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
-import java.sql.Connection;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.sql.DataSource;
-
-import static org.awaitility.Awaitility.given;
-import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -103,22 +95,5 @@ public class PeopleDockerTest {
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    /**
-     * Test configuration to delay the tests until the database is available
-     */
-    @TestConfiguration
-    static class ContainerTestConfiguration {
-        @Bean
-        public boolean databaseAvailable(DataSource dataSource) {
-            given().ignoreExceptions().pollInterval(fibonacci()).
-                    await().timeout(org.awaitility.Duration.FIVE_MINUTES).
-                    untilAsserted(() -> {
-                        Connection connection = dataSource.getConnection();
-                        JdbcUtils.closeConnection(connection);
-                    });
-            return true;
-        }
     }
 }
