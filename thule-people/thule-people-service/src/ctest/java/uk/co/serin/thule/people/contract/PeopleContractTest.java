@@ -282,12 +282,9 @@ public class PeopleContractTest {
     private Person createAndPersistPerson() {
         var testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
         testPerson.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-        testPerson.setDateOfBirth(LocalDate.of(1963, 05, 05));
 
         var person = personRepository.saveAndFlush(testPerson);
         entityManager.clear();
-
-        var person2 = personRepository.findById(testPerson.getId());
 
         return person;
     }
