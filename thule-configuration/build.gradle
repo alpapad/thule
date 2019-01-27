@@ -101,7 +101,7 @@ project("thule-configuration-service") {
 
         ctestCompile project(":thule-configuration-config")
 
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
     }
 }
