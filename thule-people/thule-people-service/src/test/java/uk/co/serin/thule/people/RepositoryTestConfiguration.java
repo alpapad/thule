@@ -17,7 +17,6 @@ import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 @TestConfiguration
-@EnableJpaAuditing
 public class RepositoryTestConfiguration {
     @Bean
     public AuditorAware auditorAware() {

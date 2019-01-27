@@ -9,7 +9,6 @@ import uk.co.serin.thule.people.repository.support.ThuleJpaRepository;
 
 @Configuration
 @EnableFeignClients
-//@EnableJpaAuditing
 @EnableJpaRepositories(repositoryBaseClass = ThuleJpaRepository.class)
 public class ApplicationConfigurer {
 }
