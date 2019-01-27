@@ -87,7 +87,7 @@ project("thule-test") {
     dependencies {
         compile project(":thule-utils")
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
-        compile("org.awaitility:awaitility:3.1.2")
+        compile("org.awaitility:awaitility:3.1.6")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-web")
