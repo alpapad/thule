@@ -3,9 +3,9 @@ package uk.co.serin.thule.people;
 import org.awaitility.Duration;
 import org.flywaydb.core.internal.jdbc.JdbcUtils;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
-@TestConfiguration
+@EnableJpaAuditing
 public class RepositoryTestConfiguration {
     @Bean
     public AuditorAware auditorAware() {

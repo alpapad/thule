@@ -58,8 +58,8 @@ project("thule-people-service") {
     }
 
     dependencies {
-        compile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:1.0.0-SNAPSHOT")
         compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:1.0.0-SNAPSHOT")
         compile("com.googlecode.log4jdbc:log4jdbc:1.2")
         compile("mysql:mysql-connector-java")
         compile("org.flywaydb:flyway-core")
