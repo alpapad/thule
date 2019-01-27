@@ -61,7 +61,6 @@ project("thule-people-service") {
         compile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:1.0.0-SNAPSHOT")
         compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
         compile("com.googlecode.log4jdbc:log4jdbc:1.2")
-        compile("javax.xml.bind:jaxb-api") // Required by Hibernate (jaxb) when using java 9+
         compile("mysql:mysql-connector-java")
         compile("org.flywaydb:flyway-core")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server

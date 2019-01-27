@@ -51,10 +51,6 @@ project("thule-discovery-service") {
 
     dependencies {
         compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
-        compile("com.sun.xml.bind:jaxb-core:2.3.0.1") // Required by Eureka (jaxb) when using java 9+
-        compile("com.sun.xml.bind:jaxb-impl:2.3.0.1") // Required by Eureka (jaxb) when using java 9+
-        compile("javax.activation:javax.activation-api:1.2.0") // Required by Eureka (jaxp) when using java 9+
-        compile("javax.xml.bind:jaxb-api") // Required by Eureka (jaxb) when using java 9+
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-web")
