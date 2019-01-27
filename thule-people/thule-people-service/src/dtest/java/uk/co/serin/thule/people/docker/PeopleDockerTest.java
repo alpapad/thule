@@ -22,9 +22,9 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.oauth2.Oauth2Utils;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
+import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.io.IOException;
 import java.net.URI;
