@@ -4,8 +4,6 @@ import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
-import uk.co.serin.thule.oauth2.Oauth2Utils;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,14 +33,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.serin.thule.email.datafactories.TestDataFactory;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.net.Socket;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
