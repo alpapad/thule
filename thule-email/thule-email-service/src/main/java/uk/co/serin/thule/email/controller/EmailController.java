@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.email.service.EmailService;
-import uk.co.serin.thule.utils.aop.TracePublicMethods;
+import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import javax.validation.Valid;
 
