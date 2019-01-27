@@ -29,7 +29,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.oauth2.Oauth2Utils;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
@@ -43,6 +42,7 @@ import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.net.URI;
 import java.time.Duration;
