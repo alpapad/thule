@@ -26,6 +26,7 @@ public class JwtResourceServerConfigurerAdapter extends ResourceServerConfigurer
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+            .antMatchers("/apidocs/**").permitAll()
             .antMatchers("/**").authenticated().and().httpBasic().disable();
     }
 }

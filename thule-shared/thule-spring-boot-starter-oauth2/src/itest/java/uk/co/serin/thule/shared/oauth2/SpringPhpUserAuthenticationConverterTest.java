@@ -3,8 +3,8 @@ package uk.co.serin.thule.shared.oauth2;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter;
-import uk.co.serin.thule.oauth2.UserAuthenticationDetails;
+import uk.co.serin.thule.utils.oauth2.SpringJwtAccessTokenConverter;
+import uk.co.serin.thule.utils.oauth2.UserAuthenticationDetails;
 
 import java.util.Map;
 

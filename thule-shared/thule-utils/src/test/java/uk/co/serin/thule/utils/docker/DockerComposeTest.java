@@ -7,7 +7,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
+import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -20,6 +22,19 @@ public class DockerComposeTest {
     private Process process;
     @Mock
     private ProcessBuilder processBuilder;
+
+    @Test
+    public void when_environment_variables_are_specified_then_they_are_set_in_the_docker_compose_process() {
+        // Given
+        var environmentVariables = Collections.singletonMap("name", "value");
+
+        // Then
+        sut = new DockerCompose(DOCKER_COMPOSE_FILE, environmentVariables);
+
+        // When
+        ProcessBuilder processBuilder = (ProcessBuilder) ReflectionTestUtils.getField(sut, "processBuilder");
+        assertThat(processBuilder.environment()).containsAllEntriesOf(environmentVariables);
+    }
 
     @Test
     public void docker_compose_command_starts() throws IOException {

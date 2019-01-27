@@ -1,5 +1,11 @@
 package uk.co.serin.thule.utils.jpa;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import uk.co.serin.thule.utils.jpa.repository.CustomColumnNameRepository;
 import uk.co.serin.thule.utils.jpa.repository.CustomJoinColumnReferencedRepository;
 import uk.co.serin.thule.utils.jpa.repository.CustomTableNameRepository;
@@ -7,16 +13,10 @@ import uk.co.serin.thule.utils.jpa.repository.StandardColumnNameRepository;
 import uk.co.serin.thule.utils.jpa.repository.StandardJoinColumnReferencedRepository;
 import uk.co.serin.thule.utils.jpa.repository.StandardTableNameRepository;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DataJpaTest
 public class ImplicitNamingStrategyIntTest {
 
     @Autowired

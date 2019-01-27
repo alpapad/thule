@@ -28,11 +28,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uk.co.serin.thule.oauth2.Oauth2Utils;
-import uk.co.serin.thule.oauth2.PhpJwtAccessTokenConverter;
-import uk.co.serin.thule.oauth2.UserAuthenticationDetails;
 import uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.Oauth2Properties;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
+import uk.co.serin.thule.utils.oauth2.PhpJwtAccessTokenConverter;
+import uk.co.serin.thule.utils.oauth2.UserAuthenticationDetails;
 
 import java.net.URI;
 import java.time.Duration;

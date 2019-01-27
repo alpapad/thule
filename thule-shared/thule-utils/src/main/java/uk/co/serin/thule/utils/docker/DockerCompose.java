@@ -1,6 +1,7 @@
 package uk.co.serin.thule.utils.docker;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class DockerCompose {
@@ -11,6 +12,11 @@ public class DockerCompose {
     public DockerCompose(String dockerComposeYmlFile) {
         dockerComposeCommandPrefix = new String[]{"docker-compose", "-f", dockerComposeYmlFile};
         processBuilder = new ProcessBuilder().inheritIO();
+    }
+
+    public DockerCompose(String dockerComposeYmlFile, Map<String, String> environment) {
+        this(dockerComposeYmlFile);
+        processBuilder.environment().putAll(environment);
     }
 
     public Process command(String... arguments) throws IOException {

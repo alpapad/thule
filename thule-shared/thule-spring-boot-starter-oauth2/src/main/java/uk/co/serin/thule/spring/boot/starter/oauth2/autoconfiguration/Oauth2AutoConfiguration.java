@@ -1,5 +1,9 @@
 package uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration;
 
+import uk.co.serin.thule.utils.oauth2.PhpSpringUserAuthenticationConverter;
+import uk.co.serin.thule.utils.oauth2.SpringJwtAccessTokenConverter;
+import uk.co.serin.thule.utils.service.oauth2.Oauth2Configurer;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,10 +14,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-
-import uk.co.serin.thule.oauth2.Oauth2Configurer;
-import uk.co.serin.thule.oauth2.PhpSpringUserAuthenticationConverter;
-import uk.co.serin.thule.oauth2.SpringJwtAccessTokenConverter;
 
 @ComponentScan
 @ConditionalOnProperty(name = "thule.shared.oauth2.resource-server-enabled", matchIfMissing = true)

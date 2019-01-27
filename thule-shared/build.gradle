@@ -1,4 +1,6 @@
 buildscript {
+    ext["spring-security-oauth2-autoconfigure.version"] = "2.1.2.RELEASE" // The pom for org.springframework.cloud:spring-cloud-security-dependencies:2.1.0.RELEASE incorrectly specifies <spring-security-oauth2-autoconfigure.version>2.1.0.M4</spring-security-oauth2-autoconfigure.version>
+
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
         mavenLocal()
@@ -36,62 +38,62 @@ subprojects {
     }
 }
 
+project("thule-spring-boot-starter") {
+    description = "Thule Spring Boot Starter Utils"
+    dependencies {
+        compile project(":thule-utils")
+
+        compileOnly("org.springframework.data:spring-data-jpa")
+        compileOnly("org.springframework.security:spring-security-core")
+
+        testCompile project(":thule-spring-boot-starter-test")
+    }
+}
+
 project("thule-spring-boot-starter-oauth2") {
     description = "Thule Spring Boot Starter Oauth2"
     dependencies {
-        compile project(":thule-oauth2")
-        compile project(":thule-utils")
-        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
+        compile project(":thule-spring-boot-starter")
         compile("org.springframework.cloud:spring-cloud-starter-oauth2")
-        compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE")
 
         testCompile project(":thule-spring-boot-starter-test")
-        testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
-
-        itestCompile("com.h2database:h2")
-        itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
     }
 }
 
 project("thule-spring-boot-starter-oauth2-test") {
     description = "Thule Spring Boot Starter Oauth2 Test"
     dependencies {
+        compile project(":thule-spring-boot-starter")
+        compile project(":thule-spring-boot-starter-test")
         compile("org.springframework.security:spring-security-test")
-
-        testCompile project(":thule-spring-boot-starter-test")
     }
 }
-
 
 project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
     dependencies {
+        compile project(":thule-spring-boot-starter")
         compile project(":thule-test")
-        compile("nl.jqno.equalsverifier:equalsverifier:3.1.4")
-        compile("org.awaitility:awaitility:3.1.5")
+        compile("nl.jqno.equalsverifier:equalsverifier:3.0") // Remove once we have moved to lombok
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.cloud:spring-cloud-contract-wiremock")
-        compile("pl.pojo:pojo-tester:0.7.6")
-    }
-}
-
-project("thule-spring-boot-starter-utils") {
-    description = "Thule Spring Boot Starter Utils"
-    dependencies {
-        compile project(":thule-utils")
-
-        testCompile project(":thule-spring-boot-starter-test")
+        compile("org.springframework.restdocs:spring-restdocs-mockmvc")
+        compile("pl.pojo:pojo-tester:0.7.6") // Remove once we have moved to lombok
     }
 }
 
 project("thule-test") {
     description = "Thule Test"
     dependencies {
+        compile project(":thule-utils")
+        compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
+        compile("org.awaitility:awaitility:3.1.2")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.retry:spring-retry")
-
+ 
+        testCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
         testCompile("pl.pojo:pojo-tester:0.7.6")
     }
 }
@@ -99,38 +101,30 @@ project("thule-test") {
 project("thule-utils") {
     description = "Thule Utils"
     dependencies {
-        compile("com.sun.xml.bind:jaxb-core:2.3.0.1") // Required as part of SOAP (jaxb) when using java 9+
-        compile("com.sun.xml.bind:jaxb-impl:2.3.0.1") // Required as part of SOAP (jaxb) when using java 9+
-        compile("commons-discovery:commons-discovery:0.4")
-        compile("javax.activation:javax.activation-api:1.2.0") // Required as part of SOAP (jaxp) when using java 9+
-        compile("javax.xml.bind:jaxb-api") // Required as part of SOAP (jaxb) when using java 9+
-        compile("javax.xml.soap:javax.xml.soap-api:1.4.0") // Required as part of SOAP (jaxws) when using java 9+
-        compile("net.logstash.logback:logstash-logback-encoder:5.3")
-        compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the xml configuration
-        compile("org.apache.axis:axis:1.4")
-        compile("org.apache.axis:axis-jaxrpc:1.4")
+        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
+        compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
+        compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign")
+ 
+        compile("com.sun.xml.bind:jaxb-core:2.3.0.1") // Required by anything using JAXB when using java 9+
+        compile("com.sun.xml.bind:jaxb-impl:2.3.0.1") // Required by anything using JAXB when using java 9+
+        compile("javax.xml.bind:jaxb-api") // Required by anything using JAXB when using java 9+
+        compile("net.logstash.logback:logstash-logback-encoder:5.2")
+        compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
         compile("org.hibernate:hibernate-core")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-validation")
-        compile("xml-apis:xml-apis") // Required as part of SOAP (jax) when using java 9+
+        compile("org.springframework.boot:spring-boot-starter-web")
 
-        testCompile project(":thule-spring-boot-starter-test")
+        testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+        testCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
+        testCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
 
         itestCompile("com.h2database:h2")
         itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
-    }
-}
 
-project("thule-oauth2") {
-    dependencies {
-        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
-        compile("org.springframework.boot:spring-boot-starter-security")
-        compile("org.springframework.cloud:spring-cloud-starter-oauth2")
-        // Required due to a bug in spring cloud which has a dependency on a milestone release for spring-security-oauth2-autoconfigure:2.1.0.M4
-        compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE") 
-
-        testCompile project(":thule-test")
-        testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
+        itestCompile("com.h2database:h2")
+        itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
     }
 }
