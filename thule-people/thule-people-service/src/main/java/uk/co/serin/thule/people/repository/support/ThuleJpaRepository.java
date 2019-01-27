@@ -1,13 +1,12 @@
 package uk.co.serin.thule.people.repository.support;
 
 
-import uk.co.serin.thule.utils.aop.TracePublicMethods;
-
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import uk.co.serin.thule.people.domain.DomainModel;
+import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.io.Serializable;
 

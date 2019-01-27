@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people.service;
 
-import uk.co.serin.thule.utils.aop.TracePublicMethods;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +10,7 @@ import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.rest.EmailServiceClient;
+import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
