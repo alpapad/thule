@@ -1,4 +1,6 @@
 buildscript {
+    ext["spring-security-oauth2-autoconfigure.version"] = "2.1.2.RELEASE" // The pom for org.springframework.cloud:spring-cloud-security-dependencies:2.1.0.RELEASE incorrectly specifies <spring-security-oauth2-autoconfigure.version>2.1.0.M4</spring-security-oauth2-autoconfigure.version>
+    
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
         mavenLocal()
@@ -76,8 +78,6 @@ project("thule-people-service") {
         compile("org.springframework.data:spring-data-rest-hal-browser")
         // Required to retry connecting to the configuration service when it is not available at startup
         compile("org.springframework.retry:spring-retry")
-        // Required due to a bug in spring cloud which has a dependency on a milestone release for spring-security-oauth2-autoconfigure:2.1.0.M4
-        compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE")
 
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
 
@@ -99,7 +99,5 @@ project("thule-people-service") {
         dtestCompile("org.springframework.boot:spring-boot-starter-jdbc")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
         dtestCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
-        // Required due to a bug in spring cloud which has a dependency on a milestone release for spring-security-oauth2-autoconfigure:2.1.0.M4
-        dtestCompile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE")
     }
 }
