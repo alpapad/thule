@@ -1,7 +1,5 @@
 package uk.co.serin.thule.email.service;
 
-import uk.co.serin.thule.utils.aop.LogException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -22,7 +20,6 @@ import javax.mail.internet.MimeMessage;
 import javax.validation.ValidationException;
 
 @Service
-@LogException
 public class EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private JavaMailSender mailSender;
