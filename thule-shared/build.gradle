@@ -123,8 +123,5 @@ project("thule-utils") {
 
         itestCompile("com.h2database:h2")
         itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
-
-        itestCompile("com.h2database:h2")
-        itestCompile("org.springframework.boot:spring-boot-starter-data-jpa")
     }
 }
