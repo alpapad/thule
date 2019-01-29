@@ -1,7 +1,4 @@
-package uk.co.serin.thule.gateway.docker;
-
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
+package uk.co.serin.thule.gateway;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,6 +10,9 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.net.URI;
