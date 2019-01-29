@@ -50,7 +50,7 @@ project("thule-discovery-service") {
     }
 
     dependencies {
-        compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-web")
@@ -61,15 +61,15 @@ project("thule-discovery-service") {
         // Required to retry connecting to the configuration service when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
-        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-discovery-config")
 
         ctestCompile project(":thule-discovery-config")
         ctestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
         dtestCompile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
         dtestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
     }

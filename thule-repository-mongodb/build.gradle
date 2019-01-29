@@ -28,9 +28,9 @@ sonarqube {
 
 // Dependencies
 dependencies {
-    compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
+    compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-validation")
 
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 }

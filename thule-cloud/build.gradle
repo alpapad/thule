@@ -34,7 +34,7 @@ project("thule-cloud-config") {
 
     // Dependencies
     dependencies {
-        compile("uk.co.serin.thule:thule-configuration-config:1.0.0-SNAPSHOT") {
+        compile("uk.co.serin.thule:thule-configuration-config:${thuleSharedVersion}") {
             transitive = false
         }
     }
@@ -66,8 +66,8 @@ project("thule-cloud-service") {
 
     dependencies {
         dtestCompile project(":thule-cloud-config")
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
     }
 }

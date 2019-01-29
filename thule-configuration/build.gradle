@@ -54,11 +54,11 @@ project("thule-configuration-config") {
 
     // Dependencies
     dependencies {
-        compile("uk.co.serin.thule:thule-admin-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-discovery-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-email-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-gateway-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-people-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-admin-config:${thuleSharedVersion}")
+        compile("uk.co.serin.thule:thule-discovery-config:${thuleSharedVersion}")
+        compile("uk.co.serin.thule:thule-email-config:${thuleSharedVersion}")
+        compile("uk.co.serin.thule:thule-gateway-config:${thuleSharedVersion}")
+        compile("uk.co.serin.thule:thule-people-config:${thuleSharedVersion}")
     }
 }
 
@@ -87,7 +87,7 @@ project("thule-configuration-service") {
     }
 
     dependencies {
-        compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.cloud:spring-cloud-config-server")
@@ -95,13 +95,13 @@ project("thule-configuration-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
 
-        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-configuration-config")
 
         ctestCompile project(":thule-configuration-config")
 
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     }
 }

@@ -50,7 +50,7 @@ project("thule-admin-service") {
     }
 
     dependencies {
-        compile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("de.codecentric:spring-boot-admin-starter-server:2.1.2")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.cloud:spring-cloud-starter-config")
@@ -60,14 +60,14 @@ project("thule-admin-service") {
         // Required to retry connecting to the configuration service when it is not available at startup
         compile("org.springframework.retry:spring-retry")
 
-        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-admin-config")
 
         ctestCompile project(":thule-admin-config")
 
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:1.0.0-SNAPSHOT")
-        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:1.0.0-SNAPSHOT")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+        dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
     }
 }
