@@ -72,8 +72,6 @@ if (branchType == "master") {
         project.tasks.collect { task ->
             if (task.name != "clean"
                     && !task.name.startsWith("publish")
-                    && !task.name.startsWith("dockerPrepare")
-                    && !task.name.startsWith("dockerPush")
                     && !task.name.startsWith("gitflow")) {
                 task.onlyIf { false }
             }
@@ -124,6 +122,9 @@ if (branchType == "master") {
                 }
                 exec {
                     commandLine "docker", "tag", "$nexusHost:8085/${jar.baseName}:${project.version}", "$nexusHost:8086/${jar.baseName}:${project.version}"
+                }
+                exec {
+                    commandLine "docker", "push", "$nexusHost:8086/${jar.baseName}:${project.version}"
                 }
             }
         }

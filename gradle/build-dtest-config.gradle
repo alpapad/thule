@@ -20,3 +20,36 @@ task dtest(type: Test) {
     // Should run after the docker tests
     shouldRunAfter tasks.ctest
 }
+
+
+// Create a docker volume containing the source (used by the docker tests)
+if ("$project.name".endsWith("-service")) {
+    dtest {
+        // Build Docker volume containing the spring boot configuration (used by docker tests)
+        doFirst {
+            // Delete the volume from a previous build
+            exec {
+                ignoreExitValue true
+                commandLine "docker", "volume", "rm", "-f", rootProject.name + "-docker-tests"
+            }
+            // Delete the temporary container in case it still exists
+            exec {
+                ignoreExitValue true
+                commandLine "docker", "rm", "-f", rootProject.name + "-docker-tests"
+            }
+            // Create a temporary container with the new volume so that the spring boot config can be copied to the volume via this container
+            exec {
+                commandLine "docker", "container", "create", "--name", rootProject.name + "-docker-tests", "-v", rootProject.name + "-docker-tests:/" + rootProject.name + "-docker-tests", "alpine"
+            }
+            // Copy the spring boot config, if there is any, to the volume
+            exec {
+                ignoreExitValue true
+                commandLine "docker", "cp", "$rootDir/.", rootProject.name + "-docker-tests:/" + rootProject.name + "-docker-tests"
+            }
+            // Delete the temporary container
+            exec {
+                commandLine "docker", "rm", "-f", rootProject.name + "-docker-tests"
+            }
+        }
+    }
+}

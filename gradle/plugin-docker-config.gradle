@@ -47,35 +47,3 @@ if (project.tasks.findByName("docker")) {
         tasks.publish.dependsOn dockerPush
     }
 }
-
-// Create a docker volume containing the config for config projects
-if ("$project.name".endsWith("-config")) {
-    jar {
-        // Build Docker volume containing the spring boot configuration (used by docker tests)
-        doLast {
-            // Delete the volume from a previous build
-            exec {
-                ignoreExitValue true
-                commandLine "docker", "volume", "rm", "-f", "$project.name"
-            }
-            // Delete the temporary container in case it still exists
-            exec {
-                ignoreExitValue true
-                commandLine "docker", "rm", "-f", "$project.name"
-            }
-            // Create a temporary container with the new volume so that the spring boot config can be copied to the volume via this container
-            exec {
-                commandLine "docker", "container", "create", "--name", "$project.name", "-v", "$project.name:/config", "alpine"
-            }
-            // Copy the spring boot config, if there is any, to the volume
-            exec {
-                ignoreExitValue true
-                commandLine "docker", "cp", "$buildDir/resources/main/config", "$project.name:/"
-            }
-            // Delete the temporary container
-            exec {
-                commandLine "docker", "rm", "-f", "$project.name"
-            }
-        }
-    }
-}

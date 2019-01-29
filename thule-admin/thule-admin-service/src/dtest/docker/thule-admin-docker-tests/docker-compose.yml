@@ -5,15 +5,17 @@ services:
     image: pooh:8084/thule-admin-service
     environment:
       EUREKA_CLIENT_ENABLED: "false" # Docker tests do not need a discovery registry
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false" # Docker tests do not need a configuration service
+      # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
+      # from a docker volume created at build time which contains the source for this micro-service
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-admin/thule-admin-config/src/main/resources/config/
       TZ: Europe/London
     ports:
     - 9093:8080 # Required to allow docker tests to call the restful api
     volumes:
-    # Since we are not using the configuration service to provide spring config, we add the config to the
-    # docker containers file system in a standard spring boot location that spring boot uses to search for the config by default
-    - thule-admin-config:/config
+    - thule-admin-docker-tests:/thule-admin
 
 volumes:
-  thule-admin-config:
+  thule-admin-docker-tests:
     external: true
