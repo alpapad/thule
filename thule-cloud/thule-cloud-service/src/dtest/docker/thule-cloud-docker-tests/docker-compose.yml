@@ -20,7 +20,7 @@ services:
     - 7888:8080
     restart: always
     volumes:
-    - thule-cloud-config:/config
+    - thule-cloud-docker-tests:/thule-cloud/thule-cloud-config/build/resources/main/config
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
@@ -71,5 +71,5 @@ services:
     restart: always
 
 volumes:
-  thule-cloud-config:
+  thule-cloud-docker-tests:
     external: true
