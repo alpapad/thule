@@ -57,8 +57,7 @@ project("thule-admin-service") {
         compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
-        // Required to retry connecting to the configuration service when it is not available at startup
-        compile("org.springframework.retry:spring-retry")
+        compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
