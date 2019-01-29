@@ -1,6 +1,4 @@
-package uk.co.serin.thule.admin.contract;
-
-import uk.co.serin.thule.test.assertj.ActuatorUri;
+package uk.co.serin.thule.admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.net.URI;
 import java.time.Duration;
