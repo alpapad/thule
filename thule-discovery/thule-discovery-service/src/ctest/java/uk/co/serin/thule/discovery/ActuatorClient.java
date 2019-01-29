@@ -1,4 +1,4 @@
-package uk.co.serin.thule.discovery.docker;
+package uk.co.serin.thule.discovery;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;

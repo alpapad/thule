@@ -1,21 +1,18 @@
-package uk.co.serin.thule.discovery.docker;
-
-import uk.co.serin.thule.utils.docker.DockerCompose;
+package uk.co.serin.thule.discovery;
 
 import org.awaitility.Duration;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -38,31 +35,25 @@ import static org.awaitility.pollinterval.FixedPollInterval.fixed;
  * Use the actuator on the target Discovery Service
  * </ul>
  */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
-@SpringBootTest
-public class DiscoveryDockerTest {
-    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-discovery-docker-tests/docker-compose.yml");
+public class DiscoveryContractTest {
     @Autowired
     private ActuatorClient actuatorClient;
     @Autowired
     private DiscoveryClient discoveryClient;
-
-    @BeforeClass
-    public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws IOException {
-        dockerCompose.down();
-    }
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     public void can_invoke_a_service_via_discovery() {
         // Given
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
-                       untilAsserted(() -> assertThat(discoveryClient.getServices()).contains("thule-discovery-service"));
+                       untilAsserted(() -> {
+                           assertThat(discoveryClient.getServices()).contains("thule-discovery-service");
+                       });
 
         // When
         Map<String, Object> actualHealth = actuatorClient.health();
@@ -73,6 +64,6 @@ public class DiscoveryDockerTest {
 
     @TestConfiguration
     @EnableFeignClients
-    static class ContainerTestConfiguration {
+    static class DiscoveryIntTestConfiguration {
     }
 }
