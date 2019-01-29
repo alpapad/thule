@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
 
-import uk.co.serin.thule.people.RepositoryTestConfiguration;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
@@ -48,7 +47,7 @@ import static org.junit.Assert.fail;
  * it is enabled in the inner configuration class.
  */
 @DataJpaTest
-@Import(RepositoryTestConfiguration.class)
+@Import(RepositoryIntTestConfiguration.class)
 @RunWith(SpringRunner.class)
 @WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
 public abstract class PersonRepositoryBaseIntTest {
