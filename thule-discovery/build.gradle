@@ -60,6 +60,8 @@ project("thule-discovery-service") {
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
+        compileOnly("org.projectlombok:lombok")
+
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-discovery-config")

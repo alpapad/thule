@@ -77,6 +77,8 @@ project("thule-people-service") {
         compile("org.springframework.data:spring-data-rest-hal-browser")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
+        compileOnly("org.projectlombok:lombok")
+        
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-people-config")

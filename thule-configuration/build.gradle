@@ -95,6 +95,8 @@ project("thule-configuration-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
 
+        compileOnly("org.projectlombok:lombok")
+
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-configuration-config")
