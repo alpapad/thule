@@ -35,7 +35,7 @@ spring:
     config:
       server:
         native:
-          search-locations: ${thule.configurationservice.search-locations:/thule-cloud/thule-cloud-config/build/resources/main/config}/{application}
+          search-locations: ${thule.configurationservice.search-locations:/config}/{application}
   sleuth:
     sampler:
       probability: 1.0
