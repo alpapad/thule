@@ -54,11 +54,11 @@ project("thule-configuration-config") {
 
     // Dependencies
     dependencies {
-        compile("uk.co.serin.thule:thule-admin-config:${thuleSharedVersion}")
-        compile("uk.co.serin.thule:thule-discovery-config:${thuleSharedVersion}")
-        compile("uk.co.serin.thule:thule-email-config:${thuleSharedVersion}")
-        compile("uk.co.serin.thule:thule-gateway-config:${thuleSharedVersion}")
-        compile("uk.co.serin.thule:thule-people-config:${thuleSharedVersion}")
+        compile("uk.co.serin.thule:thule-admin-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-discovery-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-email-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-gateway-config:1.0.0-SNAPSHOT")
+        compile("uk.co.serin.thule:thule-people-config:1.0.0-SNAPSHOT")
     }
 }
 

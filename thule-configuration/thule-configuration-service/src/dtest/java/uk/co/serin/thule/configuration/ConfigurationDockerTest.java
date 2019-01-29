@@ -1,4 +1,4 @@
-package uk.co.serin.thule.configuration.docker;
+package uk.co.serin.thule.configuration;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class ConfigurationDockerTest {
     public void has_configuration_for_the_discovery_service() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
@@ -77,7 +77,7 @@ public class ConfigurationDockerTest {
     public void has_configuration_for_the_gateway() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
@@ -92,7 +92,7 @@ public class ConfigurationDockerTest {
     public void has_configuration_for_the_people_service() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
@@ -107,7 +107,7 @@ public class ConfigurationDockerTest {
     public void has_configuration_for_the_thule_service() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When

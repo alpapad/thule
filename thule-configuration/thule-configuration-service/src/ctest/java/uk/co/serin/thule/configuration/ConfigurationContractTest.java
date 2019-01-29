@@ -1,4 +1,4 @@
-package uk.co.serin.thule.configuration.contract;
+package uk.co.serin.thule.configuration;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
