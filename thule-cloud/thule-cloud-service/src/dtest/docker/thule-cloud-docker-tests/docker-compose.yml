@@ -14,13 +14,16 @@ services:
   thule-configuration-service:
     image: pooh:8082/thule-configuration-service
     environment:
+      # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
+      # from a docker volume created at build time which contains the source for this micro-service
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-cloud/thule-cloud-config/build/resources/main/config
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
     - 7888:8080
     restart: always
     volumes:
-    - thule-cloud-docker-tests:/thule-cloud/thule-cloud-config/build/resources/main/config
+    - thule-cloud-docker-tests:/thule-cloud
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
