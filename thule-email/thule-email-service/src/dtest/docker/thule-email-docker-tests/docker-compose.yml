@@ -4,14 +4,16 @@ services:
   thule-email:
     image: pooh:8084/thule-email-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+      # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
+      # from a docker volume created at build time which contains the source for this micro-service
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-email/thule-email-config/src/main/resources/config/
       TZ: Europe/London
     ports:
       - 9095:8080 # Required to allow docker tests to call the restful api
     volumes:
-      # Since we are not using the configuration service to provide spring config, we add the config to the
-      # docker containers file system in a standard spring boot location that spring boot uses to search for the config by default
-      - thule-email-config:/config
+      - thule-email-docker-tests:/thule-email
 
 volumes:
-  thule-email-config:
+  thule-email-docker-tests:
     external: true
