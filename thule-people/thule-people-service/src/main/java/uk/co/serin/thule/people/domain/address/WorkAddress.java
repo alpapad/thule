@@ -61,12 +61,6 @@ public final class WorkAddress extends Address {
             workAddress.setCounty(county);
             workAddress.setState(state);
             workAddress.setTown(town);
-            workAddress.setCreatedAt(createdAt);
-            workAddress.setCreatedBy(createdBy);
-            workAddress.setId(id);
-            workAddress.setUpdatedAt(updatedAt);
-            workAddress.setUpdatedBy(updatedBy);
-            workAddress.setVersion(version);
             return workAddress;
         }
 

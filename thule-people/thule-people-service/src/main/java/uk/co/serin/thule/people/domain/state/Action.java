@@ -127,12 +127,6 @@ public final class Action extends DomainModel {
             Action action = new Action(code);
             action.setDescription(description);
             action.setNextState(nextState);
-            action.setCreatedAt(createdAt);
-            action.setCreatedBy(createdBy);
-            action.setId(id);
-            action.setUpdatedAt(updatedAt);
-            action.setUpdatedBy(updatedBy);
-            action.setVersion(version);
             return action;
         }
 

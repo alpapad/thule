@@ -143,12 +143,6 @@ public final class State extends DomainModel {
         public State build() {
             State state = new State(code);
             state.setDescription(description);
-            state.setCreatedAt(createdAt);
-            state.setCreatedBy(createdBy);
-            state.setId(id);
-            state.setUpdatedAt(updatedAt);
-            state.setUpdatedBy(updatedBy);
-            state.setVersion(version);
             state.addActions(actions);
             return state;
         }

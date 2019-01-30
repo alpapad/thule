@@ -161,12 +161,6 @@ public final class Photograph extends DomainModel {
         public Photograph build() {
             Photograph photograph = new Photograph(photo, person);
             photograph.setPosition(position);
-            photograph.setCreatedAt(createdAt);
-            photograph.setCreatedBy(createdBy);
-            photograph.setId(id);
-            photograph.setUpdatedAt(updatedAt);
-            photograph.setUpdatedBy(updatedBy);
-            photograph.setVersion(version);
             return photograph;
         }
 

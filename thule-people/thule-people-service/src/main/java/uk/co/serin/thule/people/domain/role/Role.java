@@ -106,12 +106,6 @@ public final class Role extends DomainModel {
         public Role build() {
             Role role = new Role(code);
             role.setDescription(description);
-            role.setCreatedAt(createdAt);
-            role.setCreatedBy(createdBy);
-            role.setId(id);
-            role.setUpdatedAt(updatedAt);
-            role.setUpdatedBy(updatedBy);
-            role.setVersion(version);
             return role;
         }
 

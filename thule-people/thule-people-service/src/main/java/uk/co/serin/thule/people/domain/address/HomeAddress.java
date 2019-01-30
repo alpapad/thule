@@ -61,12 +61,6 @@ public final class HomeAddress extends Address {
             homeAddress.setCounty(county);
             homeAddress.setState(state);
             homeAddress.setTown(town);
-            homeAddress.setCreatedAt(createdAt);
-            homeAddress.setCreatedBy(createdBy);
-            homeAddress.setId(id);
-            homeAddress.setUpdatedAt(updatedAt);
-            homeAddress.setUpdatedBy(updatedBy);
-            homeAddress.setVersion(version);
             return homeAddress;
         }
 

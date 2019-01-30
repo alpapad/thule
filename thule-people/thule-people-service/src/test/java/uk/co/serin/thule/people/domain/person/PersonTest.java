@@ -9,12 +9,16 @@ import pl.pojo.tester.api.FieldPredicate;
 import pl.pojo.tester.api.assertion.Method;
 
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
+import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.StateCode;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -26,21 +30,6 @@ import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class PersonTest {
     private TestDataFactory testDataFactory = new TestDataFactory();
-
-    @Test
-    public void when_all_fields_are_valid_then_validation_succeeds() {
-        // Given
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Person person = testDataFactory.buildPersonWithAllAssociations();
-
-        // When
-        Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
-
-        // Then
-        assertThat(constraintViolations).hasSize(0);
-    }
 
     @Test
     public void when_builder_method_then_getters_operate_on_the_same_field() {
@@ -291,7 +280,9 @@ public class PersonTest {
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
         // Then
-        assertThat(constraintViolations).hasSize(1);
-        assertThat(constraintViolations.iterator().next().getMessage()).isEqualTo("must not be empty");
+        Map<String, ConstraintViolation<Person>> constraintViolationsByProperty = constraintViolations.stream().collect(
+                Collectors.toMap(constraintViolation -> constraintViolation.getPropertyPath().toString(), Function.identity()));
+
+        assertThat(constraintViolationsByProperty.containsKey(DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID)).isTrue();
     }
 }

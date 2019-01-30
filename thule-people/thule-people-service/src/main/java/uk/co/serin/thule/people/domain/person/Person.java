@@ -388,23 +388,17 @@ public final class Person extends DomainModel {
 
         public Person build() {
             Person person = new Person(userId);
-            person.setCreatedAt(createdAt);
-            person.setCreatedBy(createdBy);
             person.setDateOfBirth(dateOfBirth);
             person.setDateOfExpiry(dateOfExpiry);
             person.setDateOfPasswordExpiry(dateOfPasswordExpiry);
             person.setEmailAddress(emailAddress);
             person.setFirstName(firstName);
             person.setHomeAddress(homeAddress);
-            person.setId(id);
             person.setPassword(password);
             person.setTitle(title);
             person.setSecondName(secondName);
             person.setState(state);
             person.setLastName(lastName);
-            person.setUpdatedAt(updatedAt);
-            person.setUpdatedBy(updatedBy);
-            person.setVersion(version);
             person.setWorkAddress(workAddress);
             person.addRoles(this.roles);
             person.addPhotographs(this.photographs);

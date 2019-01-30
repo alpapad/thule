@@ -139,12 +139,6 @@ public final class Country extends DomainModel {
             country.setIsoCodeTwoDigit(isoCodeTwoDigit);
             country.setIsoName(isoName);
             country.setIsoNumber(isoNumber);
-            country.setCreatedAt(createdAt);
-            country.setCreatedBy(createdBy);
-            country.setId(id);
-            country.setUpdatedAt(updatedAt);
-            country.setUpdatedBy(updatedBy);
-            country.setVersion(version);
             return country;
         }
 
