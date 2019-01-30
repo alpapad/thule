@@ -1,15 +1,14 @@
 package uk.co.serin.thule.people;
 
-import uk.co.serin.thule.utils.utils.ClassUtils;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 
 import uk.co.serin.thule.people.domain.DomainModel;
+import uk.co.serin.thule.utils.utils.ClassUtils;
 
 import java.util.Set;
 
@@ -17,7 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 
 @Configuration
-public class IdExposingRepositoryRestConfigurer extends RepositoryRestConfigurerAdapter {
+public class IdExposingRepositoryRestConfigurer implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
         // Identify all classes that need to have their ids exposed
