@@ -2,7 +2,6 @@ package uk.co.serin.thule.people.domain.role;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -88,13 +87,7 @@ public final class Role extends DomainModel {
 
     public static final class RoleBuilder {
         private RoleCode code;
-        private LocalDateTime createdAt;
-        private String createdBy;
         private String description;
-        private Long id;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
-        private Long version;
 
         private RoleBuilder() {
         }
@@ -114,38 +107,8 @@ public final class Role extends DomainModel {
             return this;
         }
 
-        public RoleBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public RoleBuilder withCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
         public RoleBuilder withDescription(String description) {
             this.description = description;
-            return this;
-        }
-
-        public RoleBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public RoleBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public RoleBuilder withUpdatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
-        public RoleBuilder withVersion(Long version) {
-            this.version = version;
             return this;
         }
     }

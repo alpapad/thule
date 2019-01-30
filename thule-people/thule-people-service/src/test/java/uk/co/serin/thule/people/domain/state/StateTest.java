@@ -23,13 +23,7 @@ public class StateTest {
         // When
         State actualState = State.StateBuilder.aState().
                 withCode(expectedState.getCode()).
-                withCreatedAt(expectedState.getCreatedAt()).
-                withCreatedBy(expectedState.getCreatedBy()).
                 withDescription(expectedState.getDescription()).
-                withId(expectedState.getId()).
-                withUpdatedAt(expectedState.getUpdatedAt()).
-                withUpdatedBy(expectedState.getUpdatedBy()).
-                withVersion(expectedState.getVersion()).
                 build();
 
         // Then

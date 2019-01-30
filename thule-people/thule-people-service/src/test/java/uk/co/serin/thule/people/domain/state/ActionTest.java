@@ -23,14 +23,8 @@ public class ActionTest {
         // When
         Action actualAction = Action.ActionBuilder.anAction().
                 withCode(expectedAction.getCode()).
-                withCreatedAt(expectedAction.getCreatedAt()).
-                withCreatedBy(expectedAction.getCreatedBy()).
                 withDescription(expectedAction.getDescription()).
-                withId(expectedAction.getId()).
                 withNextState(expectedAction.getNextState()).
-                withUpdatedAt(expectedAction.getUpdatedAt()).
-                withUpdatedBy(expectedAction.getUpdatedBy()).
-                withVersion(expectedAction.getVersion()).
                 build();
 
         // Then

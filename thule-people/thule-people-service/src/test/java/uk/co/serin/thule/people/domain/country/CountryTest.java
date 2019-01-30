@@ -22,17 +22,11 @@ public class CountryTest {
 
         // When
         Country actualCountry = Country.CountryBuilder.aCountry().
-                withCreatedAt(expectedCountry.getCreatedAt()).
-                withCreatedBy(expectedCountry.getCreatedBy()).
-                withId(expectedCountry.getId()).
                 withIsoCodeThreeDigit(expectedCountry.getIsoCodeThreeDigit()).
                 withIsoCodeTwoDigit(expectedCountry.getIsoCodeTwoDigit()).
                 withIsoName(expectedCountry.getIsoName()).
                 withIsoNumber(expectedCountry.getIsoNumber()).
                 withIsoCodeTwoDigit(expectedCountry.getIsoCodeTwoDigit()).
-                withUpdatedAt(expectedCountry.getUpdatedAt()).
-                withUpdatedBy(expectedCountry.getUpdatedBy()).
-                withVersion(expectedCountry.getVersion()).
                 build();
 
         // Then

@@ -21,15 +21,9 @@ public class HomeAddressTest {
                 withAddressLine2(expectedHomeAddress.getAddressLine2()).
                 withCountry(expectedHomeAddress.getCountry()).
                 withCounty(expectedHomeAddress.getCounty()).
-                withCreatedAt(expectedHomeAddress.getCreatedAt()).
-                withCreatedBy(expectedHomeAddress.getCreatedBy()).
-                withId(expectedHomeAddress.getId()).
                 withPostCode(expectedHomeAddress.getPostCode()).
                 withState(expectedHomeAddress.getState()).
-                withTown(expectedHomeAddress.getTown()).
-                withUpdatedAt(expectedHomeAddress.getUpdatedAt()).
-                withUpdatedBy(expectedHomeAddress.getUpdatedBy()).
-                withVersion(expectedHomeAddress.getVersion()).build();
+                withTown(expectedHomeAddress.getTown()).build();
 
         // Then
         assertThat(actualHomeAddress.getAddressLine1()).isEqualTo(expectedHomeAddress.getAddressLine1());

@@ -6,7 +6,6 @@ import org.springframework.util.DigestUtils;
 import uk.co.serin.thule.people.domain.DomainModel;
 
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -140,16 +139,10 @@ public final class Photograph extends DomainModel {
     }
 
     public static final class PhotographBuilder {
-        private LocalDateTime createdAt;
-        private String createdBy;
-        private Long id;
         private Person person;
         private byte[] photo;
         // Don't call this position because 'position' is a reserved word in HSQL
         private long position;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
-        private Long version;
 
         private PhotographBuilder() {
         }
@@ -164,21 +157,6 @@ public final class Photograph extends DomainModel {
             return photograph;
         }
 
-        public PhotographBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public PhotographBuilder withCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public PhotographBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
         public PhotographBuilder withPerson(Person person) {
             this.person = person;
             return this;
@@ -191,21 +169,6 @@ public final class Photograph extends DomainModel {
 
         public PhotographBuilder withPosition(long position) {
             this.position = position;
-            return this;
-        }
-
-        public PhotographBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public PhotographBuilder withUpdatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
-        public PhotographBuilder withVersion(Long version) {
-            this.version = version;
             return this;
         }
     }

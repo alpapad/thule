@@ -27,15 +27,9 @@ public class PhotographTest {
 
         // When
         Photograph actualPhotograph = Photograph.PhotographBuilder.aPhotograph().
-                withCreatedAt(expectedPhotograph.getCreatedAt()).
-                withCreatedBy(expectedPhotograph.getCreatedBy()).
-                withId(expectedPhotograph.getId()).
                 withPerson(expectedPhotograph.getPerson()).
                 withPhoto(expectedPhotograph.getPhoto()).
                 withPosition(expectedPhotograph.getPosition()).
-                withUpdatedAt(expectedPhotograph.getUpdatedAt()).
-                withUpdatedBy(expectedPhotograph.getUpdatedBy()).
-                withVersion(expectedPhotograph.getVersion()).
                 build();
 
         // Then

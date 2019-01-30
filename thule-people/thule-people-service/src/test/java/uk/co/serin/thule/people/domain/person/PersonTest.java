@@ -38,14 +38,12 @@ public class PersonTest {
 
         // When
         Person actualPerson = Person.PersonBuilder.aPerson().
-                withCreatedAt(expectedPerson.getCreatedAt()).
                 withDateOfBirth(expectedPerson.getDateOfBirth()).
                 withDateOfExpiry(expectedPerson.getDateOfExpiry()).
                 withDateOfPasswordExpiry(expectedPerson.getDateOfPasswordExpiry()).
                 withEmailAddress(expectedPerson.getEmailAddress()).
                 withFirstName(expectedPerson.getFirstName()).
                 withHomeAddress(expectedPerson.getHomeAddress()).
-                withId(expectedPerson.getId()).
                 withLastName(expectedPerson.getLastName()).
                 withPassword(expectedPerson.getPassword()).
                 withPhotographs(expectedPerson.getPhotographs()).
@@ -53,10 +51,7 @@ public class PersonTest {
                 withSecondName(expectedPerson.getSecondName()).
                 withState(expectedPerson.getState()).
                 withTitle(expectedPerson.getTitle()).
-                withUpdatedAt(expectedPerson.getUpdatedAt()).
-                withUpdatedBy(expectedPerson.getUpdatedBy()).
                 withUserId(expectedPerson.getUserId()).
-                withVersion(expectedPerson.getVersion()).
                 withWorkAddress(expectedPerson.getWorkAddress()).build();
 
         // Then

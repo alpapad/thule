@@ -20,7 +20,6 @@ import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Map;
@@ -53,15 +52,12 @@ public class TestDataFactory implements ReferenceDataFactory {
 
     public Person buildPerson(Person person) {
         return Person.PersonBuilder.aPerson().
-                withCreatedAt(person.getCreatedAt()).
-                withCreatedBy(person.getCreatedBy()).
                 withDateOfBirth(person.getDateOfBirth()).
                 withDateOfExpiry(person.getDateOfExpiry()).
                 withDateOfPasswordExpiry(person.getDateOfPasswordExpiry()).
                 withEmailAddress(person.getEmailAddress()).
                 withFirstName(person.getFirstName()).
                 withHomeAddress(person.getHomeAddress()).
-                withId(person.getId()).
                 withLastName(person.getLastName()).
                 withPassword(person.getPassword()).
                 withPhotographs(person.getPhotographs()).
@@ -69,21 +65,15 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withSecondName(person.getSecondName()).
                 withState(person.getState()).
                 withTitle(person.getTitle()).
-                withUpdatedAt(person.getUpdatedAt()).
-                withUpdatedBy(person.getUpdatedBy()).
                 withUserId(person.getUserId()).
-                withVersion(person.getVersion()).
                 withWorkAddress(person.getWorkAddress()).build();
     }
 
     public Person buildPersonWithAllAssociations() {
-        LocalDateTime now = LocalDateTime.now();
         LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         Person person = Person.PersonBuilder.aPerson().withUserId(userId).
-                withCreatedAt(now).
-                withCreatedBy(JUNIT_TEST_USERNAME).
                 withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
                 withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -97,8 +87,6 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
                 withTitle("Miss").
                 withWorkAddress(buildRegentStreetWorkAddress()).
-                withUpdatedAt(now).
-                withUpdatedBy(JUNIT_TEST_USERNAME).
                 build();
 
         person.addPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
@@ -107,10 +95,7 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public HomeAddress buildOxfordStreetHomeAddress() {
-        LocalDateTime now = LocalDateTime.now();
         return HomeAddress.HomeAddressBuilder.aHomeAddress().
-                withCreatedAt(now).
-                withCreatedBy(JUNIT_TEST_USERNAME).
                 withAddressLine1("Oxford Street").
                 withAddressLine2("Green").
                 withCountry(referenceDataFactory.getCountries().get(Country.GBR)).
@@ -118,16 +103,11 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withPostCode("EC3").
                 withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
                 withTown(LONDON).
-                withUpdatedAt(now).
-                withUpdatedBy(JUNIT_TEST_USERNAME).
                 build();
     }
 
     public WorkAddress buildRegentStreetWorkAddress() {
-        LocalDateTime now = LocalDateTime.now();
         return WorkAddress.WorkAddressBuilder.aWorkAddress().
-                withCreatedAt(now).
-                withCreatedBy(JUNIT_TEST_USERNAME).
                 withAddressLine1("Regent Street").
                 withAddressLine2("Green").
                 withCountry(referenceDataFactory.getCountries().get(Country.GBR)).
@@ -135,23 +115,16 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withPostCode("EC4").
                 withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
                 withTown(LONDON).
-                withUpdatedAt(now).
-                withUpdatedBy(JUNIT_TEST_USERNAME).
                 build();
     }
 
     public Photograph buildPhotographMissScarlett(Person person) {
         try {
-            LocalDateTime now = LocalDateTime.now();
             Resource resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
             return Photograph.PhotographBuilder.aPhotograph().
-                    withCreatedAt(now).
-                    withCreatedBy(JUNIT_TEST_USERNAME).
                     withPerson(person).
                     withPhoto(FileCopyUtils.copyToByteArray(resource.getInputStream())).
                     withPosition(1).
-                    withUpdatedAt(now).
-                    withUpdatedBy(JUNIT_TEST_USERNAME).
                     build();
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -159,13 +132,10 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildPersonWithoutAnyAssociations() {
-        LocalDateTime now = LocalDateTime.now();
         LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         return Person.PersonBuilder.aPerson().
-                withCreatedAt(now).
-                withCreatedBy(JUNIT_TEST_USERNAME).
                 withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
                 withDateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
                 withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -176,8 +146,6 @@ public class TestDataFactory implements ReferenceDataFactory {
                 withSecondName("K").
                 withTitle("Miss").
                 withUserId(userId).
-                withUpdatedAt(now).
-                withUpdatedBy(JUNIT_TEST_USERNAME).
                 build();
     }
 

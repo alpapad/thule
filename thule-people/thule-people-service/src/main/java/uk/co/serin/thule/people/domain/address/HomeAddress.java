@@ -4,8 +4,6 @@ import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.state.State;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -38,15 +36,9 @@ public final class HomeAddress extends Address {
         private String addressLine2;
         private Country country;
         private String county;
-        private LocalDateTime createdAt;
-        private String createdBy;
-        private Long id;
         private String postCode;
         private State state;
         private String town;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
-        private Long version;
 
         private HomeAddressBuilder() {
         }
@@ -84,21 +76,6 @@ public final class HomeAddress extends Address {
             return this;
         }
 
-        public HomeAddressBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public HomeAddressBuilder withCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public HomeAddressBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
         public HomeAddressBuilder withPostCode(String postCode) {
             this.postCode = postCode;
             return this;
@@ -111,21 +88,6 @@ public final class HomeAddress extends Address {
 
         public HomeAddressBuilder withTown(String town) {
             this.town = town;
-            return this;
-        }
-
-        public HomeAddressBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public HomeAddressBuilder withUpdatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
-        public HomeAddressBuilder withVersion(Long version) {
-            this.version = version;
             return this;
         }
     }

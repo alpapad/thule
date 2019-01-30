@@ -21,15 +21,9 @@ public class WorkAddressTest {
                 withAddressLine2(expectedWorkAddress.getAddressLine2()).
                 withCountry(expectedWorkAddress.getCountry()).
                 withCounty(expectedWorkAddress.getCounty()).
-                withCreatedAt(expectedWorkAddress.getCreatedAt()).
-                withCreatedBy(expectedWorkAddress.getCreatedBy()).
-                withId(expectedWorkAddress.getId()).
                 withPostCode(expectedWorkAddress.getPostCode()).
                 withState(expectedWorkAddress.getState()).
-                withTown(expectedWorkAddress.getTown()).
-                withUpdatedAt(expectedWorkAddress.getUpdatedAt()).
-                withUpdatedBy(expectedWorkAddress.getUpdatedBy()).
-                withVersion(expectedWorkAddress.getVersion()).build();
+                withTown(expectedWorkAddress.getTown()).build();
 
         // Then
         assertThat(actualWorkAddress.getAddressLine1()).isEqualTo(expectedWorkAddress.getAddressLine1());

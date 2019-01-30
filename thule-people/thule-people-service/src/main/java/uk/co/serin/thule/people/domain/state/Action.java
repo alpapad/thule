@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -107,14 +106,8 @@ public final class Action extends DomainModel {
 
     public static final class ActionBuilder {
         private ActionCode code;
-        private LocalDateTime createdAt;
-        private String createdBy;
         private String description;
-        private Long id;
         private State nextState;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
-        private Long version;
 
         private ActionBuilder() {
         }
@@ -135,43 +128,13 @@ public final class Action extends DomainModel {
             return this;
         }
 
-        public ActionBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public ActionBuilder withCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
         public ActionBuilder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public ActionBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
         public ActionBuilder withNextState(State nextState) {
             this.nextState = nextState;
-            return this;
-        }
-
-        public ActionBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public ActionBuilder withUpdatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
-        public ActionBuilder withVersion(Long version) {
-            this.version = version;
             return this;
         }
     }

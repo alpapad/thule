@@ -11,7 +11,6 @@ import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.State;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -358,15 +357,12 @@ public final class Person extends DomainModel {
 
     public static final class PersonBuilder {
         protected Long version;
-        private LocalDateTime createdAt;
-        private String createdBy;
         private LocalDate dateOfBirth;
         private LocalDate dateOfExpiry;
         private LocalDate dateOfPasswordExpiry;
         private String emailAddress;
         private String firstName;
         private HomeAddress homeAddress;
-        private Long id;
         private String lastName;
         private String password;
         private Set<Photograph> photographs = new HashSet<>();
@@ -374,8 +370,6 @@ public final class Person extends DomainModel {
         private String secondName;
         private State state;
         private String title;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
         private String userId;
         private WorkAddress workAddress;
 
@@ -405,16 +399,6 @@ public final class Person extends DomainModel {
             return person;
         }
 
-        public PersonBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public PersonBuilder withCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
         public PersonBuilder withDateOfBirth(LocalDate dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
@@ -442,11 +426,6 @@ public final class Person extends DomainModel {
 
         public PersonBuilder withHomeAddress(HomeAddress homeAddress) {
             this.homeAddress = homeAddress;
-            return this;
-        }
-
-        public PersonBuilder withId(Long id) {
-            this.id = id;
             return this;
         }
 
@@ -485,24 +464,8 @@ public final class Person extends DomainModel {
             return this;
         }
 
-        public PersonBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-
-        public PersonBuilder withUpdatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
         public PersonBuilder withUserId(String userId) {
             this.userId = userId;
-            return this;
-        }
-
-        public PersonBuilder withVersion(Long version) {
-            this.version = version;
             return this;
         }
 

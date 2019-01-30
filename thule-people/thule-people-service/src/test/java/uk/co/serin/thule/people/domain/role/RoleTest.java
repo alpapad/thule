@@ -23,13 +23,7 @@ public class RoleTest {
         // When
         Role actualRole = Role.RoleBuilder.aRole().
                 withCode(expectedRole.getCode()).
-                withCreatedAt(expectedRole.getCreatedAt()).
-                withCreatedBy(expectedRole.getCreatedBy()).
-                withId(expectedRole.getId()).
                 withDescription(expectedRole.getDescription()).
-                withUpdatedAt(expectedRole.getUpdatedAt()).
-                withUpdatedBy(expectedRole.getUpdatedBy()).
-                withVersion(expectedRole.getVersion()).
                 build();
 
         // Then

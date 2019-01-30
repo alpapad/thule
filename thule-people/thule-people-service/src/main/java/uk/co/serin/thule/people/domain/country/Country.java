@@ -2,7 +2,6 @@ package uk.co.serin.thule.people.domain.country;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -116,16 +115,10 @@ public final class Country extends DomainModel {
     }
 
     public static final class CountryBuilder {
-        private LocalDateTime createdAt;
-        private String createdBy;
-        private Long id;
         private String isoCodeThreeDigit;
         private String isoCodeTwoDigit;
         private String isoName;
         private String isoNumber;
-        private LocalDateTime updatedAt;
-        private String updatedBy;
-        private Long version;
 
         private CountryBuilder() {
         }
@@ -140,21 +133,6 @@ public final class Country extends DomainModel {
             country.setIsoName(isoName);
             country.setIsoNumber(isoNumber);
             return country;
-        }
-
-        public CountryBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public CountryBuilder withCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public CountryBuilder withId(Long id) {
-            this.id = id;
-            return this;
         }
 
         public CountryBuilder withIsoCodeThreeDigit(String isoCodeThreeDigit) {
@@ -174,21 +152,6 @@ public final class Country extends DomainModel {
 
         public CountryBuilder withIsoNumber(String isoNumber) {
             this.isoNumber = isoNumber;
-            return this;
-        }
-
-        public CountryBuilder withUpdatedAt(LocalDateTime updatedAt) {
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public CountryBuilder withUpdatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
-        public CountryBuilder withVersion(Long version) {
-            this.version = version;
             return this;
         }
     }
