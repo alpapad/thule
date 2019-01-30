@@ -8,7 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.NeverRetryPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
@@ -115,8 +115,8 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         // Add basic authentication credentials
         List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
         interceptors = new ArrayList<>(interceptors);
-        interceptors.removeIf(BasicAuthorizationInterceptor.class::isInstance);
-        interceptors.add(new BasicAuthorizationInterceptor(username, password));
+        interceptors.removeIf(BasicAuthenticationInterceptor.class::isInstance);
+        interceptors.add(new BasicAuthenticationInterceptor(username, password));
         restTemplate.setInterceptors(interceptors);
 
         return this;
