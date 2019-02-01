@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.docker;
+package uk.co.serin.thule.people;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

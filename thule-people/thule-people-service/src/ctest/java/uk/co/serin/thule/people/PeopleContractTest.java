@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.contract;
+package uk.co.serin.thule.people;
 
 import org.junit.AfterClass;
 import org.junit.Before;
