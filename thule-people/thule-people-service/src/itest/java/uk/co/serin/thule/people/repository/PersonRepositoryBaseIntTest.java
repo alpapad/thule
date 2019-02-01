@@ -10,30 +10,21 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.TransactionSystemException;
 
-import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
-import uk.co.serin.thule.people.domain.DomainModel;
-import uk.co.serin.thule.people.domain.address.HomeAddress;
-import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.person.Photograph;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.Assert.fail;
 
 /**
@@ -68,38 +59,44 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        List<Person> actualPeople = personRepository.findAll();
+        var actualPeople = personRepository.findAll();
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
     }
 
+    private Person createAndPersistPerson() {
+        var expectedPerson = testDataFactory.buildPersonWithAllAssociations();
+
+        var person = personRepository.saveAndFlush(expectedPerson);
+        testEntityManager.clear();
+
+        return person;
+    }
+
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        Optional<Person> actualOptionalPerson = personRepository.findById(testPerson.getId());
+        var actualOptionalPerson = personRepository.findById(expectedPerson.getId());
 
         // Then
-        Person actualPerson = actualOptionalPerson.orElseThrow();
+        var actualPerson = actualOptionalPerson.orElseThrow();
         assertThat(actualPerson).isEqualTo(expectedPerson);
     }
 
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        Person actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
+        var actualPerson = personRepository.findByIdAndFetchAllAssociations(expectedPerson.getId());
 
         // Then
         assertThat(actualPerson).isEqualTo(expectedPerson);
@@ -108,11 +105,10 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_updatedBy_then_the_new_person_is_found() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        Set<Person> actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST_USERNAME);
+        var actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST_USERNAME);
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
@@ -121,11 +117,10 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
+        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(expectedPerson.getUserId());
 
         // Then
         assertThat(actualPerson).isEqualTo(expectedPerson);
@@ -134,11 +129,10 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_with_criteria_then_the_new_person_is_found() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        List<Person> actualPeople = personRepository.findByCriteria(testPerson.getEmailAddress().substring(1), null, null, null);
+        var actualPeople = personRepository.findByCriteria(expectedPerson.getEmailAddress().substring(1), null, null, null);
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
@@ -147,11 +141,10 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_searching_by_email_address_then_the_new_person_is_found() {
         // Given
-        var testPerson = createAndPersistPerson();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var expectedPerson = createAndPersistPerson();
 
         // When
-        List<Person> actualPeople = personRepository.search(testPerson.getEmailAddress().substring(1));
+        var actualPeople = personRepository.search(expectedPerson.getEmailAddress().substring(1));
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
@@ -160,122 +153,105 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
         // Given
-        var testPerson = createAndPersistPerson();
+        var expectedPerson = createAndPersistPerson();
 
-        testPerson.setFirstName("updatedFirstName");
-        testPerson.setSecondName("updatedSecondName");
-        testPerson.setLastName("updatedLastName");
-        testPerson.setDateOfBirth(testPerson.getDateOfBirth().minusDays(1));
-        testPerson.setEmailAddress("updated@gmail.com");
-        testPerson.setPassword("updatedPassword");
+        expectedPerson.setFirstName("updatedFirstName");
+        expectedPerson.setSecondName("updatedSecondName");
+        expectedPerson.setLastName("updatedLastName");
+        expectedPerson.setDateOfBirth(expectedPerson.getDateOfBirth().minusDays(1));
+        expectedPerson.setEmailAddress("updated@gmail.com");
+        expectedPerson.setPassword("updatedPassword");
 
-        Thread.sleep(1000L); // Allow enough time to lapse for the updatedAt to be updated with a different value
+        Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
-        personRepository.save(testPerson);
+        personRepository.save(expectedPerson);
         testEntityManager.flush();
 
         // Then
-        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
+        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(expectedPerson.getUserId());
 
-        assertThat(actualPerson).isNotSameAs(testPerson);
-        assertThat(actualPerson.getFirstName()).isEqualTo(testPerson.getFirstName());
-        assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
-        assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
-        assertThat(actualPerson.getDateOfBirth()).isEqualTo(testPerson.getDateOfBirth());
-        assertThat(actualPerson.getEmailAddress()).isEqualTo(testPerson.getEmailAddress());
-        assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
-        assertThat(actualPerson.getUpdatedAt()).isAfter(testPerson.getUpdatedAt());
+        assertThat(actualPerson).isNotSameAs(expectedPerson);
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
-        assertThat(actualPerson.getVersion()).isEqualTo(testPerson.getVersion() + 1);
-    }
-
-    private Person createAndPersistPerson() {
-        var testPerson = testDataFactory.buildPersonWithAllAssociations();
-
-        var person = personRepository.saveAndFlush(testPerson);
-        testEntityManager.clear();
-
-        return person;
+        assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion() + 1);
     }
 
     @Before
     public void setUp() {
-        ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
+        var referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
     }
 
     @Test
-    public void when_creating_a_person_then_a_new_person_is_created() {
+    public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        Person testPerson = testDataFactory.buildPersonWithAllAssociations();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
-        ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_VERSION, 0L);
+        var expectedPerson = testDataFactory.buildPersonWithAllAssociations();
 
         // When
-        personRepository.save(testPerson);
+        personRepository.save(expectedPerson);
+        testEntityManager.flush(); // Force an update from the JPA cache to the database
 
         // Then
-        Person actualPerson = personRepository.findByUserIdAndFetchAllAssociations(testPerson.getUserId());
+        testEntityManager.clear(); // Clear the JPA cache to guarantee that subsequent finders actually access the database
+        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(expectedPerson.getUserId());
 
+        assertThat(actualPerson).isNotSameAs(expectedPerson);
+        assertThat(actualPerson.getCreatedAt()).isNotNull();
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
+        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
         assertThat(actualPerson.getId()).isNotNull();
-        assertThat(actualPerson.getUpdatedAt()).isNotNull();
-        assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
-        assertThat(actualPerson.getCreatedBy()).isNotNull();
-        assertThat(actualPerson.getUpdatedBy()).isNotNull();
-
-        assertThat(actualPerson.getPhotographs()).hasSize(1);
-        Photograph actualPhotograph = actualPerson.getPhotographs().iterator().next();
-        assertThat(actualPhotograph.getId()).isNotNull();
-        assertThat(actualPhotograph.getVersion()).isEqualTo(0);
-
-        HomeAddress actualHomeAddress = actualPerson.getHomeAddress();
-        assertThat(actualHomeAddress.getId()).isNotNull();
-        assertThat(actualHomeAddress.getVersion()).isEqualTo(0);
-
-        WorkAddress actualWorkAddress = actualPerson.getWorkAddress();
-        assertThat(actualWorkAddress.getId()).isNotNull();
-        assertThat(actualWorkAddress.getVersion()).isEqualTo(0);
-
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_BY,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+        assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
+        assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
+        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(expectedPerson.getPhotographs());
+        assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
+        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
+        assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(actualPerson.getCreatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getUserId()).isEqualTo(expectedPerson.getUserId());
+        assertThat(actualPerson.getVersion()).isEqualTo(0);
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
     }
 
     @Test
     @Rollback
     public void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
         // Given
-        Person person = new Person("userId");
+        var person = new Person("userId");
 
         // When
-        Throwable cause = null;
-        try {
-            personRepository.save(person);
-            fail();
-        } catch (TransactionSystemException e) { // Hsql and Oracle
-            cause = e.getMostSpecificCause();
-        } catch (ConstraintViolationException e) { // MySql
-            cause = e;
-        }
+        Throwable throwable = catchThrowable(() -> personRepository.save(person));
 
         // Then
-        assertThat(cause).isInstanceOf(ConstraintViolationException.class);
+        if (throwable instanceof TransactionSystemException) {
+            throwable = ((TransactionSystemException) throwable).getMostSpecificCause(); // Hsql and Oracle only, MySql and H2 will throw ConstraintViolationException
+        }
+        assertThat(throwable).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     public void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
-        Person person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
+        var person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
 
         // When
         personRepository.delete(person);
 
         // Then
-        Optional<Person> deletedPerson = personRepository.findById(person.getId());
+        var deletedPerson = personRepository.findById(person.getId());
         assertThat(deletedPerson).isNotPresent();
     }
 }

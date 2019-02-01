@@ -5,7 +5,9 @@ import org.junit.BeforeClass;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
 
-import uk.co.serin.thule.people.docker.MySqlDockerContainer;
+import uk.co.serin.thule.utils.docker.DockerCompose;
+
+import java.io.IOException;
 
 /**
  * MySql, Oracle, H2 and HSQL embedded database drivers are on the itest classpath. By default, the H2
@@ -17,13 +19,15 @@ import uk.co.serin.thule.people.docker.MySqlDockerContainer;
 @ActiveProfiles("itest")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonRepositoryMysqlIntTest extends PersonRepositoryBaseIntTest {
+    private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
+
     @BeforeClass
-    public static void setUpClass() {
-        MySqlDockerContainer.instance().startMySqlContainerIfDown();
+    public static void setUpClass() throws IOException {
+        dockerCompose.up();
     }
 
     @AfterClass
-    public static void tearDownClass() {
-        MySqlDockerContainer.instance().stopMySqlContainerIfup();
+    public static void tearDownClass() throws IOException {
+        dockerCompose.down();
     }
 }
