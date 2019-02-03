@@ -24,7 +24,7 @@ public class PersonEventHandlerTest {
         // Given
 
         // When
-        personEventHandler.handlePersonBeforeCreate(Person.builder().userId("userId").build());
+        personEventHandler.handlePersonBeforeCreate(new Person("userId"));
 
         // Then
         verify(peopleService).beforeCreate(any(Person.class));
@@ -35,7 +35,7 @@ public class PersonEventHandlerTest {
         // Given
 
         // When
-        personEventHandler.handlePersonAfterCreate(Person.builder().userId("userId").build());
+        personEventHandler.handlePersonAfterCreate(new Person("userId"));
 
         // Then
         verify(peopleService).afterCreate(any(Person.class));
@@ -46,7 +46,7 @@ public class PersonEventHandlerTest {
         // Given
 
         // When
-        personEventHandler.handlePersonAfterDelete(Person.builder().userId("userId").build());
+        personEventHandler.handlePersonAfterDelete(new Person("userId"));
 
         // Then
         verify(peopleService).afterDelete(any(Person.class));
@@ -57,7 +57,7 @@ public class PersonEventHandlerTest {
         // Given
 
         // When
-        personEventHandler.handlePersonAfterSave(Person.builder().userId("userId").build());
+        personEventHandler.handlePersonAfterSave(new Person("userId"));
 
         // Then
         verify(peopleService).afterSave(any(Person.class));

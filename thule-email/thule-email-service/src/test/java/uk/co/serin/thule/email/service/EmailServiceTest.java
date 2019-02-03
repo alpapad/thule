@@ -83,7 +83,7 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
 
         // When
@@ -96,10 +96,10 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_bccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
-        expectedEmail.setCcs(Collections.singleton("cc@test.co.uk"));
-        expectedEmail.setTos(Collections.singleton("to@test.co.uk"));
+        expectedEmail.addCcs(Collections.singleton("cc@test.co.uk"));
+        expectedEmail.addTos(Collections.singleton("to@test.co.uk"));
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
@@ -114,10 +114,10 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_ccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
-        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
-        expectedEmail.setTos(Collections.singleton("to@test.co.uk"));
+        expectedEmail.addBccs(Collections.singleton("bcc@test.co.uk"));
+        expectedEmail.addTos(Collections.singleton("to@test.co.uk"));
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
@@ -132,10 +132,10 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_tos_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        Email expectedEmail = new Email("from@test.co.uk", "This is a test email");
         expectedEmail.setBody("This is the content");
-        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
-        expectedEmail.setCcs(Collections.singleton("cc@test.co.uk"));
+        expectedEmail.addBccs(Collections.singleton("bcc@test.co.uk"));
+        expectedEmail.addCcs(Collections.singleton("cc@test.co.uk"));
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 

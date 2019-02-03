@@ -3,17 +3,46 @@ package uk.co.serin.thule.people.domain.address;
 import org.junit.Test;
 
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
-import uk.co.serin.thule.people.domain.country.Country;
-import uk.co.serin.thule.people.domain.state.StateCode;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 public class WorkAddressTest {
-    private static final String GREATER_LONDON = "Greater London";
-    private static final String LONDON = "London";
-    private TestDataFactory testDataFactory = new TestDataFactory();
+    private final TestDataFactory testDataFactory = new TestDataFactory();
 
     @Test
-    public void when_constructing_then_a_work_address_is_instantiated() {
-        WorkAddress.builder().addressLine1("Regent Street").addressLine2("Green").country(testDataFactory.getCountries().get(Country.GBR))
-                   .county(GREATER_LONDON).postCode("EC4").state(testDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).town(LONDON).build();
+    public void when_builder_method_then_getters_operate_on_the_same_field() {
+        // Given
+        WorkAddress expectedWorkAddress = testDataFactory.buildRegentStreetWorkAddress();
+
+        // When
+        WorkAddress actualWorkAddress = WorkAddress.WorkAddressBuilder.aWorkAddress().
+                withAddressLine1(expectedWorkAddress.getAddressLine1()).
+                withAddressLine2(expectedWorkAddress.getAddressLine2()).
+                withCountry(expectedWorkAddress.getCountry()).
+                withCounty(expectedWorkAddress.getCounty()).
+                withPostCode(expectedWorkAddress.getPostCode()).
+                withState(expectedWorkAddress.getState()).
+                withTown(expectedWorkAddress.getTown()).build();
+
+        // Then
+        assertThat(actualWorkAddress.getAddressLine1()).isEqualTo(expectedWorkAddress.getAddressLine1());
+        assertThat(actualWorkAddress.getAddressLine2()).isEqualTo(expectedWorkAddress.getAddressLine2());
+        assertThat(actualWorkAddress.getCountry()).isEqualTo(expectedWorkAddress.getCountry());
+        assertThat(actualWorkAddress.getCounty()).isEqualTo(expectedWorkAddress.getCounty());
+        assertThat(actualWorkAddress.getCreatedAt()).isEqualTo(expectedWorkAddress.getCreatedAt());
+        assertThat(actualWorkAddress.getCreatedBy()).isEqualTo(expectedWorkAddress.getCreatedBy());
+        assertThat(actualWorkAddress.getId()).isEqualTo(expectedWorkAddress.getId());
+        assertThat(actualWorkAddress.getPostCode()).isEqualTo(expectedWorkAddress.getPostCode());
+        assertThat(actualWorkAddress.getState()).isEqualTo(expectedWorkAddress.getState());
+        assertThat(actualWorkAddress.getTown()).isEqualTo(expectedWorkAddress.getTown());
+        assertThat(actualWorkAddress.getUpdatedAt()).isEqualTo(expectedWorkAddress.getUpdatedAt());
+        assertThat(actualWorkAddress.getUpdatedBy()).isEqualTo(expectedWorkAddress.getUpdatedBy());
+        assertThat(actualWorkAddress.getVersion()).isEqualTo(expectedWorkAddress.getVersion());
+    }
+
+    @Test
+    public void when_pojo_methods_are_not_well_implemented_then_throw_an_exception() {
+        assertPojoMethodsFor(WorkAddress.class).areWellImplemented();
     }
 }

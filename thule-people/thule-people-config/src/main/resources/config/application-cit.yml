@@ -3,12 +3,6 @@ eureka:
   client:
     enabled: true
 
-# Spring logging
-logging:
-  level:
-    jdbc.sqlonly: info
-    uk.co.serin: trace
-
 # Thule configuration
 thule:
   peopleservice:

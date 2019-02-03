@@ -25,6 +25,7 @@ import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.junit.Assert.fail;
 
 /**
  * Abstract class for testing the repository in both MySql and H2
@@ -68,8 +69,11 @@ public abstract class PersonRepositoryBaseIntTest {
     }
 
     private Person createAndPersistPerson() {
-        var person = personRepository.saveAndFlush(testDataFactory.buildPersonWithAllAssociations());
+        var expectedPerson = testDataFactory.buildPersonWithAllAssociations();
+
+        var person = personRepository.saveAndFlush(expectedPerson);
         testEntityManager.clear();
+
         return person;
     }
 
@@ -226,15 +230,14 @@ public abstract class PersonRepositoryBaseIntTest {
     @Rollback
     public void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
         // Given
-        var person = Person.builder().userId("userId").build();
+        var person = new Person("userId");
 
         // When
         Throwable throwable = catchThrowable(() -> personRepository.save(person));
 
         // Then
         if (throwable instanceof TransactionSystemException) {
-            throwable = ((TransactionSystemException) throwable)
-                    .getMostSpecificCause(); // Hsql and Oracle only, MySql and H2 will throw ConstraintViolationException
+            throwable = ((TransactionSystemException) throwable).getMostSpecificCause(); // Hsql and Oracle only, MySql and H2 will throw ConstraintViolationException
         }
         assertThat(throwable).isInstanceOf(ConstraintViolationException.class);
     }
@@ -242,7 +245,7 @@ public abstract class PersonRepositoryBaseIntTest {
     @Test
     public void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
-        var person = createAndPersistPerson();
+        var person = personRepository.save(testDataFactory.buildPersonWithAllAssociations());
 
         // When
         personRepository.delete(person);

@@ -3,12 +3,6 @@ spring:
   zipkin:
     enabled: false
 
-# Spring logging
-logging:
-  level:
-    jdbc.sqlonly: info
-    uk.co.serin: trace
-
 # Thule configuration
 thule:
   peopleservice:

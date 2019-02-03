@@ -77,185 +77,185 @@ class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addActionAddressDisable() {
-        Action action = Action.builder().
-                code(ActionCode.ADDRESS_DISABLE).
-                description("Disable").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_DISABLE).
+                withDescription("Disable").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressDiscard() {
-        Action action = Action.builder().
-                code(ActionCode.ADDRESS_DISCARD).
-                description("Discard").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_DISCARD).
+                withDescription("Discard").
                 build();
         actions.put(ActionCode.ADDRESS_DISCARD, action);
     }
 
     private void addActionAddressEnable() {
-        Action action = Action.builder().
-                code(ActionCode.ADDRESS_ENABLE).
-                description("Enable").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_ENABLE).
+                withDescription("Enable").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressRecover() {
-        Action action = Action.builder().
-                code(ActionCode.ADDRESS_RECOVER).
-                description("Recover").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_RECOVER).
+                withDescription("Recover").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressUpdate() {
-        Action action = Action.builder().
-                code(ActionCode.ADDRESS_UPDATE).
-                description("Update").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_UPDATE).
+                withDescription("Update").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressView() {
-        Action action = Action.builder().
-                code(ActionCode.ADDRESS_VIEW).
-                description("View").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.ADDRESS_VIEW).
+                withDescription("View").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDisable() {
-        Action action = Action.builder().
-                code(ActionCode.PERSON_DISABLE).
-                description("Disable").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_DISABLE).
+                withDescription("Disable").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDiscard() {
-        Action action = Action.builder().
-                code(ActionCode.PERSON_DISCARD).
-                description("Discard").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_DISCARD).
+                withDescription("Discard").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonEnable() {
-        Action action = Action.builder().
-                code(ActionCode.PERSON_ENABLE).
-                description("Enable").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_ENABLE).
+                withDescription("Enable").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonRecover() {
-        Action action = Action.builder().
-                code(ActionCode.PERSON_RECOVER).
-                description("Recover").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_RECOVER).
+                withDescription("Recover").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonUpdate() {
-        Action action = Action.builder().
-                code(ActionCode.PERSON_UPDATE).
-                description("Update").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_UPDATE).
+                withDescription("Update").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonView() {
-        Action action = Action.builder().
-                code(ActionCode.PERSON_VIEW).
-                description("View").
+        Action action = Action.ActionBuilder.anAction().
+                withCode(ActionCode.PERSON_VIEW).
+                withDescription("View").
                 build();
         actions.put(action.getCode(), action);
     }
 
     private void addCountryGb() {
-        Country country = Country.builder().
-                isoCodeThreeDigit(Country.GBR).
-                isoCodeTwoDigit("GB").
-                isoName("United Kingdom").
-                isoNumber("826").
+        Country country = Country.CountryBuilder.aCountry().
+                withIsoCodeThreeDigit(Country.GBR).
+                withIsoCodeTwoDigit("GB").
+                withIsoName("United Kingdom").
+                withIsoNumber("826").
                 build();
         countries.put(country.getIsoCodeThreeDigit(), country);
     }
 
     private void addRoleAdministrator() {
-        Role role = Role.builder().
-                code(RoleCode.ROLE_ADMINISTRATOR).
-                description(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault()))).
+        Role role = Role.RoleBuilder.aRole().
+                withCode(RoleCode.ROLE_ADMINISTRATOR).
+                withDescription(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault()))).
                 build();
         roles.put(role.getCode(), role);
     }
 
     private void addRoleClerk() {
-        Role role = Role.builder().
-                code(RoleCode.ROLE_CLERK).
-                description(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault()))).
+        Role role = Role.RoleBuilder.aRole().
+                withCode(RoleCode.ROLE_CLERK).
+                withDescription(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault()))).
                 build();
         roles.put(role.getCode(), role);
     }
 
     private void addRoleManager() {
-        Role role = Role.builder().
-                code(RoleCode.ROLE_MANAGER).
-                description(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault()))).
+        Role role = Role.RoleBuilder.aRole().
+                withCode(RoleCode.ROLE_MANAGER).
+                withDescription(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault()))).
                 build();
         roles.put(role.getCode(), role);
     }
 
     private void addStateAddressDisabled() {
-        State state = State.builder().
-                code(StateCode.ADDRESS_DISABLED).
-                actions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
-                description("Disabled").
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.ADDRESS_DISABLED).
+                withActions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
+                withDescription("Disabled").
                 build();
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressDiscarded() {
-        State state = State.builder().
-                code(StateCode.ADDRESS_DISCARDED).
-                actions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
-                description("Discarded").
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.ADDRESS_DISCARDED).
+                withActions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
+                withDescription("Discarded").
                 build();
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressEnabled() {
-        State state = State.builder().
-                code(StateCode.ADDRESS_ENABLED).
-                actions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
-                description("Enabled").
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.ADDRESS_ENABLED).
+                withActions(Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).
+                withDescription("Enabled").
                 build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDisabled() {
-        State state = State.builder().
-                code(StateCode.PERSON_DISABLED).
-                actions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
-                description("Disabled").
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.PERSON_DISABLED).
+                withActions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
+                withDescription("Disabled").
                 build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDiscarded() {
-        State state = State.builder().
-                code(StateCode.PERSON_DISCARDED).
-                actions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
-                description("Discarded").
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.PERSON_DISCARDED).
+                withActions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
+                withDescription("Discarded").
                 build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonEnabled() {
-        State state = State.builder().
-                code(StateCode.PERSON_ENABLED).
-                actions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
-                description("Enabled").
+        State state = State.StateBuilder.aState().
+                withCode(StateCode.PERSON_ENABLED).
+                withActions(Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).
+                withDescription("Enabled").
                 build();
         states.put(state.getCode(), state);
     }

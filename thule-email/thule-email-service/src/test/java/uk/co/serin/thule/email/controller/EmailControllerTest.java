@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.email.service.EmailService;
 
+import javax.validation.ValidationException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -24,7 +26,9 @@ public class EmailControllerTest {
     @Test
     public void create_an_email() {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        String from = "from@test.co.uk";
+        String subject = "subject";
+        Email expectedEmail = new Email(from, subject);
 
         // When
         ResponseEntity<Email> responseEntity = emailController.createEmail(expectedEmail);

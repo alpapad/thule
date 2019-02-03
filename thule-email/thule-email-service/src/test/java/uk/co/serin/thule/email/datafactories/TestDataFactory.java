@@ -9,14 +9,14 @@ import java.util.stream.Stream;
 
 public class TestDataFactory {
     public static Email buildEmail() {
-        return Email.builder().
-                attachments(Collections.singleton(new Attachment("This is a test attachment", "test-attachment.txt"))).
-                bccs(Collections.singleton("bcc@test.co.uk")).
-                body("This is a test body").
-                ccs(Collections.singleton("ccs@test.co.uk")).
-                from("from@test.co.uk").
-                subject("Test subject").
-                tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
+        return Email.EmailBuilder.anEmail().
+                withAttachments(Collections.singleton(new Attachment("This is a test attachment", "test-attachment.txt"))).
+                withBccs(Collections.singleton("bcc@test.co.uk")).
+                withBody("This is a test body").
+                withCcs(Collections.singleton("ccs@test.co.uk")).
+                withFrom("from@test.co.uk").
+                withSubject("Test subject").
+                withTos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
                 build();
     }
 }
