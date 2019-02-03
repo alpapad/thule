@@ -7,20 +7,31 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.StringJoiner;
 
-import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@MappedSuperclass
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@MappedSuperclass
+@ToString
 public abstract class DomainModel {
     public static final String DATABASE_COLUMN_ACTION_ID = "action_id";
     public static final String DATABASE_COLUMN_ADDRESS_TYPE = "address_type";
@@ -88,14 +99,12 @@ public abstract class DomainModel {
     private static final int CREATED_BY_MAX_LENGTH = 100;
     private static final int UPDATED_BY_MAX_LENGTH = 100;
 
-    @Column
     @CreatedDate
     @NotNull
     private LocalDateTime createdAt;
 
-    @Column
     @CreatedBy
-    @NotNull
+    @NotEmpty
     @Size(max = CREATED_BY_MAX_LENGTH)
     private String createdBy;
 
@@ -103,54 +112,16 @@ public abstract class DomainModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     @LastModifiedDate
     @NotNull
     private LocalDateTime updatedAt;
 
-    @Column
     @LastModifiedBy
-    @NotNull
+    @NotEmpty
     @Size(max = UPDATED_BY_MAX_LENGTH)
     private String updatedBy;
 
+    @NotNull
     @Version
-    @Column
     private Long version;
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", "DomainModel{", "}")
-                .add(String.format("createdAt=%s", createdAt))
-                .add(String.format("createdBy=%s", createdBy))
-                .add(String.format("id=%s", id))
-                .add(String.format("updatedAt=%s", updatedAt))
-                .add(String.format("updatedBy=%s", updatedBy))
-                .add(String.format("version=%s", version))
-                .toString();
-    }
 }
