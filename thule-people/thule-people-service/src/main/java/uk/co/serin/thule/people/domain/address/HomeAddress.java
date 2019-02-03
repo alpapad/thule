@@ -7,88 +7,16 @@ import uk.co.serin.thule.people.domain.state.State;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-@Entity
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 @DiscriminatorValue(DomainModel.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_HOME)
-public final class HomeAddress extends Address {
-    /**
-     * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    HomeAddress() {
-    }
-
-    /**
-     * Business key constructor
-     *
-     * @param addressLine1 Business key attribute
-     * @param postCode     Business key attribute
-     * @param country      Business key attribute
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public HomeAddress(String addressLine1, String postCode, Country country) {
-        super(addressLine1, postCode, country);
-    }
-
-    public static final class HomeAddressBuilder {
-        private String addressLine1;
-        private String addressLine2;
-        private Country country;
-        private String county;
-        private String postCode;
-        private State state;
-        private String town;
-
-        private HomeAddressBuilder() {
-        }
-
-        public static HomeAddressBuilder aHomeAddress() {
-            return new HomeAddressBuilder();
-        }
-
-        public HomeAddress build() {
-            HomeAddress homeAddress = new HomeAddress(addressLine1, postCode, country);
-            homeAddress.setAddressLine2(addressLine2);
-            homeAddress.setCounty(county);
-            homeAddress.setState(state);
-            homeAddress.setTown(town);
-            return homeAddress;
-        }
-
-        public HomeAddressBuilder withAddressLine1(String addressLine1) {
-            this.addressLine1 = addressLine1;
-            return this;
-        }
-
-        public HomeAddressBuilder withAddressLine2(String addressLine2) {
-            this.addressLine2 = addressLine2;
-            return this;
-        }
-
-        public HomeAddressBuilder withCountry(Country country) {
-            this.country = country;
-            return this;
-        }
-
-        public HomeAddressBuilder withCounty(String county) {
-            this.county = county;
-            return this;
-        }
-
-        public HomeAddressBuilder withPostCode(String postCode) {
-            this.postCode = postCode;
-            return this;
-        }
-
-        public HomeAddressBuilder withState(State state) {
-            this.state = state;
-            return this;
-        }
-
-        public HomeAddressBuilder withTown(String town) {
-            this.town = town;
-            return this;
-        }
+@Entity()
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class HomeAddress extends Address {
+    @Builder
+    public HomeAddress(String addressLine1, String addressLine2, Country country, String county, String postCode, State state, String town) {
+        super(addressLine1, addressLine2, country, county, postCode, state, town);
     }
 }

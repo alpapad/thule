@@ -2,157 +2,49 @@ package uk.co.serin.thule.people.domain.country;
 
 import uk.co.serin.thule.people.domain.DomainModel;
 
-import java.util.Objects;
-import java.util.StringJoiner;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Entity
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@Getter
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Setter
 @Table(name = DomainModel.ENTITY_NAME_COUNTRIES)
-public final class Country extends DomainModel {
+@ToString(callSuper = true)
+public class Country extends DomainModel {
     public static final String GBR = "GBR";
     private static final int ISO_CODE_THREE_DIGIT_MAX_LENGTH = 3;
     private static final int ISO_CODE_TWO_DIGIT_MAX_LENGTH = 2;
     private static final int ISO_NAME_MAX_LENGTH = 100;
 
-    @Column
-    @NotNull
+    @EqualsAndHashCode.Include
+    @NotEmpty
     @Size(max = ISO_CODE_THREE_DIGIT_MAX_LENGTH)
     private String isoCodeThreeDigit;
 
-    @Column
-    @NotNull
+    @NotEmpty
     @Size(max = ISO_CODE_TWO_DIGIT_MAX_LENGTH)
     private String isoCodeTwoDigit;
 
-    @Column
-    @NotNull
+    @NotEmpty
     @Size(max = ISO_NAME_MAX_LENGTH)
     private String isoName;
 
-    @Column
-    @NotNull
+    @NotEmpty
     @Size(max = ISO_CODE_THREE_DIGIT_MAX_LENGTH)
     private String isoNumber;
-
-    /**
-     * Default constructor required when instantiating as java bean, e.g. by hibernate or jackson
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    Country() {
-    }
-
-    /**
-     * Business key constructor
-     *
-     * @param isoCodeThreeDigit Business key attribute
-     */
-    @SuppressWarnings("squid:S2637")
-    // Suppress SonarQube bug "@NonNull" values should not be set to null
-    public Country(String isoCodeThreeDigit) {
-        this.isoCodeThreeDigit = isoCodeThreeDigit;
-    }
-
-    public String getIsoCodeThreeDigit() {
-        return isoCodeThreeDigit;
-    }
-
-    public String getIsoCodeTwoDigit() {
-        return isoCodeTwoDigit;
-    }
-
-    public void setIsoCodeTwoDigit(String isoCodeTwoDigit) {
-        this.isoCodeTwoDigit = isoCodeTwoDigit;
-    }
-
-    public String getIsoName() {
-        return isoName;
-    }
-
-    public void setIsoName(String isoName) {
-        this.isoName = isoName;
-    }
-
-    public String getIsoNumber() {
-        return isoNumber;
-    }
-
-    public void setIsoNumber(String isoNumber) {
-        this.isoNumber = isoNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(isoCodeThreeDigit);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Country country = (Country) o;
-        return Objects.equals(isoCodeThreeDigit, country.isoCodeThreeDigit);
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", "Country{", "}")
-                .add(super.toString())
-                .add(String.format("isoCodeThreeDigit=%s", isoCodeThreeDigit))
-                .add(String.format("isoCodeTwoDigit=%s", isoCodeTwoDigit))
-                .add(String.format("isoName=%s", isoName))
-                .add(String.format("isoNumber=%s", isoNumber))
-                .toString();
-    }
-
-    public static final class CountryBuilder {
-        private String isoCodeThreeDigit;
-        private String isoCodeTwoDigit;
-        private String isoName;
-        private String isoNumber;
-
-        private CountryBuilder() {
-        }
-
-        public static CountryBuilder aCountry() {
-            return new CountryBuilder();
-        }
-
-        public Country build() {
-            Country country = new Country(isoCodeThreeDigit);
-            country.setIsoCodeTwoDigit(isoCodeTwoDigit);
-            country.setIsoName(isoName);
-            country.setIsoNumber(isoNumber);
-            return country;
-        }
-
-        public CountryBuilder withIsoCodeThreeDigit(String isoCodeThreeDigit) {
-            this.isoCodeThreeDigit = isoCodeThreeDigit;
-            return this;
-        }
-
-        public CountryBuilder withIsoCodeTwoDigit(String isoCodeTwoDigit) {
-            this.isoCodeTwoDigit = isoCodeTwoDigit;
-            return this;
-        }
-
-        public CountryBuilder withIsoName(String isoName) {
-            this.isoName = isoName;
-            return this;
-        }
-
-        public CountryBuilder withIsoNumber(String isoNumber) {
-            this.isoNumber = isoNumber;
-            return this;
-        }
-    }
 }

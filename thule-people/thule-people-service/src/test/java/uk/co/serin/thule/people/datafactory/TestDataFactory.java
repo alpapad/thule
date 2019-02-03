@@ -2,6 +2,7 @@ package uk.co.serin.thule.people.datafactory;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
 import uk.co.serin.thule.people.domain.address.HomeAddress;
@@ -19,6 +20,7 @@ import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -43,110 +45,104 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Email buildEmail() {
-        return Email.EmailBuilder.anEmail().
-                withBody("This is a test body").
-                withSubject("Test subject").
-                withTos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
-                build();
+        return Email.builder().
+                body("This is a test body").
+                            subject("Test subject").
+                            tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
+                            build();
     }
 
     public Person buildPerson(Person person) {
-        return Person.PersonBuilder.aPerson().
-                withDateOfBirth(person.getDateOfBirth()).
-                withDateOfExpiry(person.getDateOfExpiry()).
-                withDateOfPasswordExpiry(person.getDateOfPasswordExpiry()).
-                withEmailAddress(person.getEmailAddress()).
-                withFirstName(person.getFirstName()).
-                withHomeAddress(person.getHomeAddress()).
-                withLastName(person.getLastName()).
-                withPassword(person.getPassword()).
-                withPhotographs(person.getPhotographs()).
-                withRoles(person.getRoles()).
-                withSecondName(person.getSecondName()).
-                withState(person.getState()).
-                withTitle(person.getTitle()).
-                withUserId(person.getUserId()).
-                withWorkAddress(person.getWorkAddress()).build();
+        return Person.builder().
+                dateOfBirth(person.getDateOfBirth()).
+                             dateOfExpiry(person.getDateOfExpiry()).
+                             dateOfPasswordExpiry(person.getDateOfPasswordExpiry()).
+                             emailAddress(person.getEmailAddress()).
+                             firstName(person.getFirstName()).
+                             homeAddress(person.getHomeAddress()).
+                             lastName(person.getLastName()).
+                             password(person.getPassword()).
+                             photographs(person.getPhotographs()).
+                             roles(person.getRoles()).
+                             secondName(person.getSecondName()).
+                             state(person.getState()).
+                             title(person.getTitle()).
+                             userId(person.getUserId()).
+                             workAddress(person.getWorkAddress()).build();
     }
 
     public Person buildPersonWithAllAssociations() {
-        LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
-        String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
-
-        Person person = Person.PersonBuilder.aPerson().withUserId(userId).
-                withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
-                withDateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
-                withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
-                withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                withFirstName("Elizabeth").
-                withHomeAddress(buildOxfordStreetHomeAddress()).
-                withLastName("Scarlett").
-                withPassword(userId).
-                withRoles(new HashSet<>(referenceDataFactory.getRoles().values())).
-                withSecondName("K").
-                withState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).
-                withTitle("Miss").
-                withWorkAddress(buildRegentStreetWorkAddress()).
-                build();
-
-        person.addPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
+        Person person = buildPersonWithoutAnyAssociations();
+        person.setHomeAddress(buildOxfordStreetHomeAddress());
+        person.setPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
+        person.setRoles(new HashSet<>(referenceDataFactory.getRoles().values()));
+        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        person.setWorkAddress(buildRegentStreetWorkAddress());
 
         return person;
-    }
-
-    public HomeAddress buildOxfordStreetHomeAddress() {
-        return HomeAddress.HomeAddressBuilder.aHomeAddress().
-                withAddressLine1("Oxford Street").
-                withAddressLine2("Green").
-                withCountry(referenceDataFactory.getCountries().get(Country.GBR)).
-                withCounty(GREATER_LONDON).
-                withPostCode("EC3").
-                withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
-                withTown(LONDON).
-                build();
-    }
-
-    public WorkAddress buildRegentStreetWorkAddress() {
-        return WorkAddress.WorkAddressBuilder.aWorkAddress().
-                withAddressLine1("Regent Street").
-                withAddressLine2("Green").
-                withCountry(referenceDataFactory.getCountries().get(Country.GBR)).
-                withCounty(GREATER_LONDON).
-                withPostCode("EC4").
-                withState(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
-                withTown(LONDON).
-                build();
-    }
-
-    public Photograph buildPhotographMissScarlett(Person person) {
-        try {
-            Resource resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
-            return Photograph.PhotographBuilder.aPhotograph().
-                    withPerson(person).
-                    withPhoto(FileCopyUtils.copyToByteArray(resource.getInputStream())).
-                    withPosition(1).
-                    build();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
     }
 
     public Person buildPersonWithoutAnyAssociations() {
         LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
-        return Person.PersonBuilder.aPerson().
-                withDateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
-                withDateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
-                withDateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
-                withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                withFirstName("Elizabeth").
-                withLastName("Scarlett").
-                withPassword(userId).
-                withSecondName("K").
-                withTitle("Miss").
-                withUserId(userId).
-                build();
+        return Person.builder().
+                dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
+                             dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
+                             dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                             emailAddress(userId + EMAIL_ADDRESS_SUFFIX).
+                             firstName("Elizabeth").
+                             lastName("Scarlett").
+                             password(userId).
+                             secondName("K").
+                             title("Miss").
+                             userId(userId).
+                             build();
+    }
+
+    public HomeAddress buildOxfordStreetHomeAddress() {
+        return HomeAddress.builder().
+                addressLine1("Oxford Street").
+                                  addressLine2("Green").
+                                  country(referenceDataFactory.getCountries().get(Country.GBR)).
+                                  county(GREATER_LONDON).
+                                  postCode("EC3").
+                                  state(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
+                                  town(LONDON).
+                                  build();
+    }
+
+    public Photograph buildPhotographMissScarlett(Person person) {
+        try {
+            Resource resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
+            byte[] photo = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            return Photograph.builder().
+                    hash(new String(DigestUtils.md5Digest(photo), Charset.defaultCharset())).
+                                     person(person).
+                                     photo(photo).
+                                     position(1).
+                                     build();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public WorkAddress buildRegentStreetWorkAddress() {
+        return WorkAddress.builder().
+                addressLine1("Regent Street").
+                                  addressLine2("Green").
+                                  country(referenceDataFactory.getCountries().get(Country.GBR)).
+                                  county(GREATER_LONDON).
+                                  postCode("EC4").
+                                  state(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
+                                  town(LONDON).
+                                  build();
+    }
+
+    public Person buildPersonWithState() {
+        Person person = buildPersonWithoutAnyAssociations();
+        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        return person;
     }
 
     @Override

@@ -5,14 +5,21 @@ import org.springframework.stereotype.Service;
 
 import uk.co.serin.thule.people.domain.email.Email;
 import uk.co.serin.thule.people.domain.person.Person;
+import uk.co.serin.thule.people.domain.person.PersonInvalidStateException;
 import uk.co.serin.thule.people.domain.role.RoleCode;
+import uk.co.serin.thule.people.domain.state.Action;
+import uk.co.serin.thule.people.domain.state.ActionCode;
 import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.rest.EmailServiceClient;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
+import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,11 +41,11 @@ public class PeopleService {
     }
 
     private void sendEmail(Person person, String event) {
-        Email email = Email.EmailBuilder.anEmail().
-                withBody(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event)).
-                withSubject("Thule people service notification").
-                withTos(Collections.singleton(person.getEmailAddress())).
-                build();
+        Email email = Email.builder().
+                body(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event)).
+                                   subject("Thule people service notification").
+                                   tos(Collections.singleton(person.getEmailAddress())).
+                                   build();
         emailServiceClient.create(email);
     }
 
@@ -51,7 +58,70 @@ public class PeopleService {
     }
 
     public void beforeCreate(Person person) {
-        person.addRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)).collect(Collectors.toSet()));
+        person.setRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)).collect(Collectors.toSet()));
         person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
+    }
+
+    public void disable(Person person) {
+        // Validate the action is valid for the current state
+        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_DISABLE)) {
+            throw new PersonInvalidStateException(person);
+        }
+
+        // Set new state
+        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISABLE);
+        person.setState(personViewAction.getNextState());
+    }
+
+    private Map<ActionCode, Action> getActionsByCode(Set<Action> actions) {
+        return actions.stream().collect(Collectors.toMap(Action::getCode, Function.identity()));
+    }
+
+    public void discard(Person person) {
+        // Validate the action is valid for the current state
+        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_DISCARD)) {
+            throw new PersonInvalidStateException(person);
+        }
+
+        // Set new state
+        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISCARD);
+        person.setState(personViewAction.getNextState());
+    }
+
+    public void enable(Person person) {
+        // Validate the action is valid for the current state
+        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_ENABLE)) {
+            throw new PersonInvalidStateException(person);
+        }
+
+        // Set new state
+        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_ENABLE);
+        person.setState(personViewAction.getNextState());
+    }
+
+    public boolean isExpired(Person person) {
+        return LocalDate.now().isAfter(person.getDateOfExpiry());
+    }
+
+    public boolean isPasswordExpired(Person person) {
+        return LocalDate.now().isAfter(person.getDateOfPasswordExpiry());
+    }
+
+    public void recover(Person person) {
+        // Validate the action is valid for the current state
+        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_RECOVER)) {
+            throw new PersonInvalidStateException(person);
+        }
+
+        // Set new state
+        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_RECOVER);
+        person.setState(personViewAction.getNextState());
+    }
+
+    public void update(Person person) {
+        // Validate the action is valid for the current state
+        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_UPDATE)) {
+            throw new PersonInvalidStateException(person);
+        }
     }
 }

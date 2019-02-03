@@ -7,29 +7,28 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.rest.webmvc.support.ETag;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
 import uk.co.serin.thule.people.docker.MySqlDockerContainer;
@@ -47,10 +46,8 @@ import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
@@ -62,9 +59,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.springframework.util.StringUtils.trimLeadingCharacter;
+import static org.springframework.util.StringUtils.trimTrailingCharacter;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureWireMock(port = 0)
 @Import(PeopleContractTestConfiguration.class)
 @RunWith(SpringRunner.class)
@@ -77,12 +77,14 @@ public class PeopleContractTest {
     private ActionRepository actionRepository;
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private EntityManager entityManager;
+    private OAuth2RestTemplate oAuth2RestTemplate;
     private String peopleServiceUrl;
     @Autowired
     private PersonRepository personRepository;
     @LocalServerPort
     private int port;
-    private OAuth2RestTemplate oAuth2RestTemplate;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -90,8 +92,6 @@ public class PeopleContractTest {
     private TestDataFactory testDataFactory;
     @Autowired
     private TestRestTemplate testRestTemplate;
-    @Autowired
-    private EntityManager entityManager;
 
     @BeforeClass
     public static void setUpClass() {
@@ -106,58 +106,58 @@ public class PeopleContractTest {
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() {
         // Given
-        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        Person expectedPerson = createTestPerson(testPerson);
+        var testPerson = createAndPersistPersonWithNoAssociations();
 
         // When
-        ResponseEntity<Resources<Person>> personResponseEntity = oAuth2RestTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<Person>>() {
-        }, 0, 1000);
+        var personResponseEntity =
+                oAuth2RestTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<Person>>() {
+                }, 0, 1000);
 
         // Then
         assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        Collection<Person> actualPeople = Objects.requireNonNull(personResponseEntity.getBody()).getContent();
-        assertThat(actualPeople).contains(expectedPerson);
+        var actualPeople = Objects.requireNonNull(personResponseEntity.getBody()).getContent();
+        assertThat(actualPeople).contains(testPerson);
     }
 
-    private Person createTestPerson(Person person) {
-        Person testPerson = testDataFactory.buildPerson(person);
-        testPerson.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-        return personRepository.save(testPerson);
+    private Person createAndPersistPersonWithNoAssociations() {
+        var person = personRepository.saveAndFlush(testDataFactory.buildPersonWithState());
+        entityManager.clear();
+        person.setState(null);
+        return person;
     }
 
     @Test
     public void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
         // Given
-        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        Person expectedPerson = createTestPerson(testPerson);
+        var testPerson = createAndPersistPersonWithNoAssociations();
 
         // When
-        ResponseEntity<Person> responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, expectedPerson.getId());
+        var responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, testPerson.getId());
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        Person actualPerson = responseEntity.getBody();
+        var actualPerson = responseEntity.getBody();
 
-        assertThat(actualPerson).isEqualTo(expectedPerson);
+        assertThat(actualPerson).isEqualTo(testPerson);
     }
 
     @Before
     public void setUp() {
         // Setup test data factories
-        ReferenceDataFactory referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
+        var referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
         testDataFactory = new TestDataFactory(referenceDataFactory);
 
         // Set up service url
         peopleServiceUrl = String.format("http://localhost:%s/%s", port, DomainModel.ENTITY_NAME_PEOPLE);
 
         // Setup OAuth2
-        OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, 0,
+                Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
-        // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOas support
+        // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOAS support
         // So, add all the message converters from the TestRestTemplate
         oAuth2RestTemplate.setMessageConverters(testRestTemplate.getRestTemplate().getMessageConverters());
     }
@@ -165,7 +165,7 @@ public class PeopleContractTest {
     @Test
     public void when_checking_health_then_status_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
+        var actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -174,80 +174,75 @@ public class PeopleContractTest {
     @Test
     public void when_creating_a_person_then_that_person_is_returned() {
         // Given
-        Person testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        Person expectedPerson = testDataFactory.buildPerson(testPerson);
+        var testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
 
-        givenThat(post(
-                urlEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
-                willReturn(aResponse().
-                        withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
-                        withBodyFile("thule-email-service-response.json")));
+        givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
+                aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                           .withBodyFile("thule-email-service-response.json")));
 
         // When
-        ResponseEntity<Person> responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
+        var responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
 
         // Then
-        verify(postRequestedFor(
-                urlPathEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        var statusCode = responseEntity.getStatusCode();
+        var actualPerson = responseEntity.getBody();
+        var etag = ETag.from(responseEntity.getHeaders().get(HttpHeaders.ETAG).get(0));
+        var version = Long.parseLong(trimTrailingCharacter(trimLeadingCharacter(etag.toString(), '"'), '"'));
 
-        Person actualPerson = responseEntity.getBody();
-
+        assertThat(statusCode).isEqualTo(HttpStatus.CREATED);
+        assertThat(actualPerson).isNotSameAs(testPerson);
+        assertThat(actualPerson.getCreatedAt()).isNotNull();
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getDateOfBirth()).isEqualTo(testPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(testPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(testPerson.getDateOfPasswordExpiry());
+        assertThat(actualPerson.getEmailAddress()).isEqualTo(testPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(testPerson.getFirstName());
+        assertThat(actualPerson.getHomeAddress()).isEqualTo(testPerson.getHomeAddress());
         assertThat(actualPerson.getId()).isNotNull();
-        assertThat(actualPerson.getUpdatedAt()).isNotNull();
-        assertThat(actualPerson.getCreatedAt()).isEqualTo(actualPerson.getUpdatedAt());
-        assertThat(actualPerson.getCreatedBy()).isNotNull();
-        assertThat(actualPerson.getUpdatedBy()).isNotNull();
-
-        assertThat(actualPerson).isEqualToIgnoringGivenFields(expectedPerson,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_ID,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_CREATED_BY,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_AT,
-                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY);
+        assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
+        assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
+        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(testPerson.getPhotographs());
+        assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
+        assertThat(actualPerson.getState()).isEqualTo(testPerson.getState());
+        assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());
+        assertThat(actualPerson.getUpdatedAt()).isEqualTo(actualPerson.getCreatedAt());
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getUserId()).isEqualTo(testPerson.getUserId());
+        assertThat(version).isEqualTo(0L);
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(testPerson.getWorkAddress());
     }
 
     @Test
     public void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
-        Person person = createTestPerson(testDataFactory.buildPersonWithoutAnyAssociations());
+        var person = createAndPersistPersonWithNoAssociations();
 
-        givenThat(
-                post(urlEqualTo(EMAILS_PATH)).
-                        withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
-                        willReturn(aResponse().
-                                withStatus(HttpStatus.ACCEPTED.value()).
-                                withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
-                                withBodyFile("thule-email-service-response.json")));
+        givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
+                aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                           .withBodyFile("thule-email-service-response.json")));
 
         // When
         oAuth2RestTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
-        Optional<Person> deletedPerson = personRepository.findById(person.getId());
+        var deletedPerson = personRepository.findById(person.getId());
 
         assertThat(deletedPerson).isNotPresent();
     }
 
     @Test
-    public void when_updating_a_person_then_that_persons_is_updated() throws InterruptedException {
+    public void when_updating_a_person_then_that_person_is_updated() throws InterruptedException {
         // Given
-        givenThat(post(
-                urlEqualTo(EMAILS_PATH)).
-                withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).
-                willReturn(aResponse().
-                        withStatus(HttpStatus.ACCEPTED.value()).
-                        withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).
-                        withBodyFile("thule-email-service-response.json")));
+        var testPerson = createAndPersistPersonWithNoAssociations();
 
-        var testPerson = createAndPersistPerson();
+        givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
+                aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                           .withBodyFile("thule-email-service-response.json")));
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
@@ -255,7 +250,6 @@ public class PeopleContractTest {
         testPerson.setDateOfBirth(LocalDate.of(1963, 05, 05));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setPassword("updatedPassword");
-        testPerson.setState(null);
 
         Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
@@ -265,27 +259,28 @@ public class PeopleContractTest {
         // Then
         verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
 
-        Person actualPerson = personRepository.findById(testPerson.getId()).get();
+        var actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
 
         assertThat(actualPerson).isNotSameAs(testPerson);
-        assertThat(actualPerson.getFirstName()).isEqualTo(testPerson.getFirstName());
-        assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
-        assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
+        assertThat(actualPerson.getCreatedAt()).isEqualTo(testPerson.getCreatedAt());
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(testPerson.getCreatedBy());
         assertThat(actualPerson.getDateOfBirth()).isEqualTo(testPerson.getDateOfBirth());
+        assertThat(actualPerson.getDateOfExpiry()).isEqualTo(testPerson.getDateOfExpiry());
+        assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(testPerson.getDateOfPasswordExpiry());
         assertThat(actualPerson.getEmailAddress()).isEqualTo(testPerson.getEmailAddress());
+        assertThat(actualPerson.getFirstName()).isEqualTo(testPerson.getFirstName());
+        assertThat(actualPerson.getHomeAddress()).isEqualTo(testPerson.getHomeAddress());
+        assertThat(actualPerson.getId()).isEqualTo(testPerson.getId());
+        assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
+        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(testPerson.getPhotographs());
+        assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
+        assertThat(actualPerson.getState()).isEqualTo(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isAfter(testPerson.getUpdatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getUserId()).isEqualTo(testPerson.getUserId());
         assertThat(actualPerson.getVersion()).isEqualTo(testPerson.getVersion() + 1);
-    }
-
-    private Person createAndPersistPerson() {
-        var testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
-        testPerson.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-
-        var person = personRepository.saveAndFlush(testPerson);
-        entityManager.clear();
-
-        return person;
+        assertThat(actualPerson.getWorkAddress()).isEqualTo(testPerson.getWorkAddress());
     }
 }

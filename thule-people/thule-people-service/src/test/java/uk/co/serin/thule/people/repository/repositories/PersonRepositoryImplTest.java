@@ -32,7 +32,7 @@ public class PersonRepositoryImplTest {
     @Test
     public void given_new_person_when_find_by_criteria_then_person_is_found() {
         // Given
-        Person expectedPerson = Person.PersonBuilder.aPerson().withUserId("userId").withEmailAddress("test@gmail.com").withFirstName("firstName").withLastName("lastName").build();
+        Person expectedPerson = Person.builder().userId("userId").emailAddress("test@gmail.com").firstName("firstName").lastName("lastName").build();
 
         given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
@@ -48,7 +48,7 @@ public class PersonRepositoryImplTest {
     @Test
     public void given_new_person_when_find_by_null_criteria_then_person_is_found() {
         // Given
-        Person expectedPerson = new Person("userId");
+        Person expectedPerson = Person.builder().userId("userId").build();
         ReflectionTestUtils.setField(expectedPerson, DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID, null);
 
         given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
@@ -65,7 +65,7 @@ public class PersonRepositoryImplTest {
     @Test
     public void given_new_person_when_search_by_null_criteria_then_person_is_found() {
         // Given
-        Person expectedPerson = new Person("userId");
+        Person expectedPerson = Person.builder().userId("userId").build();
 
         given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
@@ -81,7 +81,7 @@ public class PersonRepositoryImplTest {
     @Test
     public void given_new_person_when_search_then_person_is_found() {
         // Given
-        Person expectedPerson = new Person("userId");
+        Person expectedPerson = Person.builder().userId("userId").build();
 
         given(entityManager.<Person>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
