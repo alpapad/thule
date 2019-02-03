@@ -30,7 +30,7 @@ public class EmailService {
 
     @Async
     public Future<Email> createEmail(Email email) {
-        if (!email.hasARecipient()) {
+        if (!hasARecipient(email)) {
             throw new ValidationException("At least one recipient email addresses ('TO', 'CC' 'BCC') should be provided");
         }
         try {
@@ -40,6 +40,12 @@ public class EmailService {
             throw new EmailServiceException("Email could not be sent", exception);
         }
         return new AsyncResult<>(email);
+    }
+
+    private boolean hasARecipient(Email email) {
+        return !email.getTos().isEmpty() ||
+                !email.getCcs().isEmpty() ||
+                !email.getBccs().isEmpty();
     }
 
     private MimeMessage createMimeMessage(Email email) throws MessagingException {
