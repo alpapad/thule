@@ -4,6 +4,7 @@ services:
   thule-admin-service:
     image: pooh:8082/thule-admin-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
@@ -14,6 +15,7 @@ services:
   thule-configuration-service:
     image: pooh:8082/thule-configuration-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
       # from a docker volume created at build time which contains the source for this micro-service
       SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-cloud/thule-cloud-config/build/resources/main/config/
@@ -29,6 +31,7 @@ services:
   thule-discovery-service:
     image: pooh:8082/thule-discovery-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
@@ -39,6 +42,7 @@ services:
   thule-gateway-service:
     image: pooh:8082/thule-gateway-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
@@ -49,6 +53,7 @@ services:
   thule-email-service:
     image: pooh:8082/thule-email-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:
@@ -59,6 +64,7 @@ services:
   thule-people-service:
     image: pooh:8082/thule-people-service
     environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
     ports:

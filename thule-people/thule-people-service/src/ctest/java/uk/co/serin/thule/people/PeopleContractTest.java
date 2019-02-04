@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,7 +30,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.TestDataFactory;
-import uk.co.serin.thule.people.docker.MySqlDockerContainer;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.state.StateCode;
@@ -41,8 +39,10 @@ import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -73,6 +73,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 public class PeopleContractTest {
     private static final String EMAILS_PATH = "/" + DomainModel.ENTITY_NAME_EMAILS;
     private static final String ID_PATH = "/{id}";
+    private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
@@ -94,13 +95,8 @@ public class PeopleContractTest {
     private TestRestTemplate testRestTemplate;
 
     @BeforeClass
-    public static void setUpClass() {
-        MySqlDockerContainer.instance().startMySqlContainerIfDown();
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-        MySqlDockerContainer.instance().stopMySqlContainerIfup();
+    public static void setUpClass() throws IOException {
+        dockerCompose.up();
     }
 
     @Test

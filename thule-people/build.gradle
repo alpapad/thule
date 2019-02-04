@@ -43,6 +43,26 @@ project("thule-people-service") {
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
     // Non-standard Thule gradle plugin config
+    itest {
+        // Remove docker container once the integration tests have completed
+        afterSuite { descriptor ->
+            if (descriptor.getName().contains("Gradle Test Executor")) {
+                exec {
+                    commandLine "docker-compose", "-f", "thule-people-service/src/test/docker/thule-people-tests/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
+                }
+            }
+        }
+    }
+    ctest {
+        // Remove docker container once the contract tests have completed
+        afterSuite { descriptor ->
+            if (descriptor.getName().contains("Gradle Test Executor")) {
+                exec {
+                    commandLine "docker-compose", "-f", "thule-people-service/src/test/docker/thule-people-tests/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
+                }
+            }
+        }
+    }
     sonarqube {
         properties {
             // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes

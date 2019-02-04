@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people.repository;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,10 +23,5 @@ public class PersonRepositoryMysqlIntTest extends PersonRepositoryBaseIntTest {
     @BeforeClass
     public static void setUpClass() throws IOException {
         dockerCompose.up();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws IOException {
-        dockerCompose.down();
     }
 }
