@@ -1,0 +1,16 @@
+-- Prevent from expiring
+ALTER USER ${username} IDENTIFIED BY "${password}";
+
+-- Grants
+GRANT CREATE SESSION
+--   ,SELECT_CATALOG_ROLE
+--   ,CREATE TYPE
+--   ,CREATE VIEW
+--   ,CREATE TABLE
+--   ,CREATE TRIGGER
+--   ,CREATE SEQUENCE
+--   ,CREATE SNAPSHOT
+--   ,CREATE PROCEDURE
+--   ,QUERY REWRITE
+--   ,CREATE ANY SYNONYM
+to ${username};

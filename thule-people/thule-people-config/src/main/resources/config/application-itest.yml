@@ -1,13 +1,24 @@
+# Eureka configuration
+eureka:
+  client:
+    enabled: false
+
 # Spring logging
 logging:
   level:
     jdbc.sqlonly: info
     uk.co.serin: trace
 
+# Spring boot configuration
+spring:
+  flyway:
+    schemas: THULE
+
 # Thule configuration
 thule:
   peopleservice:
     mysql:
+      host: localhost
       port: 3307 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
 
 ######################################### NESTED INTEGRATION TEST PROFILES #######################################
@@ -33,10 +44,11 @@ spring:
 # Spring boot configuration
   datasource:
     password: thule
-    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
+    url: jdbc:log4jdbc:oracle:thin:@//localhost:1521/XEPDB1
     username: thule
   flyway:
     locations: classpath:oracle/db/migration
     password: oracle
-    url: jdbc:oracle:thin:@localhost:1521:xe
+    schemas: THULE
+    url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
     user: system

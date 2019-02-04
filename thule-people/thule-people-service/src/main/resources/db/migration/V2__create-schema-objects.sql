@@ -1,4 +1,4 @@
-USE thule;
+USE ${schema-name};
 
 -- Create tables
 DROP TABLE IF EXISTS state_actions CASCADE;

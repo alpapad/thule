@@ -1,4 +1,4 @@
-USE thule;
+USE ${schema-name};
 
 -- States
 DELETE FROM states;

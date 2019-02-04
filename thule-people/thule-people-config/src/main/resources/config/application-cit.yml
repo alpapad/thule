@@ -1,19 +1,12 @@
-# Eureka configuration
-eureka:
-  client:
-    enabled: true
-
 # Spring logging
 logging:
   level:
     jdbc.sqlonly: info
     uk.co.serin: trace
 
-# Thule configuration
-thule:
-  peopleservice:
-    mysql:
-      host: mysql
-  discoveryservice:
-    host: thule-discovery-service
+# Spring boot configuration
+spring:
+  flyway:
+    schemas: THULE
 
+# Thule configuration

@@ -1,6 +1,6 @@
-#Spring boot configuration
-spring:
-  zipkin:
+# Eureka configuration
+eureka:
+  client:
     enabled: false
 
 # Spring logging
@@ -9,8 +9,14 @@ logging:
     jdbc.sqlonly: info
     uk.co.serin: trace
 
+# Spring boot configuration
+spring:
+  flyway:
+    schemas: THULE
+
 # Thule configuration
 thule:
   peopleservice:
     mysql:
+      host: localhost
       port: 3307 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
