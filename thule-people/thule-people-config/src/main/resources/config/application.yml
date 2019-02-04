@@ -3,7 +3,7 @@ eureka:
   client:
     serviceUrl:
       # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host:localhost}:${thule.discoveryservice.port:8080}/eureka/
+      defaultZone: http://${thule.discoveryservice.host:thule-discovery-service}:${thule.discoveryservice.port:8080}/eureka/
   instance:
     # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
     prefer-ip-address: true
@@ -43,7 +43,7 @@ spring:
     hikari:
       maximumPoolSize: 100
     password: thule
-    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}/${spring.flyway.schemas}?serverTimezone=Europe/London
+    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host:mysql-people-service}:${thule.peopleservice.mysql.port:3306}/${spring.flyway.schemas}?serverTimezone=Europe/London
     username: thule
   flyway:
     connect-retries: 120
@@ -52,7 +52,7 @@ spring:
       password: ${spring.datasource.password}
       schema-name: ${spring.flyway.schemas}
       username: ${spring.datasource.username}
-    url: jdbc:mysql://${thule.peopleservice.mysql.host:localhost}:${thule.peopleservice.mysql.port:3306}
+    url: jdbc:mysql://${thule.peopleservice.mysql.host:mysql-people-service}:${thule.peopleservice.mysql.port:3306}
     user: root
   security:
     user:

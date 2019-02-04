@@ -72,7 +72,7 @@ services:
     restart: always
 
   ################################  Servers and Databases Required By Docker tests  ################################
-  mysql:
+  mysql-people-service:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
