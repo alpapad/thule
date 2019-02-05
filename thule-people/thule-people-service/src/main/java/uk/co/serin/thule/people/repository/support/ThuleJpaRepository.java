@@ -21,7 +21,8 @@ public class ThuleJpaRepository<T, I extends Serializable> extends SimpleJpaRepo
         super(entityInformation, entityManager);
         this.entityManager = entityManager;
 
-        deleteByUpdatedByEjbQl = "DELETE FROM " + entityInformation.getEntityName() + " WHERE " + DomainModel.ENTITY_ATTRIBUTE_NAME_AUDIT + "." + DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY + " = :" + DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY;
+        deleteByUpdatedByEjbQl = "DELETE FROM " + entityInformation.getEntityName() + " WHERE " + DomainModel.ENTITY_ATTRIBUTE_NAME_AUDIT + "." +
+                DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY + " = :" + DomainModel.ENTITY_ATTRIBUTE_NAME_UPDATED_BY;
     }
 
     @Transactional

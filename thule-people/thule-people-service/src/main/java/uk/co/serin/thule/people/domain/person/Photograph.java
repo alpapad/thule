@@ -35,7 +35,6 @@ import lombok.ToString;
 public class Photograph extends DomainModel {
     private static final int HASH_MAX_LENGTH = 255;
 
-    @Column
     @EqualsAndHashCode.Include
     @Size(max = HASH_MAX_LENGTH)
     private String hash;

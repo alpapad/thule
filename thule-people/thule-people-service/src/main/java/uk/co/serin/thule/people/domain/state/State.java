@@ -41,6 +41,7 @@ import lombok.ToString;
 public class State extends DomainModel {
     private static final int DESCRIPTION_MAX_LENGTH = 100;
 
+    @Builder.Default
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = DATABASE_TABLE_STATE_ACTIONS,
             joinColumns = {@JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false)},

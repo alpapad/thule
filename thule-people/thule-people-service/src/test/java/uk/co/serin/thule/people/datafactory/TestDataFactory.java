@@ -1,14 +1,12 @@
 package uk.co.serin.thule.people.datafactory;
 
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
 import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.country.Country;
-import uk.co.serin.thule.people.domain.email.Email;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.Photograph;
 import uk.co.serin.thule.people.domain.role.Role;
@@ -34,45 +32,17 @@ public class TestDataFactory implements ReferenceDataFactory {
     private static final String GREATER_LONDON = "Greater London";
     private static final String LONDON = "London";
     private static final int USERID_SUFFIX_LENGTH = 8;
-    private final ReferenceDataFactory referenceDataFactory;
+    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
 
     public TestDataFactory(ReferenceDataFactory referenceDataFactory) {
         this.referenceDataFactory = referenceDataFactory;
     }
 
     public TestDataFactory() {
-        this.referenceDataFactory = new MockReferenceDataFactory();
-    }
-
-    public Email buildEmail() {
-        return Email.builder().
-                body("This is a test body").
-                            subject("Test subject").
-                            tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).
-                            build();
-    }
-
-    public Person buildPerson(Person person) {
-        return Person.builder().
-                dateOfBirth(person.getDateOfBirth()).
-                             dateOfExpiry(person.getDateOfExpiry()).
-                             dateOfPasswordExpiry(person.getDateOfPasswordExpiry()).
-                             emailAddress(person.getEmailAddress()).
-                             firstName(person.getFirstName()).
-                             homeAddress(person.getHomeAddress()).
-                             lastName(person.getLastName()).
-                             password(person.getPassword()).
-                             photographs(person.getPhotographs()).
-                             roles(person.getRoles()).
-                             secondName(person.getSecondName()).
-                             state(person.getState()).
-                             title(person.getTitle()).
-                             userId(person.getUserId()).
-                             workAddress(person.getWorkAddress()).build();
     }
 
     public Person buildPersonWithAllAssociations() {
-        Person person = buildPersonWithoutAnyAssociations();
+        var person = buildPersonWithoutAnyAssociations();
         person.setHomeAddress(buildOxfordStreetHomeAddress());
         person.setPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
         person.setRoles(new HashSet<>(referenceDataFactory.getRoles().values()));
@@ -83,8 +53,8 @@ public class TestDataFactory implements ReferenceDataFactory {
     }
 
     public Person buildPersonWithoutAnyAssociations() {
-        LocalDate dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
-        String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
+        var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
+        var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
 
         return Person.builder().
                 dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
@@ -100,7 +70,7 @@ public class TestDataFactory implements ReferenceDataFactory {
                              build();
     }
 
-    public HomeAddress buildOxfordStreetHomeAddress() {
+    private HomeAddress buildOxfordStreetHomeAddress() {
         return HomeAddress.builder().
                 addressLine1("Oxford Street").
                                   addressLine2("Green").
@@ -112,10 +82,10 @@ public class TestDataFactory implements ReferenceDataFactory {
                                   build();
     }
 
-    public Photograph buildPhotographMissScarlett(Person person) {
+    private Photograph buildPhotographMissScarlett(Person person) {
         try {
-            Resource resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
-            byte[] photo = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            var resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
+            var photo = FileCopyUtils.copyToByteArray(resource.getInputStream());
             return Photograph.builder().
                     hash(new String(DigestUtils.md5Digest(photo), Charset.defaultCharset())).
                                      person(person).
@@ -127,7 +97,7 @@ public class TestDataFactory implements ReferenceDataFactory {
         }
     }
 
-    public WorkAddress buildRegentStreetWorkAddress() {
+    private WorkAddress buildRegentStreetWorkAddress() {
         return WorkAddress.builder().
                 addressLine1("Regent Street").
                                   addressLine2("Green").

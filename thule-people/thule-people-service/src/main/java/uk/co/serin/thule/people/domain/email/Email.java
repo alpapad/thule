@@ -24,6 +24,7 @@ public final class Email {
     public static final String ENTITY_ATTRIBUTE_NAME_SUBJECT = "subject";
     public static final String ENTITY_ATTRIBUTE_NAME_TOS = "tos";
 
+    @Builder.Default
     private Set<String> tos = new HashSet<>();
     private String body;
     private String subject;

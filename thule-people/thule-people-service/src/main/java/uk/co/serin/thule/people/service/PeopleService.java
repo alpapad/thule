@@ -2,65 +2,33 @@ package uk.co.serin.thule.people.service;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
-import uk.co.serin.thule.people.domain.email.Email;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.PersonInvalidStateException;
-import uk.co.serin.thule.people.domain.role.RoleCode;
 import uk.co.serin.thule.people.domain.state.Action;
 import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.StateCode;
-import uk.co.serin.thule.people.repository.repositories.RoleRepository;
-import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.rest.EmailServiceClient;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Validated
+@AllArgsConstructor
 @TracePublicMethods
+@Slf4j
+@Transactional
 public class PeopleService {
     private EmailServiceClient emailServiceClient;
-    private RoleRepository roleRepository;
-    private StateRepository stateRepository;
-
-    public PeopleService(RoleRepository roleRepository, StateRepository stateRepository, EmailServiceClient emailServiceClient) {
-        this.roleRepository = roleRepository;
-        this.stateRepository = stateRepository;
-        this.emailServiceClient = emailServiceClient;
-    }
-
-    public void afterCreate(Person person) {
-        sendEmail(person, "created");
-    }
-
-    private void sendEmail(Person person, String event) {
-        Email email = Email.builder().
-                body(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event)).
-                                   subject("Thule people service notification").
-                                   tos(Collections.singleton(person.getEmailAddress())).
-                                   build();
-        emailServiceClient.create(email);
-    }
-
-    public void afterDelete(Person person) {
-        sendEmail(person, "deleted");
-    }
-
-    public void afterSave(Person person) {
-        sendEmail(person, "saved");
-    }
-
-    public void beforeCreate(Person person) {
-        person.setRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)).collect(Collectors.toSet()));
-        person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
-    }
 
     public void disable(Person person) {
         // Validate the action is valid for the current state
@@ -69,7 +37,7 @@ public class PeopleService {
         }
 
         // Set new state
-        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISABLE);
+        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISABLE);
         person.setState(personViewAction.getNextState());
     }
 
@@ -84,7 +52,7 @@ public class PeopleService {
         }
 
         // Set new state
-        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISCARD);
+        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISCARD);
         person.setState(personViewAction.getNextState());
     }
 
@@ -95,7 +63,7 @@ public class PeopleService {
         }
 
         // Set new state
-        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_ENABLE);
+        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_ENABLE);
         person.setState(personViewAction.getNextState());
     }
 
@@ -114,7 +82,7 @@ public class PeopleService {
         }
 
         // Set new state
-        Action personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_RECOVER);
+        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_RECOVER);
         person.setState(personViewAction.getNextState());
     }
 
