@@ -9,6 +9,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
 @TracePublicMethods
 public class PersonRepositoryImpl implements PersonRepositoryCustom {
     private static final String FIND_PEOPLE_BY_CRITERIA_JPA_QL =

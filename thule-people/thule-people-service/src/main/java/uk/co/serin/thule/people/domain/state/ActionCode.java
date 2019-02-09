@@ -1,5 +1,8 @@
 package uk.co.serin.thule.people.domain.state;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum ActionCode {
     ADDRESS_DISABLE,
     ADDRESS_DISCARD,

@@ -79,7 +79,7 @@ INSERT INTO people_roles(person_id, role_id)
     SELECT people.id, roles.id FROM people, roles WHERE people.user_id = 'superuser' AND roles.code = 'ROLE_CLERK';
 
 -- Countries
-INSERT INTO countries(iso_code_three_digit, iso_code_two_digit, iso_name, iso_number, version, created_at, created_by, updated_at, updated_by)
+INSERT INTO countries(iso_code_three_characters, iso_code_two_characters, iso_name, iso_number, version, created_at, created_by, updated_at, updated_by)
     VALUES('GBR', 'GB', 'United Kingdom', '826', 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser');
 
 
@@ -92,10 +92,10 @@ INSERT INTO countries(iso_code_three_digit, iso_code_two_digit, iso_name, iso_nu
 -- Addresses
 INSERT INTO addresses(address_type, address_line1, address_line2, town, county, country_id, post_code, state_id, version, created_at, created_by, updated_at, updated_by)
     SELECT 'HOME', 'No. 1', 'Park lane', 'London', 'Middlesex', countries.id, 'ABC 123', states.id, 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
-    FROM countries, states WHERE countries.iso_code_three_digit = 'GBR' AND states.code= 'ADDRESS_ENABLED';
+    FROM countries, states WHERE countries.iso_code_three_characters = 'GBR' AND states.code= 'ADDRESS_ENABLED';
 INSERT INTO addresses(address_type, address_line1, address_line2, town, county, country_id, post_code, state_id, version, created_at, created_by, updated_at, updated_by)
     SELECT 'WORK', '55', 'Picadilly', 'London', 'Middlesex', countries.id, 'DEF 456', states.id, 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
-    FROM countries, states WHERE countries.iso_code_three_digit = 'GBR' AND states.code= 'ADDRESS_ENABLED';
+    FROM countries, states WHERE countries.iso_code_three_characters = 'GBR' AND states.code= 'ADDRESS_ENABLED';
 
 -- Countries
 

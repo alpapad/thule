@@ -7,10 +7,10 @@ USE ${schema-name};
 -- Addresses
 INSERT INTO addresses(address_type, address_line1, address_line2, town, county, country_id, post_code, state_id, version, created_at, created_by, updated_at, updated_by)
     SELECT 'HOME', 'No. 1', 'Park lane', 'London', 'Middlesex', countries.id, 'ABC 123', states.id, 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
-    FROM countries, states WHERE countries.iso_code_three_digit = 'GBR' AND states.code= 'ADDRESS_ENABLED';
+    FROM countries, states WHERE countries.iso_code_three_characters = 'GBR' AND states.code= 'ADDRESS_ENABLED';
 INSERT INTO addresses(address_type, address_line1, address_line2, town, county, country_id, post_code, state_id, version, created_at, created_by, updated_at, updated_by)
     SELECT 'WORK', '55', 'Picadilly', 'London', 'Middlesex', countries.id, 'DEF 456', states.id, 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
-    FROM countries, states WHERE countries.iso_code_three_digit = 'GBR' AND states.code= 'ADDRESS_ENABLED';
+    FROM countries, states WHERE countries.iso_code_three_characters = 'GBR' AND states.code= 'ADDRESS_ENABLED';
 
 -- Countries
 

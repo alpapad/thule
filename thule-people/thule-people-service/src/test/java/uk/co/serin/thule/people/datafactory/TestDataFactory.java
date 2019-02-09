@@ -109,12 +109,6 @@ public class TestDataFactory implements ReferenceDataFactory {
                                   build();
     }
 
-    public Person buildPersonWithState() {
-        Person person = buildPersonWithoutAnyAssociations();
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
-        return person;
-    }
-
     @Override
     public Map<ActionCode, Action> getActions() {
         return referenceDataFactory.getActions();

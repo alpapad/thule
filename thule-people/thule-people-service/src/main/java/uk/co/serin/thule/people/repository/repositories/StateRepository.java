@@ -11,7 +11,7 @@ import java.util.Set;
 
 @RepositoryRestResource
 public interface StateRepository extends PagingAndSortingRepository<State, Long> {
-    @Query("SELECT s FROM State s LEFT JOIN FETCH s.actions")
+    @Query("SELECT state FROM State state LEFT JOIN FETCH state.actions")
     Set<State> findAllWithActions();
 
     State findByCode(StateCode stateCode);

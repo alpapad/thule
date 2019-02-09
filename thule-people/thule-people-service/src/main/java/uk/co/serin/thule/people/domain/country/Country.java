@@ -19,7 +19,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
@@ -27,24 +27,24 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Country extends DomainModel {
     public static final String GBR = "GBR";
-    private static final int ISO_CODE_THREE_DIGIT_MAX_LENGTH = 3;
-    private static final int ISO_CODE_TWO_DIGIT_MAX_LENGTH = 2;
+    private static final int ISO_CODE_THREE_CHARACTER_LENGTH = 3;
+    private static final int ISO_CODE_TWO_CHARACTER_LENGTH = 2;
     private static final int ISO_NAME_MAX_LENGTH = 100;
-
+    private static final int ISO_NUMBER_LENGTH = 3;
     @EqualsAndHashCode.Include
     @NotEmpty
-    @Size(max = ISO_CODE_THREE_DIGIT_MAX_LENGTH)
-    private String isoCodeThreeDigit;
+    @Size(min = ISO_CODE_THREE_CHARACTER_LENGTH, max = ISO_CODE_THREE_CHARACTER_LENGTH)
+    private String isoCodeThreeCharacters;
 
     @NotEmpty
-    @Size(max = ISO_CODE_TWO_DIGIT_MAX_LENGTH)
-    private String isoCodeTwoDigit;
+    @Size(min = ISO_CODE_TWO_CHARACTER_LENGTH, max = ISO_CODE_TWO_CHARACTER_LENGTH)
+    private String isoCodeTwoCharacters;
 
     @NotEmpty
     @Size(max = ISO_NAME_MAX_LENGTH)
     private String isoName;
 
     @NotEmpty
-    @Size(max = ISO_CODE_THREE_DIGIT_MAX_LENGTH)
+    @Size(max = ISO_NUMBER_LENGTH)
     private String isoNumber;
 }

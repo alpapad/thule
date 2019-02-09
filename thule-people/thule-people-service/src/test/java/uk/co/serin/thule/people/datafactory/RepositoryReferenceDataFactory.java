@@ -29,7 +29,7 @@ public class RepositoryReferenceDataFactory implements ReferenceDataFactory {
         actions = actionRepository.findAllWithNextState().stream().collect(Collectors.toMap(Action::getCode, Function.identity()));
         states = stateRepository.findAllWithActions().stream().collect(Collectors.toMap(State::getCode, Function.identity()));
         roles = StreamSupport.stream(roleRepository.findAll().spliterator(), false).collect(Collectors.toMap(Role::getCode, Function.identity()));
-        countries = StreamSupport.stream(countryRepository.findAll().spliterator(), false).collect(Collectors.toMap(Country::getIsoCodeThreeDigit, Function.identity()));
+        countries = StreamSupport.stream(countryRepository.findAll().spliterator(), false).collect(Collectors.toMap(Country::getIsoCodeThreeCharacters, Function.identity()));
     }
 
     @Override

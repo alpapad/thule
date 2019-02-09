@@ -59,6 +59,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static org.springframework.util.StringUtils.trimLeadingCharacter;
 import static org.springframework.util.StringUtils.trimTrailingCharacter;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -110,16 +112,20 @@ public class PeopleContractTest {
                 }, 0, 1000);
 
         // Then
-        assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
         var actualPeople = Objects.requireNonNull(personResponseEntity.getBody()).getContent();
+
+        assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(actualPeople).contains(testPerson);
     }
 
     private Person createAndPersistPersonWithNoAssociations() {
-        var person = personRepository.saveAndFlush(testDataFactory.buildPersonWithState());
+        Person person = testDataFactory.buildPersonWithoutAnyAssociations();
+        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+
+        personRepository.saveAndFlush(person);
         entityManager.clear();
         person.setState(null);
+
         return person;
     }
 
@@ -132,10 +138,9 @@ public class PeopleContractTest {
         var responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, testPerson.getId());
 
         // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
         var actualPerson = responseEntity.getBody();
 
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(actualPerson).isEqualTo(testPerson);
     }
 
@@ -180,7 +185,9 @@ public class PeopleContractTest {
         var responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        given().ignoreExceptions().pollInterval(fibonacci()).
+                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
         var statusCode = responseEntity.getStatusCode();
         var actualPerson = responseEntity.getBody();
@@ -224,10 +231,11 @@ public class PeopleContractTest {
         oAuth2RestTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        given().ignoreExceptions().pollInterval(fibonacci()).
+                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
         var deletedPerson = personRepository.findById(person.getId());
-
         assertThat(deletedPerson).isNotPresent();
     }
 
@@ -253,7 +261,9 @@ public class PeopleContractTest {
         oAuth2RestTemplate.put(peopleServiceUrl + ID_PATH, testPerson, testPerson.getId());
 
         // Then
-        verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)));
+        given().ignoreExceptions().pollInterval(fibonacci()).
+                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                      untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
         var actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
 

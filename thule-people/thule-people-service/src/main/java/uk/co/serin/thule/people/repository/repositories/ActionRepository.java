@@ -10,7 +10,6 @@ import java.util.Set;
 
 @RepositoryRestResource
 public interface ActionRepository extends PagingAndSortingRepository<Action, Long> {
-    @Query("SELECT a FROM Action a LEFT JOIN FETCH a.nextState")
+    @Query("SELECT action FROM Action action LEFT JOIN FETCH action.nextState")
     Set<Action> findAllWithNextState();
 }
-

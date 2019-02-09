@@ -86,5 +86,5 @@ INSERT INTO people_roles(person_id, role_id)
 
 -- Countries
 DELETE FROM countries;
-INSERT INTO countries(iso_code_three_digit, iso_code_two_digit, iso_name, iso_number, version, created_at, created_by, updated_at, updated_by)
+INSERT INTO countries(iso_code_three_characters, iso_code_two_characters, iso_name, iso_number, version, created_at, created_by, updated_at, updated_by)
     VALUES('GBR', 'GB', 'United Kingdom', '826', 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser');

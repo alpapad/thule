@@ -66,8 +66,8 @@ public abstract class DomainModel {
     public static final String ENTITY_ATTRIBUTE_NAME_HASH = "hash";
     public static final String ENTITY_ATTRIBUTE_NAME_HOME_ADDRESS = "homeAddress";
     public static final String ENTITY_ATTRIBUTE_NAME_ID = "id";
-    public static final String ENTITY_ATTRIBUTE_NAME_ISO_CODE_THREE_DIGIT = "isoCodeThreeDigit";
-    public static final String ENTITY_ATTRIBUTE_NAME_ISO_CODE_TW0_DIGIT = "isoCodeTwoDigit";
+    public static final String ENTITY_ATTRIBUTE_NAME_ISO_CODE_THREE_CHARACTERS = "isoCodeThreeCharacters";
+    public static final String ENTITY_ATTRIBUTE_NAME_ISO_CODE_TW0_CHARACTERS = "isoCodeTwoCharacters";
     public static final String ENTITY_ATTRIBUTE_NAME_ISO_NAME = "isoName";
     public static final String ENTITY_ATTRIBUTE_NAME_ISO_NUMBER = "isoNumber";
     public static final String ENTITY_ATTRIBUTE_NAME_LAST_NAME = "lastName";
@@ -121,7 +121,6 @@ public abstract class DomainModel {
     @Size(max = UPDATED_BY_MAX_LENGTH)
     private String updatedBy;
 
-    @NotNull
     @Version
-    private Long version;
+    private long version;
 }

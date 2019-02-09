@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @TracePublicMethods
 @Validated
 public class PersonRepositoryEventHandler {
-    private EmailServiceClient emailServiceClient;
+    private EmailServiceClientAsync emailServiceClient;
     private RoleRepository roleRepository;
     private StateRepository stateRepository;
 
@@ -43,7 +43,7 @@ public class PersonRepositoryEventHandler {
     private void sendEmail(Person person, String event) {
         var email = Email.builder().body(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event))
                          .subject("Thule people service notification").tos(Collections.singleton(person.getEmailAddress())).build();
-        emailServiceClient.create(email);
+        emailServiceClient.sendEmail(email);
     }
 
     @HandleAfterDelete

@@ -15,7 +15,7 @@ public class PeopleContractTestConfiguration {
 
     /**
      * When using a Feign client, it will try to use the load balancer (Ribbon) to lookup the
-     * service via a discovery service (Eureka). However, for the integration test, we don't use
+     * service via a discovery service (Eureka). However, for the contract test, we don't use
      * Ribbon or Eureka so we need to tell Feign to use a static server, in this case Wiremock.
      */
     @Bean

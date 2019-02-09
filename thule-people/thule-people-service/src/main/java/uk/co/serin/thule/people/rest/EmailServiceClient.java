@@ -9,5 +9,5 @@ import uk.co.serin.thule.people.domain.email.Email;
 @FunctionalInterface
 public interface EmailServiceClient {
     @PostMapping(path = "/emails", headers = "Content-Type=application/json")
-    Email create(Email email);
+    Email sendEmail(Email email);
 }

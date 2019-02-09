@@ -43,7 +43,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Person extends DomainModel {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
-    public static final String EXCLUDE_CREDENTIALS_FILTER = "excludePasswordFilter";
     public static final int FIRST_NAME_MAX_LENGTH = 30;
     public static final int LAST_NAME_MAX_LENGTH = 30;
     public static final int PASSWORD_MAX_LENGTH = 100;
@@ -57,10 +56,10 @@ public class Person extends DomainModel {
     private Set<Photograph> photographs = new HashSet<>();
 
     @Builder.Default
-    @ManyToMany
     @JoinTable(name = DATABASE_TABLE_PEOPLE_ROLES,
             joinColumns = {@JoinColumn(name = DATABASE_COLUMN_PERSON_ID, nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = DATABASE_COLUMN_ROLE_ID, nullable = false)})
+    @ManyToMany
     @NotNull
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
@@ -68,8 +67,12 @@ public class Person extends DomainModel {
     @NotNull
     private LocalDate dateOfBirth;
 
+    @Builder.Default
+    @NotNull
     private LocalDate dateOfExpiry = LocalDate.now().plusYears(1);
 
+    @Builder.Default
+    @NotNull
     private LocalDate dateOfPasswordExpiry = LocalDate.now().plusYears(1);
 
     @NotEmpty
@@ -81,8 +84,8 @@ public class Person extends DomainModel {
     @Size(max = FIRST_NAME_MAX_LENGTH)
     private String firstName;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = DATABASE_COLUMN_HOME_ADDRESS_ID)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @ToString.Exclude
     private HomeAddress homeAddress;
 
@@ -97,8 +100,8 @@ public class Person extends DomainModel {
     @Size(max = SECOND_NAME_MAX_LENGTH)
     private String secondName;
 
-    @ManyToOne(optional = false)
     @JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false)
+    @ManyToOne(optional = false)
     @NotNull
     @ToString.Exclude
     private State state;
@@ -111,8 +114,8 @@ public class Person extends DomainModel {
     @Size(max = USER_ID_MAX_LENGTH)
     private String userId;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = DATABASE_COLUMN_WORK_ADDRESS_ID)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @ToString.Exclude
     private WorkAddress workAddress;
 }

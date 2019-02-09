@@ -229,7 +229,7 @@ public abstract class PersonRepositoryBaseIntTest {
         var person = Person.builder().userId("userId").build();
 
         // When
-        Throwable throwable = catchThrowable(() -> personRepository.save(person));
+        var throwable = catchThrowable(() -> personRepository.save(person));
 
         // Then
         if (throwable instanceof TransactionSystemException) {

@@ -6,9 +6,9 @@ import uk.co.serin.thule.people.domain.country.Country;
 
 @Projection(name = "summary", types = {Country.class})
 public interface CountryProjection {
-    String getIsoCodeThreeDigit();
+    String getIsoCodeThreeCharacters();
 
-    String getIsoCodeTwoDigit();
+    String getIsoCodeTwoCharacters();
 
     String getIsoName();
 

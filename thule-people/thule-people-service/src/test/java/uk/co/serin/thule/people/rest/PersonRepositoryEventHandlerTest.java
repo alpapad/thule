@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class PersonRepositoryEventHandlerTest {
     @Mock
-    private EmailServiceClient emailServiceClient;
+    private EmailServiceClientAsync emailServiceClientAsync;
     @InjectMocks
     private PersonRepositoryEventHandler personRepositoryEventHandler;
     @Mock
@@ -34,15 +34,13 @@ public class PersonRepositoryEventHandlerTest {
 
     @Test
     public void when_after_create_then_an_email_notification_is_sent() {
-        // Given
-
         // When
         personRepositoryEventHandler.afterCreate(Person.builder().userId("userId").build());
 
         // Then
         var emailCaptor = ArgumentCaptor.forClass(Email.class);
 
-        verify(emailServiceClient).create(emailCaptor.capture());
+        verify(emailServiceClientAsync).sendEmail(emailCaptor.capture());
         var capturedEmail = emailCaptor.getValue();
 
         assertThat(capturedEmail.getSubject()).isEqualTo("Thule people service notification");
@@ -50,15 +48,13 @@ public class PersonRepositoryEventHandlerTest {
 
     @Test
     public void when_after_delete_then_an_email_notification_is_sent() {
-        // Given
-
         // When
         personRepositoryEventHandler.afterDelete(Person.builder().userId("userId").build());
 
         // Then
         var emailCaptor = ArgumentCaptor.forClass(Email.class);
 
-        verify(emailServiceClient).create(emailCaptor.capture());
+        verify(emailServiceClientAsync).sendEmail(emailCaptor.capture());
         var capturedEmail = emailCaptor.getValue();
 
         assertThat(capturedEmail.getSubject()).isEqualTo("Thule people service notification");
@@ -66,15 +62,13 @@ public class PersonRepositoryEventHandlerTest {
 
     @Test
     public void when_after_save_then_an_email_notification_is_sent() {
-        // Given
-
         // When
         personRepositoryEventHandler.afterSave(Person.builder().userId("userId").build());
 
         // Then
         var emailCaptor = ArgumentCaptor.forClass(Email.class);
 
-        verify(emailServiceClient).create(emailCaptor.capture());
+        verify(emailServiceClientAsync).sendEmail(emailCaptor.capture());
         var capturedEmail = emailCaptor.getValue();
 
         assertThat(capturedEmail.getSubject()).isEqualTo("Thule people service notification");
