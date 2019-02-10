@@ -12,8 +12,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
+import uk.co.serin.thule.people.TestPersonDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.datafactory.TestDataFactory;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
@@ -39,8 +39,9 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @DataJpaTest
 @Import(RepositoryIntTestConfiguration.class)
 @RunWith(SpringRunner.class)
-@WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
+@WithMockUser
 public abstract class PersonRepositoryBaseIntTest {
+    private static final String MOCK_USERS_NAME = "user";
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
@@ -51,9 +52,9 @@ public abstract class PersonRepositoryBaseIntTest {
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private TestDataFactory testDataFactory;
     @Autowired
     private TestEntityManager testEntityManager;
+    private TestPersonDataFactory testPersonDataFactory;
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
@@ -68,7 +69,7 @@ public abstract class PersonRepositoryBaseIntTest {
     }
 
     private Person createAndPersistPerson() {
-        var person = personRepository.saveAndFlush(testDataFactory.buildPersonWithAllAssociations());
+        var person = personRepository.saveAndFlush(testPersonDataFactory.buildPersonWithAllAssociations());
         testEntityManager.clear();
         return person;
     }
@@ -104,7 +105,7 @@ public abstract class PersonRepositoryBaseIntTest {
         var expectedPerson = createAndPersistPerson();
 
         // When
-        var actualPeople = personRepository.findByUpdatedBy(TestDataFactory.JUNIT_TEST_USERNAME);
+        var actualPeople = personRepository.findByUpdatedBy(MOCK_USERS_NAME);
 
         // Then
         assertThat(actualPeople).contains(expectedPerson);
@@ -181,14 +182,14 @@ public abstract class PersonRepositoryBaseIntTest {
 
     @Before
     public void setUp() {
-        var referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
-        testDataFactory = new TestDataFactory(referenceDataFactory);
+        var repositoryReferenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
+        testPersonDataFactory = new TestPersonDataFactory(repositoryReferenceDataFactory);
     }
 
     @Test
     public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        var expectedPerson = testDataFactory.buildPersonWithAllAssociations();
+        var expectedPerson = testPersonDataFactory.buildPersonWithAllAssociations();
 
         // When
         personRepository.save(expectedPerson);
@@ -200,7 +201,7 @@ public abstract class PersonRepositoryBaseIntTest {
 
         assertThat(actualPerson).isNotSameAs(expectedPerson);
         assertThat(actualPerson.getCreatedAt()).isNotNull();
-        assertThat(actualPerson.getCreatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(MOCK_USERS_NAME);
         assertThat(actualPerson.getDateOfBirth()).isEqualTo(expectedPerson.getDateOfBirth());
         assertThat(actualPerson.getDateOfExpiry()).isEqualTo(expectedPerson.getDateOfExpiry());
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
@@ -215,7 +216,7 @@ public abstract class PersonRepositoryBaseIntTest {
         assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
         assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(actualPerson.getCreatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(MOCK_USERS_NAME);
         assertThat(actualPerson.getUserId()).isEqualTo(expectedPerson.getUserId());
         assertThat(actualPerson.getVersion()).isEqualTo(0);
         assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());

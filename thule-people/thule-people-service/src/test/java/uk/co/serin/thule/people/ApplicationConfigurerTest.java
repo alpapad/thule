@@ -10,8 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ApplicationConfigurerTest {
     @Test
     public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
-        // Given
-
         // When
         ApplicationConfigurer applicationConfigurer = new ApplicationConfigurer();
 

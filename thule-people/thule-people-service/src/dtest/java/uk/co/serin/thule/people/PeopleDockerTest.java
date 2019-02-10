@@ -50,7 +50,7 @@ public class PeopleDockerTest {
 
         // Setup OAuth2
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "user", "user", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                "user", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 

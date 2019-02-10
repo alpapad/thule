@@ -21,13 +21,11 @@ public class IdExposingRepositoryRestConfigurerTest {
 
     @Test
     public void when_configure_repository_rest_configuration_then_ids_are_exposed_for_all_domain_models() {
-        // Given
-
         // When
         idExposingRepositoryRestConfigurer.configureRepositoryRestConfiguration(repositoryRestConfiguration);
 
         // Then
-        ArgumentCaptor<Class[]> argumentCaptor = ArgumentCaptor.forClass(Class[].class);
+        var argumentCaptor = ArgumentCaptor.forClass(Class[].class);
         verify(repositoryRestConfiguration).exposeIdsFor(argumentCaptor.capture());
         assertThat(argumentCaptor.getAllValues()).hasSize(NO_OF_DOMAIN_MODEL_CLASSES);
     }

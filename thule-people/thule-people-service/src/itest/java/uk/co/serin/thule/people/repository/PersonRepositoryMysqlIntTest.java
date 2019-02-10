@@ -18,10 +18,8 @@ import java.io.IOException;
 @ActiveProfiles("itest")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonRepositoryMysqlIntTest extends PersonRepositoryBaseIntTest {
-    private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
-
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.up();
+        new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml").up();
     }
 }

@@ -1,19 +1,15 @@
-package uk.co.serin.thule.people.datafactory;
+package uk.co.serin.thule.people;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
+import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.domain.address.HomeAddress;
 import uk.co.serin.thule.people.domain.address.WorkAddress;
 import uk.co.serin.thule.people.domain.country.Country;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.person.Photograph;
-import uk.co.serin.thule.people.domain.role.Role;
-import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.domain.state.Action;
-import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.State;
 import uk.co.serin.thule.people.domain.state.StateCode;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
@@ -22,27 +18,35 @@ import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TestDataFactory implements ReferenceDataFactory {
-    public static final String JUNIT_TEST_USERNAME = "user";
-    private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
+public class TestPersonDataFactory {
     private static final String GREATER_LONDON = "Greater London";
     private static final String LONDON = "London";
-    private static final int USERID_SUFFIX_LENGTH = 8;
-    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
+    private ReferenceDataFactory referenceDataFactory;
 
-    public TestDataFactory(ReferenceDataFactory referenceDataFactory) {
+    public TestPersonDataFactory(ReferenceDataFactory referenceDataFactory) {
         this.referenceDataFactory = referenceDataFactory;
     }
 
-    public TestDataFactory() {
-    }
-
     public Person buildPersonWithAllAssociations() {
-        var person = buildPersonWithoutAnyAssociations();
+        var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
+        var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(8);
+
+        var person = Person.builder().
+                dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
+                                   dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
+                                   dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                                   emailAddress(userId + "@serin-consultancy.co.uk").
+                                   firstName("Elizabeth").
+                                   lastName("Scarlett").
+                                   password(userId).
+                                   secondName("K").
+                                   title("Miss").
+                                   userId(userId).
+                                   build();
+
         person.setHomeAddress(buildOxfordStreetHomeAddress());
         person.setPhotographs(Stream.of(buildPhotographMissScarlett(person)).collect(Collectors.toSet()));
         person.setRoles(new HashSet<>(referenceDataFactory.getRoles().values()));
@@ -50,24 +54,6 @@ public class TestDataFactory implements ReferenceDataFactory {
         person.setWorkAddress(buildRegentStreetWorkAddress());
 
         return person;
-    }
-
-    public Person buildPersonWithoutAnyAssociations() {
-        var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
-        var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(USERID_SUFFIX_LENGTH);
-
-        return Person.builder().
-                dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
-                             dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
-                             dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
-                             emailAddress(userId + EMAIL_ADDRESS_SUFFIX).
-                             firstName("Elizabeth").
-                             lastName("Scarlett").
-                             password(userId).
-                             secondName("K").
-                             title("Miss").
-                             userId(userId).
-                             build();
     }
 
     private HomeAddress buildOxfordStreetHomeAddress() {
@@ -107,25 +93,5 @@ public class TestDataFactory implements ReferenceDataFactory {
                                   state(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
                                   town(LONDON).
                                   build();
-    }
-
-    @Override
-    public Map<ActionCode, Action> getActions() {
-        return referenceDataFactory.getActions();
-    }
-
-    @Override
-    public Map<String, Country> getCountries() {
-        return referenceDataFactory.getCountries();
-    }
-
-    @Override
-    public Map<RoleCode, Role> getRoles() {
-        return referenceDataFactory.getRoles();
-    }
-
-    @Override
-    public Map<StateCode, State> getStates() {
-        return referenceDataFactory.getStates();
     }
 }

@@ -28,8 +28,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.datafactory.TestDataFactory;
 import uk.co.serin.thule.people.domain.DomainModel;
 import uk.co.serin.thule.people.domain.person.Person;
 import uk.co.serin.thule.people.domain.state.StateCode;
@@ -41,11 +41,13 @@ import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
+import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -71,11 +73,13 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @Import(PeopleContractTestConfiguration.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WithMockUser(username = TestDataFactory.JUNIT_TEST_USERNAME, password = TestDataFactory.JUNIT_TEST_USERNAME)
+@WithMockUser
 public class PeopleContractTest {
     private static final String EMAILS_PATH = "/" + DomainModel.ENTITY_NAME_EMAILS;
     private static final String ID_PATH = "/{id}";
-    private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
+    private static final String MOCK_USERS_CREDENTIALS = "password";
+    private static final String MOCK_USERS_NAME = "user";
+    private static final String THULE_EMAIL_SERVICE_RESPONSE = "thule-email-service-response.json";
     @Autowired
     private ActionRepository actionRepository;
     @Autowired
@@ -88,17 +92,17 @@ public class PeopleContractTest {
     private PersonRepository personRepository;
     @LocalServerPort
     private int port;
+    private ReferenceDataFactory referenceDataFactory;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private TestDataFactory testDataFactory;
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.up();
+        new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml").up();
     }
 
     @Test
@@ -119,14 +123,32 @@ public class PeopleContractTest {
     }
 
     private Person createAndPersistPersonWithNoAssociations() {
-        Person person = testDataFactory.buildPersonWithoutAnyAssociations();
-        person.setState(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        Person person = buildPersonWithoutAnyAssociations();
+        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         personRepository.saveAndFlush(person);
         entityManager.clear();
         person.setState(null);
 
         return person;
+    }
+
+    private Person buildPersonWithoutAnyAssociations() {
+        var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
+        var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(8);
+
+        return Person.builder().
+                dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
+                             dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
+                             dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                             emailAddress(userId + "@serin-consultancy.co.uk").
+                             firstName("Elizabeth").
+                             lastName("Scarlett").
+                             password(userId).
+                             secondName("K").
+                             title("Miss").
+                             userId(userId).
+                             build();
     }
 
     @Test
@@ -147,14 +169,13 @@ public class PeopleContractTest {
     @Before
     public void setUp() {
         // Setup test data factories
-        var referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
-        testDataFactory = new TestDataFactory(referenceDataFactory);
+        referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
 
         // Set up service url
         peopleServiceUrl = String.format("http://localhost:%s/%s", port, DomainModel.ENTITY_NAME_PEOPLE);
 
         // Setup OAuth2
-        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(TestDataFactory.JUNIT_TEST_USERNAME, TestDataFactory.JUNIT_TEST_USERNAME, 0,
+        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, MOCK_USERS_CREDENTIALS, 0,
                 Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
@@ -175,11 +196,11 @@ public class PeopleContractTest {
     @Test
     public void when_creating_a_person_then_that_person_is_returned() {
         // Given
-        var testPerson = testDataFactory.buildPersonWithoutAnyAssociations();
+        var testPerson = buildPersonWithoutAnyAssociations();
 
         givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
                 aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBodyFile("thule-email-service-response.json")));
+                           .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
 
         // When
         var responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
@@ -187,17 +208,19 @@ public class PeopleContractTest {
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(org.awaitility.Duration.FIVE_MINUTES).
-                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
+                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
+                               .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
         var statusCode = responseEntity.getStatusCode();
         var actualPerson = responseEntity.getBody();
-        var etag = ETag.from(responseEntity.getHeaders().get(HttpHeaders.ETAG).get(0));
+        var etag = ETag.from(Objects.requireNonNull(responseEntity.getHeaders().get(HttpHeaders.ETAG)).stream().findFirst());
         var version = Long.parseLong(trimTrailingCharacter(trimLeadingCharacter(etag.toString(), '"'), '"'));
 
         assertThat(statusCode).isEqualTo(HttpStatus.CREATED);
+        assertThat(actualPerson).isNotNull();
         assertThat(actualPerson).isNotSameAs(testPerson);
         assertThat(actualPerson.getCreatedAt()).isNotNull();
-        assertThat(actualPerson.getCreatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getCreatedBy()).isEqualTo(MOCK_USERS_NAME);
         assertThat(actualPerson.getDateOfBirth()).isEqualTo(testPerson.getDateOfBirth());
         assertThat(actualPerson.getDateOfExpiry()).isEqualTo(testPerson.getDateOfExpiry());
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(testPerson.getDateOfPasswordExpiry());
@@ -212,7 +235,7 @@ public class PeopleContractTest {
         assertThat(actualPerson.getState()).isEqualTo(testPerson.getState());
         assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(actualPerson.getCreatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(MOCK_USERS_NAME);
         assertThat(actualPerson.getUserId()).isEqualTo(testPerson.getUserId());
         assertThat(version).isEqualTo(0L);
         assertThat(actualPerson.getWorkAddress()).isEqualTo(testPerson.getWorkAddress());
@@ -225,7 +248,7 @@ public class PeopleContractTest {
 
         givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
                 aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                           .withBodyFile("thule-email-service-response.json")));
+                           .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
 
         // When
         oAuth2RestTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
@@ -233,7 +256,8 @@ public class PeopleContractTest {
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(org.awaitility.Duration.FIVE_MINUTES).
-                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
+                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
+                               .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
         var deletedPerson = personRepository.findById(person.getId());
         assertThat(deletedPerson).isNotPresent();
@@ -246,12 +270,12 @@ public class PeopleContractTest {
 
         givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
                 aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBodyFile("thule-email-service-response.json")));
+                           .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
         testPerson.setLastName("updatedLastName");
-        testPerson.setDateOfBirth(LocalDate.of(1963, 05, 05));
+        testPerson.setDateOfBirth(LocalDate.of(1963, 5, 5));
         testPerson.setEmailAddress("updated@serin-consultancy.co.uk");
         testPerson.setPassword("updatedPassword");
 
@@ -263,7 +287,8 @@ public class PeopleContractTest {
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(org.awaitility.Duration.FIVE_MINUTES).
-                      untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
+                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
+                               .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
         var actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
 
@@ -281,10 +306,10 @@ public class PeopleContractTest {
         assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
         assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(testPerson.getPhotographs());
         assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
-        assertThat(actualPerson.getState()).isEqualTo(testDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        assertThat(actualPerson.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
         assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isAfter(testPerson.getUpdatedAt());
-        assertThat(actualPerson.getUpdatedBy()).isEqualTo(TestDataFactory.JUNIT_TEST_USERNAME);
+        assertThat(actualPerson.getUpdatedBy()).isEqualTo(MOCK_USERS_NAME);
         assertThat(actualPerson.getUserId()).isEqualTo(testPerson.getUserId());
         assertThat(actualPerson.getVersion()).isEqualTo(testPerson.getVersion() + 1);
         assertThat(actualPerson.getWorkAddress()).isEqualTo(testPerson.getWorkAddress());
