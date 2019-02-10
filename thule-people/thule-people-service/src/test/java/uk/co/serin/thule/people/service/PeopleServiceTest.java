@@ -8,7 +8,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.co.serin.thule.people.datafactory.MockReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.domain.entity.person.PersonInvalidStateException;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepositoryImpl;
 
