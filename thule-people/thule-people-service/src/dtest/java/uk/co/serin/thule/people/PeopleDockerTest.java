@@ -35,7 +35,6 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@WithMockUser(username = "user", password = "user")
 public class PeopleDockerTest {
     private static final String PEOPLE_PATH = "/people";
     private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml");

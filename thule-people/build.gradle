@@ -114,9 +114,6 @@ project("thule-people-service") {
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
-        dtestCompile("com.googlecode.log4jdbc:log4jdbc:1.2")
-        dtestCompile("mysql:mysql-connector-java")
-        dtestCompile("org.springframework.boot:spring-boot-starter-jdbc")
         dtestCompile("org.springframework.boot:spring-boot-starter-web")
         dtestCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
     }
