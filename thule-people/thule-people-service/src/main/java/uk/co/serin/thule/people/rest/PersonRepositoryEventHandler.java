@@ -9,10 +9,10 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import uk.co.serin.thule.people.domain.email.Email;
-import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.model.email.Email;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleCode;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
@@ -36,28 +36,28 @@ public class PersonRepositoryEventHandler {
     private StateRepository stateRepository;
 
     @HandleAfterCreate
-    public void afterCreate(Person person) {
+    public void afterCreate(PersonEntity person) {
         sendEmail(person, "created");
     }
 
-    private void sendEmail(Person person, String event) {
-        var email = Email.builder().body(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event))
+    private void sendEmail(PersonEntity person, String event) {
+        var email = Email.builder().body(String.format("PersonEntity %s %s has been %s", person.getFirstName(), person.getLastName(), event))
                          .subject("Thule people service notification").tos(Collections.singleton(person.getEmailAddress())).build();
         emailServiceClient.sendEmail(email);
     }
 
     @HandleAfterDelete
-    public void afterDelete(Person person) {
+    public void afterDelete(PersonEntity person) {
         sendEmail(person, "deleted");
     }
 
     @HandleAfterSave
-    public void afterSave(Person person) {
+    public void afterSave(PersonEntity person) {
         sendEmail(person, "saved");
     }
 
     @HandleBeforeCreate
-    public void beforeCreate(Person person) {
+    public void beforeCreate(PersonEntity person) {
         person.setRoles(Stream.of(roleRepository.findByCode(RoleCode.ROLE_CLERK)).collect(Collectors.toSet()));
         person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
     }

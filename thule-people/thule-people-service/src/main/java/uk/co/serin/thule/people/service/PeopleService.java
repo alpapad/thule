@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.person.PersonInvalidStateException;
-import uk.co.serin.thule.people.domain.state.Action;
-import uk.co.serin.thule.people.domain.state.ActionCode;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.person.PersonInvalidStateException;
+import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
+import uk.co.serin.thule.people.domain.entity.state.ActionCode;
 import uk.co.serin.thule.people.rest.EmailServiceClient;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
@@ -30,66 +30,66 @@ import lombok.extern.slf4j.Slf4j;
 public class PeopleService {
     private EmailServiceClient emailServiceClient;
 
-    public void disable(Person person) {
-        // Validate the action is valid for the current state
-        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_DISABLE)) {
-            throw new PersonInvalidStateException(person);
+    public void disable(PersonEntity personEntity) {
+        // Validate the action is valid for the current nextState
+        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISABLE)) {
+            throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new state
-        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISABLE);
-        person.setState(personViewAction.getNextState());
+        // Set new nextState
+        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_DISABLE);
+        personEntity.setState(personViewAction.getNextState());
     }
 
-    private Map<ActionCode, Action> getActionsByCode(Set<Action> actions) {
-        return actions.stream().collect(Collectors.toMap(Action::getCode, Function.identity()));
+    private Map<ActionCode, ActionEntity> getActionsByCode(Set<ActionEntity> actionEntities) {
+        return actionEntities.stream().collect(Collectors.toMap(ActionEntity::getCode, Function.identity()));
     }
 
-    public void discard(Person person) {
-        // Validate the action is valid for the current state
-        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_DISCARD)) {
-            throw new PersonInvalidStateException(person);
+    public void discard(PersonEntity personEntity) {
+        // Validate the action is valid for the current nextState
+        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISCARD)) {
+            throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new state
-        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_DISCARD);
-        person.setState(personViewAction.getNextState());
+        // Set new nextState
+        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_DISCARD);
+        personEntity.setState(personViewAction.getNextState());
     }
 
-    public void enable(Person person) {
-        // Validate the action is valid for the current state
-        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_ENABLE)) {
-            throw new PersonInvalidStateException(person);
+    public void enable(PersonEntity personEntity) {
+        // Validate the action is valid for the current nextState
+        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_ENABLE)) {
+            throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new state
-        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_ENABLE);
-        person.setState(personViewAction.getNextState());
+        // Set new nextState
+        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_ENABLE);
+        personEntity.setState(personViewAction.getNextState());
     }
 
-    public boolean isExpired(Person person) {
-        return LocalDate.now().isAfter(person.getDateOfExpiry());
+    public boolean isExpired(PersonEntity personEntity) {
+        return LocalDate.now().isAfter(personEntity.getDateOfExpiry());
     }
 
-    public boolean isPasswordExpired(Person person) {
-        return LocalDate.now().isAfter(person.getDateOfPasswordExpiry());
+    public boolean isPasswordExpired(PersonEntity personEntity) {
+        return LocalDate.now().isAfter(personEntity.getDateOfPasswordExpiry());
     }
 
-    public void recover(Person person) {
-        // Validate the action is valid for the current state
-        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_RECOVER)) {
-            throw new PersonInvalidStateException(person);
+    public void recover(PersonEntity personEntity) {
+        // Validate the action is valid for the current nextState
+        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_RECOVER)) {
+            throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new state
-        var personViewAction = getActionsByCode(person.getState().getActions()).get(ActionCode.PERSON_RECOVER);
-        person.setState(personViewAction.getNextState());
+        // Set new nextState
+        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_RECOVER);
+        personEntity.setState(personViewAction.getNextState());
     }
 
-    public void update(Person person) {
-        // Validate the action is valid for the current state
-        if (!getActionsByCode(person.getState().getActions()).containsKey(ActionCode.PERSON_UPDATE)) {
-            throw new PersonInvalidStateException(person);
+    public void update(PersonEntity personEntity) {
+        // Validate the action is valid for the current nextState
+        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_UPDATE)) {
+            throw new PersonInvalidStateException(personEntity);
         }
     }
 }

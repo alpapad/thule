@@ -4,16 +4,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import uk.co.serin.thule.people.domain.state.State;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.state.StateEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 
 import java.util.Set;
 
 @RepositoryRestResource
-public interface StateRepository extends PagingAndSortingRepository<State, Long> {
-    @Query("SELECT state FROM State state LEFT JOIN FETCH state.actions")
-    Set<State> findAllWithActions();
+public interface StateRepository extends PagingAndSortingRepository<StateEntity, Long> {
+    @Query("SELECT state FROM StateEntity state LEFT JOIN FETCH state.actions")
+    Set<StateEntity> findAllWithActions();
 
-    State findByCode(StateCode stateCode);
+    StateEntity findByCode(StateCode stateCode);
 }
 

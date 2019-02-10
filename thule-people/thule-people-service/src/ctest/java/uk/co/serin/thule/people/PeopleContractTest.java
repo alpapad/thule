@@ -30,9 +30,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.domain.DomainModel;
-import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.AuditEntity;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
@@ -75,7 +75,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser
 public class PeopleContractTest {
-    private static final String EMAILS_PATH = "/" + DomainModel.ENTITY_NAME_EMAILS;
+    private static final String EMAILS_PATH = "/" + AuditEntity.ENTITY_NAME_EMAILS;
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_CREDENTIALS = "password";
     private static final String MOCK_USERS_NAME = "user";
@@ -112,7 +112,7 @@ public class PeopleContractTest {
 
         // When
         var personResponseEntity =
-                oAuth2RestTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<Person>>() {
+                oAuth2RestTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<PersonEntity>>() {
                 }, 0, 1000);
 
         // Then
@@ -122,8 +122,8 @@ public class PeopleContractTest {
         assertThat(actualPeople).contains(testPerson);
     }
 
-    private Person createAndPersistPersonWithNoAssociations() {
-        Person person = buildPersonWithoutAnyAssociations();
+    private PersonEntity createAndPersistPersonWithNoAssociations() {
+        PersonEntity person = buildPersonWithoutAnyAssociations();
         person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         personRepository.saveAndFlush(person);
@@ -133,11 +133,11 @@ public class PeopleContractTest {
         return person;
     }
 
-    private Person buildPersonWithoutAnyAssociations() {
+    private PersonEntity buildPersonWithoutAnyAssociations() {
         var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(8);
 
-        return Person.builder().
+        return PersonEntity.builder().
                 dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
                              dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
                              dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -157,7 +157,7 @@ public class PeopleContractTest {
         var testPerson = createAndPersistPersonWithNoAssociations();
 
         // When
-        var responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, Person.class, testPerson.getId());
+        var responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, PersonEntity.class, testPerson.getId());
 
         // Then
         var actualPerson = responseEntity.getBody();
@@ -172,7 +172,7 @@ public class PeopleContractTest {
         referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
 
         // Set up service url
-        peopleServiceUrl = String.format("http://localhost:%s/%s", port, DomainModel.ENTITY_NAME_PEOPLE);
+        peopleServiceUrl = String.format("http://localhost:%s/%s", port, AuditEntity.ENTITY_NAME_PEOPLE);
 
         // Setup OAuth2
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, MOCK_USERS_CREDENTIALS, 0,
@@ -203,7 +203,7 @@ public class PeopleContractTest {
                            .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
 
         // When
-        var responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, Person.class);
+        var responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, PersonEntity.class);
 
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).

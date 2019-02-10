@@ -1,13 +1,13 @@
 package uk.co.serin.thule.people.datafactory;
 
 
-import uk.co.serin.thule.people.domain.country.Country;
-import uk.co.serin.thule.people.domain.role.Role;
-import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.domain.state.Action;
-import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.State;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleCode;
+import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
+import uk.co.serin.thule.people.domain.entity.state.ActionCode;
+import uk.co.serin.thule.people.domain.entity.state.StateEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
@@ -19,36 +19,35 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class RepositoryReferenceDataFactory implements ReferenceDataFactory {
-    private final Map<ActionCode, Action> actions;
-    private final Map<String, Country> countries;
-    private final Map<RoleCode, Role> roles;
-    private final Map<StateCode, State> states;
+    private final Map<ActionCode, ActionEntity> actions;
+    private final Map<String, CountryEntity> countries;
+    private final Map<RoleCode, RoleEntity> roles;
+    private final Map<StateCode, StateEntity> states;
 
-    @SuppressWarnings("unchecked")
     public RepositoryReferenceDataFactory(ActionRepository actionRepository, StateRepository stateRepository, RoleRepository roleRepository, CountryRepository countryRepository) {
-        actions = actionRepository.findAllWithNextState().stream().collect(Collectors.toMap(Action::getCode, Function.identity()));
-        states = stateRepository.findAllWithActions().stream().collect(Collectors.toMap(State::getCode, Function.identity()));
-        roles = StreamSupport.stream(roleRepository.findAll().spliterator(), false).collect(Collectors.toMap(Role::getCode, Function.identity()));
-        countries = StreamSupport.stream(countryRepository.findAll().spliterator(), false).collect(Collectors.toMap(Country::getIsoCodeThreeCharacters, Function.identity()));
+        actions = actionRepository.findAllWithNextState().stream().collect(Collectors.toMap(ActionEntity::getCode, Function.identity()));
+        states = stateRepository.findAllWithActions().stream().collect(Collectors.toMap(StateEntity::getCode, Function.identity()));
+        roles = StreamSupport.stream(roleRepository.findAll().spliterator(), false).collect(Collectors.toMap(RoleEntity::getCode, Function.identity()));
+        countries = StreamSupport.stream(countryRepository.findAll().spliterator(), false).collect(Collectors.toMap(CountryEntity::getIsoCodeThreeCharacters, Function.identity()));
     }
 
     @Override
-    public Map<ActionCode, Action> getActions() {
+    public Map<ActionCode, ActionEntity> getActions() {
         return actions;
     }
 
     @Override
-    public Map<String, Country> getCountries() {
+    public Map<String, CountryEntity> getCountries() {
         return countries;
     }
 
     @Override
-    public Map<RoleCode, Role> getRoles() {
+    public Map<RoleCode, RoleEntity> getRoles() {
         return roles;
     }
 
     @Override
-    public Map<StateCode, State> getStates() {
+    public Map<StateCode, StateEntity> getStates() {
         return states;
     }
 }

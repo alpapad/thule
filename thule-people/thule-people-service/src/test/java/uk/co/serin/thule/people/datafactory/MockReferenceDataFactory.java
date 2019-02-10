@@ -2,13 +2,13 @@ package uk.co.serin.thule.people.datafactory;
 
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.people.domain.country.Country;
-import uk.co.serin.thule.people.domain.role.Role;
-import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.domain.state.Action;
-import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.State;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleCode;
+import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
+import uk.co.serin.thule.people.domain.entity.state.ActionCode;
+import uk.co.serin.thule.people.domain.entity.state.StateEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MockReferenceDataFactory implements ReferenceDataFactory {
-    private final Map<ActionCode, Action> actions = new EnumMap<>(ActionCode.class);
-    private final Map<String, Country> countries = new HashMap<>();
-    private final Map<RoleCode, Role> roles = new EnumMap<>(RoleCode.class);
-    private final Map<StateCode, State> states = new EnumMap<>(StateCode.class);
+    private final Map<ActionCode, ActionEntity> actions = new EnumMap<>(ActionCode.class);
+    private final Map<String, CountryEntity> countries = new HashMap<>();
+    private final Map<RoleCode, RoleEntity> roles = new EnumMap<>(RoleCode.class);
+    private final Map<StateCode, StateEntity> states = new EnumMap<>(StateCode.class);
 
     public MockReferenceDataFactory() {
         addActions();
@@ -77,147 +77,147 @@ public class MockReferenceDataFactory implements ReferenceDataFactory {
     }
 
     private void addActionAddressDisable() {
-        var action = Action.builder().code(ActionCode.ADDRESS_DISABLE).description("Disable").build();
+        var action = ActionEntity.builder().code(ActionCode.ADDRESS_DISABLE).description("Disable").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressDiscard() {
-        var action = Action.builder().code(ActionCode.ADDRESS_DISCARD).description("Discard").build();
+        var action = ActionEntity.builder().code(ActionCode.ADDRESS_DISCARD).description("Discard").build();
         actions.put(ActionCode.ADDRESS_DISCARD, action);
     }
 
     private void addActionAddressEnable() {
-        var action = Action.builder().code(ActionCode.ADDRESS_ENABLE).description("Enable").build();
+        var action = ActionEntity.builder().code(ActionCode.ADDRESS_ENABLE).description("Enable").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressRecover() {
-        var action = Action.builder().code(ActionCode.ADDRESS_RECOVER).description("Recover").build();
+        var action = ActionEntity.builder().code(ActionCode.ADDRESS_RECOVER).description("Recover").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressUpdate() {
-        var action = Action.builder().code(ActionCode.ADDRESS_UPDATE).description("Update").build();
+        var action = ActionEntity.builder().code(ActionCode.ADDRESS_UPDATE).description("Update").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionAddressView() {
-        var action = Action.builder().code(ActionCode.ADDRESS_VIEW).description("View").build();
+        var action = ActionEntity.builder().code(ActionCode.ADDRESS_VIEW).description("View").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDisable() {
-        var action = Action.builder().code(ActionCode.PERSON_DISABLE).description("Disable").build();
+        var action = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).description("Disable").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonDiscard() {
-        var action = Action.builder().code(ActionCode.PERSON_DISCARD).description("Discard").build();
+        var action = ActionEntity.builder().code(ActionCode.PERSON_DISCARD).description("Discard").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonEnable() {
-        var action = Action.builder().code(ActionCode.PERSON_ENABLE).description("Enable").build();
+        var action = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).description("Enable").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonRecover() {
-        var action = Action.builder().code(ActionCode.PERSON_RECOVER).description("Recover").build();
+        var action = ActionEntity.builder().code(ActionCode.PERSON_RECOVER).description("Recover").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonUpdate() {
-        var action = Action.builder().code(ActionCode.PERSON_UPDATE).description("Update").build();
+        var action = ActionEntity.builder().code(ActionCode.PERSON_UPDATE).description("Update").build();
         actions.put(action.getCode(), action);
     }
 
     private void addActionPersonView() {
-        var action = Action.builder().code(ActionCode.PERSON_VIEW).description("View").build();
+        var action = ActionEntity.builder().code(ActionCode.PERSON_VIEW).description("View").build();
         actions.put(action.getCode(), action);
     }
 
     private void addCountryGb() {
-        var country = Country.builder().isoCodeThreeCharacters(Country.GBR).isoCodeTwoCharacters("GB").isoName("United Kingdom").isoNumber("826").build();
+        var country = CountryEntity.builder().isoCodeThreeCharacters(CountryEntity.GBR).isoCodeTwoCharacters("GB").isoName("United Kingdom").isoNumber("826").build();
         countries.put(country.getIsoCodeThreeCharacters(), country);
     }
 
     private void addRoleAdministrator() {
-        var role = Role.builder().code(RoleCode.ROLE_ADMINISTRATOR)
-                       .description(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault()))).build();
+        var role = RoleEntity.builder().code(RoleCode.ROLE_ADMINISTRATOR)
+                             .description(StringUtils.capitalize(RoleCode.ROLE_ADMINISTRATOR.name().toLowerCase(Locale.getDefault()))).build();
         roles.put(role.getCode(), role);
     }
 
     private void addRoleClerk() {
-        var role = Role.builder().code(RoleCode.ROLE_CLERK).description(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault())))
-                       .build();
+        var role = RoleEntity.builder().code(RoleCode.ROLE_CLERK).description(StringUtils.capitalize(RoleCode.ROLE_CLERK.name().toLowerCase(Locale.getDefault())))
+                             .build();
         roles.put(role.getCode(), role);
     }
 
     private void addRoleManager() {
-        var role = Role.builder().code(RoleCode.ROLE_MANAGER)
-                       .description(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault()))).build();
+        var role = RoleEntity.builder().code(RoleCode.ROLE_MANAGER)
+                             .description(StringUtils.capitalize(RoleCode.ROLE_MANAGER.name().toLowerCase(Locale.getDefault()))).build();
         roles.put(role.getCode(), role);
     }
 
     private void addStateAddressDisabled() {
-        var state = State.builder().code(StateCode.ADDRESS_DISABLED)
-                         .actions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet()))
-                         .description("Disabled").build();
+        var state = StateEntity.builder().code(StateCode.ADDRESS_DISABLED)
+                               .actions(Stream.of(actions.get(ActionCode.ADDRESS_ENABLE), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet()))
+                               .description("Disabled").build();
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressDiscarded() {
-        var state = State.builder().code(StateCode.ADDRESS_DISCARDED)
-                         .actions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet()))
-                         .description("Discarded").build();
+        var state = StateEntity.builder().code(StateCode.ADDRESS_DISCARDED)
+                               .actions(Stream.of(actions.get(ActionCode.ADDRESS_RECOVER), actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet()))
+                               .description("Discarded").build();
         states.put(state.getCode(), state);
     }
 
     private void addStateAddressEnabled() {
-        var state = State.builder().code(StateCode.ADDRESS_ENABLED).actions(
+        var state = StateEntity.builder().code(StateCode.ADDRESS_ENABLED).actions(
                 Stream.of(actions.get(ActionCode.ADDRESS_DISABLE), actions.get(ActionCode.ADDRESS_DISCARD), actions.get(ActionCode.ADDRESS_UPDATE),
                         actions.get(ActionCode.ADDRESS_VIEW)).collect(Collectors.toSet())).description("Enabled").build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDisabled() {
-        var state = State.builder().code(StateCode.PERSON_DISABLED)
-                         .actions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet()))
-                         .description("Disabled").build();
+        var state = StateEntity.builder().code(StateCode.PERSON_DISABLED)
+                               .actions(Stream.of(actions.get(ActionCode.PERSON_ENABLE), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet()))
+                               .description("Disabled").build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonDiscarded() {
-        var state = State.builder().code(StateCode.PERSON_DISCARDED)
-                         .actions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet()))
-                         .description("Discarded").build();
+        var state = StateEntity.builder().code(StateCode.PERSON_DISCARDED)
+                               .actions(Stream.of(actions.get(ActionCode.PERSON_RECOVER), actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet()))
+                               .description("Discarded").build();
         states.put(state.getCode(), state);
     }
 
     private void addStatePersonEnabled() {
-        var state = State.builder().code(StateCode.PERSON_ENABLED).actions(
+        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(
                 Stream.of(actions.get(ActionCode.PERSON_DISABLE), actions.get(ActionCode.PERSON_DISCARD), actions.get(ActionCode.PERSON_UPDATE),
                         actions.get(ActionCode.PERSON_VIEW)).collect(Collectors.toSet())).description("Enabled").build();
         states.put(state.getCode(), state);
     }
 
     @Override
-    public Map<ActionCode, Action> getActions() {
+    public Map<ActionCode, ActionEntity> getActions() {
         return actions;
     }
 
     @Override
-    public Map<String, Country> getCountries() {
+    public Map<String, CountryEntity> getCountries() {
         return countries;
     }
 
     @Override
-    public Map<RoleCode, Role> getRoles() {
+    public Map<RoleCode, RoleEntity> getRoles() {
         return roles;
     }
 
     @Override
-    public Map<StateCode, State> getStates() {
+    public Map<StateCode, StateEntity> getStates() {
         return states;
     }
 }

@@ -7,10 +7,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.datafactory.MockReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
-import uk.co.serin.thule.people.domain.DomainModel;
-import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.person.PersonInvalidStateException;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.AuditEntity;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.person.PersonInvalidStateException;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 
 import java.time.LocalDate;
 import java.util.function.Function;
@@ -30,7 +30,7 @@ public class PeopleServiceTest {
     @Test
     public void when_disable_person_then_state_is_updated_to_person_disabled() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         peopleService.disable(person);
@@ -42,7 +42,7 @@ public class PeopleServiceTest {
     @Test
     public void when_disabling_person_already_disabled_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.disable(person), PersonInvalidStateException.class);
@@ -54,7 +54,7 @@ public class PeopleServiceTest {
     @Test
     public void when_discard_person_then_state_is_updated_to_person_discarded() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         peopleService.discard(person);
@@ -66,7 +66,7 @@ public class PeopleServiceTest {
     @Test
     public void when_discarding_person_already_discarded_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.discard(person), PersonInvalidStateException.class);
@@ -78,7 +78,7 @@ public class PeopleServiceTest {
     @Test
     public void when_enable_person_already_enabled_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.enable(person), PersonInvalidStateException.class);
@@ -90,7 +90,7 @@ public class PeopleServiceTest {
     @Test
     public void when_enable_person_then_state_is_updated_to_person_enabled() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
         // When
         peopleService.enable(person);
@@ -102,7 +102,7 @@ public class PeopleServiceTest {
     @Test
     public void when_expiry_date_is_in_the_future_then_person_is_not_expired() {
         // Given
-        var person = Person.builder().userId("userId").dateOfExpiry(LocalDate.MAX).build();
+        var person = PersonEntity.builder().userId("userId").dateOfExpiry(LocalDate.MAX).build();
 
         // When
         var expired = peopleService.isExpired(person);
@@ -114,7 +114,7 @@ public class PeopleServiceTest {
     @Test
     public void when_expiry_date_is_in_the_past_then_person_is_expired() {
         // Given
-        var person = Person.builder().userId("userId").dateOfExpiry(LocalDate.MIN).build();
+        var person = PersonEntity.builder().userId("userId").dateOfExpiry(LocalDate.MIN).build();
 
         // When
         var expired = peopleService.isExpired(person);
@@ -126,7 +126,7 @@ public class PeopleServiceTest {
     @Test
     public void when_password_expiry_date_is_in_the_future_then_password_is_not_expired() {
         // Given
-        var person = Person.builder().userId("userId").dateOfPasswordExpiry(LocalDate.MAX).build();
+        var person = PersonEntity.builder().userId("userId").dateOfPasswordExpiry(LocalDate.MAX).build();
 
         // When
         var passwordExpired = peopleService.isPasswordExpired(person);
@@ -138,7 +138,7 @@ public class PeopleServiceTest {
     @Test
     public void when_password_expiry_date_is_in_the_past_then_password_is_expired() {
         // Given
-        var person = Person.builder().userId("userId").dateOfPasswordExpiry(LocalDate.MIN).build();
+        var person = PersonEntity.builder().userId("userId").dateOfPasswordExpiry(LocalDate.MIN).build();
 
         // When
         var passwordExpired = peopleService.isPasswordExpired(person);
@@ -151,7 +151,7 @@ public class PeopleServiceTest {
     public void when_person_contains_invalid_fields_then_validation_fails() {
         // Given
         var validator = Validation.buildDefaultValidatorFactory().getValidator();
-        var person = Person.builder().build();
+        var person = PersonEntity.builder().build();
 
         // When
         var constraintViolations = validator.validate(person);
@@ -160,13 +160,13 @@ public class PeopleServiceTest {
         var constraintViolationsByProperty = constraintViolations.stream().collect(
                 Collectors.toMap(constraintViolation -> constraintViolation.getPropertyPath().toString(), Function.identity()));
 
-        assertThat(constraintViolationsByProperty.containsKey(DomainModel.ENTITY_ATTRIBUTE_NAME_USER_ID)).isTrue();
+        assertThat(constraintViolationsByProperty.containsKey(AuditEntity.ENTITY_ATTRIBUTE_NAME_USER_ID)).isTrue();
     }
 
     @Test
     public void when_recover_person_then_state_is_changed_to_person_enabled() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
 
         // When
         peopleService.recover(person);
@@ -178,7 +178,7 @@ public class PeopleServiceTest {
     @Test
     public void when_recovering_an_enabled_person_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.recover(person), PersonInvalidStateException.class);
@@ -191,7 +191,7 @@ public class PeopleServiceTest {
     public void when_update_person_then_state_remains_unchanged() {
         // Given
         var statePersonEnabled = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
-        var person = Person.builder().userId("userId").state(statePersonEnabled).build();
+        var person = PersonEntity.builder().userId("userId").state(statePersonEnabled).build();
 
         // When
         peopleService.update(person);
@@ -203,7 +203,7 @@ public class PeopleServiceTest {
     @Test
     public void when_updating_a_disabled_person_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = Person.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
+        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.update(person), PersonInvalidStateException.class);

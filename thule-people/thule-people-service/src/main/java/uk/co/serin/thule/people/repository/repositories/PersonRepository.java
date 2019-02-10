@@ -5,21 +5,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import uk.co.serin.thule.people.domain.person.Person;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 
 import java.util.Set;
 
 @RepositoryRestResource(collectionResourceRel = "people", path = "people")
-public interface PersonRepository extends JpaRepository<Person, Long>, PersonRepositoryCustom {
-    @Query("SELECT person FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.id = :id")
+public interface PersonRepository extends JpaRepository<PersonEntity, Long>, PersonRepositoryCustom {
+    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.id = :id")
     @NewSpan
-    Person findByIdAndFetchAllAssociations(Long id);
+    PersonEntity findByIdAndFetchAllAssociations(Long id);
 
-    @Query("SELECT person FROM Person person LEFT JOIN FETCH person.photographs photographs WHERE person.updatedBy = :updatedBy")
+    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.photographs photographs WHERE person.updatedBy = :updatedBy")
     @NewSpan
-    Set<Person> findByUpdatedBy(String updatedBy);
+    Set<PersonEntity> findByUpdatedBy(String updatedBy);
 
-    @Query("SELECT person FROM Person person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.userId = :userId")
+    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.userId = :userId")
     @NewSpan
-    Person findByUserIdAndFetchAllAssociations(String userId);
+    PersonEntity findByUserIdAndFetchAllAssociations(String userId);
 }

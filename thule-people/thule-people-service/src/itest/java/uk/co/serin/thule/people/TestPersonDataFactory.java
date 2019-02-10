@@ -5,12 +5,12 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
-import uk.co.serin.thule.people.domain.address.HomeAddress;
-import uk.co.serin.thule.people.domain.address.WorkAddress;
-import uk.co.serin.thule.people.domain.country.Country;
-import uk.co.serin.thule.people.domain.person.Person;
-import uk.co.serin.thule.people.domain.person.Photograph;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.address.HomeAddressEntity;
+import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
+import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.person.PhotographEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
@@ -30,11 +30,11 @@ public class TestPersonDataFactory {
         this.referenceDataFactory = referenceDataFactory;
     }
 
-    public Person buildPersonWithAllAssociations() {
+    public PersonEntity buildPersonWithAllAssociations() {
         var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(8);
 
-        var person = Person.builder().
+        var person = PersonEntity.builder().
                 dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
                                    dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
                                    dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
@@ -56,11 +56,11 @@ public class TestPersonDataFactory {
         return person;
     }
 
-    private HomeAddress buildOxfordStreetHomeAddress() {
-        return HomeAddress.builder().
+    private HomeAddressEntity buildOxfordStreetHomeAddress() {
+        return HomeAddressEntity.builder().
                 addressLine1("Oxford Street").
                                   addressLine2("Green").
-                                  country(referenceDataFactory.getCountries().get(Country.GBR)).
+                                  country(referenceDataFactory.getCountries().get(CountryEntity.GBR)).
                                   county(GREATER_LONDON).
                                   postCode("EC3").
                                   state(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).
@@ -68,13 +68,13 @@ public class TestPersonDataFactory {
                                   build();
     }
 
-    private Photograph buildPhotographMissScarlett(Person person) {
+    private PhotographEntity buildPhotographMissScarlett(PersonEntity personEntity) {
         try {
             var resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
             var photo = FileCopyUtils.copyToByteArray(resource.getInputStream());
-            return Photograph.builder().
+            return PhotographEntity.builder().
                     hash(new String(DigestUtils.md5Digest(photo), Charset.defaultCharset())).
-                                     person(person).
+                                           person(personEntity).
                                      photo(photo).
                                      position(1).
                                      build();
@@ -83,11 +83,11 @@ public class TestPersonDataFactory {
         }
     }
 
-    private WorkAddress buildRegentStreetWorkAddress() {
-        return WorkAddress.builder().
+    private WorkAddressEntity buildRegentStreetWorkAddress() {
+        return WorkAddressEntity.builder().
                 addressLine1("Regent Street").
                                   addressLine2("Green").
-                                  country(referenceDataFactory.getCountries().get(Country.GBR)).
+                                  country(referenceDataFactory.getCountries().get(CountryEntity.GBR)).
                                   county(GREATER_LONDON).
                                   postCode("EC4").
                                   state(referenceDataFactory.getStates().get(StateCode.ADDRESS_ENABLED)).

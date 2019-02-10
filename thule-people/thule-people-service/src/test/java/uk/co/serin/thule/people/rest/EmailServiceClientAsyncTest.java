@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.co.serin.thule.people.domain.email.Email;
+import uk.co.serin.thule.people.domain.model.email.Email;
 
 import java.util.concurrent.Future;
 

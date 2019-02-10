@@ -3,7 +3,7 @@ package uk.co.serin.thule.people.rest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import uk.co.serin.thule.people.domain.email.Email;
+import uk.co.serin.thule.people.domain.model.email.Email;
 
 @FeignClient("thule-email-service")
 @FunctionalInterface

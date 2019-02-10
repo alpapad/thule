@@ -1,21 +1,21 @@
 package uk.co.serin.thule.people.datafactory;
 
-import uk.co.serin.thule.people.domain.country.Country;
-import uk.co.serin.thule.people.domain.role.Role;
-import uk.co.serin.thule.people.domain.role.RoleCode;
-import uk.co.serin.thule.people.domain.state.Action;
-import uk.co.serin.thule.people.domain.state.ActionCode;
-import uk.co.serin.thule.people.domain.state.State;
-import uk.co.serin.thule.people.domain.state.StateCode;
+import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
+import uk.co.serin.thule.people.domain.entity.role.RoleCode;
+import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
+import uk.co.serin.thule.people.domain.entity.state.ActionCode;
+import uk.co.serin.thule.people.domain.entity.state.StateEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateCode;
 
 import java.util.Map;
 
 public interface ReferenceDataFactory {
-    Map<ActionCode, Action> getActions();
+    Map<ActionCode, ActionEntity> getActions();
 
-    Map<String, Country> getCountries();
+    Map<String, CountryEntity> getCountries();
 
-    Map<RoleCode, Role> getRoles();
+    Map<RoleCode, RoleEntity> getRoles();
 
-    Map<StateCode, State> getStates();
+    Map<StateCode, StateEntity> getStates();
 }
