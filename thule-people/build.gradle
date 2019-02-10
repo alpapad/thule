@@ -103,7 +103,7 @@ project("thule-people-service") {
         compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
         compile("org.springframework.cloud:spring-cloud-starter-openfeign")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
-//        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
+        compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         compile("org.springframework.data:spring-data-rest-hal-browser")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
