@@ -7,6 +7,6 @@ logging:
 # Spring boot configuration
 spring:
   flyway:
-    schemas: THULE
+    schemas: thule
 
 # Thule configuration

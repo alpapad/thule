@@ -12,7 +12,7 @@ logging:
 # Spring boot configuration
 spring:
   flyway:
-    schemas: THULE
+    schemas: thule
 
 # Thule configuration
 thule:
@@ -49,6 +49,6 @@ spring:
   flyway:
     locations: classpath:oracle/db/migration
     password: oracle
-    schemas: THULE
+    schemas: THULE # Flyway will force schema name to be whichever case is specified but needs to be upper case for oracle
     url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
     user: system
