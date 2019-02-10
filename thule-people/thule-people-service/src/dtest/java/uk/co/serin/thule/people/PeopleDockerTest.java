@@ -20,6 +20,7 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class PeopleDockerTest {
     private String peopleServiceBaseUrl;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         // Start docker containers
         new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml").up();
 
