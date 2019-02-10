@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest;
+package uk.co.serin.thule.people.repository.support;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,13 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
-import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.entity.role.RoleCode;
+import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
+import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
-import uk.co.serin.thule.people.domain.entity.state.StateCode;
+import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
+import uk.co.serin.thule.people.service.email.EmailServiceClientAsync;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

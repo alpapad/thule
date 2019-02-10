@@ -10,7 +10,7 @@ import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
 import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.person.PhotographEntity;
-import uk.co.serin.thule.people.domain.entity.state.StateCode;
+import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;

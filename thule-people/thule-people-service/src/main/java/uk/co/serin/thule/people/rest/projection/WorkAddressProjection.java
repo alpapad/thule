@@ -1,12 +1,12 @@
-package uk.co.serin.thule.people.domain.entity.address.projection;
+package uk.co.serin.thule.people.rest.projection;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import uk.co.serin.thule.people.domain.entity.address.HomeAddressEntity;
+import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
 
-@Projection(name = "summary", types = {HomeAddressEntity.class})
-public interface HomeAddressProjection {
+@Projection(name = "summary", types = {WorkAddressEntity.class})
+public interface WorkAddressProjection {
     String getAddressLine1();
 
     String getAddressLine2();

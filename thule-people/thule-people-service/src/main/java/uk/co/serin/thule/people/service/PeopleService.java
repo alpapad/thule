@@ -8,8 +8,8 @@ import org.springframework.validation.annotation.Validated;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonInvalidStateException;
 import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
-import uk.co.serin.thule.people.domain.entity.state.ActionCode;
-import uk.co.serin.thule.people.rest.EmailServiceClient;
+import uk.co.serin.thule.people.domain.model.state.ActionCode;
+import uk.co.serin.thule.people.service.email.EmailServiceClient;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.time.LocalDate;

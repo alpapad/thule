@@ -1,10 +1,8 @@
-package uk.co.serin.thule.people.domain.entity.person.projection;
+package uk.co.serin.thule.people.rest.projection;
 
 import org.springframework.data.rest.core.config.Projection;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.domain.entity.role.projection.RoleProjection;
-import uk.co.serin.thule.people.domain.entity.state.projection.StateProjection;
 
 import java.time.LocalDate;
 import java.util.Set;

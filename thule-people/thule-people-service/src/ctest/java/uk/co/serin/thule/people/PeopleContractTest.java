@@ -31,7 +31,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.domain.entity.state.StateCode;
+import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;

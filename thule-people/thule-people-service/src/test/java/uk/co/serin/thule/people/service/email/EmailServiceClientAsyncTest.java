@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest;
+package uk.co.serin.thule.people.service.email;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.domain.entity.state;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import uk.co.serin.thule.people.domain.entity.AuditEntity;
+import uk.co.serin.thule.people.domain.model.state.ActionCode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

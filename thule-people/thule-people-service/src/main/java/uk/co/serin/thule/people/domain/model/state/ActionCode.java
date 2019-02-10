@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.domain.entity.state;
+package uk.co.serin.thule.people.domain.model.state;
 
 import lombok.AllArgsConstructor;
 

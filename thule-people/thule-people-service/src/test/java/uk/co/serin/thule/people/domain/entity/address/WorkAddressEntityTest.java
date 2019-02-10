@@ -5,7 +5,7 @@ import org.junit.Test;
 import uk.co.serin.thule.people.datafactory.MockReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
-import uk.co.serin.thule.people.domain.entity.state.StateCode;
+import uk.co.serin.thule.people.domain.model.state.StateCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

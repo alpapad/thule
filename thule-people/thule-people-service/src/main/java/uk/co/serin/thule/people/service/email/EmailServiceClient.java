@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest;
+package uk.co.serin.thule.people.service.email;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.domain.entity.state;
 import org.springframework.data.annotation.Transient;
 
 import uk.co.serin.thule.people.domain.entity.AuditEntity;
+import uk.co.serin.thule.people.domain.model.state.StateCode;
 
 import java.util.HashSet;
 import java.util.Set;

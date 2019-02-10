@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people.rest;
+package uk.co.serin.thule.people.repository.support;
 
 
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
@@ -12,9 +12,10 @@ import org.springframework.validation.annotation.Validated;
 import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.role.RoleCode;
-import uk.co.serin.thule.people.domain.entity.state.StateCode;
+import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
+import uk.co.serin.thule.people.service.email.EmailServiceClientAsync;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.util.Collections;
