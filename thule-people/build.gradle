@@ -64,7 +64,7 @@ project("thule-people-service") {
         }
     }
     dtest {
-        // Remove docker container once the contract tests have completed
+        // Remove docker container once the docker tests have completed
         afterSuite { descriptor ->
             if (descriptor.getName().contains("Gradle Test Executor")) {
                 exec {
