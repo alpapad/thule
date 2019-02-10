@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people.domain.entity.address;
 
-import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 
@@ -11,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@DiscriminatorValue(AuditEntity.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_WORK)
+@DiscriminatorValue("WORK")
 @Entity()
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class WorkAddressEntity extends AddressEntity {

@@ -1,6 +1,5 @@
 package uk.co.serin.thule.people.repository.repositories;
 
-import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
@@ -16,6 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @TracePublicMethods
 public class PersonRepositoryImpl implements PersonRepositoryCustom {
+    private static final String ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS = "emailAddress";
+    private static final String ENTITY_ATTRIBUTE_NAME_FIRST_NAME = "firstName";
+    private static final String ENTITY_ATTRIBUTE_NAME_LAST_NAME = "lastName";
+    public static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
     private static final String FIND_PEOPLE_BY_CRITERIA_JPA_QL =
             "select DISTINCT(person) FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or :emailAddress is null) and ( person.firstName like :firstName or :firstName is null) and ( person.lastName like :lastName or :lastName is null) and ( person.userId like :userId or :userId is null)";
     private static final String SEARCH_PEOPLE_BY_QUERY_JPA_QL =
@@ -32,10 +35,10 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
         var userIdForLikeComparison = (userId == null) ? null : '%' + userId + '%';
 
         return entityManager.createQuery(FIND_PEOPLE_BY_CRITERIA_JPA_QL, PersonEntity.class)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS, emailAddressForLikeComparison)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_FIRST_NAME, firstNameForLikeComparison)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_LAST_NAME, lastNameForLikeComparison)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_USER_ID, userIdForLikeComparison).getResultList();
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS, emailAddressForLikeComparison)
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_FIRST_NAME, firstNameForLikeComparison)
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_LAST_NAME, lastNameForLikeComparison)
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_USER_ID, userIdForLikeComparison).getResultList();
     }
 
     @Override
@@ -43,9 +46,9 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
         var queryForLikeComparison = (searchQuery == null) ? null : '%' + searchQuery + '%';
 
         return entityManager.createQuery(SEARCH_PEOPLE_BY_QUERY_JPA_QL, PersonEntity.class)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS, queryForLikeComparison)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_FIRST_NAME, queryForLikeComparison)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_LAST_NAME, queryForLikeComparison)
-                            .setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_USER_ID, queryForLikeComparison).getResultList();
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS, queryForLikeComparison)
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_FIRST_NAME, queryForLikeComparison)
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_LAST_NAME, queryForLikeComparison)
+                            .setParameter(ENTITY_ATTRIBUTE_NAME_USER_ID, queryForLikeComparison).getResultList();
     }
 }

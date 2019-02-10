@@ -7,8 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 
-import uk.co.serin.thule.people.domain.entity.AuditEntity;
-
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
@@ -48,7 +46,7 @@ public class ThuleJpaRepositoryTest {
 
         // Then
         verify(entityManager).createQuery(anyString());
-        verify(typedQuery).setParameter(AuditEntity.ENTITY_ATTRIBUTE_NAME_UPDATED_BY, userId);
+        verify(typedQuery).setParameter("updatedBy", userId);
         verify(typedQuery).executeUpdate();
     }
 }

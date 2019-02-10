@@ -30,7 +30,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
@@ -75,7 +74,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser
 public class PeopleContractTest {
-    private static final String EMAILS_PATH = "/" + AuditEntity.ENTITY_NAME_EMAILS;
+    private static final String EMAILS_PATH = "/emails";
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_CREDENTIALS = "password";
     private static final String MOCK_USERS_NAME = "user";
@@ -172,7 +171,7 @@ public class PeopleContractTest {
         referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
 
         // Set up service url
-        peopleServiceUrl = String.format("http://localhost:%s/%s", port, AuditEntity.ENTITY_NAME_PEOPLE);
+        peopleServiceUrl = String.format("http://localhost:%s/people", port);
 
         // Setup OAuth2
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, MOCK_USERS_CREDENTIALS, 0,

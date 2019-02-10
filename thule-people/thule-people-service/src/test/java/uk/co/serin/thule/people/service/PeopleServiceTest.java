@@ -7,10 +7,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.datafactory.MockReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
-import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonInvalidStateException;
 import uk.co.serin.thule.people.domain.entity.state.StateCode;
+import uk.co.serin.thule.people.repository.repositories.PersonRepositoryImpl;
 
 import java.time.LocalDate;
 import java.util.function.Function;
@@ -160,7 +160,7 @@ public class PeopleServiceTest {
         var constraintViolationsByProperty = constraintViolations.stream().collect(
                 Collectors.toMap(constraintViolation -> constraintViolation.getPropertyPath().toString(), Function.identity()));
 
-        assertThat(constraintViolationsByProperty.containsKey(AuditEntity.ENTITY_ATTRIBUTE_NAME_USER_ID)).isTrue();
+        assertThat(constraintViolationsByProperty.containsKey(PersonRepositoryImpl.ENTITY_ATTRIBUTE_NAME_USER_ID)).isTrue();
     }
 
     @Test

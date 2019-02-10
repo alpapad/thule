@@ -36,17 +36,18 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_STATES)
+@Table(name = "states")
 @ToString(callSuper = true)
 public class StateEntity extends AuditEntity {
+    public static final String DATABASE_COLUMN_STATE_ID = "state_id";
     private static final int DESCRIPTION_MAX_LENGTH = 100;
 
     @Builder.Default
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(name = DATABASE_TABLE_STATE_ACTIONS,
+    @JoinTable(name = "state_actions",
             joinColumns = {@JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = DATABASE_COLUMN_ACTION_ID, nullable = false)})
-    @OrderBy(value = ENTITY_ATTRIBUTE_NAME_DESCRIPTION)
+            inverseJoinColumns = {@JoinColumn(name = "action_id", nullable = false)})
+    @OrderBy("description")
     @ToString.Exclude
     @Transient
     private Set<ActionEntity> actions = new HashSet<>();

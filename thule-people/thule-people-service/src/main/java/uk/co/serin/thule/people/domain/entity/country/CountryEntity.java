@@ -23,7 +23,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_COUNTRIES)
+@Table(name = "countries")
 @ToString(callSuper = true)
 public class CountryEntity extends AuditEntity {
     public static final String GBR = "GBR";
@@ -31,6 +31,7 @@ public class CountryEntity extends AuditEntity {
     private static final int ISO_CODE_TWO_CHARACTER_LENGTH = 2;
     private static final int ISO_NAME_MAX_LENGTH = 100;
     private static final int ISO_NUMBER_LENGTH = 3;
+
     @EqualsAndHashCode.Include
     @NotEmpty
     @Size(min = ISO_CODE_THREE_CHARACTER_LENGTH, max = ISO_CODE_THREE_CHARACTER_LENGTH)

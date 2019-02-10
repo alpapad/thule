@@ -6,7 +6,6 @@ import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,14 +23,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorColumn(name = AuditEntity.DATABASE_COLUMN_ADDRESS_TYPE, discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue(value = AuditEntity.DATABASE_COLUMN_ADDRESS_TYPE_VALUE_UNSPECIFIED)
+@DiscriminatorColumn(name = "address_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_ADDRESSES)
+@Table(name = "addresses")
 @ToString(callSuper = true)
 public abstract class AddressEntity extends AuditEntity {
     private static final int ADDRESS_LINE1_MAX_LENGTH = 30;
@@ -49,7 +47,7 @@ public abstract class AddressEntity extends AuditEntity {
     private String addressLine2;
 
     @EqualsAndHashCode.Include
-    @JoinColumn(name = DATABASE_COLUMN_COUNTRY_ID, nullable = false, updatable = false)
+    @JoinColumn(name = "country_id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     @NotNull
     private CountryEntity country;
@@ -63,7 +61,7 @@ public abstract class AddressEntity extends AuditEntity {
     @Size(max = POSTCODE_MAX_LENGTH)
     private String postCode;
 
-    @JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false, updatable = false)
+    @JoinColumn(name = StateEntity.DATABASE_COLUMN_STATE_ID, nullable = false, updatable = false)
     @ManyToOne(optional = false)
     @NotNull
     private StateEntity stateEntity;

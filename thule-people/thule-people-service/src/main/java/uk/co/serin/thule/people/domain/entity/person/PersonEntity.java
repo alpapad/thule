@@ -39,7 +39,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_PEOPLE)
+@Table(name = "people")
 @ToString(callSuper = true)
 public class PersonEntity extends AuditEntity {
     public static final int EMAIL_ADDRESS_MAX_LENGTH = 100;
@@ -49,20 +49,6 @@ public class PersonEntity extends AuditEntity {
     public static final int SECOND_NAME_MAX_LENGTH = 30;
     public static final int TITLE_MAX_LENGTH = 10;
     public static final int USER_ID_MAX_LENGTH = 100;
-
-    @Builder.Default
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = ENTITY_NAME_PERSON, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<PhotographEntity> photographs = new HashSet<>();
-
-    @Builder.Default
-    @JoinTable(name = DATABASE_TABLE_PEOPLE_ROLES,
-            joinColumns = {@JoinColumn(name = DATABASE_COLUMN_PERSON_ID, nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = DATABASE_COLUMN_ROLE_ID, nullable = false)})
-    @ManyToMany
-    @NotNull
-    @ToString.Exclude
-    private Set<RoleEntity> roles = new HashSet<>();
 
     @NotNull
     private LocalDate dateOfBirth;
@@ -84,7 +70,7 @@ public class PersonEntity extends AuditEntity {
     @Size(max = FIRST_NAME_MAX_LENGTH)
     private String firstName;
 
-    @JoinColumn(name = DATABASE_COLUMN_HOME_ADDRESS_ID)
+    @JoinColumn(name = "home_address_id")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @ToString.Exclude
     private HomeAddressEntity homeAddress;
@@ -97,10 +83,24 @@ public class PersonEntity extends AuditEntity {
     @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
 
+    @Builder.Default
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "person", orphanRemoval = true)
+    @ToString.Exclude
+    private Set<PhotographEntity> photographs = new HashSet<>();
+
+    @Builder.Default
+    @JoinTable(name = "people_roles",
+            joinColumns = {@JoinColumn(name = "person_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", nullable = false)})
+    @ManyToMany
+    @NotNull
+    @ToString.Exclude
+    private Set<RoleEntity> roles = new HashSet<>();
+
     @Size(max = SECOND_NAME_MAX_LENGTH)
     private String secondName;
 
-    @JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false)
+    @JoinColumn(name = StateEntity.DATABASE_COLUMN_STATE_ID, nullable = false)
     @ManyToOne(optional = false)
     @NotNull
     @ToString.Exclude
@@ -114,7 +114,7 @@ public class PersonEntity extends AuditEntity {
     @Size(max = USER_ID_MAX_LENGTH)
     private String userId;
 
-    @JoinColumn(name = DATABASE_COLUMN_WORK_ADDRESS_ID)
+    @JoinColumn(name = "work_address_id")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @ToString.Exclude
     private WorkAddressEntity workAddress;

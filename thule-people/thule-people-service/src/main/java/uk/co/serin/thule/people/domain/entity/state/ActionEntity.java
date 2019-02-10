@@ -31,7 +31,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_ACTIONS)
+@Table(name = "actions")
 @ToString(callSuper = true)
 public class ActionEntity extends AuditEntity {
     private static final int DESCRIPTION_MAX_LENGTH = 100;
@@ -46,7 +46,7 @@ public class ActionEntity extends AuditEntity {
     private String description;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = ENTITY_ATTRIBUTE_NAME_NEXT_STATE_ID, updatable = false)
+    @JoinColumn(name = "nextStateId", updatable = false)
     @JsonIgnore
     @ToString.Exclude
     private StateEntity nextState;

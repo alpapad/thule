@@ -30,7 +30,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_PHOTOGRAPHS)
+@Table(name = "photographs")
 @ToString(callSuper = true)
 public class PhotographEntity extends AuditEntity {
     private static final int HASH_MAX_LENGTH = 255;
@@ -40,7 +40,7 @@ public class PhotographEntity extends AuditEntity {
     private String hash;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = ENTITY_ATTRIBUTE_NAME_PERSON_ID, nullable = false, updatable = false)
+    @JoinColumn(name = "personId", nullable = false, updatable = false)
     @NotNull
     @Transient
     @ToString.Exclude
@@ -52,6 +52,6 @@ public class PhotographEntity extends AuditEntity {
     private byte[] photo;
 
     @EqualsAndHashCode.Include
-    @Column(name = DATABASE_COLUMN_POSITIN) // Don't call this position because 'position' is a reserved word in HSQL
+    @Column(name = "positin") // Don't call this position because 'position' is a reserved word in HSQL
     private long position;
 }

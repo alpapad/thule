@@ -26,7 +26,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
-@Table(name = AuditEntity.ENTITY_NAME_ROLES)
+@Table(name = "roles")
 @ToString(callSuper = true)
 public class RoleEntity extends AuditEntity {
     private static final int DESCRIPTION_MAX_LENGTH = 30;
