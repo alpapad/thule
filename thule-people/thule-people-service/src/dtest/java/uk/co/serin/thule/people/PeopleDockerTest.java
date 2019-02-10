@@ -1,8 +1,6 @@
 package uk.co.serin.thule.people;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +14,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
-import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
@@ -36,8 +32,6 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PeopleDockerTest {
-    private static final String PEOPLE_PATH = "/people";
-    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml");
     private OAuth2RestTemplate oAuth2RestTemplate;
     @Value("${thule.peopleservice.api.host}")
     private String peopleServiceApiHost;
@@ -45,18 +39,11 @@ public class PeopleDockerTest {
     private int peopleServiceApiPort;
     private String peopleServiceBaseUrl;
 
-    @BeforeClass
-    public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws IOException {
-        dockerCompose.down();
-    }
-
     @Before
     public void setUp() {
+        // Start docker containers
+        new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml").up();
+
         // Create base url
         peopleServiceBaseUrl = "http://" + peopleServiceApiHost + ":" + peopleServiceApiPort;
 
@@ -79,7 +66,7 @@ public class PeopleDockerTest {
     public void when_finding_all_people_then_at_least_one_person_is_found() {
         // When
         var personResponseEntity = oAuth2RestTemplate
-                .exchange(peopleServiceBaseUrl + PEOPLE_PATH, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Map<String, Object>>() {
+                .exchange(peopleServiceBaseUrl + "/people", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Map<String, Object>>() {
                 });
 
         // Then
