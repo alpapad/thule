@@ -52,6 +52,9 @@ project("thule-email-service") {
     }
     
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok")
+
         compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
@@ -63,8 +66,6 @@ project("thule-email-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
-
-        compileOnly("org.projectlombok:lombok")
 
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")

@@ -88,6 +88,9 @@ project("thule-people-service") {
     }
 
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok")
+
         compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
         compile("com.googlecode.log4jdbc:log4jdbc:1.2")
@@ -107,8 +110,6 @@ project("thule-people-service") {
         compile("org.springframework.data:spring-data-rest-hal-browser")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
-        compileOnly("org.projectlombok:lombok")
-        
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-people-config")
