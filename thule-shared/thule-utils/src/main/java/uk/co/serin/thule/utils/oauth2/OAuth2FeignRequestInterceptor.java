@@ -1,7 +1,6 @@
 package uk.co.serin.thule.utils.oauth2;
 
-import com.google.common.net.HttpHeaders;
-
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
