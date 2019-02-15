@@ -36,7 +36,7 @@ public class ThuleJpaRepositoryTest {
     @Test
     public void when_delete_by_updated_by_then_delete_is_executed() {
         // Given
-        String userId = "userId";
+        var userId = "userId";
 
         given(entityManager.createQuery(anyString())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);

@@ -11,7 +11,7 @@ public class ApplicationConfigurerTest {
     @Test
     public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
         // When
-        ApplicationConfigurer applicationConfigurer = new ApplicationConfigurer();
+        var applicationConfigurer = new ApplicationConfigurer();
 
         // Then
         assertThat(applicationConfigurer).isNotNull();

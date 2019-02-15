@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
 import uk.co.serin.thule.people.domain.model.state.ActionCode;
-import uk.co.serin.thule.people.service.email.EmailServiceClient;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.time.LocalDate;
@@ -27,8 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional
 public class PeopleService {
-    private EmailServiceClient emailServiceClient;
-
     public void disable(PersonEntity personEntity) {
         // Validate the action is valid for the current nextState
         if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISABLE)) {

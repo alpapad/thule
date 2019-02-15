@@ -8,8 +8,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.domain.model.email.Email;
 
-import java.util.concurrent.Future;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -29,7 +27,7 @@ public class EmailServiceClientAsyncTest {
         var future = emailServiceClientAsync.sendEmail(email);
 
         // Then
-        assertThat(future).isInstanceOf(Future.class);
+        assertThat(future).isNotNull();
         verify(emailServiceClient).sendEmail(email);
     }
 }
