@@ -1,5 +1,5 @@
 buildscript {
-    ext["spring-security-oauth2-autoconfigure.version"] = "2.1.2.RELEASE" // The pom for org.springframework.cloud:spring-cloud-security-dependencies:2.1.0.RELEASE incorrectly specifies <spring-security-oauth2-autoconfigure.version>2.1.0.M4</spring-security-oauth2-autoconfigure.version>
+    ext["spring-cloud-security.version"] = "2.1.1.RELEASE" // The pom for org.springframework.cloud:spring-cloud-security-dependencies:2.1.0.RELEASE incorrectly specifies <spring-security-oauth2-autoconfigure.version>2.1.0.M4</spring-security-oauth2-autoconfigure.version>
 
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
@@ -106,10 +106,9 @@ project("thule-utils") {
         compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
         compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign")
- 
-        compile("com.sun.xml.bind:jaxb-core:2.3.0.1") // Required by anything using JAXB when using java 9+
-        compile("com.sun.xml.bind:jaxb-impl:2.3.0.1") // Required by anything using JAXB when using java 9+
+
         compile("javax.xml.bind:jaxb-api") // Required by anything using JAXB when using java 9+
+        compile("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
         compile("net.logstash.logback:logstash-logback-encoder:5.3")
         compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
         compile("org.hibernate:hibernate-core")
