@@ -6,8 +6,11 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import lombok.NoArgsConstructor;
+
 @Configuration
 @EnableMongoAuditing
+@NoArgsConstructor
 public class ApplicationConfigurer {
     @Bean
     public ValidatingMongoEventListener validatingMongoEventListener() {

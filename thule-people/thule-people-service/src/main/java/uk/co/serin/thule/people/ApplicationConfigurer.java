@@ -9,10 +9,10 @@ import uk.co.serin.thule.people.repository.support.ThuleJpaRepository;
 
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Configuration
 @EnableAsync
 @EnableFeignClients
 @EnableJpaRepositories(repositoryBaseClass = ThuleJpaRepository.class)
+@NoArgsConstructor
 public class ApplicationConfigurer {
 }

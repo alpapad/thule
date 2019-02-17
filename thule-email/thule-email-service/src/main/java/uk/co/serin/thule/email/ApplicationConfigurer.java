@@ -5,8 +5,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Configuration
 @EnableAsync
+@NoArgsConstructor
 public class ApplicationConfigurer {
 }

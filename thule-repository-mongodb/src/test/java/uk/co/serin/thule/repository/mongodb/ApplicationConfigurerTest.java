@@ -4,8 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,10 +14,8 @@ public class ApplicationConfigurerTest {
 
     @Test
     public void localValidatorFactoryBean_is_configured() {
-        // Given
-
         // When
-        LocalValidatorFactoryBean localValidatorFactoryBean = applicationConfigurer.localValidatorFactoryBean();
+        var localValidatorFactoryBean = applicationConfigurer.localValidatorFactoryBean();
 
         // Then
         assertThat(localValidatorFactoryBean).isNotNull();
@@ -27,10 +23,8 @@ public class ApplicationConfigurerTest {
 
     @Test
     public void validatingMongoEventListener_is_configured() {
-        // Given
-
         // When
-        ValidatingMongoEventListener validatingMongoEventListener = applicationConfigurer.validatingMongoEventListener();
+        var validatingMongoEventListener = applicationConfigurer.validatingMongoEventListener();
 
         // Then
         assertThat(validatingMongoEventListener).isNotNull();
@@ -38,10 +32,8 @@ public class ApplicationConfigurerTest {
 
     @Test
     public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
-        // Given
-
         // When
-        ApplicationConfigurer applicationConfigurer = new ApplicationConfigurer();
+        var applicationConfigurer = new ApplicationConfigurer();
 
         // Then
         assertThat(applicationConfigurer).isNotNull();
