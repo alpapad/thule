@@ -50,6 +50,9 @@ project("thule-admin-service") {
     }
 
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok")
+
         compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("de.codecentric:spring-boot-admin-starter-server:2.1.2")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
@@ -58,8 +61,6 @@ project("thule-admin-service") {
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
         compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
-
-        compileOnly("org.projectlombok:lombok")
 
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 

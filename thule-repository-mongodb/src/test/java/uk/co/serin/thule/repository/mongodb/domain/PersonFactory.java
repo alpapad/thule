@@ -3,30 +3,26 @@ package uk.co.serin.thule.repository.mongodb.domain;
 
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
-import java.time.LocalDate;
-
 public class PersonFactory {
     private static final String EMAIL_ADDRESS_SUFFIX = "@serin-consultancy.co.uk";
     private static final int SUFFIX_LENGTH = 8;
 
-    public static Person newPerson(Person person) {
-        return Person.PersonBuilder.aPerson().withCreatedAt(person.getCreatedAt()).withCreatedBy(person.getCreatedBy()).withDateOfBirth(person.getDateOfBirth())
-                                   .withDateOfExpiry(person.getDateOfExpiry()).withDateOfPasswordExpiry(person.getDateOfPasswordExpiry())
-                                   .withEmailAddress(person.getEmailAddress()).withFirstName(person.getFirstName()).withId(person.getId())
-                                   .withLastName(person.getLastName()).withPassword(person.getPassword()).withSecondName(person.getSecondName())
-                                   .withTitle(person.getTitle()).withUpdatedAt(person.getUpdatedAt()).withUpdatedBy(person.getUpdatedBy())
-                                   .withUserId(person.getUserId()).withVersion(person.getVersion()).build();
+    public static PersonEntity newPerson(PersonEntity personEntity) {
+        return PersonEntity.builder().createdAt(personEntity.getCreatedAt()).createdBy(personEntity.getCreatedBy()).dateOfBirth(personEntity.getDateOfBirth())
+                           .dateOfExpiry(personEntity.getDateOfExpiry()).dateOfPasswordExpiry(personEntity.getDateOfPasswordExpiry())
+                           .emailAddress(personEntity.getEmailAddress()).firstName(personEntity.getFirstName()).id(personEntity.getId())
+                           .lastName(personEntity.getLastName()).password(personEntity.getPassword()).secondName(personEntity.getSecondName())
+                           .title(personEntity.getTitle()).updatedAt(personEntity.getUpdatedAt()).updatedBy(personEntity.getUpdatedBy())
+                           .userId(personEntity.getUserId()).version(personEntity.getVersion()).build();
     }
 
-    public static Person newPerson() {
-        // Set the attributes
-        final LocalDate dob = RandomUtils.generateUniqueRandomDateInThePast();
-        final LocalDate expiryDate = RandomUtils.generateUniqueRandomDateInTheFuture();
-        String userId = "missScarlett" + RandomUtils.generateUniqueRandomString(SUFFIX_LENGTH);
+    public static PersonEntity newPerson() {
+        var dob = RandomUtils.generateUniqueRandomDateInThePast();
+        var expiryDate = RandomUtils.generateUniqueRandomDateInTheFuture();
+        var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(SUFFIX_LENGTH);
 
-        return Person.PersonBuilder.aPerson().
-                withDateOfBirth(dob).withDateOfExpiry(expiryDate).withDateOfPasswordExpiry(expiryDate).withEmailAddress(userId + EMAIL_ADDRESS_SUFFIX)
-                                   .withFirstName("Elizabeth").withId(RandomUtils.generateUniqueRandomLong()).withLastName("Scarlett").withPassword(userId)
-                                   .withSecondName("K").withTitle("Miss").withUserId(userId).build();
+        return PersonEntity.builder().dateOfBirth(dob).dateOfExpiry(expiryDate).dateOfPasswordExpiry(expiryDate).emailAddress(userId + EMAIL_ADDRESS_SUFFIX)
+                           .firstName("Elizabeth").id(RandomUtils.generateUniqueRandomLong()).lastName("Scarlett").password(userId).secondName("K").title("Miss")
+                           .userId(userId).build();
     }
 }

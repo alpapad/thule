@@ -87,6 +87,9 @@ project("thule-configuration-service") {
     }
 
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok")
+
         compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
         compile("org.springframework.boot:spring-boot-starter-actuator")
@@ -94,8 +97,6 @@ project("thule-configuration-service") {
         compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
         compile("org.springframework.cloud:spring-cloud-starter-sleuth")
         compile("org.springframework.cloud:spring-cloud-starter-zipkin")
-
-        compileOnly("org.projectlombok:lombok")
 
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 

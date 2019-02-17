@@ -1,59 +1,55 @@
-package uk.co.serin.thule.people.repository;
+package uk.co.serin.thule.repository.mongodb.repository;
 
+import com.google.gson.Gson;
+
+import org.awaitility.Duration;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.TransactionSystemException;
 
-import uk.co.serin.thule.people.TestPersonDataFactory;
-import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
-import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.repository.repositories.ActionRepository;
-import uk.co.serin.thule.people.repository.repositories.CountryRepository;
-import uk.co.serin.thule.people.repository.repositories.PersonRepository;
-import uk.co.serin.thule.people.repository.repositories.RoleRepository;
-import uk.co.serin.thule.people.repository.repositories.StateRepository;
+import uk.co.serin.thule.repository.mongodb.domain.PersonEntity;
+import uk.co.serin.thule.repository.mongodb.domain.PersonFactory;
+import uk.co.serin.thule.utils.docker.DockerCompose;
+import uk.co.serin.thule.utils.utils.RandomUtils;
+
+import java.io.IOException;
+import java.net.Socket;
 
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.awaitility.Awaitility.given;
+import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
-/**
- * Abstract class for testing the repository in both MySql and H2
- *
- * This test uses @DataJpaTest to test boot just the required parts of Spring Boot for JPA
- * repository testing. It does this by disabling auto configuration (including the use of
- *
- * @Configuration) and using select auto configuration classes. However, this results in JPA
- * Auditing not being configured because it is enabled in a @Configuration class! Therefore
- * it is enabled in the inner configuration class.
- */
-@DataJpaTest
-@Import(RepositoryIntTestConfiguration.class)
+@ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
-@WithMockUser
-public abstract class PersonEntityRepositoryBaseIntTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+public class PersonEntityRepositoryIntTest {
     private static final String MOCK_USERS_NAME = "user";
+    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-repository-mongodb-integration-tests/docker-compose-mongo.yml");
     @Autowired
-    private ActionRepository actionRepository;
-    @Autowired
-    private CountryRepository countryRepository;
+    private Environment env;
+    private Gson gson = new Gson();
     @Autowired
     private PersonRepository personRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private StateRepository stateRepository;
-    @Autowired
-    private TestEntityManager testEntityManager;
-    private TestPersonDataFactory testPersonDataFactory;
+
+    @BeforeClass
+    public static void setUpClass() throws IOException {
+        dockerCompose.up();
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws IOException {
+        dockerCompose.down();
+    }
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
@@ -68,9 +64,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     private PersonEntity createAndPersistPerson() {
-        var person = personRepository.saveAndFlush(testPersonDataFactory.buildPersonWithAllAssociations());
-        testEntityManager.clear();
-        return person;
+        return personRepository.save(PersonFactory.newPerson());
     }
 
     @Test
@@ -92,22 +86,10 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         var expectedPerson = createAndPersistPerson();
 
         // When
-        var actualPerson = personRepository.findByIdAndFetchAllAssociations(expectedPerson.getId());
+        var actualPerson = personRepository.findById(expectedPerson.getId()).orElseThrow();
 
         // Then
         assertThat(actualPerson).isEqualTo(expectedPerson);
-    }
-
-    @Test
-    public void given_a_new_person_when_finding_that_person_by_updatedBy_then_the_new_person_is_found() {
-        // Given
-        var expectedPerson = createAndPersistPerson();
-
-        // When
-        var actualPeople = personRepository.findByUpdatedBy(MOCK_USERS_NAME);
-
-        // Then
-        assertThat(actualPeople).contains(expectedPerson);
     }
 
     @Test
@@ -116,34 +98,10 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         var expectedPerson = createAndPersistPerson();
 
         // When
-        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(expectedPerson.getUserId());
+        var actualPerson = personRepository.findByUserId(expectedPerson.getUserId()).orElseThrow();
 
         // Then
         assertThat(actualPerson).isEqualTo(expectedPerson);
-    }
-
-    @Test
-    public void given_a_new_person_when_finding_that_person_with_criteria_then_the_new_person_is_found() {
-        // Given
-        var expectedPerson = createAndPersistPerson();
-
-        // When
-        var actualPeople = personRepository.findByCriteria(expectedPerson.getEmailAddress().substring(1), null, null, null);
-
-        // Then
-        assertThat(actualPeople).contains(expectedPerson);
-    }
-
-    @Test
-    public void given_a_new_person_when_searching_by_email_address_then_the_new_person_is_found() {
-        // Given
-        var expectedPerson = createAndPersistPerson();
-
-        // When
-        var actualPeople = personRepository.search(expectedPerson.getEmailAddress().substring(1));
-
-        // Then
-        assertThat(actualPeople).contains(expectedPerson);
     }
 
     @Test
@@ -158,14 +116,15 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         expectedPerson.setEmailAddress("updated@gmail.com");
         expectedPerson.setPassword("updatedPassword");
 
+        var testPerson = gson.fromJson(gson.toJson(expectedPerson), PersonEntity.class);
+
         Thread.sleep(10L); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
-        personRepository.save(expectedPerson);
-        testEntityManager.flush();
+        personRepository.save(testPerson);
 
         // Then
-        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(expectedPerson.getUserId());
+        var actualPerson = personRepository.findByUserId(expectedPerson.getUserId()).orElseThrow();
 
         assertThat(actualPerson).isNotSameAs(expectedPerson);
         assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
@@ -181,22 +140,27 @@ public abstract class PersonEntityRepositoryBaseIntTest {
 
     @Before
     public void setUp() {
-        var repositoryReferenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
-        testPersonDataFactory = new TestPersonDataFactory(repositoryReferenceDataFactory);
+        // Ideally, this would be done as a static @BeforeClass method. However, we need access to
+        // the spring environment which is autowired and hence cannot be static
+        var mongodbHost = env.getProperty("thule.repositorymongodb.mongodb.host", "localhost");
+        var mongodbPort = env.getProperty("thule.repositorymongodb.mongodb.port", Integer.class, 27017);
+
+        // Wait until MongoDb is up by checking that the port is available
+        given().ignoreExceptions().pollInterval(fibonacci()).
+                await().timeout(Duration.FIVE_MINUTES).
+                       untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
     }
 
     @Test
     public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        var expectedPerson = testPersonDataFactory.buildPersonWithAllAssociations();
+        var expectedPerson = PersonFactory.newPerson();
 
         // When
         personRepository.save(expectedPerson);
-        testEntityManager.flush(); // Force an update from the JPA cache to the database
 
         // Then
-        testEntityManager.clear(); // Clear the JPA cache to guarantee that subsequent finders actually access the database
-        var actualPerson = personRepository.findByUserIdAndFetchAllAssociations(expectedPerson.getUserId());
+        var actualPerson = personRepository.findByUserId(expectedPerson.getUserId()).orElseThrow();
 
         assertThat(actualPerson).isNotSameAs(expectedPerson);
         assertThat(actualPerson.getCreatedAt()).isNotNull();
@@ -206,35 +170,26 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         assertThat(actualPerson.getDateOfPasswordExpiry()).isEqualTo(expectedPerson.getDateOfPasswordExpiry());
         assertThat(actualPerson.getEmailAddress()).isEqualTo(expectedPerson.getEmailAddress());
         assertThat(actualPerson.getFirstName()).isEqualTo(expectedPerson.getFirstName());
-        assertThat(actualPerson.getHomeAddress()).isEqualTo(expectedPerson.getHomeAddress());
         assertThat(actualPerson.getId()).isNotNull();
         assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(expectedPerson.getPhotographs());
         assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
-        assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
         assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isEqualTo(actualPerson.getCreatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(MOCK_USERS_NAME);
         assertThat(actualPerson.getUserId()).isEqualTo(expectedPerson.getUserId());
-        assertThat(actualPerson.getVersion()).isEqualTo(0);
-        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
-        assertThat(actualPerson.getWorkAddress()).isEqualTo(expectedPerson.getWorkAddress());
+        assertThat(actualPerson.getVersion()).isEqualTo(1);
     }
 
     @Test
     public void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
         // Given
-        var person = PersonEntity.builder().userId("userId").build();
+        var person = PersonEntity.builder().id(RandomUtils.generateUniqueRandomLong()).userId("userId").build();
 
         // When
         var throwable = catchThrowable(() -> personRepository.save(person));
 
         // Then
-        if (throwable instanceof TransactionSystemException) {
-            throwable = ((TransactionSystemException) throwable)
-                    .getMostSpecificCause(); // Hsql and Oracle only, MySql and H2 will throw ConstraintViolationException
-        }
         assertThat(throwable).isInstanceOf(ConstraintViolationException.class);
     }
 

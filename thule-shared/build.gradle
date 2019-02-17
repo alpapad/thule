@@ -85,15 +85,17 @@ project("thule-spring-boot-starter-test") {
 project("thule-test") {
     description = "Thule Test"
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok")
+
         compile project(":thule-utils")
-        compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
         compile("org.awaitility:awaitility:3.1.6")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-web")
         compile("org.springframework.retry:spring-retry")
 
-        compileOnly("org.projectlombok:lombok")
+        compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         testCompile("org.springframework.cloud:spring-cloud-starter-oauth2")
         testCompile("pl.pojo:pojo-tester:0.7.6")
@@ -103,21 +105,21 @@ project("thule-test") {
 project("thule-utils") {
     description = "Thule Utils"
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok")
+
         compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
         compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-        compile("javax.xml.bind:jaxb-api") // Required by anything using JAXB when using java 9+
-        compile("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
         compile("net.logstash.logback:logstash-logback-encoder:5.3")
         compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
+        compile("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
         compile("org.hibernate:hibernate-core")
         compile("org.springframework.boot:spring-boot-starter-aop")
         compile("org.springframework.boot:spring-boot-starter-logging")
         compile("org.springframework.boot:spring-boot-starter-validation")
         compile("org.springframework.boot:spring-boot-starter-web")
-
-        compileOnly("org.projectlombok:lombok")
 
         testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
         testCompile("org.springframework.boot:spring-boot-starter-test")

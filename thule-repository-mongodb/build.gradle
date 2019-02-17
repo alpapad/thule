@@ -19,20 +19,16 @@ apply plugin: "io.spring.dependency-management"
 apply from: "${rootDir}/../gradle/build-config.gradle"
 
 // Non-standard Serin gradle plugin config
-sonarqube {
-    properties {
-        // SonarQube will fail due to duplicate code across micro-services, however, this is legal. So we will exclude cpd for those classes
-        property "sonar.cpd.exclusions", "**/domain/**"
-    }
-}
 
 // Dependencies
 dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
+
     compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-validation")
 
-    compileOnly("org.projectlombok:lombok")
-
     testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+    testCompile("com.google.code.gson:gson")
 }
