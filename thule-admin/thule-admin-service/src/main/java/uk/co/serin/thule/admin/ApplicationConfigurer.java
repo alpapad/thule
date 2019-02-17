@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Configuration
 @EnableAdminServer
+@NoArgsConstructor
 public class ApplicationConfigurer {
 }
