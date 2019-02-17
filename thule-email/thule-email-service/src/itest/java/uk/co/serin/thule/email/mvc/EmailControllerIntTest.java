@@ -12,8 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import uk.co.serin.thule.email.TestDataFactory;
 import uk.co.serin.thule.email.controller.EmailController;
-import uk.co.serin.thule.email.datafactory.TestDataFactory;
 import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.email.service.EmailService;
 
@@ -44,10 +44,10 @@ public class EmailControllerIntTest {
         mvc.perform(post("/emails")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(expectedEmail)))
-                .andDo(print())
+           .andDo(print())
 
-                // Then
-                .andExpect(status().isAccepted())
-                .andExpect(content().string(objectMapper.writeValueAsString(expectedEmail)));
+           // Then
+           .andExpect(status().isAccepted())
+           .andExpect(content().string(objectMapper.writeValueAsString(expectedEmail)));
     }
 }
