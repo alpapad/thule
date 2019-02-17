@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import uk.co.serin.thule.email.TestDataFactory;
 import uk.co.serin.thule.email.controller.EmailController;
-import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.email.service.EmailService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +37,7 @@ public class EmailControllerIntTest {
     @Test
     public void when_create_email_then_email_is_returned_and_status_is_accepted() throws Exception {
         // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
+        var expectedEmail = TestDataFactory.buildEmail();
 
         // When
         mvc.perform(post("/emails")
