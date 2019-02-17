@@ -1,4 +1,4 @@
-package uk.co.serin.thule.email.datafactories;
+package uk.co.serin.thule.email;
 
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;

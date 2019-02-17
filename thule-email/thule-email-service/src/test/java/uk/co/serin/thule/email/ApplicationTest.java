@@ -10,6 +10,7 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -20,15 +21,16 @@ public class ApplicationTest {
     @Test
     public void when_application_starts_spring_boot_then_no_exception_is_thrown() {
         // Given
-        String[] args = new String[0];
+        var args = new String[0];
         ReflectionTestUtils.setField(Application.class, "springApplication", springApplication);
 
         given(springApplication.run(args)).willReturn(new StaticApplicationContext());
 
         // When
-        Application.main(args);
+        var throwable = catchThrowable(() -> Application.main(args));
 
-        // Then (if the test does not throw an exception, it has succeeded)
+        // Then
+        assertThat(throwable).isNull();
     }
 
     @Test

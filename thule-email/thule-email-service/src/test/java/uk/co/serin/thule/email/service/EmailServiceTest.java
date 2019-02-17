@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import uk.co.serin.thule.email.datafactories.TestDataFactory;
+import uk.co.serin.thule.email.TestDataFactory;
 import uk.co.serin.thule.email.domain.Email;
 
 import java.util.Collections;

@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import uk.co.serin.thule.email.controller.EmailController;
-import uk.co.serin.thule.email.datafactories.TestDataFactory;
+import uk.co.serin.thule.email.datafactory.TestDataFactory;
 import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.email.service.EmailService;
 

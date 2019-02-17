@@ -30,7 +30,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.email.datafactories.TestDataFactory;
+import uk.co.serin.thule.email.datafactory.TestDataFactory;
 import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
