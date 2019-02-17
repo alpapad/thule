@@ -34,7 +34,7 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonEntityRepositoryIntTest {
     private static final String MOCK_USERS_NAME = "user";
-    private static DockerCompose dockerCompose = new DockerCompose("src/itest/docker/thule-repository-mongodb-integration-tests/docker-compose-mongo.yml");
+    private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
     @Autowired
     private Environment env;
     private Gson gson = new Gson();
