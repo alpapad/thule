@@ -14,15 +14,16 @@ import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+
+@AllArgsConstructor
 @RestController
 @RequestMapping("/emails")
 @TracePublicMethods
 public class EmailController {
+    @NonNull
     private final EmailService emailService;
-
-    public EmailController(EmailService emailService) {
-        this.emailService = emailService;
-    }
 
     @PostMapping
     public ResponseEntity<Email> createEmail(@RequestBody @Valid Email email) {

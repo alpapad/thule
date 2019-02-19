@@ -3,6 +3,9 @@ package uk.co.serin.thule.configuration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @SpringBootApplication
 public class Application {
     private static SpringApplication springApplication = new SpringApplication(Application.class);

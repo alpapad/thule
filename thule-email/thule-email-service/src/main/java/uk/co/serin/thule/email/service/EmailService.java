@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.util.concurrent.Future;
 
@@ -19,14 +19,18 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.ValidationException;
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@AllArgsConstructor
+@TracePublicMethods
+@Slf4j
 public class EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    @NonNull
     private JavaMailSender mailSender;
-
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
 
     @Async
     public Future<Email> createEmail(Email email) {
@@ -49,8 +53,8 @@ public class EmailService {
     }
 
     private MimeMessage createMimeMessage(Email email) throws MessagingException {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        var mimeMessage = mailSender.createMimeMessage();
+        var mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         if (!email.getBccs().isEmpty()) {
             mimeMessageHelper.setBcc(email.getBccs().toArray(new String[0]));
         }
@@ -65,8 +69,9 @@ public class EmailService {
         if (!email.getTos().isEmpty()) {
             mimeMessageHelper.setTo(email.getTos().toArray(new String[0]));
         }
+
         // Add attachments
-        for (Attachment attachment : email.getAttachments()) {
+        for (var attachment : email.getAttachments()) {
             mimeMessageHelper.addAttachment(attachment.getLabel(), new ByteArrayResource(attachment.getContent().getBytes()));
         }
 

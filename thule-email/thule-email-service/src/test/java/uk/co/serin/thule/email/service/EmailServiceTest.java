@@ -14,7 +14,6 @@ import uk.co.serin.thule.email.domain.Email;
 
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import javax.mail.internet.MimeMessage;
 import javax.validation.ValidationException;
@@ -37,13 +36,13 @@ public class EmailServiceTest {
     @Test
     public void given_an_exception_when_creating_an_email_then_a_email_service_exception_is_thrown() {
         // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
+        var expectedEmail = TestDataFactory.buildEmail();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
         doThrow(EmailServiceException.class).when(mailSender).send(any(MimeMessage.class));
 
         // When
-        Throwable throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
+        var throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
 
         // Then
         assertThat(throwable).isInstanceOf(EmailServiceException.class);
@@ -52,42 +51,59 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_then_an_email_is_sent_and_returned() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
+        var expectedEmail = TestDataFactory.buildEmail();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.createEmail(expectedEmail);
 
         // Then
-        Email actualEmail = emailFuture.get();
+        var actualEmail = emailFuture.get();
+        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
+    }
+
+    @Test
+    public void when_creating_an_email_with_only_bcc_then_an_email_is_sent() throws ExecutionException, InterruptedException {
+        // Given
+        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        expectedEmail.setBody("This is the content");
+        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
+
+        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
+
+        // When
+        var emailFuture = emailService.createEmail(expectedEmail);
+
+        // Then
+        var actualEmail = emailFuture.get();
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
     @Test
     public void when_creating_an_email_without_a_from_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = TestDataFactory.buildEmail();
+        var expectedEmail = TestDataFactory.buildEmail();
         ReflectionTestUtils.setField(expectedEmail, "from", null);
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.createEmail(expectedEmail);
 
         // Then
-        Email actualEmail = emailFuture.get();
+        var actualEmail = emailFuture.get();
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
     @Test
     public void when_creating_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
         expectedEmail.setBody("This is the content");
 
         // When
-        Throwable throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
+        var throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
 
         // Then
         assertThat(throwable).isInstanceOf(ValidationException.class);
@@ -96,7 +112,7 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_bccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
         expectedEmail.setBody("This is the content");
         expectedEmail.setCcs(Collections.singleton("cc@test.co.uk"));
         expectedEmail.setTos(Collections.singleton("to@test.co.uk"));
@@ -104,17 +120,17 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.createEmail(expectedEmail);
 
         // Then
-        Email actualEmail = emailFuture.get();
+        var actualEmail = emailFuture.get();
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
     @Test
     public void when_creating_an_email_without_ccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
         expectedEmail.setBody("This is the content");
         expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
         expectedEmail.setTos(Collections.singleton("to@test.co.uk"));
@@ -122,17 +138,17 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.createEmail(expectedEmail);
 
         // Then
-        Email actualEmail = emailFuture.get();
+        var actualEmail = emailFuture.get();
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 
     @Test
     public void when_creating_an_email_without_tos_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
+        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
         expectedEmail.setBody("This is the content");
         expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
         expectedEmail.setCcs(Collections.singleton("cc@test.co.uk"));
@@ -140,27 +156,10 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.createEmail(expectedEmail);
 
         // Then
-        Email actualEmail = emailFuture.get();
-        assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
-    }
-
-    @Test
-    public void when_creating_an_email_with_only_bcc_then_an_email_is_sent() throws ExecutionException, InterruptedException {
-        // Given
-        Email expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
-        expectedEmail.setBody("This is the content");
-        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
-
-        given(mailSender.createMimeMessage()).willReturn(mimeMessage);
-
-        // When
-        Future<Email> emailFuture = emailService.createEmail(expectedEmail);
-
-        // Then
-        Email actualEmail = emailFuture.get();
+        var actualEmail = emailFuture.get();
         assertThat(actualEmail).isEqualToComparingFieldByField(expectedEmail);
     }
 }

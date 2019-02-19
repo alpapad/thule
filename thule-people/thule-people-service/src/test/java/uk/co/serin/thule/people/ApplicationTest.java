@@ -7,7 +7,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -16,19 +15,15 @@ public class ApplicationTest {
     private SpringApplication springApplication;
 
     @Test
-    public void when_application_starts_then_spring_boot_runs() {
+    public void when_application_starts_spring_boot_then_spring_boot_runs() {
         // Given
+        var args = new String[0];
         ReflectionTestUtils.setField(Application.class, "springApplication", springApplication);
 
         // When
-        Application.main(new String[]{});
+        Application.main(args);
 
         // Then
-        verify(springApplication).run();
-    }
-
-    @Test
-    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
-        assertThat(new Application()).isNotNull();
+        verify(springApplication).run(args);
     }
 }
