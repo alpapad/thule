@@ -7,17 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Map;
-
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 /**
  * Tests for the Discovery service.
@@ -35,19 +32,17 @@ import static org.awaitility.pollinterval.FixedPollInterval.fixed;
  * Use the actuator on the target Discovery Service
  * </ul>
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class DiscoveryContractTest {
     @Autowired
     private ActuatorClient actuatorClient;
     @Autowired
     private DiscoveryClient discoveryClient;
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Test
-    public void can_invoke_a_service_via_discovery() {
+    public void when_checking_health_of_a_service_via_the_discovery_service_then_its_status_is_up() {
         // Given
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
@@ -56,7 +51,7 @@ public class DiscoveryContractTest {
                        });
 
         // When
-        Map<String, Object> actualHealth = actuatorClient.health();
+        var actualHealth = actuatorClient.health();
 
         // Then
         assertThat(actualHealth.get("status")).isEqualTo(Status.UP.getCode());

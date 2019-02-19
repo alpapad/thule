@@ -8,9 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.utils.docker.DockerCompose;
@@ -68,10 +66,5 @@ public class DiscoveryDockerTest {
 
         // Then
         assertThat(actualHealth.get("status")).isEqualTo(Status.UP.getCode());
-    }
-
-    @TestConfiguration
-    @EnableFeignClients
-    static class ContainerTestConfiguration {
     }
 }
