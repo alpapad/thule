@@ -1,7 +1,5 @@
 package uk.co.serin.thule.email.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @TracePublicMethods
 @Slf4j
 public class EmailService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     @NonNull
     private JavaMailSender mailSender;
 
@@ -39,7 +36,7 @@ public class EmailService {
         }
         try {
             mailSender.send(createMimeMessage(email));
-            LOGGER.info("Email has been successfully sent");
+            log.info("Email has been successfully sent");
         } catch (Exception exception) {
             throw new EmailServiceException("Email could not be sent", exception);
         }
