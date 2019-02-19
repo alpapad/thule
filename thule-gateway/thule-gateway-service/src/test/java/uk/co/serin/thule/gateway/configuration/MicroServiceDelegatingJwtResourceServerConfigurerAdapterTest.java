@@ -65,7 +65,7 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
         sut.configure(httpSecurity);
 
         //Then
-        verify(expressionInterceptUrlRegistry).antMatchers("/gohenry-*-service/**");
+        verify(expressionInterceptUrlRegistry).antMatchers("/thule-*-service/**");
     }
 
     @Test
