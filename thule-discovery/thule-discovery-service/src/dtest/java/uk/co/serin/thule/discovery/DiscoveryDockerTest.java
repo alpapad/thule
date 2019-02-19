@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
-import java.util.Map;
 
 import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
@@ -58,14 +57,14 @@ public class DiscoveryDockerTest {
     }
 
     @Test
-    public void can_invoke_a_service_via_discovery() {
+    public void when_checking_health_of_a_service_via_the_discovery_service_then_its_status_is_up() {
         // Given
         given().ignoreExceptions().pollInterval(fixed(Duration.FIVE_SECONDS)).
                 await().timeout(Duration.FIVE_MINUTES).
                        untilAsserted(() -> assertThat(discoveryClient.getServices()).contains("thule-discovery-service"));
 
         // When
-        Map<String, Object> actualHealth = actuatorClient.health();
+        var actualHealth = actuatorClient.health();
 
         // Then
         assertThat(actualHealth.get("status")).isEqualTo(Status.UP.getCode());
