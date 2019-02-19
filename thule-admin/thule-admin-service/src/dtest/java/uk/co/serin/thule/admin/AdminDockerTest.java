@@ -42,7 +42,7 @@ public class AdminDockerTest {
     @Before
     public void setUp() {
         // Create base url
-        String adminApiHost = env.getRequiredProperty("thule.adminservice.api.host");
+        var adminApiHost = env.getRequiredProperty("thule.adminservice.api.host");
         int adminApiPort = env.getRequiredProperty("thule.adminservice.api.port", Integer.class);
         adminServiceBaseUrl = String.format("http://%s:%s", adminApiHost, adminApiPort);
     }
