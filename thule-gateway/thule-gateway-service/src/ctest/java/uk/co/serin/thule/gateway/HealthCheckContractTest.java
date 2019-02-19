@@ -62,12 +62,12 @@ public class HealthCheckContractTest {
                 aResponse().withFixedDelay(2000).withBodyFile("actuator-up-response.json").withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                            .withStatus(HttpStatus.OK.value())));
 
-        given(discoveryClient.getInstances("gohenry-admin-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("gohenry-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("gohenry-bank-transfer-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("gohenry-configuration-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("gohenry-discovery-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("gohenry-statement-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-admin-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-configuration-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-discovery-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-email-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-people-service")).willReturn(Collections.singletonList(serviceInstance));
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When
