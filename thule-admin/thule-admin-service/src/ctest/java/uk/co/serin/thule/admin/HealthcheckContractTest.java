@@ -1,4 +1,4 @@
-package uk.co.serin.thule.configuration;
+package uk.co.serin.thule.admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ConfigurationContractTest {
+public class HealthcheckContractTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
