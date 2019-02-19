@@ -41,7 +41,7 @@ public class AdminDockerTest {
 
     @Before
     public void setUp() {
-        adminServiceBaseUrl = String.format("http://%s:%s", adminServiceApiPort, adminServiceApiPort);
+        adminServiceBaseUrl = String.format("http://%s:%s", adminServiceApiHost, adminServiceApiPort);
     }
 
     @Test
