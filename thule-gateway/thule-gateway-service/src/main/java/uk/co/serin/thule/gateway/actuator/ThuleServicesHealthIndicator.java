@@ -69,7 +69,7 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
     }
 
     private List<Future<Status>> startAllHealthChecks() {
-        List<Future<Status>> instanceFutures = new ArrayList<>();
+        var instanceFutures = new ArrayList<Future<Status>>();
         var serviceIds = applicationProperties.getHealthCheck().getServices();
 
         for (var serviceId : serviceIds) {
