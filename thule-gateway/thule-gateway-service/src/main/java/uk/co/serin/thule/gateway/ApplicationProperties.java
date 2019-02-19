@@ -6,8 +6,15 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-@Service
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @ConfigurationProperties("thule.gatewayservice")
+@Getter
+@Service
+@Setter
+@ToString
 public class ApplicationProperties {
     private HealthCheck healthCheck = new HealthCheck();
 

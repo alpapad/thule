@@ -3,7 +3,6 @@ package uk.co.serin.thule.gateway.actuator;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
@@ -41,7 +40,7 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
         this.applicationProperties = applicationProperties;
         this.discoveryClient = discoveryClient;
 
-        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        var retryPolicy = new TimeoutRetryPolicy();
         retryPolicy.setTimeout(applicationProperties.getHealthCheck().getTimeout());
 
         retryTemplate.setBackOffPolicy(new FixedBackOffPolicy());
@@ -58,9 +57,9 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
      */
     @Override
     protected void doHealthCheck(Health.Builder builder) throws InterruptedException {
-        List<Future<Status>> instanceFutures = startAllHealthChecks();
+        var instanceFutures = startAllHealthChecks();
 
-        Status statusOfMicroServices = getStatusOfMicroServices(instanceFutures);
+        var statusOfMicroServices = getStatusOfMicroServices(instanceFutures);
         if (statusOfMicroServices.equals(Status.DOWN)) {
             cancelRemainingFutures(instanceFutures);
             builder.down().build();
@@ -71,15 +70,15 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
 
     private List<Future<Status>> startAllHealthChecks() {
         List<Future<Status>> instanceFutures = new ArrayList<>();
-        List<String> serviceIds = applicationProperties.getHealthCheck().getServices();
+        var serviceIds = applicationProperties.getHealthCheck().getServices();
 
-        for (String serviceId : serviceIds) {
-            List<ServiceInstance> serviceInstances = discoveryClient.getInstances(serviceId);
+        for (var serviceId : serviceIds) {
+            var serviceInstances = discoveryClient.getInstances(serviceId);
             if (serviceInstances.isEmpty()) {
                 throw new IllegalStateException(String.format("No instances of [%s] have been registered with the discovery service", serviceId));
             }
-            for (ServiceInstance serviceInstance : serviceInstances) {
-                Future<Status> statusFuture = this.thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
+            for (var serviceInstance : serviceInstances) {
+                var statusFuture = this.thuleServiceInstanceHealthIndicator.doServiceInstanceHealthCheck(serviceInstance);
                 instanceFutures.add(statusFuture);
             }
         }
@@ -89,9 +88,9 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
     private Status getStatusOfMicroServices(List<Future<Status>> instanceFutures) throws InterruptedException {
         return retryTemplate.execute(context -> {
             try {
-                boolean allServicesAreUp = true;
+                var allServicesAreUp = true;
 
-                for (Future<Status> instanceFuture : instanceFutures) {
+                for (var instanceFuture : instanceFutures) {
                     if (instanceFuture.isDone()) {
                         if (instanceFuture.get().equals(Status.DOWN)) {
                             return Status.DOWN;
@@ -109,7 +108,7 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
     }
 
     private void cancelRemainingFutures(List<Future<Status>> statuses) {
-        for (Future<Status> status : statuses) {
+        for (var status : statuses) {
             if (!status.isDone()) {
                 status.cancel(true);
             }

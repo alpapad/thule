@@ -4,7 +4,6 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,9 @@ public class ThuleServiceInstanceHealthIndicator {
      */
     @Async
     public Future<Status> doServiceInstanceHealthCheck(ServiceInstance instance) {
-        String url = String.format("%s/actuator/health", instance.getUri());
+        var url = String.format("%s/actuator/health", instance.getUri());
 
-        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, Map.class);
+        var response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, Map.class);
 
         if (response.hasBody() && response.getBody().get("status") != null && response.getBody().get("status").toString().equals(Status.UP.getCode())) {
             return new AsyncResult<>(Status.UP);

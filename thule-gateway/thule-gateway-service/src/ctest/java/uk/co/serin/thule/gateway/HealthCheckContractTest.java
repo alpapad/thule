@@ -26,7 +26,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -57,31 +56,33 @@ public class HealthCheckContractTest {
     private int wireMockServerPort;
 
     @Test
-    public void given_asynchronous_processing_when_checking_health_then_should_respond_within_5_seconds() {
+    public void given_asynchronous_processing_when_checking_health_then_should_respond_within_10_seconds() {
         // Given
         givenThat(get(urlEqualTo("/actuator/health")).willReturn(
                 aResponse().withFixedDelay(2000).withBodyFile("actuator-up-response.json").withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                            .withStatus(HttpStatus.OK.value())));
 
-        given(discoveryClient.getInstances("thule-admin-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-configuration-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-discovery-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-email-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-people-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("gohenry-admin-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("gohenry-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("gohenry-bank-transfer-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("gohenry-configuration-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("gohenry-discovery-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("gohenry-statement-service")).willReturn(Collections.singletonList(serviceInstance));
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When
-        List<ResponseEntity<Map>> responseEntitities = new ArrayList<>();
+        var responseEntitities = new ArrayList<ResponseEntity<Map>>();
         Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(Duration.TEN_SECONDS). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
-                                                                untilAsserted(
+                                                               untilAsserted(
                 () -> responseEntitities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
 
         // Then
         verify(getRequestedFor(urlPathEqualTo("/actuator/health")));
-        assertThat(responseEntitities).hasSize(1);
-        assertThat(responseEntitities.get(0).getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        var responseEntity = responseEntitities.stream().findFirst().orElseThrow();
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @TestConfiguration
