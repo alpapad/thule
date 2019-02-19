@@ -5,15 +5,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,12 +28,11 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class ConfigurationDockerTest {
     private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-configuration-docker-tests/docker-compose.yml");
+    @Value("${thule.configurationservice.api.host}")
+    private String configurationServiceApiHost;
+    @Value("${thule.configurationservice.api.port}")
+    private int configurationServiceApiPort;
     private String configurationServiceBaseUrl;
-
-    @Autowired
-    private Environment env;
-
-
     private RestTemplate restTemplate = new RestTemplate();
 
     @BeforeClass
@@ -49,15 +45,20 @@ public class ConfigurationDockerTest {
         dockerCompose.down();
     }
 
+    @Before
+    public void setUp() {
+        configurationServiceBaseUrl = String.format("http://%s:%s", configurationServiceApiHost, configurationServiceApiPort);
+    }
+
     @Test
-    public void has_configuration_for_the_discovery_service() {
+    public void when_healthy_then_configuration_for_the_discovery_service_exists() {
         // Given
         when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity =
+        var responseEntity =
                 restTemplate.exchange(configurationServiceBaseUrl + "thule-discovery-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
@@ -67,21 +68,21 @@ public class ConfigurationDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(configurationServiceBaseUrl + "/actuator/health"));
+        var actuatorUri = new ActuatorUri(URI.create(configurationServiceBaseUrl + "/actuator/health"));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test
-    public void has_configuration_for_the_gateway() {
+    public void when_healthy_then_configuration_for_the_gateway_exists() {
         // Given
         when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity =
+        var responseEntity =
                 restTemplate.exchange(configurationServiceBaseUrl + "thule-gateway/application.yml", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
@@ -89,14 +90,14 @@ public class ConfigurationDockerTest {
     }
 
     @Test
-    public void has_configuration_for_the_people_service() {
+    public void when_healthy_then_configuration_for_the_people_service_exists() {
         // Given
         when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity =
+        var responseEntity =
                 restTemplate.exchange(configurationServiceBaseUrl + "thule-people-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
@@ -104,29 +105,17 @@ public class ConfigurationDockerTest {
     }
 
     @Test
-    public void has_configuration_for_the_thule_service() {
+    public void when_healthy_then_configuration_for_the_thule_service_exists() {
         // Given
         when_checking_health_then_status_is_up();
         ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
         };
 
         // When
-        ResponseEntity<Map<String, Object>> responseEntity =
+        var responseEntity =
                 restTemplate.exchange(configurationServiceBaseUrl + "thule-thule-service/default", HttpMethod.GET, HttpEntity.EMPTY, responseType);
 
         // Then
         assertThat(responseEntity.getBody()).isNotEmpty();
-    }
-
-    @Before
-    public void setUp() {
-        // Create base url
-        String configurationServiceApiHost = env.getRequiredProperty("thule.configurationservice.api.host");
-        int configurationServiceApiPort = env.getRequiredProperty("thule.configurationservice.api.port", Integer.class);
-        configurationServiceBaseUrl = String.format("http://%s:%s", configurationServiceApiHost, configurationServiceApiPort);
-    }
-
-    @TestConfiguration
-    static class ContainerTestConfiguration {
     }
 }

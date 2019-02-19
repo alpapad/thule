@@ -24,7 +24,7 @@ public class AdminContractTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void is_status_up() {
+    public void when_checking_health_then_status_is_up() {
         // Given
         var actuatorUri = new ActuatorUri(URI.create(restTemplate.getRootUri() + "/actuator/health"));
 
