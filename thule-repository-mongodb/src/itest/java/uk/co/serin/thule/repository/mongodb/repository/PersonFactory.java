@@ -1,6 +1,7 @@
-package uk.co.serin.thule.repository.mongodb.domain;
+package uk.co.serin.thule.repository.mongodb.repository;
 
 
+import uk.co.serin.thule.repository.mongodb.domain.PersonEntity;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 public class PersonFactory {
