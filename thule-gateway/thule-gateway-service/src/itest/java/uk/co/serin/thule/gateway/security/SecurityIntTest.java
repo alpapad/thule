@@ -34,7 +34,7 @@ public class SecurityIntTest {
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/info", port)));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(String.format("http://localhost:%s/actuator/info", port)));
 
         //When/Then
         SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);

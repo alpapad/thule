@@ -57,7 +57,7 @@ public class PeopleDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = new ActuatorUri(URI.create(peopleServiceBaseUrl + "/actuator/health"));
+        var actuatorUri = ActuatorUri.of(URI.create(peopleServiceBaseUrl + "/actuator/health"));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

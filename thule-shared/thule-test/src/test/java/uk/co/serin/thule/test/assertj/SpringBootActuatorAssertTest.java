@@ -35,7 +35,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void assertThat_instantiates_assertion() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
 
         // When
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
@@ -47,7 +47,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void hasHealthStatus_fails_when_status_is_not_as_expected() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
 
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
@@ -72,7 +72,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void hasHttpStatus_service_is_unavailable_with_http_status_404() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
 
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
@@ -96,7 +96,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void hasHttpStatus_succeeds() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
 
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
@@ -117,7 +117,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void hasStatus_fails_when_service_is_unavailable() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
 
         retryTemplate.setRetryPolicy(new NeverRetryPolicy());
 
@@ -144,7 +144,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void hasStatus_succeeds_when_status_is_as_expected() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
 
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
@@ -166,7 +166,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void uaingRestTemplate_succeeds() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
@@ -179,7 +179,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void waitingForMaximum_of_1_minute_succeeds() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
@@ -192,7 +192,7 @@ public class SpringBootActuatorAssertTest {
     @Test(expected = IllegalArgumentException.class)
     public void waitingForMaximum_of_zero_minutes_throws_exception() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When
@@ -204,7 +204,7 @@ public class SpringBootActuatorAssertTest {
     @Test
     public void withHttpBasic_succeeds() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create("http://localhost"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create("http://localhost"));
         SpringBootActuatorAssert sut = SpringBootActuatorAssert.assertThat(actuatorUri);
 
         // When

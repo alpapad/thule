@@ -68,7 +68,7 @@ public class ConfigurationDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = new ActuatorUri(URI.create(configurationServiceBaseUrl + "/actuator/health"));
+        var actuatorUri = ActuatorUri.of(URI.create(configurationServiceBaseUrl + "/actuator/health"));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

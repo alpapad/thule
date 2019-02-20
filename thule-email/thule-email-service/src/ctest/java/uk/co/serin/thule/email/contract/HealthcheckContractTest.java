@@ -20,7 +20,7 @@ public class HealthcheckContractTest extends ContractBaseTest {
         // Given
         startEmbeddedSmtpServer();
 
-        var actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
+        var actuatorUri = ActuatorUri.of(URI.create(String.format("http://localhost:%s/actuator/health", port)));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

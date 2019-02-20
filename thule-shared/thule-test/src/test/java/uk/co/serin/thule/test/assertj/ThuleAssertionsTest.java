@@ -19,7 +19,7 @@ public class ThuleAssertionsTest {
     @Test
     public void when_asserting_for_actuator_uri_then_assert_instance_is_created() {
         // When
-        var actualSpringBootActuatorAssert = assertThat(new ActuatorUri(URI.create("http://localhost")));
+        var actualSpringBootActuatorAssert = assertThat(ActuatorUri.of(URI.create("http://localhost")));
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isNotNull();

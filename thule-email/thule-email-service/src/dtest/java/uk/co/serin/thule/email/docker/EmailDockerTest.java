@@ -51,7 +51,7 @@ public class EmailDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(emailServiceBaseUrl + "/actuator/health"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(emailServiceBaseUrl + "/actuator/health"));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

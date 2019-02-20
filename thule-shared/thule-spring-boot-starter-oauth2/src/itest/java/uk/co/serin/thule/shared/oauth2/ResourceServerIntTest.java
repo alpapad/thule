@@ -71,8 +71,6 @@ public class ResourceServerIntTest {
     @Test
     public void when_authenticated_using_a_php_generated_jwt_then_access_should_be_granted() {
         // Given
-
-        //Creates OAuth2Token and sets it within the OAuth2RestTemplate to be used
         var jwtOauth2AccessToken =
                 createJwtOauth2AccessToken("userName", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
                         "gmjtdvNVmQRz8bzw6ae");
@@ -118,7 +116,7 @@ public class ResourceServerIntTest {
     @Test
     public void when_checking_health_then_health_status_is_up() {
         // Given
-        var actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
+        var actuatorUri = ActuatorUri.of(URI.create(String.format("http://localhost:%s/actuator/health", port)));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

@@ -49,7 +49,7 @@ public class GatewayDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(gatewayBaseUrl + "/actuator/health"));
+        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(gatewayBaseUrl + "/actuator/health"));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
