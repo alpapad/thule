@@ -56,7 +56,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
-        var expectedPerson = createAndPersistPerson();
+        var expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         var actualPeople = personRepository.findAll();
@@ -65,14 +65,10 @@ public class PersonEntityRepositoryIntTest {
         assertThat(actualPeople).contains(expectedPerson);
     }
 
-    private PersonEntity createAndPersistPerson() {
-        return personRepository.save(PersonFactory.newPerson());
-    }
-
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
         // Given
-        var expectedPerson = createAndPersistPerson();
+        var expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         var actualOptionalPerson = personRepository.findById(expectedPerson.getId());
@@ -85,7 +81,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
         // Given
-        var expectedPerson = createAndPersistPerson();
+        var expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         var actualPerson = personRepository.findById(expectedPerson.getId()).orElseThrow();
@@ -97,7 +93,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
         // Given
-        var expectedPerson = createAndPersistPerson();
+        var expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         // When
         var actualPerson = personRepository.findByUserId(expectedPerson.getUserId()).orElseThrow();
@@ -109,7 +105,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
         // Given
-        var expectedPerson = createAndPersistPerson();
+        var expectedPerson = personRepository.save(PersonFactory.newPerson());
 
         expectedPerson.setFirstName("updatedFirstName");
         expectedPerson.setSecondName("updatedSecondName");
@@ -193,7 +189,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
-        var person = createAndPersistPerson();
+        var person = personRepository.save(PersonFactory.newPerson());
 
         // When
         personRepository.delete(person);
