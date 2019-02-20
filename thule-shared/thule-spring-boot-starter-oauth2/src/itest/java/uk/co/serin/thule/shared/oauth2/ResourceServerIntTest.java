@@ -11,7 +11,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -54,17 +53,15 @@ public class ResourceServerIntTest {
 
     @Before
     public void setUp() {
-        OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
+        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 null, null, 1234567890, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", oauth2Properties.getSigningKey());
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 
     @Test
     public void when_authenticated_then_access_should_be_granted() {
-        // Given
-
         //When
-        ResponseEntity<String> responseEntity =
+        var responseEntity =
                 oAuth2RestTemplate.postForEntity(String.format("http://localhost:%s/hello", port), HttpEntity.EMPTY, String.class);
 
         //Then
@@ -76,15 +73,15 @@ public class ResourceServerIntTest {
         // Given
 
         //Creates OAuth2Token and sets it within the OAuth2RestTemplate to be used
-        OAuth2AccessToken jwtOauth2AccessToken =
+        var jwtOauth2AccessToken =
                 createJwtOauth2AccessToken("userName", "password", Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
                         "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
-        String url = String.format("http://localhost:%s/hello", port);
+        var url = String.format("http://localhost:%s/hello", port);
 
         // When
-        ResponseEntity responseEntity = oAuth2RestTemplate.postForEntity(url, null, null);
+        var responseEntity = oAuth2RestTemplate.postForEntity(url, null, null);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -93,24 +90,24 @@ public class ResourceServerIntTest {
     private OAuth2AccessToken createJwtOauth2AccessToken(String principal, String credentials, Collection<? extends GrantedAuthority> grantedAuthorities,
                                                          String clientId, String signingKey) {
         // Create OAuth2Authentication
-        OAuth2Request oAuth2Request = new OAuth2Request(null, clientId, null,
+        var oAuth2Request = new OAuth2Request(null, clientId, null,
                 true, null, null, null, null, null);
-        UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
+        var userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
         userAuthentication.setDetails(new UserAuthenticationDetails(999));
-        OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
+        var oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
 
         // Create OAuth2AccessToken
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        var defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(new InMemoryTokenStore());
-        OAuth2AccessToken oAuth2AccessToken = defaultTokenServices.createAccessToken(oAuth2Authentication);
+        var oAuth2AccessToken = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
         //Create DefaultAccessTokenConverter
-        PhpJwtAccessTokenConverter phpJwtAccessTokenConverter = new PhpJwtAccessTokenConverter();
-        SpringPhpUserAuthenticationConverter javaPhpAuthenticationConverter = new SpringPhpUserAuthenticationConverter();
+        var phpJwtAccessTokenConverter = new PhpJwtAccessTokenConverter();
+        var javaPhpAuthenticationConverter = new SpringPhpUserAuthenticationConverter();
         phpJwtAccessTokenConverter.setUserTokenConverter(javaPhpAuthenticationConverter);
 
         // Create JwtAccessTokenConverter
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        var jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setAccessTokenConverter(phpJwtAccessTokenConverter);
         jwtAccessTokenConverter.setSigningKey(signingKey);
 
@@ -121,7 +118,7 @@ public class ResourceServerIntTest {
     @Test
     public void when_checking_health_then_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
+        var actuatorUri = new ActuatorUri(URI.create(String.format("http://localhost:%s/actuator/health", port)));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -129,10 +126,8 @@ public class ResourceServerIntTest {
 
     @Test
     public void when_not_authenticated_then_access_should_be_denied() {
-        // Given
-
         //When
-        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity("/hello", HttpEntity.EMPTY, String.class);
+        var responseEntity = testRestTemplate.postForEntity("/hello", HttpEntity.EMPTY, String.class);
 
         //Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
