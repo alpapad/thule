@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class RandomUsernameAuditorAware implements AuditorAware<String> {
+public class DefaultUsernameAuditorAware implements AuditorAware<String> {
     /**
      * Returns the current auditor of the application.
      *

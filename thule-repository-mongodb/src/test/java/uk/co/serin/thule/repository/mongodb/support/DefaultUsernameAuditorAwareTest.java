@@ -4,12 +4,12 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RandomUsernameAuditorAwareTest {
+public class DefaultUsernameAuditorAwareTest {
 
     @Test
     public void getCurrentAuditorReturnsAnAuditor() {
         // Given
-        var randomUsernameAuditorAware = new RandomUsernameAuditorAware();
+        var randomUsernameAuditorAware = new DefaultUsernameAuditorAware();
 
         // When
         var currentAuditor = randomUsernameAuditorAware.getCurrentAuditor();
