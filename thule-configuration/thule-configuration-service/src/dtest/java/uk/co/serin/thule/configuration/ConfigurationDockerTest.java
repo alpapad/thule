@@ -53,7 +53,7 @@ public class ConfigurationDockerTest {
     public void when_healthy_then_configuration_for_the_discovery_service_exists() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
+        var responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
@@ -77,7 +77,7 @@ public class ConfigurationDockerTest {
     public void when_healthy_then_configuration_for_the_gateway_exists() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
+        var responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
@@ -92,7 +92,7 @@ public class ConfigurationDockerTest {
     public void when_healthy_then_configuration_for_the_people_service_exists() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
+        var responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When
@@ -107,7 +107,7 @@ public class ConfigurationDockerTest {
     public void when_healthy_then_configuration_for_the_thule_service_exists() {
         // Given
         when_checking_health_then_status_is_up();
-        ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {
+        var responseType = new ParameterizedTypeReference<Map<String, Object>>() {
         };
 
         // When

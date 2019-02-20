@@ -14,7 +14,6 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -61,7 +60,7 @@ public class HealthCheckIntTest {
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When
-        ResponseEntity<Map> responseEntity = testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class);
+        var responseEntity = testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

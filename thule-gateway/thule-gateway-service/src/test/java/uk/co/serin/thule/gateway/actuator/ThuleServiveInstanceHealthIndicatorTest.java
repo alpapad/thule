@@ -11,12 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,9 +23,6 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ThuleServiveInstanceHealthIndicatorTest {
-
-    @InjectMocks
-    private ThuleServiceInstanceHealthIndicator sut;
     @Mock
     private ResponseEntity<Map> response;
     private Map<String, Object> responseBody = new HashMap<>();
@@ -36,11 +30,12 @@ public class ThuleServiveInstanceHealthIndicatorTest {
     private RestTemplate restTemplate;
     @Mock
     private ServiceInstance serviceInstance;
+    @InjectMocks
+    private ThuleServiceInstanceHealthIndicator sut;
 
     @Test
     public void when_body_status_is_down_then_health_status_is_down() throws InterruptedException, ExecutionException {
         //Given
-        List<ServiceInstance> serviceInstances = Collections.singletonList(serviceInstance);
         responseBody.put("status", Status.DOWN);
 
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
@@ -50,7 +45,7 @@ public class ThuleServiveInstanceHealthIndicatorTest {
         given(response.getBody()).willReturn(responseBody);
 
         //When
-        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
+        var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
@@ -67,7 +62,7 @@ public class ThuleServiveInstanceHealthIndicatorTest {
         given(response.getBody()).willReturn(responseBody);
 
         //When
-        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
+        var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
@@ -85,7 +80,7 @@ public class ThuleServiveInstanceHealthIndicatorTest {
         given(response.getBody()).willReturn(responseBody);
 
         //When
-        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
+        var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();
@@ -101,7 +96,7 @@ public class ThuleServiveInstanceHealthIndicatorTest {
         given(response.hasBody()).willReturn(false);
 
         //When
-        Future<Status> result = sut.doServiceInstanceHealthCheck(serviceInstance);
+        var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
         //Then
         assertThat(result).isNotNull();

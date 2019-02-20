@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +32,7 @@ public class SecurityIntTest {
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/info", port));
+        var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/info", port));
 
         //When/Then
         SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
@@ -41,10 +40,8 @@ public class SecurityIntTest {
 
     @Test
     public void when_using_http_basic_authentication_then_access_should_be_denied() {
-        // Given
-
         //When
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity(String.format("http://localhost:%s/hello", port), String.class);
+        var responseEntity = testRestTemplate.getForEntity(String.format("http://localhost:%s/hello", port), String.class);
 
         //Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
