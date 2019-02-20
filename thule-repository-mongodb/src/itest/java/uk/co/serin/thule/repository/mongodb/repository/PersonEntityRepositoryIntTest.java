@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.repository.mongodb.domain.PersonEntity;
-import uk.co.serin.thule.repository.mongodb.domain.PersonFactory;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
@@ -56,7 +55,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
-        var expectedPerson = personRepository.save(PersonFactory.newPerson());
+        var expectedPerson = personRepository.save(createPerson());
 
         // When
         var actualPeople = personRepository.findAll();
@@ -65,10 +64,22 @@ public class PersonEntityRepositoryIntTest {
         assertThat(actualPeople).contains(expectedPerson);
     }
 
+    private PersonEntity createPerson() {
+        var dob = RandomUtils.generateUniqueRandomDateInThePast();
+        var expiryDate = RandomUtils.generateUniqueRandomDateInTheFuture();
+        var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(8);
+
+        return PersonEntity.builder().dateOfBirth(dob).dateOfExpiry(expiryDate).dateOfPasswordExpiry(expiryDate)
+                           .emailAddress(userId + "@serin-consultancy.co.uk")
+                           .firstName("Elizabeth").id(RandomUtils.generateUniqueRandomLong()).lastName("Scarlett").password(userId).secondName("K")
+                           .title("Miss")
+                           .userId(userId).build();
+    }
+
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
         // Given
-        var expectedPerson = personRepository.save(PersonFactory.newPerson());
+        var expectedPerson = personRepository.save(createPerson());
 
         // When
         var actualOptionalPerson = personRepository.findById(expectedPerson.getId());
@@ -81,7 +92,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
         // Given
-        var expectedPerson = personRepository.save(PersonFactory.newPerson());
+        var expectedPerson = personRepository.save(createPerson());
 
         // When
         var actualPerson = personRepository.findById(expectedPerson.getId()).orElseThrow();
@@ -93,7 +104,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
         // Given
-        var expectedPerson = personRepository.save(PersonFactory.newPerson());
+        var expectedPerson = personRepository.save(createPerson());
 
         // When
         var actualPerson = personRepository.findByUserId(expectedPerson.getUserId()).orElseThrow();
@@ -105,7 +116,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
         // Given
-        var expectedPerson = personRepository.save(PersonFactory.newPerson());
+        var expectedPerson = personRepository.save(createPerson());
 
         expectedPerson.setFirstName("updatedFirstName");
         expectedPerson.setSecondName("updatedSecondName");
@@ -147,7 +158,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        var expectedPerson = PersonFactory.newPerson();
+        var expectedPerson = createPerson();
 
         // When
         personRepository.save(expectedPerson);
@@ -189,7 +200,7 @@ public class PersonEntityRepositoryIntTest {
     @Test
     public void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
-        var person = personRepository.save(PersonFactory.newPerson());
+        var person = personRepository.save(createPerson());
 
         // When
         personRepository.delete(person);
