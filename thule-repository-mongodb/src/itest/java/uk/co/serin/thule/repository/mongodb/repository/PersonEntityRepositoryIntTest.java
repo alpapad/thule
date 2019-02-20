@@ -36,16 +36,16 @@ public class PersonEntityRepositoryIntTest {
     private static final String MOCK_USERS_NAME = "user";
     private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
     private Gson gson = new Gson();
-    @Value("${thule.repositorymongodb.mongodb.host}")
+    @Value("${thule.repositorymongodb.mongodb.host:localhost}")
     private String mongodbHost;
-    @Value("${thule.repositorymongodb.mongodb.port}")
-    private int mongodbPort = 27017;
+    @Value("${thule.repositorymongodb.mongodb.port:27017}")
+    private int mongodbPort;
     @Autowired
     private PersonRepository personRepository;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.up();
+        dockerCompose.downAndUp();
     }
 
     @AfterClass
