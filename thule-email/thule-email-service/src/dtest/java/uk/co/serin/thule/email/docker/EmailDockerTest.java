@@ -5,10 +5,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
@@ -23,11 +22,11 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class EmailDockerTest {
     private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-email-docker-tests/docker-compose.yml");
-
+    @Value("${thule.emailservice.api.host}")
+    private String emailServiceApiHost;
+    @Value("${thule.emailservice.api.port}")
+    private int emailServiceApiPort;
     private String emailServiceBaseUrl;
-
-    @Autowired
-    private Environment env;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -41,9 +40,6 @@ public class EmailDockerTest {
 
     @Before
     public void setUp() {
-        // Create base url
-        var emailServiceApiHost = env.getRequiredProperty("thule.emailservice.api.host");
-        int emailServiceApiPort = env.getRequiredProperty("thule.emailservice.api.port", Integer.class);
         emailServiceBaseUrl = "http://" + emailServiceApiHost + ":" + emailServiceApiPort;
     }
 

@@ -9,8 +9,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -35,9 +35,11 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 public class PersonEntityRepositoryIntTest {
     private static final String MOCK_USERS_NAME = "user";
     private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
-    @Autowired
-    private Environment env;
     private Gson gson = new Gson();
+    @Value("${thule.repositorymongodb.mongodb.host}")
+    private String mongodbHost;
+    @Value("${thule.repositorymongodb.mongodb.port}")
+    private int mongodbPort = 27017;
     @Autowired
     private PersonRepository personRepository;
 
@@ -140,11 +142,6 @@ public class PersonEntityRepositoryIntTest {
 
     @Before
     public void setUp() {
-        // Ideally, this would be done as a static @BeforeClass method. However, we need access to
-        // the spring environment which is autowired and hence cannot be static
-        var mongodbHost = env.getProperty("thule.repositorymongodb.mongodb.host", "localhost");
-        var mongodbPort = env.getProperty("thule.repositorymongodb.mongodb.port", Integer.class, 27017);
-
         // Wait until MongoDb is up by checking that the port is available
         given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(Duration.FIVE_MINUTES).
