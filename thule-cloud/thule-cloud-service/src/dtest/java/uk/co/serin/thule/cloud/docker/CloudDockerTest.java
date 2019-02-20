@@ -1,8 +1,5 @@
 package uk.co.serin.thule.cloud.docker;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
-
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,8 +10,10 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
+
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -44,7 +43,7 @@ public class CloudDockerTest {
     @Test
     public void _01_config_service_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(CONFIGURATION_SERVICE_BASE_URL + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(CONFIGURATION_SERVICE_BASE_URL + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -53,7 +52,7 @@ public class CloudDockerTest {
     @Test
     public void _02_discovery_service_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(DISCOVERY_SERVICE_BASE_URL + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(DISCOVERY_SERVICE_BASE_URL + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -64,13 +63,13 @@ public class CloudDockerTest {
         // Given
 
         // When/Then
-        assertThat(ActuatorUri.of(URI.create(ADMIN_SERVICE_BASE_URL + ACTUATOR_HEALTH))).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        assertThat(ActuatorUri.of(ADMIN_SERVICE_BASE_URL + ACTUATOR_HEALTH)).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
     @Test
     public void _04_email_service_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(EMAIL_SERVICE_BASE_URL + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(EMAIL_SERVICE_BASE_URL + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -79,7 +78,7 @@ public class CloudDockerTest {
     @Test
     public void _05_people_service_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(PEOPLE_SERVICE_BASE_URL + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(PEOPLE_SERVICE_BASE_URL + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -88,7 +87,7 @@ public class CloudDockerTest {
     @Test
     public void _06_email_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-email-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + "/thule-email-service" + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -97,7 +96,7 @@ public class CloudDockerTest {
     @Test
     public void _07_people_service_via_gateway_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + "/thule-people-service" + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).withHttpBasic("user", "user").waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -106,7 +105,7 @@ public class CloudDockerTest {
     @Test
     public void _08_gateway_service_health_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + ACTUATOR_HEALTH);
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
@@ -115,7 +114,7 @@ public class CloudDockerTest {
     @Test
     public void _09_admin_server_via_gateway_health_status_is_not_found() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + "/thule-admin-service" + ACTUATOR_HEALTH);
 
         // When
         try {
@@ -129,7 +128,7 @@ public class CloudDockerTest {
     @Test
     public void _10_config_service_via_gateway_health_status_is_not_found() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + "/thule-configuration-service" + ACTUATOR_HEALTH);
 
         // When
         try {
@@ -143,7 +142,7 @@ public class CloudDockerTest {
     @Test
     public void _11_discovery_service_via_gateway_health_status_is_not_found() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-discovery-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + "/thule-discovery-service" + ACTUATOR_HEALTH);
 
         // When
         try {
@@ -157,7 +156,7 @@ public class CloudDockerTest {
     @Test
     public void _12_gateway_service_via_gateway_health_status_is_not_found() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(GATEWAY_SERVICE_BASE_URL + "/thule-gateway-service" + ACTUATOR_HEALTH));
+        ActuatorUri actuatorUri = ActuatorUri.of(GATEWAY_SERVICE_BASE_URL + "/thule-gateway-service" + ACTUATOR_HEALTH);
 
         // When
         try {

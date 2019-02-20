@@ -15,7 +15,6 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -49,7 +48,7 @@ public class GatewayDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(gatewayBaseUrl + "/actuator/health"));
+        ActuatorUri actuatorUri = ActuatorUri.of(gatewayBaseUrl + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

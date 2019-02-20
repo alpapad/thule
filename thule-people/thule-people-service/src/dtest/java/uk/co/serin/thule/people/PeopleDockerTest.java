@@ -21,7 +21,6 @@ import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +56,7 @@ public class PeopleDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(URI.create(peopleServiceBaseUrl + "/actuator/health"));
+        var actuatorUri = ActuatorUri.of(peopleServiceBaseUrl + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

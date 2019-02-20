@@ -43,7 +43,6 @@ import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -186,7 +185,7 @@ public class PeopleContractTest {
     @Test
     public void when_checking_health_then_status_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(URI.create(String.format("http://localhost:%s/actuator/health", port)));
+        var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/health", port));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

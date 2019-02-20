@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -26,7 +25,7 @@ public class HealthcheckContractTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(URI.create(restTemplate.getRootUri() + "/actuator/health"));
+        var actuatorUri = ActuatorUri.of(restTemplate.getRootUri() + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

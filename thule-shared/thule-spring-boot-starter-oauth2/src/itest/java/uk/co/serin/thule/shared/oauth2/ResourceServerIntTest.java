@@ -33,7 +33,6 @@ import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 import uk.co.serin.thule.utils.oauth2.PhpJwtAccessTokenConverter;
 import uk.co.serin.thule.utils.oauth2.UserAuthenticationDetails;
 
-import java.net.URI;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
@@ -116,7 +115,7 @@ public class ResourceServerIntTest {
     @Test
     public void when_checking_health_then_health_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(URI.create(String.format("http://localhost:%s/actuator/health", port)));
+        var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/health", port));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

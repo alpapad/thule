@@ -15,7 +15,6 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -43,7 +42,7 @@ public class EmailDockerTest {
     @Before
     public void setUp() {
         // Create base url
-        String emailServiceApiHost = env.getRequiredProperty("thule.emailservice.api.host");
+        var emailServiceApiHost = env.getRequiredProperty("thule.emailservice.api.host");
         int emailServiceApiPort = env.getRequiredProperty("thule.emailservice.api.port", Integer.class);
         emailServiceBaseUrl = "http://" + emailServiceApiHost + ":" + emailServiceApiPort;
     }
@@ -51,7 +50,7 @@ public class EmailDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(emailServiceBaseUrl + "/actuator/health"));
+        var actuatorUri = ActuatorUri.of(emailServiceBaseUrl + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

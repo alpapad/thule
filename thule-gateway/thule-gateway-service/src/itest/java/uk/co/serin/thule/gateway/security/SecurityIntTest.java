@@ -1,8 +1,5 @@
 package uk.co.serin.thule.gateway.security;
 
-import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
+
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -34,7 +33,7 @@ public class SecurityIntTest {
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
-        ActuatorUri actuatorUri = ActuatorUri.of(URI.create(String.format("http://localhost:%s/actuator/info", port)));
+        ActuatorUri actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/info", port));
 
         //When/Then
         SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);

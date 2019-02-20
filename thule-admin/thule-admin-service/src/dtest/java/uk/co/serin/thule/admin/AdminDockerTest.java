@@ -14,7 +14,6 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -47,7 +46,7 @@ public class AdminDockerTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(URI.create(adminServiceBaseUrl + "/actuator/health"));
+        var actuatorUri = ActuatorUri.of(adminServiceBaseUrl + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
