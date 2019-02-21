@@ -30,7 +30,7 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     @Async
-    public Future<Email> createEmail(Email email) {
+    public Future<Email> send(Email email) {
         if (!hasARecipient(email)) {
             throw new ValidationException("At least one recipient email addresses ('TO', 'CC' 'BCC') should be provided");
         }
@@ -44,27 +44,29 @@ public class EmailService {
     }
 
     private boolean hasARecipient(Email email) {
-        return !email.getTos().isEmpty() ||
-                !email.getCcs().isEmpty() ||
-                !email.getBccs().isEmpty();
+        return !email.getTos().isEmpty() || !email.getCcs().isEmpty() || !email.getBccs().isEmpty();
     }
 
     private MimeMessage createMimeMessage(Email email) throws MessagingException {
         var mimeMessage = mailSender.createMimeMessage();
         var mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
         if (!email.getBccs().isEmpty()) {
-            mimeMessageHelper.setBcc(email.getBccs().toArray(new String[0]));
+            mimeMessageHelper.setBcc(String.join("", email.getBccs()));
         }
+
         if (!email.getCcs().isEmpty()) {
-            mimeMessageHelper.setCc(email.getCcs().toArray(new String[0]));
+            mimeMessageHelper.setCc(String.join("", email.getCcs()));
         }
+
         if (StringUtils.hasText(email.getFrom())) {
             mimeMessageHelper.setFrom(email.getFrom());
         }
         mimeMessageHelper.setSubject(email.getSubject());
         mimeMessageHelper.setText(email.getBody());
+
         if (!email.getTos().isEmpty()) {
-            mimeMessageHelper.setTo(email.getTos().toArray(new String[0]));
+            mimeMessageHelper.setTo(String.join("", email.getTos()));
         }
 
         // Add attachments

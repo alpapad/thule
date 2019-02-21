@@ -42,7 +42,7 @@ public class EmailServiceTest {
         doThrow(EmailServiceException.class).when(mailSender).send(any(MimeMessage.class));
 
         // When
-        var throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
+        var throwable = catchThrowable(() -> emailService.send(expectedEmail));
 
         // Then
         assertThat(throwable).isInstanceOf(EmailServiceException.class);
@@ -56,7 +56,7 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        var emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.send(expectedEmail);
 
         // Then
         var actualEmail = emailFuture.get();
@@ -73,7 +73,7 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        var emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.send(expectedEmail);
 
         // Then
         var actualEmail = emailFuture.get();
@@ -89,7 +89,7 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        var emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.send(expectedEmail);
 
         // Then
         var actualEmail = emailFuture.get();
@@ -103,7 +103,7 @@ public class EmailServiceTest {
         expectedEmail.setBody("This is the content");
 
         // When
-        var throwable = catchThrowable(() -> emailService.createEmail(expectedEmail));
+        var throwable = catchThrowable(() -> emailService.send(expectedEmail));
 
         // Then
         assertThat(throwable).isInstanceOf(ValidationException.class);
@@ -120,7 +120,7 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        var emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.send(expectedEmail);
 
         // Then
         var actualEmail = emailFuture.get();
@@ -138,7 +138,7 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        var emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.send(expectedEmail);
 
         // Then
         var actualEmail = emailFuture.get();
@@ -156,7 +156,7 @@ public class EmailServiceTest {
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
         // When
-        var emailFuture = emailService.createEmail(expectedEmail);
+        var emailFuture = emailService.send(expectedEmail);
 
         // Then
         var actualEmail = emailFuture.get();
