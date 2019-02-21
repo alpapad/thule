@@ -30,21 +30,22 @@ public class Email {
     public static final String ENTITY_ATTRIBUTE_NAME_SUBJECT = "subject";
     public static final String ENTITY_ATTRIBUTE_NAME_TOS = "tos";
     public static final String ENTITY_NAME_EMAILS = "emails";
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final String EMAIL_ADDRESS_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final String INVALID_EMAIL_ADDRESS_MESSAGE = "Email address should be of username@domain.extension format";
 
     @Builder.Default
     private Set<Attachment> attachments = new HashSet<>();
 
     @Builder.Default
     @Valid
-    private Set<@PatternJava8(regexp = EMAIL_PATTERN, message = "Email address should be of username@domain.extension format") String> bccs = new HashSet<>();
+    private Set<@PatternJava8(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE) String> bccs = new HashSet<>();
 
     @NotNull
     private String body;
 
     @Builder.Default
     @Valid
-    private Set<@PatternJava8(regexp = EMAIL_PATTERN, message = "Email address should be of username@domain.extension format") String> ccs = new HashSet<>();
+    private Set<@PatternJava8(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE) String> ccs = new HashSet<>();
 
     @EqualsAndHashCode.Include
     private String from;
@@ -55,5 +56,5 @@ public class Email {
 
     @Builder.Default
     @Valid
-    private Set<@PatternJava8(regexp = EMAIL_PATTERN, message = "Email address should be of username@domain.extension format") String> tos = new HashSet<>();
+    private Set<@PatternJava8(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE) String> tos = new HashSet<>();
 }
