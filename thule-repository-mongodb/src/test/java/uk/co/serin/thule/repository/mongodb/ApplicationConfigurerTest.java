@@ -13,7 +13,7 @@ public class ApplicationConfigurerTest {
     private ApplicationConfigurer applicationConfigurer;
 
     @Test
-    public void localValidatorFactoryBean_is_configured() {
+    public void when_configuring_local_validator_factory_bean_then_an_instance_is_created() {
         // When
         var localValidatorFactoryBean = applicationConfigurer.localValidatorFactoryBean();
 
@@ -22,20 +22,11 @@ public class ApplicationConfigurerTest {
     }
 
     @Test
-    public void validatingMongoEventListener_is_configured() {
+    public void when_configuring_validating_mongo_event_listener_then_an_instance_is_created() {
         // When
         var validatingMongoEventListener = applicationConfigurer.validatingMongoEventListener();
 
         // Then
         assertThat(validatingMongoEventListener).isNotNull();
-    }
-
-    @Test
-    public void when_default_constructor_is_invoked_then_an_instance_is_instantiated() {
-        // When
-        var applicationConfigurer = new ApplicationConfigurer();
-
-        // Then
-        assertThat(applicationConfigurer).isNotNull();
     }
 }
