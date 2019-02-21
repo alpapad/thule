@@ -52,11 +52,11 @@ public class EmailService {
         var mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
         if (!email.getBccs().isEmpty()) {
-            mimeMessageHelper.setBcc(String.join("", email.getBccs()));
+            mimeMessageHelper.setBcc(email.getBccs().toArray(new String[0]));
         }
 
         if (!email.getCcs().isEmpty()) {
-            mimeMessageHelper.setCc(String.join("", email.getCcs()));
+            mimeMessageHelper.setCc(email.getCcs().toArray(new String[0]));
         }
 
         if (StringUtils.hasText(email.getFrom())) {
@@ -66,7 +66,7 @@ public class EmailService {
         mimeMessageHelper.setText(email.getBody());
 
         if (!email.getTos().isEmpty()) {
-            mimeMessageHelper.setTo(String.join("", email.getTos()));
+            mimeMessageHelper.setTo(email.getTos().toArray(new String[0]));
         }
 
         // Add attachments
