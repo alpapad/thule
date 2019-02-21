@@ -27,12 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class PeopleService {
     public void disable(PersonEntity personEntity) {
-        // Validate the action is valid for the current nextState
         if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISABLE)) {
             throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new nextState
         var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_DISABLE);
         personEntity.setState(personViewAction.getNextState());
     }
@@ -42,23 +40,19 @@ public class PeopleService {
     }
 
     public void discard(PersonEntity personEntity) {
-        // Validate the action is valid for the current nextState
         if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISCARD)) {
             throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new nextState
         var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_DISCARD);
         personEntity.setState(personViewAction.getNextState());
     }
 
     public void enable(PersonEntity personEntity) {
-        // Validate the action is valid for the current nextState
         if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_ENABLE)) {
             throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new nextState
         var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_ENABLE);
         personEntity.setState(personViewAction.getNextState());
     }
@@ -72,18 +66,15 @@ public class PeopleService {
     }
 
     public void recover(PersonEntity personEntity) {
-        // Validate the action is valid for the current nextState
         if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_RECOVER)) {
             throw new PersonInvalidStateException(personEntity);
         }
 
-        // Set new nextState
         var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_RECOVER);
         personEntity.setState(personViewAction.getNextState());
     }
 
     public void update(PersonEntity personEntity) {
-        // Validate the action is valid for the current nextState
         if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_UPDATE)) {
             throw new PersonInvalidStateException(personEntity);
         }
