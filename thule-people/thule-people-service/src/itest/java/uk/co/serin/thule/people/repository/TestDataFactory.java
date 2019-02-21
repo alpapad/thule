@@ -1,4 +1,4 @@
-package uk.co.serin.thule.people;
+package uk.co.serin.thule.people.repository;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.DigestUtils;

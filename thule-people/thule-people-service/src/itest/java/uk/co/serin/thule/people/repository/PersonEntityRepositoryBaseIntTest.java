@@ -11,7 +11,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
-import uk.co.serin.thule.people.TestDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
@@ -51,9 +50,9 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
+    private TestDataFactory testDataFactory;
     @Autowired
     private TestEntityManager testEntityManager;
-    private TestDataFactory testDataFactory;
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
