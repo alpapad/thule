@@ -12,11 +12,13 @@ import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 
-import uk.co.serin.thule.email.TestDataFactory;
+import uk.co.serin.thule.email.domain.Attachment;
 import uk.co.serin.thule.email.domain.Email;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -26,6 +28,8 @@ public class EmailContractTest extends ContractBaseTest {
     private OAuth2RestTemplate oAuth2RestTemplate;
     @LocalServerPort
     private int port;
+    private ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
+    };
 
     @Before
     public void setUp() {
@@ -41,9 +45,7 @@ public class EmailContractTest extends ContractBaseTest {
         //Given
         startEmbeddedSmtpServer();
 
-        ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
-        };
-        var expectedEmail = TestDataFactory.buildEmail();
+        var expectedEmail = buildEmail();
         var expectedAttachment = expectedEmail.getAttachments().stream().findFirst().orElseThrow();
         var httpEntity = new HttpEntity<>(expectedEmail);
 
@@ -60,18 +62,25 @@ public class EmailContractTest extends ContractBaseTest {
         assertThat(actualMailMessage.getBody()).contains(expectedEmail.getBody());
         assertThat(actualMailMessage.getBody()).contains(expectedAttachment.getContent());
         assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(expectedEmail.getFrom());
+
         var expectedTos = expectedEmail.getTos().toArray(new String[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
     }
 
+    private Email buildEmail() {
+        return Email.builder()
+                    .attachments(Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build()))
+                    .bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body").ccs(Collections.singleton("ccs@test.co.uk"))
+                    .from("from@test.co.uk").subject("Test subject")
+                    .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
+    }
+
     @Test
     public void when_smtp_server_is_down_then_response_should_be_accepted() {
         //Given
-        ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
-        };
-        var expectedEmail = TestDataFactory.buildEmail();
+        var expectedEmail = buildEmail();
         var entity = new HttpEntity<>(expectedEmail, null);
 
         // When
