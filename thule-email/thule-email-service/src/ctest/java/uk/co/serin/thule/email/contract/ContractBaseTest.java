@@ -27,7 +27,7 @@ public abstract class ContractBaseTest {
 
     @After
     public void stopEmbeddedServer() {
-        if (smtpServer != null && !smtpServer.isStopped()) {
+        if (smtpServer != null) {
             smtpServer.stop();
         }
         smtpServer = null;
