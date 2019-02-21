@@ -11,7 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
-import uk.co.serin.thule.people.TestPersonDataFactory;
+import uk.co.serin.thule.people.TestDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.repository.repositories.ActionRepository;
@@ -53,7 +53,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     private StateRepository stateRepository;
     @Autowired
     private TestEntityManager testEntityManager;
-    private TestPersonDataFactory testPersonDataFactory;
+    private TestDataFactory testDataFactory;
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
@@ -68,7 +68,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     private PersonEntity createAndPersistPerson() {
-        var person = personRepository.saveAndFlush(testPersonDataFactory.buildPersonWithAllAssociations());
+        var person = personRepository.saveAndFlush(testDataFactory.buildPersonWithAllAssociations());
         testEntityManager.clear();
         return person;
     }
@@ -182,13 +182,13 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     @Before
     public void setUp() {
         var repositoryReferenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
-        testPersonDataFactory = new TestPersonDataFactory(repositoryReferenceDataFactory);
+        testDataFactory = new TestDataFactory(repositoryReferenceDataFactory);
     }
 
     @Test
     public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        var expectedPerson = testPersonDataFactory.buildPersonWithAllAssociations();
+        var expectedPerson = testDataFactory.buildPersonWithAllAssociations();
 
         // When
         personRepository.save(expectedPerson);

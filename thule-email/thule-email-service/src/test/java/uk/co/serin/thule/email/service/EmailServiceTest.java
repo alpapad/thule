@@ -66,9 +66,8 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_with_only_bcc_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
-        expectedEmail.setBody("This is the content");
-        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
+        var expectedEmail = Email.builder().bccs(Collections.singleton("bcc@test.co.uk")).body("This is the content").from("from@test.co.uk")
+                                 .subject("This is a test email").build();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
@@ -99,8 +98,7 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
-        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
-        expectedEmail.setBody("This is the content");
+        var expectedEmail = Email.builder().body("This is the content").from("from@test.co.uk").subject("This is a test email").build();
 
         // When
         var throwable = catchThrowable(() -> emailService.send(expectedEmail));
@@ -112,10 +110,9 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_bccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
-        expectedEmail.setBody("This is the content");
-        expectedEmail.setCcs(Collections.singleton("cc@test.co.uk"));
-        expectedEmail.setTos(Collections.singleton("to@test.co.uk"));
+        var expectedEmail =
+                Email.builder().body("This is the content").ccs(Collections.singleton("cc@test.co.uk")).from("from@test.co.uk").subject("This is a test email")
+                     .tos(Collections.singleton("to@test.co.uk")).build();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
@@ -130,10 +127,8 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_ccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
-        expectedEmail.setBody("This is the content");
-        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
-        expectedEmail.setTos(Collections.singleton("to@test.co.uk"));
+        var expectedEmail = Email.builder().bccs(Collections.singleton("bcc@test.co.uk")).body("This is the content").from("from@test.co.uk")
+                                 .subject("This is a test email").tos(Collections.singleton("to@test.co.uk")).build();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 
@@ -148,10 +143,9 @@ public class EmailServiceTest {
     @Test
     public void when_creating_an_email_without_tos_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
-        var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
-        expectedEmail.setBody("This is the content");
-        expectedEmail.setBccs(Collections.singleton("bcc@test.co.uk"));
-        expectedEmail.setCcs(Collections.singleton("cc@test.co.uk"));
+        var expectedEmail =
+                Email.builder().bccs(Collections.singleton("bcc@test.co.uk")).body("This is the content").ccs(Collections.singleton("cc@test.co.uk"))
+                     .from("from@test.co.uk").subject("This is a test email").build();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
 

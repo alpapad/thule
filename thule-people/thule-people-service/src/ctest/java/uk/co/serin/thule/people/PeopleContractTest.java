@@ -121,7 +121,7 @@ public class PeopleContractTest {
     }
 
     private PersonEntity createAndPersistPersonWithNoAssociations() {
-        PersonEntity person = buildPersonWithoutAnyAssociations();
+        var person = buildPersonWithoutAnyAssociations();
         person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
 
         personRepository.saveAndFlush(person);
