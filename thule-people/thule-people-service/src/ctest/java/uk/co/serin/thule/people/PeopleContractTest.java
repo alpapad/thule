@@ -1,14 +1,10 @@
 package uk.co.serin.thule.people;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
@@ -26,8 +22,6 @@ import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
@@ -39,11 +33,9 @@ import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -66,15 +58,11 @@ import static org.springframework.util.StringUtils.trimLeadingCharacter;
 import static org.springframework.util.StringUtils.trimTrailingCharacter;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@ActiveProfiles("ctest")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureWireMock(port = 0)
 @Import(PeopleContractTestConfiguration.class)
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser
-public class PeopleContractTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
+public class PeopleContractTest extends ContractBaseTest {
     private static final String EMAILS_PATH = "/emails";
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_CREDENTIALS = "password";
@@ -99,16 +87,6 @@ public class PeopleContractTest {
     private StateRepository stateRepository;
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    @BeforeClass
-    public static void setUpClass() throws IOException {
-        DOCKER_COMPOSE.downAndUp();
-    }
-
-    @AfterClass
-    public static void teardownClass() throws IOException {
-        DOCKER_COMPOSE.down();
-    }
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() {

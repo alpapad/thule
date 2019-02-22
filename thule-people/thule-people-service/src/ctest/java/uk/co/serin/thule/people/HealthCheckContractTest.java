@@ -1,26 +1,24 @@
-package uk.co.serin.thule.email.contract;
+package uk.co.serin.thule.people;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Status;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class HealthcheckContractTest extends ContractBaseTest {
-    @LocalServerPort
-    private int port;
+public class HealthCheckContractTest extends ContractBaseTest {
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        startEmbeddedSmtpServer();
-
-        var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/health", port));
+        var actuatorUri = ActuatorUri.of(restTemplate.getRootUri() + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

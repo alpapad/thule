@@ -18,7 +18,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @ActiveProfiles("ctest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HealthcheckContractTest {
+public class HealthCheckContractTest {
     @Autowired
     private TestRestTemplate restTemplate;
 

@@ -43,6 +43,16 @@ project("thule-people-service") {
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
     // Non-standard Thule gradle plugin config
+    ctest {
+        // Remove docker container once the contract tests have completed
+        afterSuite { descriptor ->
+            if (descriptor.getName().contains("Gradle Test Executor")) {
+                exec {
+                    commandLine "docker-compose", "-f", "thule-people-service/src/test/docker/thule-people-tests/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
+                }
+            }
+        }
+    }
 
     // Dependencies
     dependencyManagement {
