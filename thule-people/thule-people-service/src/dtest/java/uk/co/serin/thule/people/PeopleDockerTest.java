@@ -1,6 +1,8 @@
 package uk.co.serin.thule.people;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +34,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PeopleDockerTest {
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml");
     private OAuth2RestTemplate oAuth2RestTemplate;
     @Value("${thule.peopleservice.api.host}")
     private String peopleServiceApiHost;
@@ -39,11 +42,18 @@ public class PeopleDockerTest {
     private int peopleServiceApiPort;
     private String peopleServiceBaseUrl;
 
-    @Before
-    public void setUp() throws IOException {
-        // Start docker containers
-        new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml").up();
+    @BeforeClass
+    public static void setUpClass() throws IOException {
+        DOCKER_COMPOSE.downAndUp();
+    }
 
+    @AfterClass
+    public static void teardownClass() throws IOException {
+        DOCKER_COMPOSE.down();
+    }
+
+    @Before
+    public void setUp() {
         // Create base url
         peopleServiceBaseUrl = "http://" + peopleServiceApiHost + ":" + peopleServiceApiPort;
 

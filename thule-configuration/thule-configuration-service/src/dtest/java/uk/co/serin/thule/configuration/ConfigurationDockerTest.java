@@ -26,7 +26,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ConfigurationDockerTest {
-    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-configuration-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-configuration-docker-tests/docker-compose.yml");
     @Value("${thule.configurationservice.api.host}")
     private String configurationServiceApiHost;
     @Value("${thule.configurationservice.api.port}")
@@ -36,12 +36,12 @@ public class ConfigurationDockerTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
+        DOCKER_COMPOSE.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerCompose.down();
+        DOCKER_COMPOSE.down();
     }
 
     @Before

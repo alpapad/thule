@@ -1,5 +1,6 @@
 package uk.co.serin.thule.people;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -73,6 +74,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser
 public class PeopleContractTest {
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-gateway-docker-tests/docker-compose.yml");
     private static final String EMAILS_PATH = "/emails";
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_CREDENTIALS = "password";
@@ -100,7 +102,12 @@ public class PeopleContractTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml").up();
+        DOCKER_COMPOSE.downAndUp();
+    }
+
+    @AfterClass
+    public static void teardownClass() throws IOException {
+        DOCKER_COMPOSE.down();
     }
 
     @Test
@@ -137,16 +144,16 @@ public class PeopleContractTest {
 
         return PersonEntity.builder().
                 dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
-                             dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
-                             dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
-                             emailAddress(userId + "@serin-consultancy.co.uk").
-                             firstName("Elizabeth").
-                             lastName("Scarlett").
-                             password(userId).
-                             secondName("K").
-                             title("Miss").
-                             userId(userId).
-                             build();
+                                   dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
+                                   dateOfPasswordExpiry(RandomUtils.generateUniqueRandomDateBetween(LocalDate.now(), dateOfExpiry)).
+                                   emailAddress(userId + "@serin-consultancy.co.uk").
+                                   firstName("Elizabeth").
+                                   lastName("Scarlett").
+                                   password(userId).
+                                   secondName("K").
+                                   title("Miss").
+                                   userId(userId).
+                                   build();
     }
 
     @Test

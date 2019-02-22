@@ -21,7 +21,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EmailDockerTest {
-    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-email-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-email-docker-tests/docker-compose.yml");
     @Value("${thule.emailservice.api.host}")
     private String emailServiceApiHost;
     @Value("${thule.emailservice.api.port}")
@@ -30,12 +30,12 @@ public class EmailDockerTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
+        DOCKER_COMPOSE.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerCompose.down();
+        DOCKER_COMPOSE.down();
     }
 
     @Before

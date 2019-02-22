@@ -21,7 +21,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AdminDockerTest {
-    private static DockerCompose dockerCompose = new DockerCompose("src/dtest/docker/thule-admin-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-admin-docker-tests/docker-compose.yml");
     @Value("${thule.adminservice.api.host}")
     private String adminServiceApiHost;
     @Value("${thule.adminservice.api.port}")
@@ -30,12 +30,12 @@ public class AdminDockerTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
+        DOCKER_COMPOSE.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerCompose.down();
+        DOCKER_COMPOSE.down();
     }
 
     @Before

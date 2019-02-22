@@ -32,8 +32,8 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonEntityRepositoryIntTest {
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
     private static final String MOCK_USERS_NAME = "user";
-    private static DockerCompose dockerCompose = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
     private Gson gson = new Gson();
     @Value("${thule.repositorymongodb.mongodb.host:localhost}")
     private String mongodbHost;
@@ -44,12 +44,12 @@ public class PersonEntityRepositoryIntTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        dockerCompose.downAndUp();
+        DOCKER_COMPOSE.downAndUp();
     }
 
     @AfterClass
     public static void tearDownClass() throws IOException {
-        dockerCompose.down();
+        DOCKER_COMPOSE.down();
     }
 
     @Test
