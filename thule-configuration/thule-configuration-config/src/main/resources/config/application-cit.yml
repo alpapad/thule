@@ -2,11 +2,3 @@
 logging:
   level:
     uk.co.serin.thule: trace
-
-# Spring boot configuration
-spring:
-  cloud:
-    config:
-      server:
-        native:
-          search-locations: ${thule.configurationservice.search-locations:/thule-cloud/thule-cloud-config/build/resources/main/config}/{application}
