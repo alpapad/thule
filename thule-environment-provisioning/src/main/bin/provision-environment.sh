@@ -125,10 +125,10 @@ if [ -f "$ENVIRONMENTS_DIRECTORY/$ENVIRONMENT_NAME/config.sh" ]; then source $EN
 ################################################################################
 # Set options specified on the command line using defaults when option has not been specified
 ################################################################################
-PROVISION_LOCALLY=${PROVISION_LOCALLY:=${OPTION_PROVISION_LOCALLY_DEFAULT}}
-STOP_CONTAINERS=${STOP_CONTAINERS:=${OPTION_STOP_CONTAINERS_DEFAULT}}
-TARGET_DIRECTORY=${TARGET_DIRECTORY:=${OPTION_TARGET_DIRECTORY_DEFAULT}}
-USERID=${USERID:=${OPTION_USERID_DEFAULT}}
+PROVISION_LOCALLY=${PROVISION_LOCALLY:=${PROVISION_LOCALLY_DEFAULT}}
+STOP_CONTAINERS=${STOP_CONTAINERS:=${STOP_CONTAINERS_DEFAULT}}
+TARGET_DIRECTORY=${TARGET_DIRECTORY:=${TARGET_DIRECTORY_DEFAULT}}
+USERID=${USERID:=${USERID_DEFAULT}}
 
 
 ################################################################################
@@ -196,7 +196,7 @@ echo "About to download the thule-configuration-config from Nexus for the $ENVIR
 tempDirectory=$(mktemp -d --suffix thule-configuration-config)
 
 # Locate the thule-configuration-service version, defaulting to "latest" if the version is not explicitly defined
-configurationServiceVersion=$(grep pooh:8082/thule-configuration-service: $DOCKER_COMPOSE_FILE | sed 's/.*pooh:8082\/thule-configuration-service:\(\S*\).*/\1/')
+configurationServiceVersion=$(grep $NEXUS_HOST:$NEXUS_PORT_DOCKER/thule-configuration-service: $DOCKER_COMPOSE_FILE | sed 's/.*$NEXUS_HOST:$NEXUS_PORT_DOCKER\/thule-configuration-service:\(\S*\).*/\1/')
 if [[ -z $configurationServiceVersion ]]; then
     echo ""
     echo "Error: Could not determine the configuration service version"
@@ -208,7 +208,7 @@ fi
 # Derive the configurationServiceConfigDownloadUrl
 if [[ $configurationServiceVersion = *"SNAPSHOT" ]]; then
     # Download the artifact metadata from nexus for thule-configuration-config using the Nexus REST api
-    metadataUrl="http://pooh:8081/repository/maven-public/uk/co/serin/thule/thule-configuration-config/$configurationServiceVersion/maven-metadata.xml"
+    metadataUrl="http://$NEXUS_HOST:$NEXUS_PORT_MAVEN/repository/maven-public/uk/co/serin/thule/thule-configuration-config/$configurationServiceVersion/maven-metadata.xml"
     echo ""
     echo "Downloading thule-configuration-config metadata using $metadataUrl from Nexus..."
 
@@ -225,9 +225,9 @@ if [[ $configurationServiceVersion = *"SNAPSHOT" ]]; then
 
     # Extract the latest version of the required snapshot
     timestampedSnapshotVersion=$(grep -m 1 \<value\> $tempDirectory/metadata/maven-metadata.xml | sed "s/.*<value>\(.*\)<\/value>.*/\1/")
-    configurationServiceConfigDownloadUrl="http://pooh:8081/repository/maven-public/uk/co/serin/thule/thule-configuration-config/$configurationServiceVersion/thule-configuration-config-$timestampedSnapshotVersion.jar"
+    configurationServiceConfigDownloadUrl="http://$NEXUS_HOST:$NEXUS_PORT_MAVEN/repository/maven-public/uk/co/serin/thule/thule-configuration-config/$configurationServiceVersion/thule-configuration-config-$timestampedSnapshotVersion.jar"
 else
-    configurationServiceConfigDownloadUrl="http://pooh:8081/repository/maven-public/uk/co/serin/thule/thule-configuration-config/$configurationServiceVersion/thule-configuration-config-$configurationServiceVersion.jar"
+    configurationServiceConfigDownloadUrl="http://$NEXUS_HOST:$NEXUS_PORT_MAVEN/repository/maven-public/uk/co/serin/thule/thule-configuration-config/$configurationServiceVersion/thule-configuration-config-$configurationServiceVersion.jar"
 fi
 
 # Download the thule-configuration-config jar file using the Nexus REST api
