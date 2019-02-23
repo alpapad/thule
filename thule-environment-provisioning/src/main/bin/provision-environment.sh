@@ -196,7 +196,7 @@ echo "About to download the thule-configuration-config from Nexus for the $ENVIR
 tempDirectory=$(mktemp -d --suffix thule-configuration-config)
 
 # Locate the thule-configuration-service version, defaulting to "latest" if the version is not explicitly defined
-configurationServiceVersion=$(grep $NEXUS_HOST:$NEXUS_PORT_DOCKER/thule-configuration-service: $DOCKER_COMPOSE_FILE | sed "s/.*${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\/thule-configuration-service:\(\S*\).*/\1/")
+configurationServiceVersion=$(grep $NEXUS_HOST:$NEXUS_PORT_DOCKER/thule-configuration-service: $DOCKER_COMPOSE_FILE | sed "s/.*$NEXUS_HOST:$NEXUS_PORT_DOCKER\/thule-configuration-service:\(\S*\).*/\1/")
 if [[ -z $configurationServiceVersion ]]; then
     echo ""
     echo "Error: Could not determine the configuration service version"
