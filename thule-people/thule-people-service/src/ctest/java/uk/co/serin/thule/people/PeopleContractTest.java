@@ -23,14 +23,10 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
-import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
-import uk.co.serin.thule.people.repository.repositories.ActionRepository;
-import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
-import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
@@ -69,10 +65,6 @@ public class PeopleContractTest extends ContractBaseTest {
     private static final String MOCK_USERS_NAME = "user";
     private static final String THULE_EMAIL_SERVICE_RESPONSE = "thule-email-service-response.json";
     @Autowired
-    private ActionRepository actionRepository;
-    @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
     private EntityManager entityManager;
     private OAuth2RestTemplate oAuth2RestTemplate;
     private String peopleServiceUrl;
@@ -80,9 +72,6 @@ public class PeopleContractTest extends ContractBaseTest {
     private PersonRepository personRepository;
     @LocalServerPort
     private int port;
-    private ReferenceDataFactory referenceDataFactory;
-    @Autowired
-    private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
     @Autowired
@@ -107,7 +96,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
     private PersonEntity createAndPersistPersonWithNoAssociations() {
         var person = buildPersonWithoutAnyAssociations();
-        person.setState(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
 
         personRepository.saveAndFlush(person);
         entityManager.clear();
@@ -151,9 +140,6 @@ public class PeopleContractTest extends ContractBaseTest {
 
     @Before
     public void setUp() {
-        // Setup test data factories
-        referenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
-
         // Set up service url
         peopleServiceUrl = String.format("http://localhost:%s/people", port);
 
@@ -289,7 +275,7 @@ public class PeopleContractTest extends ContractBaseTest {
         assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
         assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(testPerson.getPhotographs());
         assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
-        assertThat(actualPerson.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        assertThat(actualPerson.getState()).isEqualTo(StateEntity.builder().code(StateCode.PERSON_ENABLED).build());
         assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());
         assertThat(actualPerson.getUpdatedAt()).isAfter(testPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isEqualTo(MOCK_USERS_NAME);
