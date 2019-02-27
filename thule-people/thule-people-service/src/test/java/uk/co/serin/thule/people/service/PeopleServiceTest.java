@@ -5,13 +5,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.co.serin.thule.people.datafactory.MockReferenceDataFactory;
-import uk.co.serin.thule.people.datafactory.ReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
+import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
+import uk.co.serin.thule.people.domain.entity.state.StateEntity;
+import uk.co.serin.thule.people.domain.model.state.ActionCode;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepositoryImpl;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,24 +26,28 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 public class PeopleServiceTest {
     @InjectMocks
     private PeopleService peopleService;
-    private ReferenceDataFactory referenceDataFactory = new MockReferenceDataFactory();
 
     @Test
     public void when_disable_person_then_state_is_updated_to_person_disabled() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var nextState = StateEntity.builder().code(StateCode.PERSON_DISABLED).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).nextState(nextState).build();
+        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         peopleService.disable(person);
 
         //Then
-        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED));
+        assertThat(person.getState()).isEqualTo(nextState);
     }
 
     @Test
     public void when_disabling_person_already_disabled_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_DISABLED).actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.disable(person), PersonInvalidStateException.class);
@@ -53,19 +59,24 @@ public class PeopleServiceTest {
     @Test
     public void when_discard_person_then_state_is_updated_to_person_discarded() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var nextState = StateEntity.builder().code(StateCode.PERSON_DISCARDED).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISCARD).nextState(nextState).build();
+        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         peopleService.discard(person);
 
         //Then
-        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED));
+        assertThat(person.getState()).isEqualTo(nextState);
     }
 
     @Test
     public void when_discarding_person_already_discarded_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_DISCARDED).actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.discard(person), PersonInvalidStateException.class);
@@ -77,7 +88,9 @@ public class PeopleServiceTest {
     @Test
     public void when_enable_person_already_enabled_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.enable(person), PersonInvalidStateException.class);
@@ -89,19 +102,22 @@ public class PeopleServiceTest {
     @Test
     public void when_enable_person_then_state_is_updated_to_person_enabled() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
+        var nextState = StateEntity.builder().code(StateCode.PERSON_ENABLED).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).nextState(nextState).build();
+        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         peopleService.enable(person);
 
         //Then
-        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        assertThat(person.getState()).isEqualTo(nextState);
     }
 
     @Test
     public void when_expiry_date_is_in_the_future_then_person_is_not_expired() {
         // Given
-        var person = PersonEntity.builder().userId("userId").dateOfExpiry(LocalDate.MAX).build();
+        var person = PersonEntity.builder().dateOfExpiry(LocalDate.MAX).build();
 
         // When
         var expired = peopleService.isExpired(person);
@@ -113,7 +129,7 @@ public class PeopleServiceTest {
     @Test
     public void when_expiry_date_is_in_the_past_then_person_is_expired() {
         // Given
-        var person = PersonEntity.builder().userId("userId").dateOfExpiry(LocalDate.MIN).build();
+        var person = PersonEntity.builder().dateOfExpiry(LocalDate.MIN).build();
 
         // When
         var expired = peopleService.isExpired(person);
@@ -125,7 +141,7 @@ public class PeopleServiceTest {
     @Test
     public void when_password_expiry_date_is_in_the_future_then_password_is_not_expired() {
         // Given
-        var person = PersonEntity.builder().userId("userId").dateOfPasswordExpiry(LocalDate.MAX).build();
+        var person = PersonEntity.builder().dateOfPasswordExpiry(LocalDate.MAX).build();
 
         // When
         var passwordExpired = peopleService.isPasswordExpired(person);
@@ -137,7 +153,7 @@ public class PeopleServiceTest {
     @Test
     public void when_password_expiry_date_is_in_the_past_then_password_is_expired() {
         // Given
-        var person = PersonEntity.builder().userId("userId").dateOfPasswordExpiry(LocalDate.MIN).build();
+        var person = PersonEntity.builder().dateOfPasswordExpiry(LocalDate.MIN).build();
 
         // When
         var passwordExpired = peopleService.isPasswordExpired(person);
@@ -165,47 +181,27 @@ public class PeopleServiceTest {
     @Test
     public void when_recover_person_then_state_is_changed_to_person_enabled() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISCARDED)).build();
+        var nextState = StateEntity.builder().code(StateCode.PERSON_ENABLED).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_RECOVER).nextState(nextState).build();
+        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         peopleService.recover(person);
 
         //Then
-        assertThat(person.getState()).isEqualTo(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED));
+        assertThat(person.getState()).isEqualTo(nextState);
     }
 
     @Test
     public void when_recovering_an_enabled_person_then_person_invalid_state_exception_is_thrown() {
         // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED)).build();
+        var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Collections.singleton(allowedAction)).build();
+        var person = PersonEntity.builder().state(state).build();
 
         // When
         var personInvalidStateException = catchThrowableOfType(() -> peopleService.recover(person), PersonInvalidStateException.class);
-
-        // Then
-        assertThat(personInvalidStateException).isNotNull();
-    }
-
-    @Test
-    public void when_update_person_then_state_remains_unchanged() {
-        // Given
-        var statePersonEnabled = referenceDataFactory.getStates().get(StateCode.PERSON_ENABLED);
-        var person = PersonEntity.builder().userId("userId").state(statePersonEnabled).build();
-
-        // When
-        peopleService.update(person);
-
-        // Then
-        assertThat(person.getState()).isEqualTo(statePersonEnabled);
-    }
-
-    @Test
-    public void when_updating_a_disabled_person_then_person_invalid_state_exception_is_thrown() {
-        // Given
-        var person = PersonEntity.builder().userId("userId").state(referenceDataFactory.getStates().get(StateCode.PERSON_DISABLED)).build();
-
-        // When
-        var personInvalidStateException = catchThrowableOfType(() -> peopleService.update(person), PersonInvalidStateException.class);
 
         // Then
         assertThat(personInvalidStateException).isNotNull();

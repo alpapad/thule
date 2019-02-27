@@ -11,9 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
-import uk.co.serin.thule.people.datafactory.RepositoryReferenceDataFactory;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.repository.repositories.ActionRepository;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
@@ -35,13 +33,11 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * it is enabled in the inner configuration class.
  */
 @DataJpaTest
-@Import(RepositoryIntTestConfiguration.class)
+@Import(PersonEntityRepositoryIntTestConfiguration.class)
 @RunWith(SpringRunner.class)
 @WithMockUser
 public abstract class PersonEntityRepositoryBaseIntTest {
     private static final String MOCK_USERS_NAME = "user";
-    @Autowired
-    private ActionRepository actionRepository;
     @Autowired
     private CountryRepository countryRepository;
     @Autowired
@@ -50,7 +46,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private TestDataFactory testDataFactory;
+    private PersonEntityRepositoryIntTestDataFactory personEntityRepositoryIntTestDataFactory;
     @Autowired
     private TestEntityManager testEntityManager;
 
@@ -67,7 +63,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     private PersonEntity createAndPersistPerson() {
-        var person = personRepository.saveAndFlush(testDataFactory.buildPersonWithAllAssociations());
+        var person = personRepository.saveAndFlush(personEntityRepositoryIntTestDataFactory.buildPersonWithAllAssociations());
         testEntityManager.clear();
         return person;
     }
@@ -180,14 +176,13 @@ public abstract class PersonEntityRepositoryBaseIntTest {
 
     @Before
     public void setUp() {
-        var repositoryReferenceDataFactory = new RepositoryReferenceDataFactory(actionRepository, stateRepository, roleRepository, countryRepository);
-        testDataFactory = new TestDataFactory(repositoryReferenceDataFactory);
+        personEntityRepositoryIntTestDataFactory = new PersonEntityRepositoryIntTestDataFactory(countryRepository, roleRepository, stateRepository);
     }
 
     @Test
     public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        var expectedPerson = testDataFactory.buildPersonWithAllAssociations();
+        var expectedPerson = personEntityRepositoryIntTestDataFactory.buildPersonWithAllAssociations();
 
         // When
         personRepository.save(expectedPerson);

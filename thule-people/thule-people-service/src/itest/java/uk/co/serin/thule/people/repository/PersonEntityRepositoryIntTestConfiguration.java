@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.util.Optional;
 
 @EnableJpaAuditing
-public class RepositoryIntTestConfiguration {
+public class PersonEntityRepositoryIntTestConfiguration {
     private static final String MOCK_USERS_NAME = "user";
 
     @Bean

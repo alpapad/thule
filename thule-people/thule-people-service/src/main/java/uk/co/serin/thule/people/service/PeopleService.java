@@ -6,15 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
 import uk.co.serin.thule.people.domain.model.state.ActionCode;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,34 +22,22 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class PeopleService {
     public void disable(PersonEntity personEntity) {
-        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISABLE)) {
-            throw new PersonInvalidStateException(personEntity);
-        }
-
-        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_DISABLE);
-        personEntity.setState(personViewAction.getNextState());
+        updateStateWithNextState(personEntity, ActionCode.PERSON_DISABLE);
     }
 
-    private Map<ActionCode, ActionEntity> getActionsByCode(Set<ActionEntity> actionEntities) {
-        return actionEntities.stream().collect(Collectors.toMap(ActionEntity::getCode, Function.identity()));
+    private void updateStateWithNextState(PersonEntity personEntity, ActionCode actionCode) {
+        var actionToApply = personEntity.getState().getActions().stream().filter(actionEntity -> actionEntity.getCode() == actionCode).findFirst()
+                                        .orElseThrow(() -> new PersonInvalidStateException(personEntity));
+
+        personEntity.setState(actionToApply.getNextState());
     }
 
     public void discard(PersonEntity personEntity) {
-        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_DISCARD)) {
-            throw new PersonInvalidStateException(personEntity);
-        }
-
-        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_DISCARD);
-        personEntity.setState(personViewAction.getNextState());
+        updateStateWithNextState(personEntity, ActionCode.PERSON_DISCARD);
     }
 
     public void enable(PersonEntity personEntity) {
-        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_ENABLE)) {
-            throw new PersonInvalidStateException(personEntity);
-        }
-
-        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_ENABLE);
-        personEntity.setState(personViewAction.getNextState());
+        updateStateWithNextState(personEntity, ActionCode.PERSON_ENABLE);
     }
 
     public boolean isExpired(PersonEntity personEntity) {
@@ -66,17 +49,6 @@ public class PeopleService {
     }
 
     public void recover(PersonEntity personEntity) {
-        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_RECOVER)) {
-            throw new PersonInvalidStateException(personEntity);
-        }
-
-        var personViewAction = getActionsByCode(personEntity.getState().getActions()).get(ActionCode.PERSON_RECOVER);
-        personEntity.setState(personViewAction.getNextState());
-    }
-
-    public void update(PersonEntity personEntity) {
-        if (!getActionsByCode(personEntity.getState().getActions()).containsKey(ActionCode.PERSON_UPDATE)) {
-            throw new PersonInvalidStateException(personEntity);
-        }
+        updateStateWithNextState(personEntity, ActionCode.PERSON_RECOVER);
     }
 }
