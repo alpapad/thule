@@ -7,4 +7,5 @@ import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
 
 @RepositoryRestResource
 public interface CountryRepository extends PagingAndSortingRepository<CountryEntity, Long> {
+    CountryEntity findByIsoCodeThreeCharacters(String isoCodeThreeCharacters);
 }
