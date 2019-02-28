@@ -24,12 +24,12 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class PersonEntityRepositoryIntTestDataFactory {
+class PersonEntityRepositoryIntTestHelper {
     private CountryRepository countryRepository;
     private RoleRepository roleRepository;
     private StateRepository stateRepository;
 
-    PersonEntityRepositoryIntTestDataFactory(CountryRepository countryRepository, RoleRepository roleRepository, StateRepository stateRepository) {
+    PersonEntityRepositoryIntTestHelper(CountryRepository countryRepository, RoleRepository roleRepository, StateRepository stateRepository) {
         this.countryRepository = countryRepository;
         this.roleRepository = roleRepository;
         this.stateRepository = stateRepository;

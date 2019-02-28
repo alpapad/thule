@@ -46,7 +46,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private PersonEntityRepositoryIntTestDataFactory personEntityRepositoryIntTestDataFactory;
+    private PersonEntityRepositoryIntTestHelper personEntityRepositoryIntTestHelper;
     @Autowired
     private TestEntityManager testEntityManager;
 
@@ -63,7 +63,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     private PersonEntity createAndPersistPerson() {
-        var person = personRepository.saveAndFlush(personEntityRepositoryIntTestDataFactory.buildPersonWithAllAssociations());
+        var person = personRepository.saveAndFlush(personEntityRepositoryIntTestHelper.buildPersonWithAllAssociations());
         testEntityManager.clear();
         return person;
     }
@@ -176,13 +176,13 @@ public abstract class PersonEntityRepositoryBaseIntTest {
 
     @Before
     public void setUp() {
-        personEntityRepositoryIntTestDataFactory = new PersonEntityRepositoryIntTestDataFactory(countryRepository, roleRepository, stateRepository);
+        personEntityRepositoryIntTestHelper = new PersonEntityRepositoryIntTestHelper(countryRepository, roleRepository, stateRepository);
     }
 
     @Test
     public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
-        var expectedPerson = personEntityRepositoryIntTestDataFactory.buildPersonWithAllAssociations();
+        var expectedPerson = personEntityRepositoryIntTestHelper.buildPersonWithAllAssociations();
 
         // When
         personRepository.save(expectedPerson);
