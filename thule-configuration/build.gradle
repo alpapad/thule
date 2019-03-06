@@ -82,7 +82,7 @@ project("thule-configuration-service") {
     // Dependencies
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Greenwich.RELEASE")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR1")
         }
     }
 
