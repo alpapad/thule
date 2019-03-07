@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import uk.co.serin.thule.repository.mongodb.domain.PersonEntity;
+import uk.co.serin.thule.repository.mongodb.domain.entity.PersonEntity;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 

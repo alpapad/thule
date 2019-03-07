@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.email.service.EmailService;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 

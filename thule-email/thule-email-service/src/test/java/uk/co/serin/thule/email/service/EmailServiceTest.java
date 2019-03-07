@@ -9,8 +9,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import uk.co.serin.thule.email.domain.Attachment;
-import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.email.domain.model.Attachment;
+import uk.co.serin.thule.email.domain.model.Email;
 
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;

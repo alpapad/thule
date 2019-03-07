@@ -1,4 +1,4 @@
-package uk.co.serin.thule.email.domain;
+package uk.co.serin.thule.email.domain.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

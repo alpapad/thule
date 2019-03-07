@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
 import java.util.concurrent.Future;

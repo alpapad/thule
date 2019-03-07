@@ -1,4 +1,4 @@
-package uk.co.serin.thule.email.domain;
+package uk.co.serin.thule.email.domain.model;
 
 import uk.co.serin.thule.utils.validator.PatternJava8;
 

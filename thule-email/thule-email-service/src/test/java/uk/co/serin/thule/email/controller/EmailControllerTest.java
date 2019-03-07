@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.co.serin.thule.email.domain.Email;
+import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.email.service.EmailService;
 
 import static org.assertj.core.api.Assertions.assertThat;
