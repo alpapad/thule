@@ -1,5 +1,6 @@
 package uk.co.serin.thule.utils.utils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
@@ -121,5 +122,11 @@ public final class RandomUtils {
         }
 
         return randomString.toString();
+    }
+
+    public static BigDecimal generateRandomBigDecimalFromRange(BigDecimal min, BigDecimal max) {
+        var range = max.subtract(min);
+        var multiplyFactor = BigDecimal.valueOf(Math.random());
+        return min.add(range.multiply(multiplyFactor));
     }
 }

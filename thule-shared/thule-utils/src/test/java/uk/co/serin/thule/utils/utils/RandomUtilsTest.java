@@ -3,6 +3,7 @@ package uk.co.serin.thule.utils.utils;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -90,6 +91,20 @@ public class RandomUtilsTest {
     @Test
     public void generate_unique_random_string_with_default_maximum_length_is_not_greater_than_that_length() {
         assertThat(RandomUtils.generateUniqueRandomString().length()).isLessThanOrEqualTo(RandomUtils.RANDOM_STRING_DEFAULT_MAX_LENGTH);
+    }
+
+    @Test
+    public void generate_random_big_decimal_from_range_is_within_defined_range() {
+        // Given
+        var minBigDecimal = BigDecimal.valueOf(10L);
+        var maxBigDecimal = BigDecimal.valueOf(100L);
+
+        // When
+        var randomBigDecimalFromRange = RandomUtils.generateRandomBigDecimalFromRange(minBigDecimal, maxBigDecimal);
+
+        // Then
+        assertThat(randomBigDecimalFromRange).isNotNull();
+        assertThat(randomBigDecimalFromRange).isBetween(minBigDecimal, maxBigDecimal);
     }
 
     @Test
