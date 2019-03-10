@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
@@ -36,7 +35,7 @@ public class PerformanceTestExecutor {
     private Duration timeLimit = Duration.ofMinutes(1);
 
     public OAuth2RestTemplate createOAuth2RestTemplate(long userId) {
-        OAuth2AccessToken jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
+        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 "username", "password", userId, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
                 "gmjtdvNVmQRz8bzw6ae");
 
@@ -91,7 +90,7 @@ public class PerformanceTestExecutor {
 
             var elapsedTimeInSecondsSinceStartOfTest = Duration.between(performanceTestStartTime, LocalDateTime.now()).getSeconds();
             var processRatePerSecond = (double) numberOfExecutionsCompleted / Math.max(1, elapsedTimeInSecondsSinceStartOfTest);
-            String processingRatePerSecondFormatted = String.format("%.2f", processRatePerSecond);
+            var processingRatePerSecondFormatted = String.format("%.2f", processRatePerSecond);
             logger.trace("Average processing rate (since start of test): {} per second", processingRatePerSecondFormatted);
 
             var averageResponseTimeInMillisSinceLastLogMessage =
@@ -102,7 +101,7 @@ public class PerformanceTestExecutor {
             var elapsedTimeInSecondsSinceLastLogMessage = Duration.between(lastLogMessageTime, LocalDateTime.now()).getSeconds();
             var processRatePerSecondSinceLastLogMessage =
                     (double) numberOfExecutionsCompletedSinceLastLogMessage / Math.max(1, elapsedTimeInSecondsSinceLastLogMessage);
-            String processingRatePerSecondFormattedSinceLastLogMessage = String.format("%.2f", processRatePerSecondSinceLastLogMessage);
+            var processingRatePerSecondFormattedSinceLastLogMessage = String.format("%.2f", processRatePerSecondSinceLastLogMessage);
 
             logger.trace("Average processing rate (in the last {} seconds): {} per second\n", this.statisticsLoggingInterval.toSeconds(),
                     processingRatePerSecondFormattedSinceLastLogMessage);

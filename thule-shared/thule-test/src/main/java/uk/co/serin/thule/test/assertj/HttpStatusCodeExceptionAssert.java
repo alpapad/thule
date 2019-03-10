@@ -16,17 +16,18 @@ public class HttpStatusCodeExceptionAssert extends AbstractAssert<HttpStatusCode
         super(actual, HttpStatusCodeExceptionAssert.class);
     }
 
-    public HttpStatusCodeExceptionAssert hasMessageErrorAttribute(String expected) {
-
-        var actualAttribute = getErrorAttributes().get("message");
-        Assert.notNull(actualAttribute, "'message' error attribute cannot be null");
-        if (!actualAttribute.equals(expected)) {
-            throw new AssertionError(String.format("Expected 'message' error attribute to be <%s> but was <%s>", actualAttribute, expected));
+    public HttpStatusCodeExceptionAssert hasMessageErrorAttribute(String expectedMessageErrorMessageAttribute) {
+        var actualMessageErrorAttribute = getErrorAttributes().get("message");
+        Assert.notNull(actualMessageErrorAttribute, "'message' error attribute cannot be null");
+        if (!actualMessageErrorAttribute.equals(expectedMessageErrorMessageAttribute)) {
+            throw new AssertionError(String.format("Expected 'message' error attribute to be [%s] but was [%s]", actualMessageErrorAttribute,
+                    expectedMessageErrorMessageAttribute));
         }
 
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, String> getErrorAttributes() {
         try {
             return new ObjectMapper().readValue(actual.getResponseBodyAsString(), HashMap.class);

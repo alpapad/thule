@@ -7,7 +7,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.NeverRetryPolicy;
@@ -19,8 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+
+import lombok.NonNull;
 
 @SuppressWarnings("squid:S2160") // Suppress Subclasses that add fields should override "equals"
 public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorAssert, ActuatorUri> {
@@ -28,21 +28,19 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
     private RestTemplate restTemplate = new RestTemplate();
     private RetryTemplate retryTemplate = new RetryTemplate();
 
-    public SpringBootActuatorAssert(ActuatorUri actual) {
+    public SpringBootActuatorAssert(@NonNull ActuatorUri actual) {
         super(actual, SpringBootActuatorAssert.class);
 
         retryTemplate.setRetryPolicy(new NeverRetryPolicy());
     }
 
-    public static SpringBootActuatorAssert assertThat(ActuatorUri actual) {
+    public static SpringBootActuatorAssert assertThat(@NonNull ActuatorUri actual) {
         return new SpringBootActuatorAssert(actual);
     }
 
-    public SpringBootActuatorAssert hasHealthStatus(Status status) {
-        Assert.notNull(status, "status cannot be null");
-
+    public SpringBootActuatorAssert hasHealthStatus(@NonNull Status status) {
         try {
-            ResponseEntity<Map<String, Object>> responseEntity = getResponseEntity(actual.getUri());
+            var responseEntity = getResponseEntity(actual.getUri());
             if (!responseEntity.getBody().get(STATUS).equals(status.getCode())) {
                 throw new AssertionError(
                         String.format("Expected actuator's health status to be <%s> but was <%s>", status.getCode(), responseEntity.getBody().get(STATUS)));
@@ -54,12 +52,10 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
     }
 
     private ResponseEntity<Map<String, Object>> getResponseEntity(URI uri) {
-        Assert.notNull(uri, "uri cannot be null");
-
         return retryTemplate.execute(context -> {
-            ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+            var responseType = new ParameterizedTypeReference<Map<String, Object>>() {
             };
-            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, HttpEntity.EMPTY, responseType);
+            var responseEntity = restTemplate.exchange(uri, HttpMethod.GET, HttpEntity.EMPTY, responseType);
             if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
                 throw new IllegalStateException(String.format("Response from %s returned was not successful [%s]", uri, responseEntity.getStatusCode()));
             }
@@ -67,10 +63,8 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         });
     }
 
-    public SpringBootActuatorAssert hasHttpStatus(HttpStatus httpStatus) {
-        Assert.notNull(httpStatus, "httpStatus cannot be null");
-
-        ResponseEntity<Map<String, Object>> responseEntity = getHttpResponseEntity(actual.getUri());
+    public SpringBootActuatorAssert hasHttpStatus(@NonNull HttpStatus httpStatus) {
+        var responseEntity = getHttpResponseEntity(actual.getUri());
         if (!responseEntity.getStatusCode().equals(httpStatus)) {
             throw new AssertionError(String.format("Expected actuator's http status to be <%s> but was <%s>", httpStatus, responseEntity.getStatusCode()));
         }
@@ -78,28 +72,23 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
     }
 
     private ResponseEntity<Map<String, Object>> getHttpResponseEntity(URI uri) {
-        Assert.notNull(uri, "uri cannot be null");
-
         return retryTemplate.execute(context -> {
-            ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String, Object>>() {
+            var responseType = new ParameterizedTypeReference<Map<String, Object>>() {
             };
             return restTemplate.exchange(uri, HttpMethod.GET, HttpEntity.EMPTY, responseType);
         });
     }
 
-    public SpringBootActuatorAssert usingRestTemplate(RestTemplate restTemplate) {
-        Assert.notNull(restTemplate, "restTemplate cannot be null");
-
+    public SpringBootActuatorAssert usingRestTemplate(@NonNull RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
 
         return this;
     }
 
-    public SpringBootActuatorAssert waitingForMaximum(Duration duration) {
-        Assert.notNull(duration, "duration cannot be null");
+    public SpringBootActuatorAssert waitingForMaximum(@NonNull Duration duration) {
         Assert.isTrue(duration.getSeconds() > 0, "timeout must be positive");
 
-        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
+        var retryPolicy = new TimeoutRetryPolicy();
         retryPolicy.setTimeout(duration.getSeconds() * 1000);
 
         retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
@@ -113,7 +102,7 @@ public class SpringBootActuatorAssert extends AbstractAssert<SpringBootActuatorA
         Assert.hasLength(password, "password cannot be empty");
 
         // Add basic authentication credentials
-        List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
+        var interceptors = restTemplate.getInterceptors();
         interceptors = new ArrayList<>(interceptors);
         interceptors.removeIf(BasicAuthenticationInterceptor.class::isInstance);
         interceptors.add(new BasicAuthenticationInterceptor(username, password));
