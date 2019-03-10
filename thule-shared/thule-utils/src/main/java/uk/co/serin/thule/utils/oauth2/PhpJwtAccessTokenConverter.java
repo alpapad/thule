@@ -12,10 +12,10 @@ public class PhpJwtAccessTokenConverter extends DefaultAccessTokenConverter {
 
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
-        Map<String, ?> defaultMap = super.convertAccessToken(token, authentication);
+        var defaultMap = (Map<String, Object>) super.convertAccessToken(token, authentication);
         if (authentication.getUserAuthentication().getDetails() instanceof UserAuthenticationDetails) {
-            UserAuthenticationDetails userAuthenticationDetails = (UserAuthenticationDetails) authentication.getUserAuthentication().getDetails();
-            ((Map<String, Object>) defaultMap).put(PHP_USERID, String.valueOf(userAuthenticationDetails.getUserId()));
+            var userAuthenticationDetails = (UserAuthenticationDetails) authentication.getUserAuthentication().getDetails();
+            defaultMap.put(PHP_USERID, String.valueOf(userAuthenticationDetails.getUserId()));
         }
         return defaultMap;
     }

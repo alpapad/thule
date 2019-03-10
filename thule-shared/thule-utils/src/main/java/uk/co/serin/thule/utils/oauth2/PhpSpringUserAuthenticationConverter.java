@@ -24,29 +24,29 @@ public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticat
     @Override
     public Authentication extractAuthentication(Map<String, ?> map) {
         if (map.containsKey(SpringJwtAccessTokenConverter.JAVA_USERNAME)) {
-            Authentication authentication = super.extractAuthentication(map);
+            var authentication = super.extractAuthentication(map);
 
             if (map.containsKey(SpringJwtAccessTokenConverter.JAVA_USERID)) {
-                String userId = map.get(SpringJwtAccessTokenConverter.JAVA_USERID).toString();
-                UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(userId));
+                var userId = map.get(SpringJwtAccessTokenConverter.JAVA_USERID).toString();
+                var userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(userId));
                 ((UsernamePasswordAuthenticationToken) authentication).setDetails(userAuthenticationDetails);
             }
 
             return authentication;
         } else {
             //Extracts data map, assigns the principal and creates a new map in a Spring valid context.
-            Map<String, Object> data = createDataStructure(map);
-            String principal = data.containsKey(SpringJwtAccessTokenConverter.PHP_USERNAME) ? data.get(SpringJwtAccessTokenConverter.PHP_USERNAME).toString() : "unavailable";
+            var data = createDataStructure(map);
+            var principal = data.containsKey(SpringJwtAccessTokenConverter.PHP_USERNAME) ? data.get(SpringJwtAccessTokenConverter.PHP_USERNAME).toString() : "unavailable";
             Map<String, Object> mapWithUserName = Collections.singletonMap(SpringJwtAccessTokenConverter.JAVA_USERNAME, principal);
 
             //Creates authentication object
-            UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) super.extractAuthentication(mapWithUserName);
+            var authentication = (UsernamePasswordAuthenticationToken) super.extractAuthentication(mapWithUserName);
 
             if (!data.containsKey(SpringJwtAccessTokenConverter.PHP_USERID)) {
                 throw new UserIdNotFoundException("token does not contain userId");
             }
 
-            UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(data.get(SpringJwtAccessTokenConverter.PHP_USERID).toString()));
+            var userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(data.get(SpringJwtAccessTokenConverter.PHP_USERID).toString()));
             authentication.setDetails(userAuthenticationDetails);
             return authentication;
         }

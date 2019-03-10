@@ -17,10 +17,10 @@ public class SpringJwtAccessTokenConverter extends DefaultAccessTokenConverter {
 
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
-        Map<String, ?> defaultMap = super.convertAccessToken(token, authentication);
+        var defaultMap = (Map<String, Object>) super.convertAccessToken(token, authentication);
         if (authentication.getDetails() instanceof UserAuthenticationDetails) {
-            UserAuthenticationDetails userAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
-            ((Map<String, Object>) defaultMap).put(JAVA_USERID, String.valueOf(userAuthenticationDetails.getUserId()));
+            var userAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
+            defaultMap.put(JAVA_USERID, String.valueOf(userAuthenticationDetails.getUserId()));
         }
         return defaultMap;
     }

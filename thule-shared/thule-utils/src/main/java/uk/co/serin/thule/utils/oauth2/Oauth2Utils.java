@@ -16,24 +16,24 @@ public interface Oauth2Utils {
                                                         Collection<? extends GrantedAuthority> grantedAuthorities,
                                                         String clientId, String signingKey) {
         // Create OAuth2Authentication
-        OAuth2Request oAuth2Request = new OAuth2Request(null, clientId, null,
+        var oAuth2Request = new OAuth2Request(null, clientId, null,
                 true, null, null, null, null, null);
-        UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
+        var userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
 
         //Add UserAuthenticationDetails
-        UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(userId);
+        var userAuthenticationDetails = new UserAuthenticationDetails(userId);
         userAuthentication.setDetails(userAuthenticationDetails);
 
-        OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
+        var oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
         oAuth2Authentication.setDetails(userAuthenticationDetails);
 
         // Create OAuth2AccessToken
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        var defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(new InMemoryTokenStore());
-        OAuth2AccessToken oAuth2AccessToken = defaultTokenServices.createAccessToken(oAuth2Authentication);
+        var oAuth2AccessToken = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
         // Create JwtAccessTokenConverter
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        var jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setSigningKey(signingKey);
         jwtAccessTokenConverter.setAccessTokenConverter(new SpringJwtAccessTokenConverter());
 
