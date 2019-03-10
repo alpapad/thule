@@ -9,7 +9,6 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
@@ -17,10 +16,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PerformanceTestExecutorTest {
@@ -33,12 +32,12 @@ public class PerformanceTestExecutorTest {
     private PerformanceTestExecutor sut;
 
     @Test
-    public void given_a_userid_a_oauth2resttemplate_is_returned() {
+    public void given_a_userid_then_a_oauth2_rest_template_is_returned() {
         // Given
-        long userId = 12345678L;
+        var userId = 12345678L;
 
         // When
-        OAuth2RestTemplate oAuth2RestTemplate = sut.createOAuth2RestTemplate(userId);
+        var oAuth2RestTemplate = sut.createOAuth2RestTemplate(userId);
 
         // Then
         assertThat(oAuth2RestTemplate).isNotNull();
@@ -56,8 +55,8 @@ public class PerformanceTestExecutorTest {
         sut.setTimeLimit(Duration.ofMillis(500));
         sut.setStatisticsLoggingInterval(Duration.ofMillis(10));
 
-        String exceptionMessage = "Performance Test Has Failed!";
-        IllegalStateException illegalStateException = new IllegalStateException(exceptionMessage);
+        var exceptionMessage = "Performance Test Has Failed!";
+        var illegalStateException = new IllegalStateException(exceptionMessage);
 
         ReflectionTestUtils.setField(sut, "logger", logger);
 
@@ -88,7 +87,7 @@ public class PerformanceTestExecutorTest {
     }
 
     @Test
-    public void when_execution_service_termination_is_interrupted_then_thread_is_interrupted_without_an_exception() throws InterruptedException {
+    public void when_execution_service_termination_is_interrupted_then_thread_is_interrupted() throws InterruptedException {
         // Given
         sut.setNumberOfThreads(1);
         sut.setTimeLimit(Duration.ofMillis(100));
@@ -101,6 +100,6 @@ public class PerformanceTestExecutorTest {
         sut.executeConcurrentThreads(performanceTest());
 
         // Then
-        assertThat(Thread.currentThread().interrupted()).isTrue();
+        assertThat(Thread.interrupted()).isTrue();
     }
 }

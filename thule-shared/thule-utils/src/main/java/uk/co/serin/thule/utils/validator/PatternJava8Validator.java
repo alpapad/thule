@@ -1,7 +1,6 @@
 package uk.co.serin.thule.utils.validator;
 
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -13,10 +12,8 @@ public class PatternJava8Validator implements ConstraintValidator<PatternJava8, 
 
     @Override
     public void initialize(PatternJava8 parameters) {
-        int intFlag = 0;
-
         try {
-            pattern = Pattern.compile(parameters.regexp(), intFlag);
+            pattern = Pattern.compile(parameters.regexp());
         } catch (PatternSyntaxException e) {
             throw new IllegalArgumentException(e);
         }
@@ -27,7 +24,7 @@ public class PatternJava8Validator implements ConstraintValidator<PatternJava8, 
         if (value == null) {
             return true;
         }
-        Matcher matcher = pattern.matcher(value);
+        var matcher = pattern.matcher(value);
         return matcher.matches();
     }
 }

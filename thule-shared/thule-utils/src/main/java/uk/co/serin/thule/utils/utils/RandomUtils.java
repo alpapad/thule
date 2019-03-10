@@ -21,7 +21,7 @@ public final class RandomUtils {
     }
 
     public static <T extends Enum> T generateRandomEnum(Class<T> enumeration) {
-        final T[] enumConstants = enumeration.getEnumConstants();
+        var enumConstants = enumeration.getEnumConstants();
         return enumConstants[ThreadLocalRandom.current().nextInt(enumConstants.length)];
     }
 
@@ -30,14 +30,14 @@ public final class RandomUtils {
     }
 
     public static LocalDate generateUniqueRandomDateBetween(LocalDate afterDate, LocalDate beforeDate) {
-        long minimum = afterDate.plusDays(1).toEpochDay();
-        long maximum = beforeDate.toEpochDay();
+        var minimum = afterDate.plusDays(1).toEpochDay();
+        var maximum = beforeDate.toEpochDay();
 
         LocalDate randomDate = null;
-        boolean uniqueFound = false;
+        var uniqueFound = false;
 
         while (!uniqueFound) {
-            long randomEpochDay = ThreadLocalRandom.current().nextLong(minimum, maximum);
+            var randomEpochDay = ThreadLocalRandom.current().nextLong(minimum, maximum);
             randomDate = LocalDate.ofEpochDay(randomEpochDay);
             uniqueFound = RANDOM_DATES.add(randomDate);
         }
@@ -57,8 +57,8 @@ public final class RandomUtils {
     }
 
     public static int generateUniqueRandomInteger() {
-        int randomInt = 0;
-        boolean uniqueFound = false;
+        var randomInt = 0;
+        var uniqueFound = false;
 
         while (!uniqueFound) {
             randomInt = ThreadLocalRandom.current().nextInt();
@@ -69,7 +69,7 @@ public final class RandomUtils {
 
     public static long generateUniqueRandomLong() {
         long randomLong = 0;
-        boolean uniqueFound = false;
+        var uniqueFound = false;
 
         while (!uniqueFound) {
             randomLong = ThreadLocalRandom.current().nextLong();
@@ -87,12 +87,12 @@ public final class RandomUtils {
     }
 
     public static String generateUniqueFixedLengthRandomNumericString(int length) {
-        StringBuilder randomString = new StringBuilder();
-        boolean uniqueFound = false;
+        var randomString = new StringBuilder();
+        var uniqueFound = false;
 
         while (!uniqueFound) {
             while (randomString.length() <= length) {
-                int randomIndex = ThreadLocalRandom.current().nextInt(RAMDOM_NUMERIC_CHARACTERS.length());
+                var randomIndex = ThreadLocalRandom.current().nextInt(RAMDOM_NUMERIC_CHARACTERS.length());
                 randomString.append(RAMDOM_NUMERIC_CHARACTERS.charAt(randomIndex));
             }
             uniqueFound = RANDOM_STRINGS.add(randomString.toString());
@@ -110,12 +110,12 @@ public final class RandomUtils {
     }
 
     public static String generateUniqueFixedLengthRandomString(int length) {
-        StringBuilder randomString = new StringBuilder();
-        boolean uniqueFound = false;
+        var randomString = new StringBuilder();
+        var uniqueFound = false;
 
         while (!uniqueFound) {
             while (randomString.length() <= length) {
-                int randomIndex = ThreadLocalRandom.current().nextInt(RAMDOM_STRING_CHARACTERS.length());
+                var randomIndex = ThreadLocalRandom.current().nextInt(RAMDOM_STRING_CHARACTERS.length());
                 randomString.append(RAMDOM_STRING_CHARACTERS.charAt(randomIndex));
             }
             uniqueFound = RANDOM_STRINGS.add(randomString.toString());
@@ -126,7 +126,7 @@ public final class RandomUtils {
 
     public static BigDecimal generateRandomBigDecimalFromRange(BigDecimal min, BigDecimal max) {
         var range = max.subtract(min);
-        var multiplyFactor = BigDecimal.valueOf(Math.random());
-        return min.add(range.multiply(multiplyFactor));
+        var multiplicand = BigDecimal.valueOf(Math.random());
+        return min.add(range.multiply(multiplicand));
     }
 }

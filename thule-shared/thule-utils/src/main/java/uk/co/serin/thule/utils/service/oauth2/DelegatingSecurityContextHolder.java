@@ -32,10 +32,10 @@ public class DelegatingSecurityContextHolder {
     }
 
     public UserAuthenticationDetails getUserAuthenticationDetails() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
+        var securityContext = SecurityContextHolder.getContext();
         if (securityContext.getAuthentication() instanceof  OAuth2Authentication) {
-            OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) securityContext.getAuthentication();
-            Object details = oAuth2Authentication.getUserAuthentication().getDetails();
+            var oAuth2Authentication = (OAuth2Authentication) securityContext.getAuthentication();
+            var details = oAuth2Authentication.getUserAuthentication().getDetails();
             if (details instanceof  UserAuthenticationDetails) {
                 return (UserAuthenticationDetails) details;
             } else {

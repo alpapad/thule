@@ -27,7 +27,7 @@ public class SnakeCaseOverridableImplicitNamingStrategy extends SpringImplicitNa
     private static final long serialVersionUID = -2469747889245269145L;
     private CamelCaseToSnakeCaseConverter camelCaseToSnakeCaseConverter;
 
-    //Parameterless constructor is required for the hibernate to instantiate the strategy outside of the Spring context
+    //No argument constructor is required for the hibernate to instantiate the strategy outside of the Spring context
     public SnakeCaseOverridableImplicitNamingStrategy() {
         camelCaseToSnakeCaseConverter = new CamelCaseToSnakeCaseConverter();
     }

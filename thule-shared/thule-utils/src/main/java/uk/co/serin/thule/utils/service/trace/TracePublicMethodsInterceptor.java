@@ -6,7 +6,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
@@ -36,8 +35,8 @@ public class TracePublicMethodsInterceptor {
     }
 
     private Object trace(Object target, Signature signature, Object[] args, PerformanceTraceCallback performanceTraceCallback) {
-        String methodName = signature.getName();
-        Class returnType = ((MethodSignature) signature).getReturnType();
+        var methodName = signature.getName();
+        var returnType = ((MethodSignature) signature).getReturnType();
 
 
         Class loggingClass;
@@ -46,22 +45,22 @@ public class TracePublicMethodsInterceptor {
         } else {
             loggingClass = target.getClass();
         }
-        Logger logger = LoggerFactory.getLogger(loggingClass);
-        StringBuilder parameters = new StringBuilder();
-        for (int index = 0; index < args.length; index++) {
-            Object arg = args[index];
+        var logger = LoggerFactory.getLogger(loggingClass);
+        var parameters = new StringBuilder();
+        for (var index = 0; index < args.length; index++) {
+            var arg = args[index];
             parameters.append('[').append(arg).append((index == args.length - 1) ? ']' : "], ");
         }
-        String params = (parameters.length() == 0) ? "using no parameters" : "using parameters " + parameters;
+        var params = (parameters.length() == 0) ? "using no parameters" : "using parameters " + parameters;
         logger.trace("Entering [{}] with method name of [{}] {}", target, methodName, params);
 
-        long start = System.currentTimeMillis();
+        var start = System.currentTimeMillis();
         Object returnValue = null;
         try {
             returnValue = performanceTraceCallback.proceed();
         } finally {
-            long elapsed = System.currentTimeMillis() - start;
-            Object returnMessage = (returnType == Void.TYPE) ? "void" : returnValue;
+            var elapsed = System.currentTimeMillis() - start;
+            var returnMessage = (returnType == Void.TYPE) ? "void" : returnValue;
             logger.trace("Exiting [{}] with method name of [{}] returning [{}] in {} ms", target, methodName, returnMessage, elapsed);
         }
 

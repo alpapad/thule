@@ -9,18 +9,18 @@ public class DockerCompose {
     private final ProcessBuilder processBuilder;
     private Process dockerComposeUp;
 
-    public DockerCompose(String dockerComposeYmlFile) {
-        dockerComposeCommandPrefix = new String[]{"docker-compose", "-f", dockerComposeYmlFile};
-        processBuilder = new ProcessBuilder().inheritIO();
-    }
-
     public DockerCompose(String dockerComposeYmlFile, Map<String, String> environment) {
         this(dockerComposeYmlFile);
         processBuilder.environment().putAll(environment);
     }
 
+    public DockerCompose(String dockerComposeYmlFile) {
+        dockerComposeCommandPrefix = new String[]{"docker-compose", "-f", dockerComposeYmlFile};
+        processBuilder = new ProcessBuilder().inheritIO();
+    }
+
     public Process command(String... arguments) throws IOException {
-        String[] command = Stream.of(dockerComposeCommandPrefix, arguments).flatMap(Stream::of).toArray(String[]::new);
+        var command = Stream.of(dockerComposeCommandPrefix, arguments).flatMap(Stream::of).toArray(String[]::new);
         return processBuilder.command(command).start();
     }
 
@@ -30,8 +30,8 @@ public class DockerCompose {
     }
 
     public void down() throws IOException {
-        String[] command = Stream.of(dockerComposeCommandPrefix, new String[]{"down", "-v", "--remove-orphans"}).flatMap(Stream::of).toArray(String[]::new);
-        Process dockerComposeDown = processBuilder.command(command).start();
+        var command = Stream.of(dockerComposeCommandPrefix, new String[]{"down", "-v", "--remove-orphans"}).flatMap(Stream::of).toArray(String[]::new);
+        var dockerComposeDown = processBuilder.command(command).start();
         try {
             dockerComposeDown.waitFor();
         } catch (InterruptedException e) {
@@ -47,7 +47,7 @@ public class DockerCompose {
     }
 
     public void up() throws IOException {
-        String[] command = Stream.of(dockerComposeCommandPrefix, new String[]{"up"}).flatMap(Stream::of).toArray(String[]::new);
+        var command = Stream.of(dockerComposeCommandPrefix, new String[]{"up"}).flatMap(Stream::of).toArray(String[]::new);
         dockerComposeUp = processBuilder.command(command).start();
     }
 }

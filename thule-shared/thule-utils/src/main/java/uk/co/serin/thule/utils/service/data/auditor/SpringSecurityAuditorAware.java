@@ -1,7 +1,6 @@
 package uk.co.serin.thule.utils.service.data.auditor;
 
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -25,10 +24,10 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
 
-        Authentication authentication = delegatingSecurityContextHolder.getAuthentication();
+        var authentication = delegatingSecurityContextHolder.getAuthentication();
         Assert.notNull(authentication, NULL_AUTHENTICATION_MESSAGE);
 
-        String principalName = authentication.getName();
+        var principalName = authentication.getName();
         Assert.hasText(principalName, EMPTY_PRINCIPAL_MESSAGE);
 
         return Optional.of(principalName);
