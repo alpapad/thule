@@ -25,10 +25,10 @@ public class ThuleAssertionsTest {
 
     @Test
     public void when_asserting_for_http_status_code_exception_then_assert_instance_is_created() {
-        //When
+        // When
         var httpStatusCodeExceptionAssert = assertThat(httpStatusCodeException);
 
-        //Then
+        // Then
         assertThat(httpStatusCodeExceptionAssert).isNotNull();
     }
 }

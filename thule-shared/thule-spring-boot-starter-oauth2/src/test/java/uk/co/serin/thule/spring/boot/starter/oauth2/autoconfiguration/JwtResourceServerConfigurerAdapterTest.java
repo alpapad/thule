@@ -42,22 +42,22 @@ public class JwtResourceServerConfigurerAdapterTest {
 
     @Test
     public void configure_configures_token_services() {
-        //Given
+        // Given
 
-        //When
+        // When
         sut.configure(resourceServerSecurityConfigurer);
 
-        //Then
+        // Then
         verify(resourceServerSecurityConfigurer).tokenServices(any());
     }
 
     @Test
     public void configure_configures_token_servicess() throws Exception {
-        //Given
+        // Given
 
-        //When
+        // When
         sut.configure(httpSecurity);
 
-        //Then
+        // Then
     }
 }

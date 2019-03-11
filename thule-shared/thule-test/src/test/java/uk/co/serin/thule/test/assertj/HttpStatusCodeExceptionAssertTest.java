@@ -22,24 +22,24 @@ public class HttpStatusCodeExceptionAssertTest {
     @Test
     public void when_asserting_matching_message_error_attribute_then_it_succeeds() {
 
-        //Given
+        // Given
         var messageErrorAttribute = "hewkwhf";
         given(assertedInstance.getResponseBodyAsString()).willReturn(
                 "{\"message\" : \"" + messageErrorAttribute + "\"}");
 
-        //When
+        // When
         sut.hasMessageErrorAttribute(messageErrorAttribute);
     }
 
     @Test
     public void when_asserting_unmatched_message_error_attribute_then_assertion_exception_is_thrown() {
 
-        //Given
+        // Given
         var messageErrorAttribute = "hewkwhf";
         given(assertedInstance.getResponseBodyAsString()).willReturn(
                 "{\"message\" : \"" + messageErrorAttribute + "\"}");
 
-        //When
+        // When
         var thrown = catchThrowable(() -> sut.hasMessageErrorAttribute("some other"));
         Assertions.assertThat(thrown).isInstanceOf(AssertionError.class);
     }
@@ -47,10 +47,10 @@ public class HttpStatusCodeExceptionAssertTest {
     @Test
     public void when_asserting_message_error_from_incorrectly_formed_response_json_body_then_runtime_exception_is_thrown() {
 
-        //Given
+        // Given
         given(assertedInstance.getResponseBodyAsString()).willReturn("{");
 
-        //When
+        // When
         var thrown = catchThrowable(() -> sut.hasMessageErrorAttribute("some other"));
         Assertions.assertThat(thrown).isExactlyInstanceOf(IllegalStateException.class);
     }

@@ -21,13 +21,13 @@ public class Oauth2AutoConfigurationTest {
 
     @Test
     public void access_token_converter_is_configured() {
-        //Given
+        // Given
         given(oauth2Properties.getSigningKey()).willReturn("signingKey");
 
-        //When
+        // When
         AccessTokenConverter accessTokenConverter = sut.jwtAccessTokenConverter();
 
-        //Then
+        // Then
         assertThat(accessTokenConverter).isNotNull();
     }
 
@@ -44,25 +44,25 @@ public class Oauth2AutoConfigurationTest {
 
     @Test
     public void token_services_is_configured() {
-        //Given
+        // Given
         given(oauth2Properties.getSigningKey()).willReturn("signingKey");
 
-        //When
+        // When
         ResourceServerTokenServices resourceServerTokenServices = sut.defaultTokenServices();
 
-        //Then
+        // Then
         assertThat(resourceServerTokenServices).isNotNull();
     }
 
     @Test
     public void token_store_is_configured() {
-        //Given
+        // Given
         given(oauth2Properties.getSigningKey()).willReturn("signingKey");
 
-        //When
+        // When
         TokenStore tokenStore = sut.tokenStore();
 
-        //Then
+        // Then
         assertThat(tokenStore).isNotNull();
     }
 

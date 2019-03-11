@@ -59,11 +59,11 @@ public class ResourceServerIntTest {
 
     @Test
     public void when_authenticated_then_access_should_be_granted() {
-        //When
+        // When
         var responseEntity =
                 oAuth2RestTemplate.postForEntity(String.format("http://localhost:%s/hello", port), HttpEntity.EMPTY, String.class);
 
-        //Then
+        // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -123,10 +123,10 @@ public class ResourceServerIntTest {
 
     @Test
     public void when_not_authenticated_then_access_should_be_denied() {
-        //When
+        // When
         var responseEntity = testRestTemplate.postForEntity("/hello", HttpEntity.EMPTY, String.class);
 
-        //Then
+        // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
