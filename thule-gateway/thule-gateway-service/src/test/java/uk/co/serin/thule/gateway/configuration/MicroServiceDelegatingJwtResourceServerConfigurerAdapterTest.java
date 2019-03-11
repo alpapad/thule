@@ -30,7 +30,7 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
 
     @Test
     public void given_authentication_when_configuring_http_security_then_access_to_all_urls_is_allowed() throws Exception {
-        //Given
+        // Given
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.requestMatchers(any())).willReturn(authorizedUrl);
         given(expressionInterceptUrlRegistry.antMatchers(any(), any())).willReturn(authorizedUrl);
@@ -41,16 +41,16 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
         given(httpBasicConfigurer.disable()).willReturn(httpSecurity);
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
 
-        //When
+        // When
         sut.configure(httpSecurity);
 
-        //Then
+        // Then
         verify(expressionInterceptUrlRegistry).antMatchers("/**");
     }
 
     @Test
     public void given_no_authentication_when_configuring_http_security_then_access_to_gohenry_services_is_allowed() throws Exception {
-        //Given
+        // Given
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.requestMatchers(any())).willReturn(authorizedUrl);
         given(expressionInterceptUrlRegistry.antMatchers(any(), any())).willReturn(authorizedUrl);
@@ -61,16 +61,16 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
         given(httpBasicConfigurer.disable()).willReturn(httpSecurity);
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
 
-        //When
+        // When
         sut.configure(httpSecurity);
 
-        //Then
+        // Then
         verify(expressionInterceptUrlRegistry).antMatchers("/thule-*-service/**");
     }
 
     @Test
     public void given_no_authentication_when_configuring_http_security_then_access_to_the_actuator_is_allowed() throws Exception {
-        //Given
+        // Given
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.requestMatchers(any())).willReturn(authorizedUrl);
         given(expressionInterceptUrlRegistry.antMatchers(any(), any())).willReturn(authorizedUrl);
@@ -81,16 +81,16 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
         given(httpBasicConfigurer.disable()).willReturn(httpSecurity);
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
 
-        //When
+        // When
         sut.configure(httpSecurity);
 
-        //Then
+        // Then
         verify(expressionInterceptUrlRegistry).antMatchers("/*/actuator/**");
     }
 
     @Test
     public void given_no_authentication_when_configuring_http_security_then_options_http_method_is_allowed_for_all_urls() throws Exception {
-        //Given
+        // Given
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.requestMatchers(any())).willReturn(authorizedUrl);
         given(expressionInterceptUrlRegistry.antMatchers(any(), any())).willReturn(authorizedUrl);
@@ -101,10 +101,10 @@ public class MicroServiceDelegatingJwtResourceServerConfigurerAdapterTest {
         given(httpBasicConfigurer.disable()).willReturn(httpSecurity);
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
 
-        //When
+        // When
         sut.configure(httpSecurity);
 
-        //Then
+        // Then
         verify(expressionInterceptUrlRegistry).antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

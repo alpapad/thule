@@ -52,7 +52,7 @@ public class ThuleServicesHealthIndicatorTest {
 
     @Test
     public void when_all_microservices_are_up_then_health_status_should_be_up() throws Exception {
-        //Given
+        // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
         var serviceInstances = Collections.singletonList(serviceInstance);
 
@@ -63,7 +63,7 @@ public class ThuleServicesHealthIndicatorTest {
         given(futureStatus.get()).willReturn(Status.UP);
         given(builder.up()).willReturn(builder);
 
-        //When
+        // When
         sut.doHealthCheck(builder);
 
         // Then
@@ -72,7 +72,7 @@ public class ThuleServicesHealthIndicatorTest {
 
     @Test
     public void when_an_execution_exception_then_health_status_should_be_down() throws ExecutionException, InterruptedException {
-        //Given
+        // Given
         var serviceIds = Stream.of("Instanceone").collect(Collectors.toList());
         var serviceInstances = Collections.singletonList(serviceInstance);
 
@@ -83,7 +83,7 @@ public class ThuleServicesHealthIndicatorTest {
         given(futureStatus.get()).willThrow(ExecutionException.class);
         given(builder.down()).willReturn(builder);
 
-        //When
+        // When
         sut.doHealthCheck(builder);
 
         // Then
@@ -92,26 +92,26 @@ public class ThuleServicesHealthIndicatorTest {
 
     @Test
     public void when_no_microservice_instances_exist_then_an_illegal_state_exception_is_thrown() throws InterruptedException {
-        //Given
+        // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
         var serviceInstances = Collections.<ServiceInstance>emptyList();
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
 
-        //When
+        // When
         try {
             sut.doHealthCheck(builder);
             fail();
         } catch (IllegalStateException e) {
-            //Then
+            // Then
             assertThat(e.getMessage()).isEqualTo("No instances of [Instanceone] have been registered with the discovery service");
         }
     }
 
     @Test
     public void when_one_microservice_is_down_then_health_status_should_be_down() throws Exception {
-        //Given
+        // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
         var serviceInstances = Collections.singletonList(serviceInstance);
 
@@ -122,16 +122,16 @@ public class ThuleServicesHealthIndicatorTest {
         given(futureStatus.get()).willReturn(Status.DOWN);
         given(builder.down()).willReturn(builder);
 
-        //When
+        // When
         sut.doHealthCheck(builder);
 
-        //Then
+        // Then
         verify(builder).down();
     }
 
     @Test
     public void when_one_microservice_is_down_then_other_microservices_futures_should_be_cancelled() throws Exception {
-        //Given
+        // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
         var serviceInstances = Collections.singletonList(serviceInstance);
 
@@ -142,10 +142,10 @@ public class ThuleServicesHealthIndicatorTest {
         given(futureStatus.get()).willReturn(Status.DOWN);
         given(builder.down()).willReturn(builder);
 
-        //When
+        // When
         sut.doHealthCheck(builder);
 
-        //Then
+        // Then
         verify(futureStatus).cancel(true);
     }
 }

@@ -35,7 +35,7 @@ public class ThuleServiveInstanceHealthIndicatorTest {
 
     @Test
     public void when_body_status_is_down_then_health_status_is_down() throws InterruptedException, ExecutionException {
-        //Given
+        // Given
         responseBody.put("status", Status.DOWN);
 
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
@@ -44,34 +44,34 @@ public class ThuleServiveInstanceHealthIndicatorTest {
         given(response.hasBody()).willReturn(true);
         given(response.getBody()).willReturn(responseBody);
 
-        //When
+        // When
         var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
-        //Then
+        // Then
         assertThat(result).isNotNull();
         assertThat(result.get()).isEqualTo(Status.DOWN);
     }
 
     @Test
     public void when_body_status_is_null_then_health_status_is_down() throws InterruptedException, ExecutionException {
-        //Given
+        // Given
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
         given(response.hasBody()).willReturn(true);
         given(response.getBody()).willReturn(responseBody);
 
-        //When
+        // When
         var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
-        //Then
+        // Then
         assertThat(result).isNotNull();
         assertThat(result.get()).isEqualTo(Status.DOWN);
     }
 
     @Test
     public void when_microservice_is_up_then_health_status_is_up() throws InterruptedException, ExecutionException {
-        //Given
+        // Given
         responseBody.put("status", Status.UP);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
@@ -79,26 +79,26 @@ public class ThuleServiveInstanceHealthIndicatorTest {
         given(response.hasBody()).willReturn(true);
         given(response.getBody()).willReturn(responseBody);
 
-        //When
+        // When
         var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
-        //Then
+        // Then
         assertThat(result).isNotNull();
         assertThat(result.get()).isEqualTo(Status.UP);
     }
 
     @Test
     public void when_response_body_is_null_then_health_status_is_down() throws InterruptedException, ExecutionException {
-        //Given
+        // Given
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
 
         given(restTemplate.exchange(anyString(), any(), any(), eq(Map.class))).willReturn(response);
         given(response.hasBody()).willReturn(false);
 
-        //When
+        // When
         var result = sut.doServiceInstanceHealthCheck(serviceInstance);
 
-        //Then
+        // Then
         assertThat(result).isNotNull();
         assertThat(result.get()).isEqualTo(Status.DOWN);
     }

@@ -38,7 +38,7 @@ public class PeopleServiceTest {
         // When
         peopleService.disable(person);
 
-        //Then
+        // Then
         assertThat(person.getState()).isEqualTo(nextState);
     }
 
@@ -67,7 +67,7 @@ public class PeopleServiceTest {
         // When
         peopleService.discard(person);
 
-        //Then
+        // Then
         assertThat(person.getState()).isEqualTo(nextState);
     }
 
@@ -110,7 +110,7 @@ public class PeopleServiceTest {
         // When
         peopleService.enable(person);
 
-        //Then
+        // Then
         assertThat(person.getState()).isEqualTo(nextState);
     }
 
@@ -122,7 +122,7 @@ public class PeopleServiceTest {
         // When
         var expired = peopleService.isExpired(person);
 
-        //Then
+        // Then
         assertThat(expired).isFalse();
     }
 
@@ -134,7 +134,7 @@ public class PeopleServiceTest {
         // When
         var expired = peopleService.isExpired(person);
 
-        //Then
+        // Then
         assertThat(expired).isTrue();
     }
 
@@ -146,7 +146,7 @@ public class PeopleServiceTest {
         // When
         var passwordExpired = peopleService.isPasswordExpired(person);
 
-        //Then
+        // Then
         assertThat(passwordExpired).isFalse();
     }
 
@@ -158,7 +158,7 @@ public class PeopleServiceTest {
         // When
         var passwordExpired = peopleService.isPasswordExpired(person);
 
-        //Then
+        // Then
         assertThat(passwordExpired).isTrue();
     }
 
@@ -189,7 +189,7 @@ public class PeopleServiceTest {
         // When
         peopleService.recover(person);
 
-        //Then
+        // Then
         assertThat(person.getState()).isEqualTo(nextState);
     }
 

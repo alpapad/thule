@@ -34,16 +34,16 @@ public class SecurityIntTest {
         // Given
         var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/info", port));
 
-        //When/Then
+        // When/Then
         SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
     }
 
     @Test
     public void when_using_http_basic_authentication_then_access_should_be_denied() {
-        //When
+        // When
         var responseEntity = testRestTemplate.getForEntity(String.format("http://localhost:%s/hello", port), String.class);
 
-        //Then
+        // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 

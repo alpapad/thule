@@ -42,7 +42,7 @@ public class EmailContractTest extends ContractBaseTest {
 
     @Test
     public void when_sending_an_email_then_email_is_sent_by_the_smtp_server() {
-        //Given
+        // Given
         startEmbeddedSmtpServer();
 
         var expectedEmail = buildEmail();
@@ -52,7 +52,7 @@ public class EmailContractTest extends ContractBaseTest {
         // When
         var emailServiceResponse = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, httpEntity, responseType);
 
-        //Then
+        // Then
         await().until(() -> getSmtpServer().getEmailCount() > 0);
         assertThat(getSmtpServer().getEmailCount()).isEqualTo(1);
 
@@ -79,7 +79,7 @@ public class EmailContractTest extends ContractBaseTest {
 
     @Test
     public void when_smtp_server_is_down_then_response_should_be_accepted() {
-        //Given
+        // Given
         var expectedEmail = buildEmail();
         var entity = new HttpEntity<>(expectedEmail, null);
 
