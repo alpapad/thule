@@ -3,19 +3,22 @@ package uk.co.serin.thule.utils.utils;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class ClassUtilsTest {
-    @Test(expected = IllegalStateException.class)
-    public void forName_rethrows_classnotfoundexception_as_illegalstateexception() {
-        ClassUtils.forName("class_does_not_exist");
+    @Test
+    public void given_class_that_does_not_exist_when_forName_then_an_illegal_state_exception_is_thrown() {
+        // When
+        var throwable = catchThrowable(() -> ClassUtils.forName("class_does_not_exist"));
+
+        // Then
+        assertThat(throwable).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
-    public void forName_returns_class_instance() {
-        // Given
-
+    public void when_forName_then_class_instance_is_returned() {
         // When
-        Class<?> clazz = ClassUtils.forName(ClassUtils.class.getName());
+        var clazz = ClassUtils.forName(ClassUtils.class.getName());
 
         // Then
         assertThat(clazz).isEqualTo(ClassUtils.class);

@@ -17,55 +17,49 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpringSecurityAuditorAwareTest {
-
+    @Mock
+    private Authentication authentication;
+    @Mock
+    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
     private SpringSecurityAuditorAware sut;
 
-    @Mock
-    private Authentication authentication;
-
-    @Mock
-    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
-
     @Test
-    public void getCurrentAuditorWithNoAuthenticationWillThrowException() {
-        //Given/When
-        Throwable exception = catchThrowable(() -> sut.getCurrentAuditor());
-
-        //Then
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class);
-        assertThat(exception).hasMessage("Authentication is null");
-    }
-
-    @Test
-    public void getCurrentAuditorWillReturnValueRetrievedFromSecurityContextHolder() {
-
-        //Given
-        String principalName = "testAuditor4534";
+    public void given_empty_current_auditor_when_get_current_auditor_then_illegal_argument_exception_is_thrown() {
+        // Given
+        var principalName = "";
         given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);
         given(authentication.getName()).willReturn(principalName);
 
-        //When
-        Optional<String> currentAuditor = sut.getCurrentAuditor();
+        // When
+        var throwable = catchThrowable(() -> sut.getCurrentAuditor());
 
-        //Then
+        // Then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class);
+        assertThat(throwable).hasMessage("Principal name is empty");
+    }
+
+    @Test
+    public void given_null_authentication_when_get_current_auditor_then_illegal_argument_exception_is_thrown() {
+        // When
+        var throwable = catchThrowable(() -> sut.getCurrentAuditor());
+
+        // Then
+        assertThat(throwable).isInstanceOf(IllegalArgumentException.class);
+        assertThat(throwable).hasMessage("Authentication is null");
+    }
+
+    @Test
+    public void when_get_current_auditor_then_current_auditor_is_returned() {
+        // Given
+        var principalName = "testAuditor4534";
+        given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);
+        given(authentication.getName()).willReturn(principalName);
+
+        // When
+        var currentAuditor = sut.getCurrentAuditor();
+
+        // Then
         assertThat(currentAuditor).isEqualTo(Optional.of(principalName));
-    }
-
-
-    @Test
-    public void getCurrentAuditorWithEmptyAuthenticationNameWillThrowException() {
-
-        //Given
-        String principalName = "";
-        given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);
-        given(authentication.getName()).willReturn(principalName);
-
-        //When
-        Throwable exception = catchThrowable(() -> sut.getCurrentAuditor());
-
-        //Then
-        assertThat(exception).isInstanceOf(IllegalArgumentException.class);
-        assertThat(exception).hasMessage("Principal name is empty");
     }
 }

@@ -8,24 +8,24 @@ public class UserAuthenticationDetailsTest {
 
     @Test
     public void when_user_authentication_details_is_created_via_constructor_then_return_object() {
-        //Given
+        // Given
 
-        //When
+        // When
         UserAuthenticationDetails sut = new UserAuthenticationDetails(999);
 
-        //Then
+        // Then
         assertThat(sut.getUserId()).isEqualTo(999);
     }
 
     @Test
     public void when_user_authentication_details_is_modified_then_change_is_shown() {
-        //Given
+        // Given
         UserAuthenticationDetails sut = new UserAuthenticationDetails(999);
 
-        //When
+        // When
         sut.setUserId(888);
 
-        //Then
+        // Then
         assertThat(sut.getUserId()).isEqualTo(888);
     }
 }

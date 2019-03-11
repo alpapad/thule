@@ -3,30 +3,31 @@ package uk.co.serin.thule.utils.utils;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class XmlUtilsTest {
 
-    @Test(expected = IllegalStateException.class)
-    public void invalid_xml_fails_to_be_reformatted() {
+    @Test
+    public void given_invalid_xml_when_pretty_print_then_an_illegal_state_exception_is_thrown() {
         // Given
-        String xml = "<invalid-xml>";
+        var xml = "<invalid-xml>";
 
         // When
-        XmlUtils.prettyPrint(xml);
+        var throwable = catchThrowable(() -> XmlUtils.prettyPrint(xml));
 
-        // Then (see expected in @Test annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
-    public void xml_is_indented_and_appears_on_multiple_lines() {
+    public void given_valid_xml_when_pretty_print_then_it_is_indented_and_appears_on_multiple_lines() {
         // Given
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><messages><message1>Hello there</message1><message2>Hello there once more</message2></messages>";
-        String expectedXml =
+        var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><messages><message1>Hello there</message1><message2>Hello there once more</message2></messages>";
+        var expectedXml =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><messages>\n    <message1>Hello there</message1>\n    <message2>Hello there once more</message2>\n</messages>\n";
 
         // When
-        String actualXml = XmlUtils.prettyPrint(xml);
+        var actualXml = XmlUtils.prettyPrint(xml);
 
         // Then
         assertThat(actualXml).isEqualTo(expectedXml);

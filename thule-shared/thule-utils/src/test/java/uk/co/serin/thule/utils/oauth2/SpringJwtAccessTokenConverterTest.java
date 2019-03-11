@@ -20,7 +20,7 @@ public class SpringJwtAccessTokenConverterTest {
 
     @Test
     public void given_non_user_authentication_details_object_contained_in_details_then_map_returned_excludes_user_id() {
-        //Given
+        // Given
         OAuth2Request oAuth2Request = new OAuth2Request(null, String.valueOf(1234567890), null,
                 true, null, null, null, null, null);
         UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken("", "", Collections.EMPTY_LIST);
@@ -32,10 +32,10 @@ public class SpringJwtAccessTokenConverterTest {
         defaultTokenServices.setTokenStore(new InMemoryTokenStore());
         OAuth2AccessToken oAuth2AccessToken = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
-        //When
+        // When
         Map<String, ?> actual = sut.convertAccessToken(oAuth2AccessToken, oAuth2Authentication);
 
-        //Then
+        // Then
         assertThat(actual).isNotNull();
         assertThat(actual).isNotEmpty();
         assertThat(actual).doesNotContainKey(PHP_USERID);

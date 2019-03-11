@@ -38,7 +38,6 @@ public class TracePublicMethodsInterceptor {
         var methodName = signature.getName();
         var returnType = ((MethodSignature) signature).getReturnType();
 
-
         Class loggingClass;
         if (Proxy.isProxyClass(target.getClass())) {
             loggingClass = target.getClass().getInterfaces()[0];

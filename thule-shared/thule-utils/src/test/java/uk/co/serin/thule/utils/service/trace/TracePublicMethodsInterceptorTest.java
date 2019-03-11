@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -11,47 +12,45 @@ import java.lang.reflect.Proxy;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TracePublicMethodsInterceptorTest {
-    private final TracePublicMethodsInterceptor sut = new TracePublicMethodsInterceptor();
     @Mock
     private ProceedingJoinPoint proceedingJoinPoint;
     @Mock
     private MethodSignature signature;
+    @InjectMocks
+    private TracePublicMethodsInterceptor sut;
 
     @Test
-    public void empty_pointcuts_do_not_throw_an_exception() {
-        // Given
-
-        // When
-        sut.pointcutDefinitionBasedOnAnnotationForMethod();
-        sut.pointcutDefinitionBasedOnAnnotationForType();
-        sut.publicMethod();
-
-        // Then (no exception is a success)
+    public void given_no_arguments_when_trace_then_return_value() throws Throwable {
+        traceMethod();
     }
 
-    @Test
-    public void trace_method_on_proxy_target() throws Throwable {
+    private void traceMethod(final Object... args) throws Throwable {
         // Given
-        final Object expectedReturnValue = "done";
-        Object proxyTarget = Proxy.newProxyInstance(Collection.class.getClassLoader(), new Class<?>[]{Collection.class}, (proxy, method, args) -> null);
-        given(proceedingJoinPoint.getTarget()).willReturn(proxyTarget);
+        Object expectedReturnValue = "done";
+        given(proceedingJoinPoint.getTarget()).willReturn(new Object());
         given(proceedingJoinPoint.getSignature()).willReturn(signature);
-        given(proceedingJoinPoint.getArgs()).willReturn(new Object[0]);
+        given(proceedingJoinPoint.getArgs()).willReturn(args);
         given(proceedingJoinPoint.proceed()).willReturn(expectedReturnValue);
 
         // When
-        Object actualReturnValue = sut.trace(proceedingJoinPoint);
+        var actualReturnValue = sut.trace(proceedingJoinPoint);
 
         // Then
         assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void trace_method_when_it_throws_a_runtime_exception() throws Throwable {
+    @Test
+    public void given_one_argument_when_trace_then_return_value() throws Throwable {
+        traceMethod("arg1");
+    }
+
+    @Test
+    public void given_proceed_throws_an_illegal_state_exception_when_trace_then_illegal_state_exception_is_thrown() throws Throwable {
         // Given
         given(proceedingJoinPoint.getTarget()).willReturn(new Object());
         given(proceedingJoinPoint.getSignature()).willReturn(signature);
@@ -59,13 +58,14 @@ public class TracePublicMethodsInterceptorTest {
         given(proceedingJoinPoint.proceed()).willThrow(new IllegalStateException());
 
         // When
-        sut.trace(proceedingJoinPoint);
+        var throwable = catchThrowable(() -> sut.trace(proceedingJoinPoint));
 
-        // Then (see expected exception in annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(RuntimeException.class);
     }
 
-    @Test(expected = Throwable.class)
-    public void trace_method_when_it_throws_a_throwable() throws Throwable {
+    @Test
+    public void given_proceed_throws_an_throwable_when_trace_then_a_throwable_is_thrown() throws Throwable {
         // Given
         given(proceedingJoinPoint.getTarget()).willReturn(new Object());
         given(proceedingJoinPoint.getSignature()).willReturn(signature);
@@ -73,43 +73,36 @@ public class TracePublicMethodsInterceptorTest {
         given(proceedingJoinPoint.proceed()).willThrow(new Throwable());
 
         // When
-        sut.trace(proceedingJoinPoint);
+        var throwable = catchThrowable(() -> sut.trace(proceedingJoinPoint));
 
-        // Then (see expected exception in annotation)
+        // Then
+        assertThat(throwable).isInstanceOf(Throwable.class);
     }
 
     @Test
-    public void trace_method_with_no_args() throws Throwable {
-        traceMethod();
-    }
-
-    private void traceMethod(final Object... args) throws Throwable {
+    public void given_proxy_target_when_trace_then_return_value() throws Throwable {
         // Given
-        final Object expectedReturnValue = "done";
-        given(proceedingJoinPoint.getTarget()).willReturn(new Object());
+        Object expectedReturnValue = "done";
+        var proxyTarget = Proxy.newProxyInstance(Collection.class.getClassLoader(), new Class<?>[]{Collection.class}, (proxy, method, args) -> null);
+        given(proceedingJoinPoint.getTarget()).willReturn(proxyTarget);
         given(proceedingJoinPoint.getSignature()).willReturn(signature);
-        given(proceedingJoinPoint.getArgs()).willReturn(args);
+        given(proceedingJoinPoint.getArgs()).willReturn(new Object[0]);
         given(proceedingJoinPoint.proceed()).willReturn(expectedReturnValue);
 
         // When
-        Object actualReturnValue = sut.trace(proceedingJoinPoint);
+        var actualReturnValue = sut.trace(proceedingJoinPoint);
 
         // Then
         assertThat(actualReturnValue).isEqualTo(expectedReturnValue);
     }
 
     @Test
-    public void trace_method_with_one_arg() throws Throwable {
-        traceMethod("arg1");
-    }
-
-    @Test
-    public void trace_method_with_two_args() throws Throwable {
+    public void given_two_arguments_when_trace_then_return_value() throws Throwable {
         traceMethod("arg1", "arg2");
     }
 
     @Test
-    public void trace_method_with_void_return() throws Throwable {
+    public void given_void_return_value_when_trace_then_return_value_is_null() {
         // Given
         given(proceedingJoinPoint.getTarget()).willReturn(new Object());
         given(proceedingJoinPoint.getSignature()).willReturn(signature);
@@ -117,9 +110,22 @@ public class TracePublicMethodsInterceptorTest {
         given(signature.getReturnType()).willReturn(void.class);
 
         // When
-        Object actualReturnValue = sut.trace(proceedingJoinPoint);
+        var actualReturnValue = sut.trace(proceedingJoinPoint);
 
         // Then
         assertThat(actualReturnValue).isNull();
+    }
+
+    @Test
+    public void when_pointcuts_are_called_then_no_exception_is_thrown() {
+        // When
+        var throwable = catchThrowable(() -> {
+            sut.pointcutDefinitionBasedOnAnnotationForMethod();
+            sut.pointcutDefinitionBasedOnAnnotationForType();
+            sut.publicMethod();
+        });
+
+        // Then
+        assertThat(throwable).isNull();
     }
 }

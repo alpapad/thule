@@ -7,6 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RandomUtils {
     static final int RANDOM_STRING_DEFAULT_MAX_LENGTH = 100;
     private static final int FIFTY = 50;
@@ -16,9 +20,6 @@ public final class RandomUtils {
     private static final Set<Integer> RANDOM_INTEGERS = Collections.synchronizedSet(new HashSet<>());
     private static final Set<Long> RANDOM_LONGS = Collections.synchronizedSet(new HashSet<>());
     private static final Set<String> RANDOM_STRINGS = Collections.synchronizedSet(new HashSet<>());
-
-    private RandomUtils() {
-    }
 
     public static <T extends Enum> T generateRandomEnum(Class<T> enumeration) {
         var enumConstants = enumeration.getEnumConstants();

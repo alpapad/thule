@@ -10,11 +10,6 @@ import java.util.Optional;
 
 @Service
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
-
-    private static final String NULL_AUTHENTICATION_MESSAGE = "Authentication is null";
-
-    private static final String EMPTY_PRINCIPAL_MESSAGE = "Principal name is empty";
-
     private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
 
     public SpringSecurityAuditorAware(DelegatingSecurityContextHolder delegatingSecurityContextHolder) {
@@ -23,14 +18,12 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-
         var authentication = delegatingSecurityContextHolder.getAuthentication();
-        Assert.notNull(authentication, NULL_AUTHENTICATION_MESSAGE);
+        Assert.notNull(authentication, "Authentication is null");
 
         var principalName = authentication.getName();
-        Assert.hasText(principalName, EMPTY_PRINCIPAL_MESSAGE);
+        Assert.hasText(principalName, "Principal name is empty");
 
         return Optional.of(principalName);
     }
-
 }

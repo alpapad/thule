@@ -20,7 +20,7 @@ public class PhpJwtAccessTokenConverterTest {
 
     @Test
     public void given_non_user_authentication_details_object_contained_in_details_then_map_returned_excludes_userid() {
-        //Given
+        // Given
         OAuth2Request oAuth2Request = new OAuth2Request(null, String.valueOf(1234567890), null,
                 true, null, null, null, null, null);
         UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken("", "", Collections.EMPTY_LIST);
@@ -32,10 +32,10 @@ public class PhpJwtAccessTokenConverterTest {
         defaultTokenServices.setTokenStore(new InMemoryTokenStore());
         OAuth2AccessToken token = defaultTokenServices.createAccessToken(authentication);
 
-        //When
+        // When
         Map<String, ?> actual = sut.convertAccessToken(token, authentication);
 
-        //Then
+        // Then
         assertThat(actual).isNotNull();
         assertThat(actual).isNotEmpty();
         assertThat(actual).doesNotContainKey(JAVA_USERID);
@@ -44,7 +44,7 @@ public class PhpJwtAccessTokenConverterTest {
 
     @Test
     public void given_user_authentication_details_object_contained_in_details_then_map_returned_includes_userid() {
-        //Given
+        // Given
         OAuth2Request oAuth2Request = new OAuth2Request(null, String.valueOf(1234567890), null,
                 true, null, null, null, null, null);
         UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken("", "", Collections.EMPTY_LIST);
@@ -57,10 +57,10 @@ public class PhpJwtAccessTokenConverterTest {
         defaultTokenServices.setTokenStore(new InMemoryTokenStore());
         OAuth2AccessToken token = defaultTokenServices.createAccessToken(authentication);
 
-        //When
+        // When
         Map<String, ?> actual = sut.convertAccessToken(token, authentication);
 
-        //Then
+        // Then
         assertThat(actual).isNotNull();
         assertThat(actual).isNotEmpty();
         assertThat(actual).doesNotContainKey(JAVA_USERID);
