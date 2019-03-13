@@ -7,6 +7,11 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     ports:
       - 7888:8080
     restart: always
@@ -20,6 +25,11 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     ports:
       - 7761:8080
     restart: always
@@ -31,6 +41,11 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     ports:
     - 7093:8080
     restart: always
@@ -42,6 +57,11 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     ports:
     - 7095:8080
     restart: always
@@ -53,6 +73,11 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     ports:
     - 7094:8080
     restart: always
@@ -64,6 +89,11 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     ports:
       - 7091:8080
     restart: always
@@ -74,4 +104,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     restart: always
