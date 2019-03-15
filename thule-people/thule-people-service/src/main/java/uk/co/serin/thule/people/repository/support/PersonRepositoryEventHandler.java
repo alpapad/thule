@@ -9,9 +9,9 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.role.RoleCode;
+import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;

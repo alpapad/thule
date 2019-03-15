@@ -14,10 +14,10 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class HttpStatusCodeExceptionAssertTest {
 
-    @InjectMocks
-    private HttpStatusCodeExceptionAssert sut;
     @Mock
     private HttpStatusCodeException assertedInstance;
+    @InjectMocks
+    private HttpStatusCodeExceptionAssert sut;
 
     @Test
     public void when_asserting_matching_message_error_attribute_then_it_succeeds() {
@@ -32,6 +32,17 @@ public class HttpStatusCodeExceptionAssertTest {
     }
 
     @Test
+    public void when_asserting_message_error_from_incorrectly_formed_response_json_body_then_runtime_exception_is_thrown() {
+
+        // Given
+        given(assertedInstance.getResponseBodyAsString()).willReturn("{");
+
+        // When
+        var thrown = catchThrowable(() -> sut.hasMessageErrorAttribute("some other"));
+        Assertions.assertThat(thrown).isExactlyInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
     public void when_asserting_unmatched_message_error_attribute_then_assertion_exception_is_thrown() {
 
         // Given
@@ -42,16 +53,5 @@ public class HttpStatusCodeExceptionAssertTest {
         // When
         var thrown = catchThrowable(() -> sut.hasMessageErrorAttribute("some other"));
         Assertions.assertThat(thrown).isInstanceOf(AssertionError.class);
-    }
-
-    @Test
-    public void when_asserting_message_error_from_incorrectly_formed_response_json_body_then_runtime_exception_is_thrown() {
-
-        // Given
-        given(assertedInstance.getResponseBodyAsString()).willReturn("{");
-
-        // When
-        var thrown = catchThrowable(() -> sut.hasMessageErrorAttribute("some other"));
-        Assertions.assertThat(thrown).isExactlyInstanceOf(IllegalStateException.class);
     }
 }

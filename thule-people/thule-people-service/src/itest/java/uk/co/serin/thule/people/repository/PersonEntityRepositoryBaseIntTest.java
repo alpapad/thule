@@ -40,13 +40,13 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     private static final String MOCK_USERS_NAME = "user";
     @Autowired
     private CountryRepository countryRepository;
+    private PersonEntityRepositoryIntTestHelper personEntityRepositoryIntTestHelper;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private StateRepository stateRepository;
-    private PersonEntityRepositoryIntTestHelper personEntityRepositoryIntTestHelper;
     @Autowired
     private TestEntityManager testEntityManager;
 

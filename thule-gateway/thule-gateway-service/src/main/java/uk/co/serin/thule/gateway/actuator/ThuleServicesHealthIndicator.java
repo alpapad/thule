@@ -28,14 +28,14 @@ public class ThuleServicesHealthIndicator extends AbstractHealthIndicator {
 
     private ApplicationProperties applicationProperties;
     private DiscoveryClient discoveryClient;
-    private ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator;
     private RetryTemplate retryTemplate = new RetryTemplate();
+    private ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator;
 
     /**
      * @param thuleServiceInstanceHealthIndicator Injects the ThuleServiceInstanceHealthIndicator as a bean as so to enable the @Async functionality.
      */
     public ThuleServicesHealthIndicator(ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator,
-                                          ApplicationProperties applicationProperties, DiscoveryClient discoveryClient) {
+                                        ApplicationProperties applicationProperties, DiscoveryClient discoveryClient) {
         this.thuleServiceInstanceHealthIndicator = thuleServiceInstanceHealthIndicator;
         this.applicationProperties = applicationProperties;
         this.discoveryClient = discoveryClient;

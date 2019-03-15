@@ -12,9 +12,9 @@ services:
       SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-discovery/thule-discovery-config/src/main/resources/config/
       TZ: Europe/London
     ports:
-    - 9761:8080
+      - 9761:8080
     volumes:
-    - thule-discovery-docker-tests:/thule-discovery
+      - thule-discovery-docker-tests:/thule-discovery
 
 volumes:
   thule-discovery-docker-tests:

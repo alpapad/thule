@@ -12,9 +12,9 @@ services:
       SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-admin/thule-admin-config/src/main/resources/config/
       TZ: Europe/London
     ports:
-    - 9093:8080 # Required to allow docker tests to call the restful api
+      - 9093:8080 # Required to allow docker tests to call the restful api
     volumes:
-    - thule-admin-docker-tests:/thule-admin
+      - thule-admin-docker-tests:/thule-admin
 
 volumes:
   thule-admin-docker-tests:

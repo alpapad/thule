@@ -11,27 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PhpSpringUserAuthenticationConverterTest {
     @Test
-    public void when_presented_java_based_map_then_return_java_based_authentication() {
-        // Given
-        long expectedUserId = 1234567890;
-        PhpSpringUserAuthenticationConverter sut = new PhpSpringUserAuthenticationConverter();
-        Map<String, Object> javaTokenMap = new HashMap<>();
-
-        javaTokenMap.put(SpringJwtAccessTokenConverter.JAVA_USERNAME, "userName");
-        javaTokenMap.put("authorities", Collections.singletonList("grantedAuthority"));
-        javaTokenMap.put(SpringJwtAccessTokenConverter.JAVA_USERID, expectedUserId);
-
-        // When
-        Authentication authentication = sut.extractAuthentication(javaTokenMap);
-
-        // Then
-        assertThat(authentication).isNotNull();
-        assertThat(authentication.getName()).isEqualTo("userName");
-        UserAuthenticationDetails actualUserAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
-        assertThat(actualUserAuthenticationDetails.getUserId()).isEqualTo(expectedUserId);
-    }
-
-    @Test
     public void when_java_based_map_does_not_contain_user_id_then_return_java_based_authentication() {
         // Given
         PhpSpringUserAuthenticationConverter sut = new PhpSpringUserAuthenticationConverter();
@@ -64,6 +43,27 @@ public class PhpSpringUserAuthenticationConverterTest {
         // Then
         assertThat(authentication).isNotNull();
         assertThat(authentication.getName()).isEqualTo("unavailable");
+    }
+
+    @Test
+    public void when_presented_java_based_map_then_return_java_based_authentication() {
+        // Given
+        long expectedUserId = 1234567890;
+        PhpSpringUserAuthenticationConverter sut = new PhpSpringUserAuthenticationConverter();
+        Map<String, Object> javaTokenMap = new HashMap<>();
+
+        javaTokenMap.put(SpringJwtAccessTokenConverter.JAVA_USERNAME, "userName");
+        javaTokenMap.put("authorities", Collections.singletonList("grantedAuthority"));
+        javaTokenMap.put(SpringJwtAccessTokenConverter.JAVA_USERID, expectedUserId);
+
+        // When
+        Authentication authentication = sut.extractAuthentication(javaTokenMap);
+
+        // Then
+        assertThat(authentication).isNotNull();
+        assertThat(authentication.getName()).isEqualTo("userName");
+        UserAuthenticationDetails actualUserAuthenticationDetails = (UserAuthenticationDetails) authentication.getDetails();
+        assertThat(actualUserAuthenticationDetails.getUserId()).isEqualTo(expectedUserId);
     }
 
     @Test

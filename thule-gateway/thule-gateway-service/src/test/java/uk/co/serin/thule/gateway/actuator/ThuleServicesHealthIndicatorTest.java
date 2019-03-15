@@ -27,7 +27,6 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ThuleServicesHealthIndicatorTest {
 
-    private ThuleServicesHealthIndicator sut;
     @Mock
     private ApplicationProperties applicationProperties;
     @Mock
@@ -37,11 +36,12 @@ public class ThuleServicesHealthIndicatorTest {
     @Mock
     private Future<Status> futureStatus;
     @Mock
-    private ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator;
-    @Mock
     private ApplicationProperties.HealthCheck healthCheck;
     @Mock
     private ServiceInstance serviceInstance;
+    private ThuleServicesHealthIndicator sut;
+    @Mock
+    private ThuleServiceInstanceHealthIndicator thuleServiceInstanceHealthIndicator;
 
     @Before
     public void setUp() {

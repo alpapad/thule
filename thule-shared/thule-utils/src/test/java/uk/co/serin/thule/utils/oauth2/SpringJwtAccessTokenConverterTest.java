@@ -11,8 +11,8 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import java.util.Collections;
 import java.util.Map;
 
-import static uk.co.serin.thule.utils.oauth2.SpringJwtAccessTokenConverter.PHP_USERID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.serin.thule.utils.oauth2.SpringJwtAccessTokenConverter.PHP_USERID;
 
 public class SpringJwtAccessTokenConverterTest {
 

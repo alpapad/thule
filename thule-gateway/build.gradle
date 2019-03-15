@@ -69,7 +69,7 @@ project("thule-gateway-service") {
         itestCompile project(":thule-gateway-config")
 
         ctestCompile project(":thule-gateway-config")
-        
+
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     }

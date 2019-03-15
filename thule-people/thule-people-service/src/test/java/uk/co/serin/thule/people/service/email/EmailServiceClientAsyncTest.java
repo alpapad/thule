@@ -13,10 +13,10 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailServiceClientAsyncTest {
-    @InjectMocks
-    private EmailServiceClientAsync emailServiceClientAsync;
     @Mock
     private EmailServiceClient emailServiceClient;
+    @InjectMocks
+    private EmailServiceClientAsync emailServiceClientAsync;
 
     @Test
     public void when_sending_email_then_it_is_delegated_to_email_service_client_returning_a_future() {

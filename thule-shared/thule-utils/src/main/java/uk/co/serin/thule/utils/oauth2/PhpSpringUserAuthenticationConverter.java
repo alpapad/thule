@@ -36,7 +36,8 @@ public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticat
         } else {
             //Extracts data map, assigns the principal and creates a new map in a Spring valid context.
             var data = createDataStructure(map);
-            var principal = data.containsKey(SpringJwtAccessTokenConverter.PHP_USERNAME) ? data.get(SpringJwtAccessTokenConverter.PHP_USERNAME).toString() : "unavailable";
+            var principal = data.containsKey(SpringJwtAccessTokenConverter.PHP_USERNAME) ? data.get(SpringJwtAccessTokenConverter.PHP_USERNAME).toString() :
+                    "unavailable";
             Map<String, Object> mapWithUserName = Collections.singletonMap(SpringJwtAccessTokenConverter.JAVA_USERNAME, principal);
 
             //Creates authentication object

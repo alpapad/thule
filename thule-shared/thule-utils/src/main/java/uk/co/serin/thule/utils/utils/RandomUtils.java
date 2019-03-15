@@ -21,6 +21,12 @@ public final class RandomUtils {
     private static final Set<Long> RANDOM_LONGS = Collections.synchronizedSet(new HashSet<>());
     private static final Set<String> RANDOM_STRINGS = Collections.synchronizedSet(new HashSet<>());
 
+    public static BigDecimal generateRandomBigDecimalFromRange(BigDecimal min, BigDecimal max) {
+        var range = max.subtract(min);
+        var multiplicand = BigDecimal.valueOf(Math.random());
+        return min.add(range.multiply(multiplicand));
+    }
+
     public static <T extends Enum> T generateRandomEnum(Class<T> enumeration) {
         var enumConstants = enumeration.getEnumConstants();
         return enumConstants[ThreadLocalRandom.current().nextInt(enumConstants.length)];
@@ -123,11 +129,5 @@ public final class RandomUtils {
         }
 
         return randomString.toString();
-    }
-
-    public static BigDecimal generateRandomBigDecimalFromRange(BigDecimal min, BigDecimal max) {
-        var range = max.subtract(min);
-        var multiplicand = BigDecimal.valueOf(Math.random());
-        return min.add(range.multiply(multiplicand));
     }
 }

@@ -1,8 +1,10 @@
 {
-  "body":"Test body",
-  "subject":"Test subject",
-  "attachments":[],
-  "tos":["to@test.co.uk"],
-  "bccs":[],
-  "ccs":[]
+  "body": "Test body",
+  "subject": "Test subject",
+  "attachments": [],
+  "tos": [
+    "to@test.co.uk"
+  ],
+  "bccs": [],
+  "ccs": []
 }

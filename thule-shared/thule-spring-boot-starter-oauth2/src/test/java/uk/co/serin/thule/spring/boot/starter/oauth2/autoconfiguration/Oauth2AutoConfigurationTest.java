@@ -9,15 +9,15 @@ import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Oauth2AutoConfigurationTest {
-    @InjectMocks
-    private Oauth2AutoConfiguration sut;
     @Mock
     private Oauth2Properties oauth2Properties;
+    @InjectMocks
+    private Oauth2AutoConfiguration sut;
 
     @Test
     public void access_token_converter_is_configured() {

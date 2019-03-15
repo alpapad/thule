@@ -13,9 +13,9 @@ services:
       THULE_GATEWAYSERVICE_HEALTHCHECK_SERVICES: "" # Intentionally empty
       TZ: Europe/London
     ports:
-    - 9091:8080 # Required to allow docker tests to call the restful api
+      - 9091:8080 # Required to allow docker tests to call the restful api
     volumes:
-    - thule-gateway-docker-tests:/thule-gateway
+      - thule-gateway-docker-tests:/thule-gateway
 
 volumes:
   thule-gateway-docker-tests:

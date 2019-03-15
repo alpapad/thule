@@ -6,4 +6,4 @@ services:
     environment:
       TZ: Europe/London
     ports:
-    - 27017:27017
+      - 27017:27017

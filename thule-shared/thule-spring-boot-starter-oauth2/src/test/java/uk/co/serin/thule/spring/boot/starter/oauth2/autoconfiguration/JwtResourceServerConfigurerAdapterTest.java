@@ -29,14 +29,14 @@ public class JwtResourceServerConfigurerAdapterTest {
     private ExpressionUrlAuthorizationConfigurer expressionUrlAuthorizationConfigurer = new ExpressionUrlAuthorizationConfigurer(applicationContext);
     @InjectMocks
     private HttpSecurity httpSecurity;
-    @InjectMocks
-    private JwtResourceServerConfigurerAdapter sut;
     @Mock
     private ObjectPostProcessor objectPostProcessor;
     @Mock
     private ResourceServerSecurityConfigurer resourceServerSecurityConfigurer;
     @Mock
     private Map<Class<? extends Object>, Object> sharedObjects;
+    @InjectMocks
+    private JwtResourceServerConfigurerAdapter sut;
     @Mock
     private DefaultTokenServices tokenServices;
 
