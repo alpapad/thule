@@ -22,11 +22,11 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class EmailDockerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-email-docker-tests/docker-compose.yml");
+    private String baseUrl;
     @Value("${thule.emailservice.api.host}")
     private String emailServiceApiHost;
     @Value("${thule.emailservice.api.port}")
     private int emailServiceApiPort;
-    private String emailServiceBaseUrl;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -40,13 +40,13 @@ public class EmailDockerTest {
 
     @Before
     public void setUp() {
-        emailServiceBaseUrl = "http://" + emailServiceApiHost + ":" + emailServiceApiPort;
+        baseUrl = "http://" + emailServiceApiHost + ":" + emailServiceApiPort;
     }
 
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(emailServiceBaseUrl + "/actuator/health");
+        var actuatorUri = ActuatorUri.of(baseUrl + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

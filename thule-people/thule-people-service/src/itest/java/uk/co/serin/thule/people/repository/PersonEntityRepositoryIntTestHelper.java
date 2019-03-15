@@ -6,7 +6,6 @@ import org.springframework.util.FileCopyUtils;
 
 import uk.co.serin.thule.people.domain.entity.address.HomeAddressEntity;
 import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
-import uk.co.serin.thule.people.domain.entity.country.CountryEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.person.PhotographEntity;
 import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
@@ -59,7 +58,7 @@ class PersonEntityRepositoryIntTestHelper {
 
     private HomeAddressEntity buildOxfordStreetHomeAddress() {
         return HomeAddressEntity.builder().addressLine1("Oxford Street").addressLine2("Green")
-                                .country(countryRepository.findByIsoCodeThreeCharacters(CountryEntity.GBR)).county("Greater London").postCode("EC3")
+                                .country(countryRepository.findByIsoCodeThreeCharacters("GBR")).county("Greater London").postCode("EC3")
                                 .state(stateRepository.findByCode(StateCode.ADDRESS_ENABLED)).town("London").build();
     }
 
@@ -76,7 +75,7 @@ class PersonEntityRepositoryIntTestHelper {
 
     private WorkAddressEntity buildRegentStreetWorkAddress() {
         return WorkAddressEntity.builder().addressLine1("Regent Street").addressLine2("Green")
-                                .country(countryRepository.findByIsoCodeThreeCharacters(CountryEntity.GBR)).county("Greater London").postCode("EC4")
+                                .country(countryRepository.findByIsoCodeThreeCharacters("GBR")).county("Greater London").postCode("EC4")
                                 .state(stateRepository.findByCode(StateCode.ADDRESS_ENABLED)).town("London").build();
     }
 }

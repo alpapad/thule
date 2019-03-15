@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.provider.token.UserAuthenticationConv
 import java.util.Map;
 
 public class SpringJwtAccessTokenConverter extends DefaultAccessTokenConverter {
-
     public static final String JAVA_USERID = "user_id";
     public static final String JAVA_USERNAME = UserAuthenticationConverter.USERNAME;
     public static final String PHP_DATA = "data";

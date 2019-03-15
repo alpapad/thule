@@ -40,13 +40,12 @@ import lombok.ToString;
 @Table(name = "states")
 @ToString(callSuper = true)
 public class StateEntity extends AuditEntity {
-    public static final String DATABASE_COLUMN_STATE_ID = "state_id";
     private static final int DESCRIPTION_MAX_LENGTH = 100;
 
     @Builder.Default
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "state_actions",
-            joinColumns = {@JoinColumn(name = DATABASE_COLUMN_STATE_ID, nullable = false)},
+            joinColumns = {@JoinColumn(name = "state_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "action_id", nullable = false)})
     @OrderBy("description")
     @ToString.Exclude

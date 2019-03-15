@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @TracePublicMethods
 public class PersonRepositoryImpl implements PersonRepositoryCustom {
-    public static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
+    private static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
     private static final String ENTITY_ATTRIBUTE_NAME_EMAIL_ADDRESS = "emailAddress";
     private static final String ENTITY_ATTRIBUTE_NAME_FIRST_NAME = "firstName";
     private static final String ENTITY_ATTRIBUTE_NAME_LAST_NAME = "lastName";

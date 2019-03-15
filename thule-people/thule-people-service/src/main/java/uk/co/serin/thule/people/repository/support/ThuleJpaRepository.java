@@ -3,7 +3,6 @@ package uk.co.serin.thule.people.repository.support;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
 
@@ -23,7 +22,6 @@ public class ThuleJpaRepository<T, I extends Serializable> extends SimpleJpaRepo
         deleteByUpdatedByEjbQl = "DELETE FROM " + entityInformation.getEntityName() + " WHERE audit.updatedBy = :updatedBy";
     }
 
-    @Transactional
     public void deleteByUpdatedBy(String updatedBy) {
         entityManager.createQuery(deleteByUpdatedByEjbQl).setParameter("updatedBy", updatedBy).executeUpdate();
     }

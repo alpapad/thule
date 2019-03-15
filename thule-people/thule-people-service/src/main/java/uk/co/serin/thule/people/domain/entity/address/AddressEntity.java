@@ -61,7 +61,7 @@ public abstract class AddressEntity extends AuditEntity {
     @Size(max = POSTCODE_MAX_LENGTH)
     private String postCode;
 
-    @JoinColumn(name = StateEntity.DATABASE_COLUMN_STATE_ID, nullable = false, updatable = false)
+    @JoinColumn(name = "state_id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     @NotNull
     private StateEntity stateEntity;

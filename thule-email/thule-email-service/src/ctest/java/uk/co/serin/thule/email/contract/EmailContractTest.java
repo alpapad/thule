@@ -33,7 +33,7 @@ public class EmailContractTest extends ContractBaseTest {
 
     @Before
     public void setUp() {
-        emailServiceUrl = String.format("http://localhost:%s/%s", port, Email.ENTITY_NAME_EMAILS);
+        emailServiceUrl = String.format("http://localhost:%s/emails", port);
 
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 "username", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
@@ -45,9 +45,12 @@ public class EmailContractTest extends ContractBaseTest {
         // Given
         startEmbeddedSmtpServer();
 
-        var expectedEmail = buildEmail();
-        var expectedAttachment = expectedEmail.getAttachments().stream().findFirst().orElseThrow();
-        var httpEntity = new HttpEntity<>(expectedEmail);
+        var attachments = Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
+        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body")
+                         .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
+                         .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
+        var expectedAttachment = email.getAttachments().stream().findFirst().orElseThrow();
+        var httpEntity = new HttpEntity<>(email);
 
         // When
         var emailServiceResponse = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, httpEntity, responseType);
@@ -59,29 +62,24 @@ public class EmailContractTest extends ContractBaseTest {
         assertThat(emailServiceResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
 
         var actualMailMessage = getSmtpServer().getMessage(0);
-        assertThat(actualMailMessage.getBody()).contains(expectedEmail.getBody());
+        assertThat(actualMailMessage.getBody()).contains(email.getBody());
         assertThat(actualMailMessage.getBody()).contains(expectedAttachment.getContent());
-        assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(expectedEmail.getFrom());
+        assertThat(actualMailMessage.getFirstHeaderValue("From")).isEqualTo(email.getFrom());
 
-        var expectedTos = expectedEmail.getTos().toArray(new String[0]);
+        var expectedTos = email.getTos().toArray(new String[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
     }
 
-    private Email buildEmail() {
-        return Email.builder()
-                    .attachments(Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build()))
-                    .bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body").ccs(Collections.singleton("ccs@test.co.uk"))
-                    .from("from@test.co.uk").subject("Test subject")
-                    .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
-    }
-
     @Test
     public void when_smtp_server_is_down_then_response_should_be_accepted() {
         // Given
-        var expectedEmail = buildEmail();
-        var entity = new HttpEntity<>(expectedEmail, null);
+        var attachments = Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
+        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body")
+                         .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
+                         .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
+        var entity = new HttpEntity<>(email, null);
 
         // When
         var responseEntity = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);

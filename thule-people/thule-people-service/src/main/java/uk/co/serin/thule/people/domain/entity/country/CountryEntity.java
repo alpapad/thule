@@ -26,7 +26,6 @@ import lombok.ToString;
 @Table(name = "countries")
 @ToString(callSuper = true)
 public class CountryEntity extends AuditEntity {
-    public static final String GBR = "GBR";
     private static final int ISO_CODE_THREE_CHARACTER_LENGTH = 3;
     private static final int ISO_CODE_TWO_CHARACTER_LENGTH = 2;
     private static final int ISO_NAME_MAX_LENGTH = 100;

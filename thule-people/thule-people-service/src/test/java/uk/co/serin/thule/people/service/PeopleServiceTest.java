@@ -10,7 +10,6 @@ import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 import uk.co.serin.thule.people.domain.model.state.ActionCode;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
-import uk.co.serin.thule.people.repository.repositories.PersonRepositoryImpl;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -175,7 +174,7 @@ public class PeopleServiceTest {
         var constraintViolationsByProperty = constraintViolations.stream().collect(
                 Collectors.toMap(constraintViolation -> constraintViolation.getPropertyPath().toString(), Function.identity()));
 
-        assertThat(constraintViolationsByProperty.containsKey(PersonRepositoryImpl.ENTITY_ATTRIBUTE_NAME_USER_ID)).isTrue();
+        assertThat(constraintViolationsByProperty.containsKey("userId")).isTrue();
     }
 
     @Test

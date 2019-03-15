@@ -74,27 +74,17 @@ public class EmailControllerIntTest {
         var attachment = Attachment.builder().content(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...")
                                    .label("Attachment").build();
-        var emailRequest =
-                Email.builder()
-                     .attachments(Collections.singleton(attachment))
-                     .body("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...")
-                     .from("from@test.co.uk").subject("This is a test email").tos(Collections.singleton("to@test.co.uk"))
-                     .build();
-        var requestContent = objectMapper.writeValueAsString(emailRequest);
-        var emailResponse =
-                Email.builder()
-                     .attachments(Collections.singleton(attachment))
-                     .body("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...")
-                     .from("from@test.co.uk").subject("This is a test email").tos(Collections.singleton("to@test.co.uk"))
-                     .build();
-        var responseContent = objectMapper.writeValueAsString(emailRequest);
+        var email = Email.builder().attachments(Collections.singleton(attachment))
+                         .body("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...")
+                         .from("from@test.co.uk").subject("This is a test email").tos(Collections.singleton("to@test.co.uk")).build();
+        var content = objectMapper.writeValueAsString(email);
 
         // When
-        mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(requestContent).with(csrf()))
+        mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(content).with(csrf()))
 
            // Then
            .andExpect(status().isAccepted())
-           .andExpect(content().string(responseContent))
+           .andExpect(content().string(content))
            .andDo(print())
            .andDo(document("post-emails/http-response-202",
                    preprocessRequest(prettyPrint()),

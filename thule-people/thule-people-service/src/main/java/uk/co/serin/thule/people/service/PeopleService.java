@@ -14,12 +14,12 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Validated
 @AllArgsConstructor
-@TracePublicMethods
+@Service
 @Slf4j
+@TracePublicMethods
 @Transactional
+@Validated
 public class PeopleService {
     public void disable(PersonEntity personEntity) {
         updateStateWithNextState(personEntity, ActionCode.PERSON_DISABLE);

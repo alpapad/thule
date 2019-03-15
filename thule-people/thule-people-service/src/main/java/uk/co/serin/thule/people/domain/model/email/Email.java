@@ -20,9 +20,6 @@ import lombok.ToString;
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
 public class Email {
-    public static final String ENTITY_ATTRIBUTE_NAME_BODY = "body";
-    public static final String ENTITY_ATTRIBUTE_NAME_SUBJECT = "subject";
-    public static final String ENTITY_ATTRIBUTE_NAME_TOS = "tos";
     private String body;
     private String subject;
     @Builder.Default

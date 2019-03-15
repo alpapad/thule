@@ -100,7 +100,7 @@ public class PersonEntity extends AuditEntity {
     @Size(max = SECOND_NAME_MAX_LENGTH)
     private String secondName;
 
-    @JoinColumn(name = StateEntity.DATABASE_COLUMN_STATE_ID, nullable = false)
+    @JoinColumn(name = "state_id", nullable = false)
     @ManyToOne(optional = false)
     @NotNull
     @ToString.Exclude

@@ -19,10 +19,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public final class Attachment {
-    public static final String ENTITY_ATTRIBUTE_NAME_CONTENT = "content";
-    public static final String ENTITY_ATTRIBUTE_NAME_LABEL = "label";
-    public static final String ENTITY_NAME_ATTACHMENTS = "attachments";
-
     @EqualsAndHashCode.Include
     @NotEmpty
     private String content;
