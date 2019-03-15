@@ -55,10 +55,9 @@ public class EmailServiceTest {
     @Test
     public void when_sending_an_email_with_all_fields_set_then_an_email_is_sent_and_returned() throws ExecutionException, InterruptedException {
         // Given
-        var expectedEmail = Email.builder().
-                attachments(Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build()))
-                                 .bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body").ccs(Collections.singleton("ccs@test.co.uk"))
-                                 .from("from@test.co.uk").subject("Test subject")
+        var attachments = Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
+        var expectedEmail = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body")
+                                 .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
                                  .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
 
         given(mailSender.createMimeMessage()).willReturn(mimeMessage);
@@ -105,10 +104,10 @@ public class EmailServiceTest {
     @Test
     public void when_sending_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
-        var expectedEmail = Email.builder().body("This is the content").from("from@test.co.uk").subject("This is a test email").build();
+        var email = Email.builder().body("This is the content").from("from@test.co.uk").subject("This is a test email").build();
 
         // When
-        var throwable = catchThrowable(() -> emailService.send(expectedEmail));
+        var throwable = catchThrowable(() -> emailService.send(email));
 
         // Then
         assertThat(throwable).isInstanceOf(ValidationException.class);

@@ -20,7 +20,7 @@ public class EmailControllerTest {
     private EmailService emailService;
 
     @Test
-    public void create_an_email() {
+    public void when_creating_an_email_then_the_email_service_is_invoked_and_an_email_is_returned() {
         // Given
         var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
 
