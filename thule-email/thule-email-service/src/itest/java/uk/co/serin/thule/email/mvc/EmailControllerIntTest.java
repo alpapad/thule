@@ -56,9 +56,7 @@ public class EmailControllerIntTest {
     @Test
     public void given_no_authenticated_user_when_post_emails_then_http_status_401() throws Exception {
         // Given
-        var emailRequest =
-                Email.builder().body("This is the content").from("from@test.co.uk").subject("This is a test email").tos(Collections.singleton("to@test.co.uk"))
-                     .build();
+        var emailRequest = Email.builder().build();
         var content = objectMapper.writeValueAsString(emailRequest);
 
         //When

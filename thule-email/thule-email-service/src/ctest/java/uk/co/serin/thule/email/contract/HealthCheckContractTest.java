@@ -6,7 +6,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
-import java.net.URI;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
