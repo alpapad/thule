@@ -2,7 +2,6 @@ if (project.tasks.findByName("asciidoctor")) {
     asciidoctor {
         attributes "snippets": file("build/snippets"), "version": project.version, "project-name" : project.description
         dependsOn itest
-//        inputs.dir file("src/itest/resources/asciidoc")
         sourceDir "src/itest/asciidoctor"
         outputDir "build/reports/asciidoctor"
     }
