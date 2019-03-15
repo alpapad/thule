@@ -1,5 +1,7 @@
 package uk.co.serin.thule.email.domain.model;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +22,12 @@ public final class Attachment {
     public static final String ENTITY_ATTRIBUTE_NAME_CONTENT = "content";
     public static final String ENTITY_ATTRIBUTE_NAME_LABEL = "label";
     public static final String ENTITY_NAME_ATTACHMENTS = "attachments";
-    @EqualsAndHashCode.Include
-    private String content;
-    @EqualsAndHashCode.Include
-    private String label;
 
+    @EqualsAndHashCode.Include
+    @NotEmpty
+    private String content;
+
+    @EqualsAndHashCode.Include
+    @NotEmpty
+    private String label;
 }

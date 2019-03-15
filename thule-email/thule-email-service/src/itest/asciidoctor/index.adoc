@@ -1,0 +1,10 @@
+= Email Service
+:toc: left
+
+Version: {version}
+
+Java micro-service capable of sending emails.
+
+== Post
+
+include::post-emails-endpoint.adoc[]

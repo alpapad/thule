@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,7 +40,7 @@ public class Email {
     @Valid
     private Set<@PatternJava8(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE) String> bccs = new HashSet<>();
 
-    @NotNull
+    @NotEmpty
     private String body;
 
     @Builder.Default
@@ -51,7 +51,7 @@ public class Email {
     private String from;
 
     @EqualsAndHashCode.Include
-    @NotNull
+    @NotEmpty
     private String subject;
 
     @Builder.Default

@@ -1,0 +1,29 @@
+//Replace with the name of your operation
+:operation: post-emails
+
+== /emails
+
+Sends an email
+
+
+=== Curl Request
+include::{snippets}/{operation}/http-response-202/curl-request.adoc[]
+
+=== HTTP request
+include::{snippets}/{operation}/http-response-202/http-request.adoc[]
+
+=== Request Body
+include::{snippets}/{operation}/http-response-202/request-body.adoc[]
+
+=== Request Fields
+include::{snippets}/{operation}/http-response-202/request-fields.adoc[]
+
+=== Response Body
+include::{snippets}/{operation}/http-response-202/response-body.adoc[]
+
+=== Response Fields
+include::{snippets}/{operation}/http-response-202/response-fields.adoc[]
+
+=== HTTP 401 Unauthorised
+include::{snippets}/{operation}/http-response-401/http-response.adoc[]
+
