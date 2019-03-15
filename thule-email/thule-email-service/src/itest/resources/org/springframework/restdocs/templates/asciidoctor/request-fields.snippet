@@ -1,11 +1,11 @@
-    |===
-        |Parameter|Description|Type|Required|Default
+|===
+|Parameter|Description|Type|Required|Default
 
-    {{#fields}}
-        |{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
-        |{{#tableCellContent}}{{description}}{{/tableCellContent}}
-        |{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
-        |{{#tableCellContent}}{{#required}}{{required}}{{/required}}{{^required}}`true`{{/required}}{{/tableCellContent}}
-        |{{#tableCellContent}}{{#default}}{{default}}{{/default}}{{^default}}`No default`{{/default}}{{/tableCellContent}}
-    {{/fields}}
-        |===
+{{#fields}}
+ |{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
+ |{{#tableCellContent}}{{description}}{{/tableCellContent}}
+ |{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
+ |{{#tableCellContent}}{{#required}}{{required}}{{/required}}{{^required}}`true`{{/required}}{{/tableCellContent}}
+ |{{#tableCellContent}}{{#default}}{{default}}{{/default}}{{^default}}`No default`{{/default}}{{/tableCellContent}}
+{{/fields}}
+|===
