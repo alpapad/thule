@@ -23,25 +23,25 @@ project("thule-configuration-config") {
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
     // Non-standard Thule gradle plugin config
-    def thuleMicroServicesConfig = "$buildDir/generated-resources/thule-micro-services-config"
-    // Add Spring boot config from each thule micro-service
-    sourceSets {
-        main {
-            // Register an output folder for thuleMicroServicesConfig, it will then be on the
-            // 'main' classpath and will be added into the jar
-            output.dir(thuleMicroServicesConfig, builtBy: "processResourcesFromMicroServices")
-            // Add the thuleMicroServicesConfig as a resource source directory, not strictly required
-            // for gradle but will enable the thuleMicroServicesConfig to be added to the classpath used by IntelliJ
-            resources.srcDirs += thuleMicroServicesConfig
-        }
+    // Create collectConfigs task is defined purely for development usage. Set up intellij to
+    // invoke this task so that when starting the configuration service it will have all the 
+    // configs for all services
+    configurations {
+        config
     }
-    // Collect Spring boot config from individual micro-services
-    task processResourcesFromMicroServices {
+    dependencies {
+        config("uk.co.serin.thule:thule-admin-config:latest.integration")
+        config("uk.co.serin.thule:thule-discovery-config:latest.integration")
+        config("uk.co.serin.thule:thule-email-config:latest.integration")
+        config("uk.co.serin.thule:thule-gateway-config:latest.integration")
+        config("uk.co.serin.thule:thule-people-config:latest.integration")
+    }
+    task collectConfigs {
         doLast {
-            configurations.compile.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+            configurations.config.resolvedConfiguration.resolvedArtifacts.each { artifact ->
                 copy {
                     from zipTree(artifact.file)
-                    into thuleMicroServicesConfig + "/config/" + artifact.moduleVersion.id.name.replaceFirst("config", "service")
+                    into "$buildDir/generated-resources/micro-services-config/config/" + artifact.moduleVersion.id.name.replaceFirst("config", "service")
                     include "config/**"
                     eachFile { f ->
                         f.path = f.path.replaceFirst("config", "")
@@ -50,15 +50,6 @@ project("thule-configuration-config") {
                 }
             }
         }
-    }
-
-    // Dependencies
-    dependencies {
-        compile("uk.co.serin.thule:thule-admin-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-discovery-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-email-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-gateway-config:1.0.0-SNAPSHOT")
-        compile("uk.co.serin.thule:thule-people-config:1.0.0-SNAPSHOT")
     }
 }
 

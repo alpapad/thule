@@ -10,7 +10,7 @@ server:
 # Thule configuration
 thule:
   configurationservice:
-    search-locations: ../thule-configuration-config/build/generated-resources/thule-micro-services-config/config
+    search-locations: ../thule-configuration-config/build/generated-resources/micro-services-config/config
   discoveryservice:
     host: localhost
     port: 8761
