@@ -23,7 +23,7 @@ project("thule-configuration-config") {
     apply from: "${rootDir}/../gradle/build-config.gradle"
 
     // Non-standard Thule gradle plugin config
-    // Create collectConfigs task is defined purely for development usage. Set up intellij to
+    // Task collectConfigs is defined purely for development usage. Set up intellij to
     // invoke this task so that when starting the configuration service it will have all the 
     // configs for all services
     configurations {
