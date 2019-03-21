@@ -15,17 +15,6 @@ function checkHealth {
     else
         _checkHealthForSingleService ${dockerComposeFile} ${serviceName}
         healthResponseCode=$?
-        if [[ ${healthResponseCode} -ne 0 ]]; then
-            echo ""
-            echo "================================================================================"
-            echo "WARNING: ${serviceName} has failed its healthcheck"
-            echo ""
-            echo "HINT: If the config service is not up, no other services will start"
-            echo "Checking the health of the configuration service for your convenience :-)"
-            echo "================================================================================"
-
-            _checkHealthForSingleService ${dockerComposeFile} thule-configuration-service
-        fi
     fi
 
     echo "================================================================================"
