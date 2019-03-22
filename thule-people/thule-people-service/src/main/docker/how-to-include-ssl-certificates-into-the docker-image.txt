@@ -1,0 +1,14 @@
+When a build takes place using gradle, it will build a docker image.
+
+As part of this building of the docker image, any ssl certificates found in the ssl-certificates
+directory will be added to the Java cacerts trust store. The alias for each ssl certificate will be
+the same as the file name, for example, a certificate called fis-test.cert, will be added into
+cacerts with an alias name of fis-test!
+
+So all you need to do to change an existing certificate, is replace the certificate in the
+ssl-certificates directory. To add a new one, just drop the certificate into the ssl-certificates
+directory. Then perform a gradle build, e.g. ./gradlew clean build, which will create a docker image
+with the new certificates.
+
+This also provides a mechanism to add certificates for multiple environments into the the
+docker image. Just call each one a different name, e.g. serin-test.cert and serin-prod.cert.

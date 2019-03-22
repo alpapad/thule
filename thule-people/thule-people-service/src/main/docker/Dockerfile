@@ -9,6 +9,12 @@ RUN \
     addgroup --gid $GID $USER && \
     adduser --disabled-password --gecos "" --gid $GID --shell /bin/bash --uid $UID $USER
 
+################################  Add SSL certificates to Java trust store  ################################
+COPY /ssl-certificates /ssl-certificates
+COPY import-ssl-certificates.sh /
+RUN chmod +x /import-ssl-certificates.sh && \
+    /import-ssl-certificates.sh
+
 ################################  Install Spring Boot App ################################
 # Copy the app's jar file to the container
 ARG JAR_FILE
