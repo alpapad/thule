@@ -92,7 +92,7 @@ function _downloadConfigurationForSingleService {
 
     configJarFile=$(echo "" ${configDownloadUrl} | sed 's/.*\(${serviceName}-.*.jar\).*/\1/')
     echo ""
-    echo "Unzipping ${configJarFile} to ${tempDirectory}/jar/unzipped..."
+    echo "Unzipping ${configJarFile} to ${configDirectoryExpectedByDockerCompose}/temp/${serviceName}..."
 
     # Unzip the config files
     configDirectoryExpectedByDockerCompose=$(configDirectoryExpectedByDockerCompose ${dockerComposeFile})
