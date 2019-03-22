@@ -1,39 +1,5 @@
 version: "3.5"
 services:
-  ################################  thule-configuration-service  ################################
-  thule-configuration-service:
-    image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
-    environment:
-      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
-      SPRING_PROFILES_ACTIVE: cit
-      TZ: Europe/London
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "10"
-    ports:
-      - 7888:8080
-    restart: always
-    volumes:
-    - /home/wayne/.thule/thule-configuration-config/config:/config
-
-  ################################  thule-discovery-service  ################################
-  thule-discovery-service:
-    image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
-    environment:
-      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
-      SPRING_PROFILES_ACTIVE: cit
-      TZ: Europe/London
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "10"
-    ports:
-      - 7761:8080
-    restart: always
-
   ################################  thule-admin-service  ################################
   thule-admin-service:
     image: pooh:8082/thule-admin-service:1.0.0-SNAPSHOT
@@ -47,7 +13,41 @@ services:
         max-size: "50m"
         max-file: "10"
     ports:
-    - 7093:8080
+      - 7093:8080
+    restart: always
+
+  ################################  thule-configuration-service  ################################
+  thule-configuration-service:
+    image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
+    environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+      SPRING_PROFILES_ACTIVE: cit
+      TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+      max-size: "50m"
+      max-file: "10"
+    ports:
+      - 7888:8080
+    restart: always
+    volumes:
+      - /home/wayne/.thule/thule-configuration-config/config:/config
+
+  ################################  thule-discovery-service  ################################
+  thule-discovery-service:
+    image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
+    environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+      SPRING_PROFILES_ACTIVE: cit
+      TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+      max-size: "50m"
+      max-file: "10"
+    ports:
+      - 7761:8080
     restart: always
 
   ################################  thule-email-service  ################################
@@ -60,10 +60,10 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: "50m"
-        max-file: "10"
+      max-size: "50m"
+      max-file: "10"
     ports:
-    - 7095:8080
+      - 7095:8080
     restart: always
 
   ################################  thule-people-service  ################################
@@ -76,10 +76,10 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: "50m"
-        max-file: "10"
+      max-size: "50m"
+      max-file: "10"
     ports:
-    - 7094:8080
+      - 7094:8080
     restart: always
 
   ################################  thule-gateway -service ################################
