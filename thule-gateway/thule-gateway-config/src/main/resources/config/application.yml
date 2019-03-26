@@ -29,6 +29,11 @@ management:
     health:
       show-details: ALWAYS
 
+# Ribbon configuration
+ribbon:
+  connect-timeout: 20000
+  read-timeout: 60000
+
 # Spring boot configuration
 spring:
   sleuth:
