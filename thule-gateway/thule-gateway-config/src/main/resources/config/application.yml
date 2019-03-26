@@ -31,8 +31,8 @@ management:
 
 # Ribbon configuration
 ribbon:
-  connect-timeout: 20000
-  read-timeout: 60000
+  ConnectTimeout: 20000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be connectTimeout or connect-timeout
+  ReadTimeout: 60000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be readTimeout or read-timeout
 
 # Spring boot configuration
 spring:
