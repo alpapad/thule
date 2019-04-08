@@ -42,8 +42,6 @@ public class JwtResourceServerConfigurerAdapterTest {
 
     @Test
     public void configure_configures_token_services() {
-        // Given
-
         // When
         sut.configure(resourceServerSecurityConfigurer);
 
@@ -53,11 +51,10 @@ public class JwtResourceServerConfigurerAdapterTest {
 
     @Test
     public void configure_configures_token_servicess() throws Exception {
-        // Given
-
         // When
         sut.configure(httpSecurity);
 
         // Then
+        verify(httpSecurity).authorizeRequests();
     }
 }
