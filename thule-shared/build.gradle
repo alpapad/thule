@@ -12,7 +12,7 @@ buildscript {
 plugins {
     id "com.github.ben-manes.versions" version "0.21.0" // Let it apply by default so that the plugin consolidates at the root of the project
     id "org.sonarqube" version "2.7.1" apply(false)
-    id "org.springframework.boot" version "2.1.5.RELEASEE" apply(false)
+    id "org.springframework.boot" version "2.1.5.RELEASE" apply(false)
 }
 
 subprojects {

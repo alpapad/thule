@@ -15,7 +15,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.7.1"
-    id "org.springframework.boot" version "2.1.5.RELEASEE"
+    id "org.springframework.boot" version "2.1.5.RELEASE"
 }
 apply plugin: "io.spring.dependency-management"
 
