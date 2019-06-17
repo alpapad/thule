@@ -119,7 +119,7 @@ project("thule-utils") {
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
         compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-        compile("net.logstash.logback:logstash-logback-encoder:6.0")
+        compile("net.logstash.logback:logstash-logback-encoder:6.1")
         compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
         compile("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
         compile("org.hibernate:hibernate-core")
