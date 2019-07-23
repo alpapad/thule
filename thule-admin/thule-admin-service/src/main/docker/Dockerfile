@@ -24,4 +24,4 @@ EXPOSE 8080
 # Use a non-blocking entropy source (i.e. /dev/urandom) instead of the default blocking entropy source (i.e. /dev/random)
 # to reduce the startup time of Tomcat which is used by Spring boot as the default web container
 # See http://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source
-ENTRYPOINT chroot --skip-chdir $USER:$USER / java -Djava.security.egd=file:/dev/./urandom -jar ${JAR_FILE}
+ENTRYPOINT chroot --skip-chdir --userspec $USER:$USER / java -Djava.security.egd=file:/dev/./urandom -jar ${JAR_FILE}
