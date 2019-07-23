@@ -1,4 +1,4 @@
-FROM openjdk:10.0.2
+FROM adoptopenjdk/openjdk12:slim
 
 ################################  Create user  ################################
 ENV GID 1000
@@ -13,13 +13,15 @@ RUN \
 # Copy the app's jar file to the container
 ARG JAR_FILE
 COPY ${JAR_FILE} /
+# Save the jar file ARG as an environment variable so it can be accessed by the ENTRYPOINT
+ENV JAR_FILE ${JAR_FILE}
 
 ################################  Expose private ports ################################
 # Tomcat port
 EXPOSE 8080
 
 ################################  Create entrypoint  ################################
-COPY docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["app"]
+# Use a non-blocking entropy source (i.e. /dev/urandom) instead of the default blocking entropy source (i.e. /dev/random)
+# to reduce the startup time of Tomcat which is used by Spring boot as the default web container
+# See http://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source
+ENTRYPOINT chroot --skip-chdir --userspec $USER:$USER / java -Djava.security.egd=file:/dev/./urandom -jar ${JAR_FILE}

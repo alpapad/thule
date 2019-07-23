@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 set -e
 
 for sslCertificate in $(find /ssl-certificates/* -type f)
