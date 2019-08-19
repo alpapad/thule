@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.1"
 services:
   ################################  thule-admin-service  ################################
   thule-admin-service:
@@ -82,7 +82,7 @@ services:
       - 7094:8080
     restart: always
 
-  ################################  thule-gateway -service ################################
+  ################################  thule-gateway-service ################################
   thule-gateway-service:
     image: pooh:8082/thule-gateway-service:1.0.0-SNAPSHOT
     environment:
