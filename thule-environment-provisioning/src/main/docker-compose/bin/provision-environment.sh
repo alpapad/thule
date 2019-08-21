@@ -150,7 +150,7 @@ if [[ ${PROVISION_LOCALLY} != "true" ]]; then
     echo "About to ship the provisioning scripts to ${PROVISIONING_HOST}..."
     echo ""
 
-    rsync -a --delete --progress $SCRIPT_DIR_NAME/../../../ ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}
+    rsync -a --delete --progress $SCRIPT_DIR_NAME/../../../../ ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}
     if [[ $? != 0 ]]; then
         echo ""
         echo "Error: Could not ship the provisioning scripts to ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"
