@@ -1,87 +1,69 @@
 #!/bin/bash
 
-function checkHealth {
-    # Input parameters
-    dockerComposeFile=$1
-    serviceName=$2
+function checkHealth() {
+  # Input parameters
+  dockerComposeFile=$1
+  serviceName=$2
 
-    echo ""
-    echo "================================================================================"
-    echo "About to check health of service(s).."
+  echo ""
+  echo "================================================================================"
+  echo "Checking health of ${serviceName}.."
 
-    if [[ -z ${serviceName} ]]; then
-        _checkHealthForAllServices ${dockerComposeFile}
-        healthResponseCode=$?
-    else
-        _checkHealthForSingleService ${dockerComposeFile} ${serviceName}
-        healthResponseCode=$?
+  countOfServicesFailingHealthcheck=0
+  for serviceName in "${serviceNames[@]}"; do
+    _checkHealthForSingleService ${dockerComposeFile} ${serviceName}
+    httpStahealthResponseCodetusCode=$?
+    if [[ ${healthResponseCode} -ne 0 ]]; then
+      ((countOfServicesFailingHealthcheck++))
     fi
+  done
 
-    echo "================================================================================"
+  echo ""
+  if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
+    echo "Healthcheck has completed and found that all the services are healthy"
+  else
+    echo "Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
+  fi
 
-    return ${healthResponseCode}
+  return ${countOfServicesFailingHealthcheck}
 }
 
-function _checkHealthForAllServices {
-    # Input parameters
-    dockerComposeFile=$1
+function _checkHealthForSingleService() {
+  # Input parameters
+  dockerComposeFile=$1
+  serviceName=$2
 
-    serviceNames=($(cat ${dockerComposeFile} | grep "^\s*thule.*.service:$" | sed "s/://g"))
+  servicePort=$(cat ${dockerComposeFile} | sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
+  healthCheckUrl=http://localhost:${servicePort}/actuator/health
 
-    countOfServicesFailingHealthcheck=0
-    for serviceName in "${serviceNames[@]}"
-    do
-        _checkHealthForSingleService ${dockerComposeFile} ${serviceName}
-        httpStahealthResponseCodetusCode=$?
-        if [[ ${healthResponseCode} -ne 0 ]]; then
-            ((countOfServicesFailingHealthcheck++))
-        fi
-    done
+  healthCheckStartTime=$(date +%s)
+  elapsedSeconds=$(($(date +%s) - ${healthCheckStartTime}))
+  maxElapsedSeconds=300
 
-    echo ""
-    if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
-        echo "Healthcheck has completed and found that all the services are healthy"
+  echo ""
+  printf "Waiting for %s on %s (up to a maximum of %s seconds)." ${serviceName} ${healthCheckUrl} ${maxElapsedSeconds}
+  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] ||
+    [[ httpStatusCode="$(curl -L -o /dev/null -s -w '%{http_code}' ${healthCheckUrl})" -eq 200 ]]; do
+    printf "."
+    sleep 5
+    elapsedSeconds=$(($(date +%s) - $healthCheckStartTime))
+  done
+  printf "\n"
+
+  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+    echo "Healthcheck for ${serviceName} on ${healthCheckUrl} succeeded and took ${elapsedSeconds} second(s)"
+    healthResponseCode=0
+  else
+    echo "Healthcheck failed for ${serviceName} on ${healthCheckUrl} within ${elapsedSeconds} second(s)"
+    healthResponseCode=999
+    if [[ ${httpStatusCode} -ne 0 ]]; then
+      echo "REASON: HTTP status code ${httpStatusCode}"
     else
-        echo "Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
+      echo "REASON: $(curl -sS ${healthCheckUrl} 2>&1)"
     fi
+  fi
 
-    return ${countOfServicesFailingHealthcheck}
-}
+  echo "================================================================================"
 
-function _checkHealthForSingleService {
-    # Input parameters
-    dockerComposeFile=$1
-    serviceName=$2
-
-    servicePort=$(cat ${dockerComposeFile} | sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
-    healthCheckUrl=http://localhost:${servicePort}/actuator/health
-
-    healthCheckStartTime=$(date +%s)
-    elapsedSeconds=$(($(date +%s) - ${healthCheckStartTime}))
-    maxElapsedSeconds=300
-
-    echo ""
-    printf "Waiting for ${serviceName} on ${healthCheckUrl} (up to a maximum of ${maxElapsedSeconds} seconds)."
-    until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || \
-          [[ httpStatusCode="$(curl -L -o /dev/null -s -w '%{http_code}' ${healthCheckUrl})" -eq 200 ]]; do
-        printf "."
-        sleep 5
-        elapsedSeconds=$(($(date +%s) - $healthCheckStartTime))
-    done
-    printf "\n"
-
-    if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-        echo "Healthcheck for ${serviceName} on ${healthCheckUrl} succeeded and took ${elapsedSeconds} second(s)"
-        healthResponseCode=0
-    else
-        echo "Healthcheck failed for ${serviceName} on ${healthCheckUrl} within ${elapsedSeconds} second(s)"
-        healthResponseCode=999
-        if [[ ${httpStatusCode} -ne 0 ]]; then
-            echo "REASON: HTTP status code ${httpStatusCode}"
-        else
-            echo "REASON: $(curl -sS ${healthCheckUrl} 2>&1)"
-        fi
-    fi
-
-    return ${healthResponseCode}
+  return ${healthResponseCode}
 }

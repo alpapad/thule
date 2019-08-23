@@ -7,10 +7,10 @@ function downloadDockerImage {
 
     if [[ -z ${serviceName} ]]; then
         # All services
-        docker-compose -f ${dockerComposeFile} pull
+        docker-compose -f "${dockerComposeFile}" pull
     else
         # Single service
-        docker-compose -f ${dockerComposeFile} pull ${serviceName}
+        docker-compose -f "${dockerComposeFile}" pull "${serviceName}"
     fi
 }
 
@@ -21,10 +21,10 @@ function startService {
 
     if [[ -z ${serviceName} ]]; then
         # All services
-        docker-compose -f ${dockerComposeFile} up -d
+        docker-compose -f "${dockerComposeFile}" up -d
     else
         # Single service
-        docker-compose -f ${dockerComposeFile} up -d ${serviceName}
+        docker-compose -f "${dockerComposeFile}" up -d "${serviceName}"
     fi
 }
 
@@ -35,9 +35,9 @@ function stopService {
 
     if [[ -z ${serviceName} ]]; then
         # All services
-        docker-compose -f ${dockerComposeFile} down -v
+        docker-compose -f "${dockerComposeFile}" down -v
     else
         # Single service
-        docker-compose -f ${dockerComposeFile} rm -fsv ${serviceName}
+        docker-compose -f "${dockerComposeFile}" rm -fsv "${serviceName}"
     fi
 }
