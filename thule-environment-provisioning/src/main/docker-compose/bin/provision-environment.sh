@@ -84,11 +84,11 @@ done
 ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 
 # service-name is mandatory
-SERVICE_NAME=$(toLowerCase "$1") # Convert to lowercase
-if [[ -z "${SERVICE_NAME}" ]]; then
-  usage
-  exit 1
-fi
+#SERVICE_NAME=$(toLowerCase "$1") # Convert to lowercase
+#if [[ -z "${SERVICE_NAME}" ]]; then
+#  usage
+#  exit 1
+#fi
 
 # docker-compose.yml must exist for the environment-name
 ENVIRONMENTS_DIRECTORY=${SCRIPT_DIR_NAME}/../environments
