@@ -7,12 +7,31 @@ function checkHealth() {
 
   echo ""
   echo "================================================================================"
-  echo "Checking health of ${serviceName}..."
+  echo "About to check health of service(s).."
+
+  if [[ -z ${serviceName} ]]; then
+    _checkHealthForAllServices "${dockerComposeFile}"
+    healthResponseCode=$?
+  else
+    _checkHealthForSingleService "${dockerComposeFile}" "${serviceName}"
+    healthResponseCode=$?
+  fi
+
+  echo "================================================================================"
+
+  return ${healthResponseCode}
+}
+
+function _checkHealthForAllServices() {
+  # Input parameters
+  dockerComposeFile=$1
+
+  serviceNames=($(grep "^\s*thule.*.service:$" "${dockerComposeFile}" | sed "s/://g"))
 
   countOfServicesFailingHealthcheck=0
   for serviceName in "${serviceNames[@]}"; do
     _checkHealthForSingleService ${dockerComposeFile} ${serviceName}
-    httpStahealthResponseCodetusCode=$?
+    healthResponseCode=$?
     if [[ ${healthResponseCode} -ne 0 ]]; then
       ((countOfServicesFailingHealthcheck++))
     fi
@@ -33,7 +52,7 @@ function _checkHealthForSingleService() {
   dockerComposeFile=$1
   serviceName=$2
 
-  servicePort=$(> "${dockerComposeFile}" sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
+  servicePort=$(sed >"${dockerComposeFile}" -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
   healthCheckUrl=http://localhost:${servicePort}/actuator/health
 
   healthCheckStartTime=$(date +%s)
@@ -41,12 +60,12 @@ function _checkHealthForSingleService() {
   maxElapsedSeconds=300
 
   echo ""
-  printf "Waiting for %s on %s (up to a maximum of %s seconds)." ${serviceName} ${healthCheckUrl} ${maxElapsedSeconds}
+  printf "Waiting for %s on %s (up to a maximum of %s seconds)." "${serviceName}" "${healthCheckUrl}" ${maxElapsedSeconds}
   until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] ||
     [[ httpStatusCode="$(curl -L -o /dev/null -s -w '%{http_code}' ${healthCheckUrl})" -eq 200 ]]; do
     printf "."
     sleep 5
-    elapsedSeconds=$(($(date +%s) - $healthCheckStartTime))
+    elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
   done
   printf "\n"
 
