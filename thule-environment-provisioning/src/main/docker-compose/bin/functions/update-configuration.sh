@@ -27,6 +27,10 @@ function _updateConfigurationForSingleService() {
   dockerComposeFile=$1
   serviceName=$2
 
+  echo ""
+  echo "================================================================================"
+  echo "About to update configuration for ${serviceName}..."
+
   configDirectoryExpectedByConfigurationService=$(configDirectoryExpectedByConfigurationService "${dockerComposeFile}")
   tempConfigDirectory=${configDirectoryExpectedByConfigurationService}/temp/${serviceName}
 
@@ -46,4 +50,8 @@ function _updateConfigurationForSingleService() {
   rm -fr "${tempConfigDirectory}"
 
   printf "\033[32m done \033[0m \n"
+
+  echo ""
+  echo "Have updated configuration for ${serviceName}"
+  echo "================================================================================"
 }
