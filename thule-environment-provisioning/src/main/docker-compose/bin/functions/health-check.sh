@@ -5,10 +5,6 @@ function checkHealth() {
   dockerComposeFile=$1
   serviceName=$2
 
-  echo ""
-  echo "================================================================================"
-  echo "About to check health of service(s).."
-
   if [[ -z ${serviceName} ]]; then
     _checkHealthForAllServices "${dockerComposeFile}"
     healthResponseCode=$?
@@ -16,8 +12,6 @@ function checkHealth() {
     _checkHealthForSingleService "${dockerComposeFile}" "${serviceName}"
     healthResponseCode=$?
   fi
-
-  echo "================================================================================"
 
   return ${healthResponseCode}
 }
@@ -38,11 +32,14 @@ function _checkHealthForAllServices() {
   done
 
   echo ""
+  echo "================================================================================"
+  echo ""
   if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
     echo "Healthcheck has completed and found that all the services are healthy"
   else
     echo "Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
   fi
+  echo "================================================================================"
 
   return ${countOfServicesFailingHealthcheck}
 }
@@ -56,7 +53,7 @@ function _checkHealthForSingleService() {
   echo "================================================================================"
   echo "Checking health of ${serviceName}..."
 
-  servicePort=$(> "${dockerComposeFile}" sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
+  servicePort=$(cat "${dockerComposeFile}" | sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
   healthCheckUrl=http://localhost:${servicePort}/actuator/health
 
   healthCheckStartTime=$(date +%s)
