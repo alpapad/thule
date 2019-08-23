@@ -22,7 +22,6 @@ function _downloadConfigurationForAllServices() {
   for serviceName in "${serviceNames[@]}"; do
     _downloadConfigurationForSingleService "${dockerComposeFile}" ${serviceName}
   done
-
 }
 
 function _downloadConfigurationForSingleService() {
