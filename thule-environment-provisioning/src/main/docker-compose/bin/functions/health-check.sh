@@ -7,7 +7,7 @@ function checkHealth() {
 
   echo ""
   echo "================================================================================"
-  echo "Checking health of ${serviceName}.."
+  echo "Checking health of ${serviceName}..."
 
   countOfServicesFailingHealthcheck=0
   for serviceName in "${serviceNames[@]}"; do
@@ -33,11 +33,11 @@ function _checkHealthForSingleService() {
   dockerComposeFile=$1
   serviceName=$2
 
-  servicePort=$(cat ${dockerComposeFile} | sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
+  servicePort=$(> "${dockerComposeFile}" sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
   healthCheckUrl=http://localhost:${servicePort}/actuator/health
 
   healthCheckStartTime=$(date +%s)
-  elapsedSeconds=$(($(date +%s) - ${healthCheckStartTime}))
+  elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
   maxElapsedSeconds=300
 
   echo ""
