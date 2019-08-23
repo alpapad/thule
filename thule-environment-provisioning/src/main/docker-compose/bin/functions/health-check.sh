@@ -33,7 +33,6 @@ function _checkHealthForAllServices() {
 
   echo ""
   echo "================================================================================"
-  echo ""
   if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
     echo "Healthcheck has completed and found that all the services are healthy"
   else
