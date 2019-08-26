@@ -76,7 +76,7 @@ function configDirectoryExpectedByConfigurationService() {
   # Input parameters
   dockerComposeFile=$1
 
-  # Determine where docker expects the config files to reside on the filesystem
+  # Determine where the config-service expects the config files to reside on the filesystem
   configDirectory=$(grep :/config "${dockerComposeFile}" | sed 's/.* -\s*\(.*\):\/config.*/\1/')
   # Substitute any environments variables or special characters , e.g. $HOME, ~
   configDirectory=$(eval echo -E "${configDirectory}")

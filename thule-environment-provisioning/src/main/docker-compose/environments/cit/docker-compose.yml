@@ -1,27 +1,5 @@
 version: "3.7"
 services:
-  ################################  thule-admin-service  ################################
-  thule-admin-service:
-    image: pooh:8082/thule-admin-service:1.0.0-SNAPSHOT
-    environment:
-      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
-      SPRING_PROFILES_ACTIVE: cit
-      TZ: Europe/London
-    healthcheck:
-      test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
-      retries: 3
-      start_period: 1m
-      timeout: 10s
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "10"
-    ports:
-      - 7093:8080
-    restart: always
-
   ################################  thule-configuration-service  ################################
   thule-configuration-service:
     image: pooh:8082/thule-configuration-service:1.0.0-SNAPSHOT
@@ -68,9 +46,9 @@ services:
       - 7761:8080
     restart: always
 
-  ################################  thule-email-service  ################################
-  thule-email-service:
-    image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
+  ################################  thule-admin-service  ################################
+  thule-admin-service:
+    image: pooh:8082/thule-admin-service:1.0.0-SNAPSHOT
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_PROFILES_ACTIVE: cit
@@ -87,7 +65,20 @@ services:
         max-size: "50m"
         max-file: "10"
     ports:
-      - 7095:8080
+      - 7093:8080
+    restart: always
+
+  ################################  Databases required by thule-people-service  ################################
+  mysql-people-service:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/London
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
     restart: always
 
   ################################  thule-people-service  ################################
@@ -112,6 +103,28 @@ services:
       - 7094:8080
     restart: always
 
+  ################################  thule-email-service  ################################
+  thule-email-service:
+    image: pooh:8082/thule-email-service:1.0.0-SNAPSHOT
+    environment:
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+      SPRING_PROFILES_ACTIVE: cit
+      TZ: Europe/London
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/actuator/health || exit 1
+      interval: 10s
+      retries: 3
+      start_period: 1m
+      timeout: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
+    ports:
+      - 7095:8080
+    restart: always
+
   ################################  thule-gateway-service ################################
   thule-gateway-service:
     image: pooh:8082/thule-gateway-service:1.0.0-SNAPSHOT
@@ -132,17 +145,4 @@ services:
         max-file: "10"
     ports:
       - 7091:8080
-    restart: always
-
-  ################################  Servers and Databases Required By Docker tests  ################################
-  mysql-people-service:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      TZ: Europe/London
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "10"
     restart: always
