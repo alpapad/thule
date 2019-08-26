@@ -95,7 +95,7 @@ if [[ ! -f "${DOCKER_COMPOSE_FILE}" ]]; then
 fi
 
 # default service-name to all services
-SERVICE_NAMES=$(toLowerCase "$1") # Convert to lowercase
+SERVICE_NAMES=$(toLowerCase "$@") # Convert to lowercase
 if [[ -z "${SERVICE_NAMES}" ]]; then
   SERVICE_NAMES=($(grep "^\s*.*service:$" "${DOCKER_COMPOSE_FILE}" | sed "s/://g"))
 else
