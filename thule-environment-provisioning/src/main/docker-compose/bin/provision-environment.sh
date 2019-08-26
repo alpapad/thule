@@ -82,9 +82,17 @@ done
 # environment-name must be in lowercase
 ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 
-# docker-compose.yml must exist for the environment-name
+# default service-name to all services
 ENVIRONMENTS_DIRECTORY=${SCRIPT_DIR_NAME}/../environments
 DOCKER_COMPOSE_FILE=${ENVIRONMENTS_DIRECTORY}/${ENVIRONMENT_NAME}/docker-compose.yml
+SERVICE_NAMES=$(toLowerCase "$@") # Convert to lowercase
+if [[ -z "${SERVICE_NAMES}" ]]; then
+  SERVICE_NAMES=($(grep "^\s*.*service:$" "${DOCKER_COMPOSE_FILE}" | sed "s/://g"))
+else
+  SERVICE_NAMES=(${SERVICE_NAMES})
+fi
+
+# docker-compose.yml must exist for the environment-name
 if [[ ! -f "${DOCKER_COMPOSE_FILE}" ]]; then
   echo ""
   echo "================================================================================"
@@ -94,12 +102,15 @@ if [[ ! -f "${DOCKER_COMPOSE_FILE}" ]]; then
   exit 255
 fi
 
-# default service-name to all services
-SERVICE_NAMES=$(toLowerCase "$@") # Convert to lowercase
-if [[ -z "${SERVICE_NAMES}" ]]; then
-  SERVICE_NAMES=($(grep "^\s*.*service:$" "${DOCKER_COMPOSE_FILE}" | sed "s/://g"))
-else
-  SERVICE_NAMES=(${SERVICE_NAMES})
+# configuration-service must exist in the docker-compose.yml
+configurationServiceNameFound=$(cat "${DOCKER_COMPOSE_FILE}" | grep "^\s*thule-configuration-service:$" | sed "s/://g")
+if [[ -z ${configurationServiceNameFound} ]]; then
+  echo ""
+  echo "================================================================================"
+  echo "Configuration service for environment [${ENVIRONMENT_NAME}] in ${DOCKER_COMPOSE_FILE} does not exist...exiting"
+  echo "Hint: Have you mistyped the environment name?"
+  echo "================================================================================"
+  exit 255
 fi
 
 # service must exist in the docker-compose.yml
