@@ -32,11 +32,11 @@ function checkHealth() {
 
     if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
       echo "Healthcheck for ${serviceName} succeeded and took ${elapsedSeconds} second(s)"
-      healthResponseCode=0
     else
       echo "Healthcheck failed for ${serviceName} within ${elapsedSeconds} second(s)"
       echo "REASON: Health status is ${healthStatus}"
       echo "HINT: Use the following command to obtain further diagnostics: docker inspect --format='{{json .State.Health}}' ${dockerServiceName}"
+      healthResponseCode=255
     fi
   fi
 
