@@ -5,36 +5,8 @@ function downloadConfiguration() {
   dockerComposeFile=$1
   serviceName=$2
 
-  if [[ -z ${serviceName} ]]; then
-    _downloadConfigurationForAllServices "${dockerComposeFile}"
-  else
-    _downloadConfigurationForSingleService "${dockerComposeFile}" "${serviceName}"
-  fi
-
-  echo ""
-}
-
-function _downloadConfigurationForAllServices() {
-  # Input parameters
-  dockerComposeFile=$1
-
-  serviceNames=($(cat ${dockerComposeFile} | grep "^\s*thule.*.service:$" | sed "s/://g"))
-  for serviceName in "${serviceNames[@]}"; do
-    _downloadConfigurationForSingleService "${dockerComposeFile}" ${serviceName}
-  done
-}
-
-function _downloadConfigurationForSingleService() {
-  # Input parameters
-  dockerComposeFile=$1
-  serviceName=$2
-
   # Derive the config name
   configName=${serviceName//service/config}
-
-  echo ""
-  echo "================================================================================"
-  echo "About to download ${configName} from Nexus..."
 
   tempDirectory=$(mktemp -d --suffix "${configName}")
 
@@ -98,10 +70,6 @@ function _downloadConfigurationForSingleService() {
   rm -fr "${configDirectoryExpectedByConfigurationService}/temp/${serviceName}"
   mkdir -p "${configDirectoryExpectedByConfigurationService}/temp/${serviceName}"
   unzip -jq -d "${configDirectoryExpectedByConfigurationService}/temp/${serviceName}" "${tempDirectory}/jar/*.jar" config/application*.yml
-
-  echo ""
-  echo "Have downloaded ${configName} from Nexus"
-  echo "================================================================================"
 }
 
 function configDirectoryExpectedByConfigurationService() {

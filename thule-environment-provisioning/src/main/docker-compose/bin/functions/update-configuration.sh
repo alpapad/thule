@@ -5,32 +5,6 @@ function updateConfiguration() {
   dockerComposeFile=$1
   serviceName=$2
 
-  if [[ -z ${serviceName} ]]; then
-    _updateConfigurationForAllServices ${dockerComposeFile}
-  else
-    _updateConfigurationForSingleService ${dockerComposeFile} ${serviceName}
-  fi
-}
-
-function _updateConfigurationForAllServices() {
-  # Input parameters
-  dockerComposeFile=$1
-
-  serviceNames=($(cat ${dockerComposeFile} | grep "^\s*thule.*.service:$" | sed "s/://g"))
-  for serviceName in "${serviceNames[@]}"; do
-    _updateConfigurationForSingleService ${dockerComposeFile} ${serviceName}
-  done
-}
-
-function _updateConfigurationForSingleService() {
-  # Input parameters
-  dockerComposeFile=$1
-  serviceName=$2
-
-  echo ""
-  echo "================================================================================"
-  echo "About to update configuration for ${serviceName}..."
-
   configDirectoryExpectedByConfigurationService=$(configDirectoryExpectedByConfigurationService "${dockerComposeFile}")
   tempConfigDirectory=${configDirectoryExpectedByConfigurationService}/temp/${serviceName}
 
@@ -50,8 +24,4 @@ function _updateConfigurationForSingleService() {
   rm -fr "${tempConfigDirectory}"
 
   printf "\033[32m done \033[0m \n"
-
-  echo ""
-  echo "Have updated configuration for ${serviceName}"
-  echo "================================================================================"
 }

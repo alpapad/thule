@@ -5,80 +5,38 @@ function checkHealth() {
   dockerComposeFile=$1
   serviceName=$2
 
-  if [[ -z ${serviceName} ]]; then
-    _checkHealthForAllServices "${dockerComposeFile}"
-    healthResponseCode=$?
-  else
-    _checkHealthForSingleService "${dockerComposeFile}" "${serviceName}"
-    healthResponseCode=$?
-  fi
-
-  return ${healthResponseCode}
-}
-
-function _checkHealthForAllServices() {
-  # Input parameters
-  dockerComposeFile=$1
-
-  serviceNames=($(grep "^\s*thule.*.service:$" "${dockerComposeFile}" | sed "s/://g"))
-
-  countOfServicesFailingHealthcheck=0
-  for serviceName in "${serviceNames[@]}"; do
-    _checkHealthForSingleService ${dockerComposeFile} ${serviceName}
-    healthResponseCode=$?
-    if [[ ${healthResponseCode} -ne 0 ]]; then
-      ((countOfServicesFailingHealthcheck++))
-    fi
-  done
-
-  echo ""
-  echo "================================================================================"
-  if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
-    echo "Healthcheck has completed and found that all the services are healthy"
-  else
-    echo "Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
-  fi
-  echo "================================================================================"
-
-  return ${countOfServicesFailingHealthcheck}
-}
-
-function _checkHealthForSingleService() {
-  # Input parameters
-  dockerComposeFile=$1
-  serviceName=$2
-
   echo ""
   echo "================================================================================"
   echo "Checking health of ${serviceName}..."
 
-  servicePort=$(cat "${dockerComposeFile}" | sed -n "/${serviceName}/,/:8080/p" | sed -n "s/[^0-9]*\([0-9]*\):8080.*/\1/p")
-  healthCheckUrl=http://localhost:${servicePort}/actuator/health
-
+  dockerServiceName=$(docker-compose -f ${dockerComposeFile} ps ${serviceName} | grep ${serviceName} | cut -d" " -f1)
   healthCheckStartTime=$(date +%s)
+  healthResponseCode=0
   elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
   maxElapsedSeconds=300
 
+  stateHealth=$(docker inspect --format=\{\{.State.Health\}\} ${dockerServiceName})
   echo ""
-  printf "Waiting for %s on %s (up to a maximum of %s seconds)." "${serviceName}" "${healthCheckUrl}" ${maxElapsedSeconds}
-  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] ||
-    [[ httpStatusCode="$(curl -L -o /dev/null -s -w '%{http_code}' ${healthCheckUrl})" -eq 200 ]]; do
-    printf "."
-    sleep 5
-    elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
-  done
-  printf "\n"
-
-  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-    echo "Healthcheck for ${serviceName} on ${healthCheckUrl} succeeded and took ${elapsedSeconds} second(s)"
-    healthResponseCode=0
+  if [[ "${stateHealth}" == "<nil>" ]]; then
+    echo "WARNING: Unable to check health for ${serviceName} because a healthcheck has not been defined"
   else
-    echo "Healthcheck failed for ${serviceName} on ${healthCheckUrl} within ${elapsedSeconds} second(s)"
-    healthResponseCode=999
-    if [[ ${httpStatusCode} -ne 0 ]]; then
-      echo "REASON: HTTP status code ${httpStatusCode}"
+    printf "Waiting for %s (up to a maximum of %s seconds)." "${serviceName}" ${maxElapsedSeconds}
+    healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} ${dockerServiceName})
+    until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${healthStatus}" == "healthy" ]]; do
+      printf "."
+      sleep 5
+      elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
+      healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} ${dockerServiceName})
+    done
+    printf "\n"
+
+    if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+      echo "Healthcheck for ${serviceName} succeeded and took ${elapsedSeconds} second(s)"
+      healthResponseCode=0
     else
-      echo "REASON: $(curl -sS ${healthCheckUrl} 2>&1)"
+      echo "Healthcheck failed for ${serviceName} within ${elapsedSeconds} second(s)"
+      echo "REASON: Health status is ${healthStatus}"
+      echo "HINT: Use the following command to obtain further diagnostics: docker inspect --format='{{json .State.Health}}' ${dockerServiceName}"
     fi
   fi
 

@@ -1,43 +1,20 @@
 #!/bin/bash
 
-function downloadDockerImage {
-    # Input parameters
-    dockerComposeFile=$1
-    serviceName=$2
+function startService() {
+  # Input parameters
+  dockerComposeFile=$1
+  serviceName=$2
 
-    if [[ -z ${serviceName} ]]; then
-        # All services
-        docker-compose -f "${dockerComposeFile}" pull
-    else
-        # Single service
-        docker-compose -f "${dockerComposeFile}" pull "${serviceName}"
-    fi
+  echo ""
+  docker-compose -f "${dockerComposeFile}" pull "${serviceName}"
+  docker-compose -f "${dockerComposeFile}" up -d "${serviceName}"
 }
 
-function startService {
-    # Input parameters
-    dockerComposeFile=$1
-    serviceName=$2
+function stopService() {
+  # Input parameters
+  dockerComposeFile=$1
+  serviceName=$2
 
-    if [[ -z ${serviceName} ]]; then
-        # All services
-        docker-compose -f "${dockerComposeFile}" up -d
-    else
-        # Single service
-        docker-compose -f "${dockerComposeFile}" up -d "${serviceName}"
-    fi
-}
-
-function stopService {
-    # Input parameters
-    dockerComposeFile=$1
-    serviceName=$2
-
-    if [[ -z ${serviceName} ]]; then
-        # All services
-        docker-compose -f "${dockerComposeFile}" down -v
-    else
-        # Single service
-        docker-compose -f "${dockerComposeFile}" rm -fsv "${serviceName}"
-    fi
+  echo ""
+  docker-compose -f "${dockerComposeFile}" rm -fsv "${serviceName}"
 }

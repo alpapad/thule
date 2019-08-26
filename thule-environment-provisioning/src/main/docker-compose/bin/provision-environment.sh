@@ -18,10 +18,9 @@ usage() {
   echo "- Update the old configuration with the new one that is in a temporary location (see above)"
   echo "- Start docker container"
   echo "- Check the health to ensure that the service has started successfully"
-  echo "- if the -s option was specified, stop the docker container"
   echo ""
   echo ""
-  echo "Usage: $scriptName [OPTION...] SERVICE_NAME"
+  echo "Usage: $scriptName [OPTION...] SERVICE_NAMES"
   echo ""
   echo "Options Summary:"
   echo ""
@@ -72,7 +71,7 @@ done
 # Load functions
 ################################################################################
 SCRIPT_DIR_NAME=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-SCRIPT_NAME=$(basename $0)
+SCRIPT_NAME=$(basename "$0")
 for functionScriptFile in $(find ${SCRIPT_DIR_NAME}/functions/*.sh -maxdepth 0 -type f); do
   source ${functionScriptFile}
 done
@@ -82,9 +81,6 @@ done
 ################################################################################
 # environment-name must be in lowercase
 ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
-
-# service-name
-SERVICE_NAME=$(toLowerCase "$1") # Convert to lowercase
 
 # docker-compose.yml must exist for the environment-name
 ENVIRONMENTS_DIRECTORY=${SCRIPT_DIR_NAME}/../environments
@@ -98,18 +94,26 @@ if [[ ! -f "${DOCKER_COMPOSE_FILE}" ]]; then
   exit 255
 fi
 
+# default service-name to all services
+SERVICE_NAMES=$(toLowerCase "$1") # Convert to lowercase
+if [[ -z "${SERVICE_NAMES}" ]]; then
+  SERVICE_NAMES=($(grep "^\s*.*service:$" "${DOCKER_COMPOSE_FILE}" | sed "s/://g"))
+else
+  SERVICE_NAMES=(${SERVICE_NAMES})
+fi
+
 # service must exist in the docker-compose.yml
-if [[ ! -z ${SERVICE_NAME} ]]; then
-  serviceNameFound=($(cat ${DOCKER_COMPOSE_FILE} | grep "^\s*${SERVICE_NAME}:$" | sed "s/://g"))
+for serviceName in "${SERVICE_NAMES[@]}"; do
+  serviceNameFound=$(cat "${DOCKER_COMPOSE_FILE}" | grep "^\s*${serviceName}:$" | sed "s/://g")
   if [[ -z ${serviceNameFound} ]]; then
     echo ""
     echo "================================================================================"
-    echo "Service with name [${SERVICE_NAME}] does not exist in ${DOCKER_COMPOSE_FILE}...exiting"
+    echo "Service with name [${serviceName}] does not exist in ${DOCKER_COMPOSE_FILE}...exiting"
     echo "Hint: Have you mistyped the service name?"
     echo "================================================================================"
     exit 255
   fi
-fi
+done
 
 ################################################################################
 # Load config properties
@@ -139,7 +143,7 @@ if [[ ${PROVISION_LOCALLY} != "true" ]]; then
   echo "About to ship the provisioning scripts to ${PROVISIONING_HOST}..."
   echo ""
 
-  rsync -a --delete --progress $SCRIPT_DIR_NAME/../../../../ ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}
+  rsync -a --delete --progress "$SCRIPT_DIR_NAME/../../../../" "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"
   if [[ $? != 0 ]]; then
     echo ""
     echo "Error: Could not ship the provisioning scripts to ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"
@@ -180,7 +184,7 @@ PROVISION_LOCALLY is ${PROVISION_LOCALLY}\n\
 PROVISIONING_HOST is ${PROVISIONING_HOST}\n\
 PROVISIONING_HOST_USERID is ${PROVISIONING_HOST_USERID}\n\
 PROVISIONING_HOST_TARGET_DIRECTORY is ${PROVISIONING_HOST_TARGET_DIRECTORY}\n\
-SERVICE_NAME is $SERVICE_NAME"
+SERVICE_NAMES are ${SERVICE_NAMES[*]}"
 
 echo ""
 echo "================================================================================"
@@ -188,15 +192,47 @@ echo -e "${settings}"
 echo "================================================================================"
 
 ################################################################################
-# Provision (if SERVICE_NAME is empty/null then it implies ALL services)
+# Provision
 ################################################################################
-downloadConfiguration ${DOCKER_COMPOSE_FILE} ${SERVICE_NAME}
-downloadDockerImage ${DOCKER_COMPOSE_FILE} ${SERVICE_NAME}
-stopService ${DOCKER_COMPOSE_FILE} ${SERVICE_NAME}
-updateConfiguration ${DOCKER_COMPOSE_FILE} ${SERVICE_NAME}
-startService ${DOCKER_COMPOSE_FILE} ${SERVICE_NAME}
-checkHealth ${DOCKER_COMPOSE_FILE} ${SERVICE_NAME}
-healthReturnCode=$?
+countOfServicesFailingHealthcheck=0
+for serviceName in "${SERVICE_NAMES[@]}"; do
+  echo ""
+  echo "================================================================================"
+  echo "About to provision ${serviceName}..."
+
+  springProfilesActive=$(cat "${DOCKER_COMPOSE_FILE}" | sed -n "/${serviceName}:/,/#####/p" | sed -n "s/.*SPRING_PROFILES_ACTIVE:\(.*\)/\1/p")
+  if [[ -n "${springProfilesActive}" ]]; then isSpringBootService="true"; else isSpringBootService="false"; fi
+  if [[ ${isSpringBootService} == "true" ]]; then
+    downloadConfiguration "${DOCKER_COMPOSE_FILE}" "${serviceName}"
+  fi
+  stopService "${DOCKER_COMPOSE_FILE}" "${serviceName}"
+  if [[ ${isSpringBootService} == "true" ]]; then
+    updateConfiguration "${DOCKER_COMPOSE_FILE}" "${serviceName}"
+  fi
+  startService "${DOCKER_COMPOSE_FILE}" "${serviceName}"
+
+  echo ""
+  echo "Have successfully provisioned ${serviceName}"
+  echo "================================================================================"
+done
+
+################################################################################
+# Health check
+################################################################################
+for serviceName in "${SERVICE_NAMES[@]}"; do
+  if ! checkHealth "${DOCKER_COMPOSE_FILE}" "${serviceName}"; then
+    ((countOfServicesFailingHealthcheck++))
+  fi
+done
+
+echo ""
+echo "================================================================================"
+if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
+  echo "Healthcheck has completed and found no problems"
+else
+  echo "Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
+fi
+echo "================================================================================"
 
 ################################################################################
 # Log the start/end of this scripts execution
@@ -207,4 +243,4 @@ echo "==========================================================================
 echo "$SCRIPT_NAME finished at $(date '+%F %T') taking $elapsedSeconds seconds"
 echo "================================================================================"
 
-exit ${healthReturnCode}
+exit ${countOfServicesFailingHealthcheck}
