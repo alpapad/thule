@@ -210,16 +210,16 @@ for serviceName in "${SERVICE_NAMES[@]}"; do
   echo "================================================================================"
   echo "About to provision ${serviceName}..."
 
-  springProfilesActive=$(cat "${DOCKER_COMPOSE_FILE}" | sed -n "/${serviceName}:/,/#####/p" | sed -n "s/.*SPRING_PROFILES_ACTIVE:\(.*\)/\1/p")
-  if [[ -n "${springProfilesActive}" ]]; then isSpringBootService="true"; else isSpringBootService="false"; fi
+  isSpringBootService=$(cat "${DOCKER_COMPOSE_FILE}" | sed -n "/${serviceName}:/,/#####/p" | sed -n "s/.*SPRING_PROFILES_ACTIVE:.*/true/p")
+  isSpringBootService=${isSpringBootService:-false}
   if [[ ${isSpringBootService} == "true" ]]; then
     downloadConfiguration "${DOCKER_COMPOSE_FILE}" "${serviceName}"
   fi
-  stopService "${DOCKER_COMPOSE_FILE}" "${serviceName}"
+  deleteService "${DOCKER_COMPOSE_FILE}" "${serviceName}"
   if [[ ${isSpringBootService} == "true" ]]; then
     updateConfiguration "${DOCKER_COMPOSE_FILE}" "${serviceName}"
   fi
-  startService "${DOCKER_COMPOSE_FILE}" "${serviceName}"
+  createService "${DOCKER_COMPOSE_FILE}" "${serviceName}"
 
   echo ""
   echo "Have successfully provisioned ${serviceName}"

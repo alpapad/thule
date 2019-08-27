@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function startService() {
+function createService() {
   # Input parameters
   dockerComposeFile=$1
   serviceName=$2
@@ -10,7 +10,7 @@ function startService() {
   docker-compose -f "${dockerComposeFile}" up -d "${serviceName}"
 }
 
-function stopService() {
+function deleteService() {
   # Input parameters
   dockerComposeFile=$1
   serviceName=$2
