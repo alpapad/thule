@@ -53,7 +53,6 @@ function installMicrok8s() {
     sudo iptables -P FORWARD ACCEPT
 
     echo "Creating kubectl alias..."
-    sudo snap unalias kubectl
     sudo snap alias microk8s.kubectl kubectl
 
     echo ""
