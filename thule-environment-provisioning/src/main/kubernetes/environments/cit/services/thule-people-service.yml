@@ -1,0 +1,67 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: thule-people-service
+  namespace: default
+  labels:
+    app: thule-people-service
+spec:
+  selector:
+    matchLabels:
+      app: thule-people-service
+  template:
+    metadata:
+      labels:
+        app: thule-people-service
+    spec:
+      containers:
+        - name: thule-people-service
+          image: pooh:8082/thule-people-service:1.0.0-SNAPSHOT
+          env:
+            - name: JDK_JAVA_OPTIONS
+              value: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+            - name: SPRING_PROFILES_ACTIVE
+              value: cit
+            - name: THULE_PEOPLESERVICE_MYSQL_HOST
+              value: localhost
+            - name: TZ
+              value: Europe/London
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: service-port
+            initialDelaySeconds: 300
+            timeoutSeconds: 10
+          ports:
+            - containerPort: 8080
+              name: service-port
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: service-port
+            timeoutSeconds: 10
+        - name: mysql-people-service
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: TZ
+              value: Europe/London
+          ports:
+            - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thule-people-service
+  namespace: default
+  labels:
+    app: thule-people-service
+spec:
+  ports:
+    - nodePort: 31094
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: thule-people-service
+  type: NodePort

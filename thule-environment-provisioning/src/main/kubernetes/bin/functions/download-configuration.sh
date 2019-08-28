@@ -2,20 +2,21 @@
 
 function downloadConfiguration() {
   # Input parameters
-  serviceName=$1
+  kubernetesConfigurationFile=$1
 
   echo ""
   echo "Downloading configuration..."
 
+  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
   configName=${serviceName//service/config}
   tempDirectory=$(mktemp -d --suffix "${configName}")
 
   # Locate the service version
-  serviceVersion=$(grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}/${serviceName}:" "${DOCKER_COMPOSE_FILE}" | sed "s/.*${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\/${serviceName}:\(\S*\).*/\1/")
+  serviceVersion=$(grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}/${serviceName}:" "${kubernetesConfigurationFile}" | sed "s/.*${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\/${serviceName}:\(\S*\).*/\1/")
   if [[ -z ${serviceVersion} ]]; then
     echo ""
     echo "ERROR: Could not determine the version of ${serviceName}"
-    echo "Hint: Ensure a version has been explicitly defined in ${DOCKER_COMPOSE_FILE}"
+    echo "Hint: Ensure a version has been explicitly defined in ${kubernetesConfigurationFile}"
     echo "================================================================================"
     exit 255
   fi
@@ -72,24 +73,24 @@ function downloadConfiguration() {
 }
 
 function configDirectoryExpectedByConfigurationService() {
-  # Assert that the configuration service exists in the docker-compose.yml
-  configurationServiceNameFound=$(cat "${DOCKER_COMPOSE_FILE}" | grep "^\s*thule-configuration-service:$" | sed "s/://g")
-  if [[ -z ${configurationServiceNameFound} ]]; then
+  # Assert that the configuration service kubernetes configuration file exists
+  configurationServiceKubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/thule-configuration-service.yml
+  if [[ ! -f "${configurationServiceKubernetesConfigurationFile}" ]]; then
     echo ""
-    echo "ERROR: Configuration service for environment [${ENVIRONMENT_NAME}] in ${DOCKER_COMPOSE_FILE} does not exist"
+    echo "ERROR: Configuration service kubernetes configuration file for environment [${ENVIRONMENT_NAME}] ${configurationServiceKubernetesConfigurationFile} does not exist"
     echo "Hint: Have you mistyped the environment name?"
     echo "================================================================================"
     exit 255
   fi
 
   # Determine where the config-service expects the config files to reside on the filesystem
-  configDirectory=$(grep :/config "${DOCKER_COMPOSE_FILE}" | sed 's/.* -\s*\(.*\):\/config.*/\1/')
+  configDirectory=$(grep .*path:.*/config "${configurationServiceKubernetesConfigurationFile}" | sed 's/.*path:\s*\(.*\)/\1/')
   # Substitute any environments variables or special characters , e.g. $HOME, ~
   configDirectory=$(eval echo -E "${configDirectory}")
   # Ensure that the config directory can be created
   if ! mkdir -p "${configDirectory}"; then
     echo ""
-    echo "ERROR: Could not create config directory ${configDirectory} as specified in ${DOCKER_COMPOSE_FILE}"
+    echo "ERROR: Could not create config directory ${configDirectory} as specified in ${configurationServiceKubernetesConfigurationFile}"
     echo "Hint: Ensure user ${PROVISIONING_HOST_USERID} has sufficient permissions to create ${configDirectory}"
     echo "================================================================================"
     exit 255

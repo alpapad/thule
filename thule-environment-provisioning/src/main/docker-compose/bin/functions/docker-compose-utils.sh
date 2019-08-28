@@ -2,19 +2,21 @@
 
 function createService() {
   # Input parameters
-  dockerComposeFile=$1
-  serviceName=$2
+  serviceName=$1
 
   echo ""
-  docker-compose -f "${dockerComposeFile}" pull "${serviceName}"
-  docker-compose -f "${dockerComposeFile}" up -d "${serviceName}"
+  echo "Creating service..."
+
+  docker-compose -f "${DOCKER_COMPOSE_FILE}" pull "${serviceName}"
+  docker-compose -f "${DOCKER_COMPOSE_FILE}" up -d "${serviceName}"
 }
 
 function deleteService() {
   # Input parameters
-  dockerComposeFile=$1
-  serviceName=$2
+  serviceName=$1
 
   echo ""
-  docker-compose -f "${dockerComposeFile}" rm -fsv "${serviceName}"
+  echo "Deleting service..."
+
+  docker-compose -f "${DOCKER_COMPOSE_FILE}" rm -fsv "${serviceName}"
 }

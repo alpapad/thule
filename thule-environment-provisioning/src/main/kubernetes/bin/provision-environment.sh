@@ -13,10 +13,9 @@ usage() {
   echo ""
   echo "Following steps are executed regardless of the -l option:"
   echo "- Download the service configuration jar from Nexus into a temporary location"
-  echo "- Pull the docker image from Nexus"
-  echo "- Stop docker container"
+  echo "- Delete kubernetes service"
   echo "- Update the old configuration with the new one that is in a temporary location (see above)"
-  echo "- Start docker container"
+  echo "- Create kubernetes service"
   echo "- Check the health to ensure that the service has started successfully"
   echo ""
   echo ""
@@ -84,32 +83,22 @@ ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 
 # default service-name to all services
 ENVIRONMENTS_DIRECTORY=${SCRIPT_DIR_NAME}/../environments
-DOCKER_COMPOSE_FILE=${ENVIRONMENTS_DIRECTORY}/${ENVIRONMENT_NAME}/docker-compose.yml
 SERVICE_NAMES=$(toLowerCase "$@") # Convert to lowercase
 if [[ -z "${SERVICE_NAMES}" ]]; then
-  SERVICE_NAMES=($(grep "^\s*.*service:$" "${DOCKER_COMPOSE_FILE}" | sed "s/://g"))
+  SERVICE_NAMES=($(find "${ENVIRONMENTS_DIRECTORY}" -name "*.yml" -type f -printf "%f\n" | sort | sed "s/.yml.*//g"))
 else
   SERVICE_NAMES=(${SERVICE_NAMES})
 fi
 
-# docker-compose.yml must exist for the environment-name
-if [[ ! -f "${DOCKER_COMPOSE_FILE}" ]]; then
-  echo ""
-  echo "================================================================================"
-  echo "ERROR: Docker compose file for environment [${ENVIRONMENT_NAME}] ${DOCKER_COMPOSE_FILE} does not exist"
-  echo "Hint: Have you mistyped the environment name?"
-  echo "================================================================================"
-  exit 255
-fi
-
-# service must exist in the docker-compose.yml
+# ${serviceName}.yml must exist for the environment-name
+KUBERNETES_CONFIGURATION_DIRECTORY=${ENVIRONMENTS_DIRECTORY}/${ENVIRONMENT_NAME}/services
 for serviceName in "${SERVICE_NAMES[@]}"; do
-  serviceNameFound=$(cat "${DOCKER_COMPOSE_FILE}" | grep "^\s*${serviceName}:$" | sed "s/://g")
-  if [[ -z ${serviceNameFound} ]]; then
+  kubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/${serviceName}.yml
+  if [[ ! -f "${kubernetesConfigurationFile}" ]]; then
     echo ""
     echo "================================================================================"
-    echo "ERROR: Service with name [${serviceName}] does not exist in ${DOCKER_COMPOSE_FILE}"
-    echo "Hint: Have you mistyped the service name?"
+    echo "ERROR: Kubernetes file for environment [${ENVIRONMENT_NAME}] ${kubernetesConfigurationFile} does not exist"
+    echo "Hint: Have you mistyped the environment name?"
     echo "================================================================================"
     exit 255
   fi
@@ -128,7 +117,7 @@ if [[ -f "${ENVIRONMENTS_DIRECTORY}/${ENVIRONMENT_NAME}/config.sh" ]]; then sour
 if [[ -z "${PROVISIONING_HOST}" ]]; then
   echo ""
   echo "================================================================================"
-  echo "Configuration attribute PROVISIONING_HOST has not been defined"
+  echo "ERROR: Configuration attribute PROVISIONING_HOST has not been defined"
   echo "Hint: Have you mistyped PROVISIONING_HOST in ${ENVIRONMENTS_DIRECTORY}/${ENVIRONMENT_NAME}/config.sh?"
   echo "================================================================================"
   exit 255
@@ -143,8 +132,7 @@ if [[ ${PROVISION_LOCALLY} != "true" ]]; then
   echo "About to ship the provisioning scripts to ${PROVISIONING_HOST}..."
   echo ""
 
-  rsync -a --delete --progress "$SCRIPT_DIR_NAME/../../../../" "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"
-  if [[ $? != 0 ]]; then
+  if ! rsync -a --delete --progress "$SCRIPT_DIR_NAME/../../../../" "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"; then
     echo ""
     echo "ERROR: Could not ship the provisioning scripts to ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"
     echo "Hint: Ensure user ${PROVISIONING_HOST_USERID} has sufficient permissions to ${PROVISIONING_HOST_TARGET_DIRECTORY}"
@@ -156,7 +144,7 @@ if [[ ${PROVISION_LOCALLY} != "true" ]]; then
   echo "Have successfully shipped the provisioning scripts to ${PROVISIONING_HOST}"
   echo "================================================================================"
 
-  ssh -o StrictHostKeyChecking=no "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}" -t -C "bash -cl '${PROVISIONING_HOST_TARGET_DIRECTORY}/src/main/docker-compose/bin/provision-environment.sh -l $COMMAND_OPTIONS'"
+  ssh -o StrictHostKeyChecking=no "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}" -t -C "bash -cl '${PROVISIONING_HOST_TARGET_DIRECTORY}/src/main/kubernetes/bin/provision-environment.sh -l $COMMAND_OPTIONS'"
   exit
 fi
 
@@ -174,9 +162,9 @@ echo "==========================================================================
 # Show settings
 ################################################################################
 settings="Settings used are as follows...\n\\n\
-DOCKER_COMPOSE_FILE is ${DOCKER_COMPOSE_FILE}\n\
 ENVIRONMENTS_DIRECTORY is ${ENVIRONMENTS_DIRECTORY}\n\
 ENVIRONMENT_NAME is ${ENVIRONMENT_NAME}\n\
+KUBERNETES_CONFIGURATION_DIRECTORY is ${KUBERNETES_CONFIGURATION_DIRECTORY}\n\
 NEXUS_HOST is ${NEXUS_HOST}\n\
 NEXUS_PORT_DOCKER is ${NEXUS_PORT_DOCKER}\n\
 NEXUS_PORT_MAVEN is ${NEXUS_PORT_MAVEN}\n\
@@ -194,22 +182,24 @@ echo "==========================================================================
 ################################################################################
 # Provision
 ################################################################################
+installMicrok8s
 for serviceName in "${SERVICE_NAMES[@]}"; do
   echo ""
   echo "================================================================================"
   echo "About to provision ${serviceName}..."
 
-  isSpringBootService=$(cat "${DOCKER_COMPOSE_FILE}" | sed -n "/${serviceName}:/,/#####/p" | sed -n "s/.*SPRING_PROFILES_ACTIVE:.*/true/p")
+  kubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/${serviceName}.yml
+  isSpringBootService=$(sed -n "s/.*- name\s*:\s*SPRING_PROFILES_ACTIVE.*/true/p" "${kubernetesConfigurationFile}")
   isSpringBootService=${isSpringBootService:-false}
 
   if [[ ${isSpringBootService} == "true" ]]; then
-    downloadConfiguration "${serviceName}"
+    downloadConfiguration "${kubernetesConfigurationFile}"
   fi
-  deleteService "${serviceName}"
+  deleteService "${kubernetesConfigurationFile}"
   if [[ ${isSpringBootService} == "true" ]]; then
-    updateConfiguration "${serviceName}"
+    updateConfiguration "${kubernetesConfigurationFile}"
   fi
-  createService "${serviceName}"
+  createService "${kubernetesConfigurationFile}"
 
   echo ""
   echo "Have successfully provisioned ${serviceName}"
@@ -222,7 +212,8 @@ done
 sleep 5
 countOfServicesFailingHealthcheck=0
 for serviceName in "${SERVICE_NAMES[@]}"; do
-  if ! checkHealth "${serviceName}"; then
+  kubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/${serviceName}.yml
+  if ! checkHealth "${kubernetesConfigurationFile}"; then
     ((countOfServicesFailingHealthcheck++))
   fi
 done

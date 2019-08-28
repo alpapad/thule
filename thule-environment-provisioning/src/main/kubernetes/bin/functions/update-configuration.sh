@@ -2,12 +2,13 @@
 
 function updateConfiguration() {
   # Input parameters
-  serviceName=$1
+  kubernetesConfigurationFile=$1
 
   echo ""
   echo "Updating configuration..."
 
   configDirectoryExpectedByConfigurationService=$(configDirectoryExpectedByConfigurationService)
+  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
   tempConfigDirectory=${configDirectoryExpectedByConfigurationService}/temp/${serviceName}
 
   if [[ "${serviceName}" == "thule-configuration-service" ]]; then
