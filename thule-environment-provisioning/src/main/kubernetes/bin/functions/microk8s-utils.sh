@@ -58,9 +58,9 @@ function installMicrok8s() {
     echo ""
     echo "Have installed microk8s"
     echo "================================================================================"
-
-    showMicrok8sStatus
   fi
+
+  showMicrok8sStatus
 }
 
 function showMicrok8sStatus() {
