@@ -180,6 +180,7 @@ echo "==========================================================================
 # Show settings
 ################################################################################
 settings="Settings used are as follows...\n\\n\
+CLEAN_ENVIRONMENT is ${CLEAN_ENVIRONMENT}\n\
 DOCKER_COMPOSE_FILE is ${DOCKER_COMPOSE_FILE}\n\
 ENVIRONMENTS_DIRECTORY is ${ENVIRONMENTS_DIRECTORY}\n\
 ENVIRONMENT_NAME is ${ENVIRONMENT_NAME}\n\
@@ -201,7 +202,15 @@ echo "==========================================================================
 # Clean
 ################################################################################
 if [[ "${CLEAN_ENVIRONMENT}" == "true" ]]; then
-    docker-compose -f "${DOCKER_COMPOSE_FILE}" rm -fsv
+  echo ""
+  echo "================================================================================"
+  echo "About to clean the environment..."
+
+  docker-compose -f "${DOCKER_COMPOSE_FILE}" rm -fsv
+
+  echo ""
+  echo "Have successfully cleaned the environment"
+  echo "================================================================================"
 fi
 
 ################################################################################
