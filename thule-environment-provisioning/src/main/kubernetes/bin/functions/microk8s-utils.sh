@@ -56,6 +56,10 @@ function installMicrok8s() {
     sudo snap alias microk8s.kubectl kubectl
 
     echo ""
+    echo "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}..."
+    kubectl get services kubernetes-dashboard -n kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | kubectl replace -f -
+
+    echo ""
     echo "Have installed microk8s"
     echo "================================================================================"
   fi
@@ -78,7 +82,7 @@ function showMicrok8sStatus() {
   defaultToken=$(microk8s.kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
   signinBearerToken=$(microk8s.kubectl -n kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
   echo ""
-  echo "Dashboard URL : https://${dashboardIpAddress}"
+  echo "Dashboard URL : https://${dashboardIpAddress} or https://localhost:${KUBERNETES_DASHBOARD_NODEPORT}"
   echo "Sign-in bearer token : ${signinBearerToken}"
 
   echo "================================================================================"
