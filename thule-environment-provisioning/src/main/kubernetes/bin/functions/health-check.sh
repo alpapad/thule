@@ -36,7 +36,6 @@ function checkHealth() {
   else
     echo "Service took ${elapsedSeconds} second(s) to start"
 
-    echo ""
     # jsonpath filters return a list so convert to an array and just cut the first element
     readinessProbePath=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")].readinessProbe.httpGet.path}" 2>/dev/null | cut -d" " -f1)
     if [[ "${readinessProbePath}" == "" ]]; then

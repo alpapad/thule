@@ -33,7 +33,6 @@ function checkHealth() {
   else
     echo "Service took ${elapsedSeconds} second(s) to start"
 
-    echo ""
     stateHealth=$(docker inspect --format=\{\{.State.Health\}\} "${dockerServiceName}")
     if [[ "${stateHealth}" == "<nil>" ]]; then
       echo "WARNING: Unable to perform a healthcheck because a healthcheck has not been defined"
