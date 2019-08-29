@@ -18,11 +18,11 @@ function updateConfiguration() {
     rm -fr "${configDirectory}"
   fi
 
-  printf "Replacing old config %s with the new config %s ..." "${configDirectory}" "${tempConfigDirectory}"
+  echo -n "Replacing old config ${configDirectory} with the new config ${tempConfigDirectory} ..."
 
   mkdir -p "${configDirectory}"
   mv "${tempConfigDirectory}"/* "${configDirectory}"
   rm -fr "${tempConfigDirectory}"
 
-  printf "\033[32m done \033[0m \n"
+  echo -e "\033[32m done \033[0m"
 }

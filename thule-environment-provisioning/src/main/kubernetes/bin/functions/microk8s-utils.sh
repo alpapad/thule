@@ -40,10 +40,10 @@ function installMicrok8s() {
 
     echo ""
     echo "Adding nexus docker registry..."
-    sudo sed -i "/pooh:8082/d" /var/snap/microk8s/current/args/containerd-template.toml
+    sudo sed -i "/${NEXUS_HOST}:${NEXUS_PORT_DOCKER}/d" /var/snap/microk8s/current/args/containerd-template.toml
     sudo sed -i "/\[plugins.cri.registry.mirrors\]/a \
-    \        [plugins.cri.registry.mirrors.\"pooh:8082\"] \n\
-    \          endpoint = [\"http://pooh:8082\"]" /var/snap/microk8s/current/args/containerd-template.toml
+    \        [plugins.cri.registry.mirrors.\"${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"] \n\
+    \          endpoint = [\"http://${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"]" /var/snap/microk8s/current/args/containerd-template.toml
     # Restart microk8s to effect registry changes
     microk8s.stop
     microk8s.start

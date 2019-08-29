@@ -8,39 +8,58 @@ function checkHealth() {
   echo "================================================================================"
   echo "Checking health of ${serviceName}..."
 
+  dockerServiceName=$(docker-compose -f "${DOCKER_COMPOSE_FILE}" ps "${serviceName}" | grep "${serviceName}" | cut -d" " -f1)
   healthCheckStartTime=$(date +%s)
-  healthResponseCode=0
+  healthCheckResponseCode=0
   elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
   maxElapsedSeconds=300
 
-  dockerServiceName=$(docker-compose -f ${DOCKER_COMPOSE_FILE} ps ${serviceName} | grep ${serviceName} | cut -d" " -f1)
-  stateHealth=$(docker inspect --format=\{\{.State.Health\}\} ${dockerServiceName})
-
+  # Wait for service to start
   echo ""
-  if [[ "${stateHealth}" == "<nil>" ]]; then
-    echo "WARNING: Unable to check health for ${serviceName} because a healthcheck has not been defined"
-  else
-    printf "Waiting for %s (up to a maximum of %s seconds)." "${serviceName}" ${maxElapsedSeconds}
-    healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} "${dockerServiceName}")
-    until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${healthStatus}" == "healthy" ]]; do
-      printf "."
-      sleep 5
-      elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
-      healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} "${dockerServiceName}")
-    done
-    printf "\n"
+  echo -en "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
+  serviceInfo=$(docker inspect "${dockerServiceName}")
+  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" ]]; do
+    echo -en "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
+    sleep 5
+    elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
+    serviceInfo=$(docker inspect "${dockerServiceName}")
+  done
+  echo ""
 
-    if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-      echo "Healthcheck for ${serviceName} succeeded and took ${elapsedSeconds} second(s)"
+  # Wait for health check to succeed
+  if [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]]; then
+    echo "ERROR: Service failed to start within ${elapsedSeconds} second(s)"
+    healthCheckResponseCode=255
+  else
+    echo "Service took ${elapsedSeconds} second(s) to start"
+
+    echo ""
+    stateHealth=$(docker inspect --format=\{\{.State.Health\}\} "${dockerServiceName}")
+    if [[ "${stateHealth}" == "<nil>" ]]; then
+      echo "WARNING: Unable to perform a healtchcheck because a healthcheck has not been defined"
     else
-      echo "ERROR: Healthcheck failed for ${serviceName} within ${elapsedSeconds} second(s)"
-      echo "REASON: Health status is ${healthStatus}"
-      echo "HINT: Use the following command to obtain further diagnostics: docker inspect --format='{{json .State.Health}}' ${dockerServiceName}"
-      healthResponseCode=255
+      echo -en "\rWaiting for health check to succeed (up to a maximum of ${maxElapsedSeconds} seconds)..."
+      healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} "${dockerServiceName}")
+      until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${healthStatus}" == "healthy" ]]; do
+        echo -en "\rWaiting for health check to succeed (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
+        sleep 5
+        elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
+        healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} "${dockerServiceName}")
+      done
+      echo ""
+
+      if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+        echo "Healthcheck succeeded and took ${elapsedSeconds} second(s)"
+      else
+        echo "ERROR: Healthcheck failed within ${elapsedSeconds} second(s)"
+        echo "REASON: Health status is ${healthStatus}"
+        echo "HINT: Use the following command to obtain further diagnostics: docker inspect --format='{{json .State.Health}}' ${dockerServiceName}"
+        healthCheckResponseCode=255
+      fi
     fi
   fi
 
   echo "================================================================================"
 
-  return ${healthResponseCode}
+  return ${healthCheckResponseCode}
 }

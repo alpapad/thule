@@ -1,2 +1,2 @@
 #!/bin/bash
-PROVISIONING_HOST=localhost
+PROVISIONING_HOST=pooh

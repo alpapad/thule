@@ -209,7 +209,6 @@ done
 ################################################################################
 # Health check
 ################################################################################
-sleep 5
 countOfServicesFailingHealthcheck=0
 for serviceName in "${SERVICE_NAMES[@]}"; do
   kubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/${serviceName}.yml
