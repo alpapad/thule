@@ -36,7 +36,7 @@ function checkHealth() {
     echo ""
     stateHealth=$(docker inspect --format=\{\{.State.Health\}\} "${dockerServiceName}")
     if [[ "${stateHealth}" == "<nil>" ]]; then
-      echo "WARNING: Unable to perform a healtchcheck because a healthcheck has not been defined"
+      echo "WARNING: Unable to perform a healthcheck because a healthcheck has not been defined"
     else
       echo -en "\rWaiting for health check to succeed (up to a maximum of ${maxElapsedSeconds} seconds)..."
       healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} "${dockerServiceName}")

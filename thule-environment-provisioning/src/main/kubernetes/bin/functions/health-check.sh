@@ -19,11 +19,13 @@ function checkHealth() {
   echo ""
   echo -en "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
   serviceInfo=$(kubectl get services --output=json "${serviceName}" 2>/dev/null)
-  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" ]]; do
+  podInfo=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" ]] || [[ "${podInfo}" != "" ]]; do
     echo -en "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
     serviceInfo=$(kubectl get services --output=json "${serviceName}" 2>/dev/null)
+    podInfo=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   done
   echo ""
 
@@ -38,7 +40,7 @@ function checkHealth() {
     # jsonpath filters return a list so convert to an array and just cut the first element
     readinessProbePath=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")].readinessProbe.httpGet.path}" 2>/dev/null | cut -d" " -f1)
     if [[ "${readinessProbePath}" == "" ]]; then
-      echo "WARNING: Unable to perform a healtchcheck because a readiness probe has not been defined"
+      echo "WARNING: Unable to perform a healthcheck because a readiness probe has not been defined"
     else
       nodePort=$(kubectl get services --output=jsonpath="{.spec.ports[*].nodePort}" "${serviceName}")
       healthCheckUrl="http://127.0.0.1:${nodePort}${readinessProbePath}"
