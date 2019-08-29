@@ -23,6 +23,7 @@ usage() {
   echo ""
   echo "Options Summary:"
   echo ""
+  echo "  -c, --clean                          Reset and uninstall microk8s"
   echo "  -e, --environment                    Environment to provision, defaults to DEV"
   echo "  -h, --help                           Show this help"
   echo "  -l, --provision-locally              Don't ship this script to the provisioning host, provision on the current host (localhost) instead"
@@ -34,14 +35,19 @@ usage() {
 ################################################################################
 # Process command line options
 ################################################################################
+CLEAN_ENVIRONMENT=false
 ENVIRONMENT_NAME=dev
 PROVISION_LOCALLY=false
 
 COMMAND_OPTIONS=$*
-getoptResults=$(getopt -s bash -o e:hl --long environment:,help,provision-locally -- "$@")
+getoptResults=$(getopt -s bash -o ce:hl --long clean,environment:,help,provision-locally -- "$@")
 eval set -- "$getoptResults"
 while true; do
   case "$1" in
+  --clean | -c)
+    CLEAN_ENVIRONMENT=true
+    shift
+    ;;
   --environment | -e)
     ENVIRONMENT_NAME=$2
     shift 2
@@ -162,6 +168,7 @@ echo "==========================================================================
 # Show settings
 ################################################################################
 settings="Settings used are as follows...\n\\n\
+CLEAN_ENVIRONMENT is ${CLEAN_ENVIRONMENT}\n\
 ENVIRONMENTS_DIRECTORY is ${ENVIRONMENTS_DIRECTORY}\n\
 ENVIRONMENT_NAME is ${ENVIRONMENT_NAME}\n\
 KUBERNETES_CONFIGURATION_DIRECTORY is ${KUBERNETES_CONFIGURATION_DIRECTORY}\n\
@@ -181,9 +188,18 @@ echo -e "${settings}"
 echo "================================================================================"
 
 ################################################################################
+# Clean
+################################################################################
+if [[ "${CLEAN_ENVIRONMENT}" == "true" ]]; then
+  microk8s.reset
+  sudo snap remove microk8s
+fi
+
+################################################################################
 # Provision
 ################################################################################
 installMicrok8s
+
 for serviceName in "${SERVICE_NAMES[@]}"; do
   echo ""
   echo "================================================================================"
