@@ -60,6 +60,10 @@ function installMicrok8s() {
     kubectl get services kubernetes-dashboard -n kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | kubectl replace -f -
 
     echo ""
+    echo "Enabling skip login for dashboard..."
+    kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | kubectl replace -f -
+
+    echo ""
     echo "Have installed microk8s"
     echo "================================================================================"
   fi
