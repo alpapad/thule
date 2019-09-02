@@ -3,6 +3,8 @@ eureka:
   client:
     fetch-registry: true
     registerWithEureka: true # Register discovery service itself with Eureka so we have a client service available for the integration tests
+    serviceUrl:
+      defaultZone: http://localhost:${server.port:8080}/eureka/
   instance:
     # By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
     leaseRenewalIntervalInSeconds: 5
