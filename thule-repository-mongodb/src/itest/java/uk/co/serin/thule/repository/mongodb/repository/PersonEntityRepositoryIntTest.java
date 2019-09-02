@@ -2,7 +2,6 @@ package uk.co.serin.thule.repository.mongodb.repository;
 
 import com.google.gson.Gson;
 
-import org.awaitility.Duration;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,6 +19,7 @@ import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.time.Duration;
 
 import javax.validation.ConstraintViolationException;
 
@@ -151,7 +151,7 @@ public class PersonEntityRepositoryIntTest {
     public void setUp() {
         // Wait until MongoDb is up by checking that the port is available
         given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.FIVE_MINUTES).
+                await().timeout(Duration.ofMinutes(5)).
                        untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
     }
 

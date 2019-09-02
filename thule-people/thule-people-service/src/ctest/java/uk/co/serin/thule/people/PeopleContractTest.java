@@ -176,7 +176,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                await().timeout(Duration.ofMinutes(5)).
                        untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
                                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
@@ -224,7 +224,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                await().timeout(Duration.ofMinutes(5)).
                        untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
                                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 
@@ -255,7 +255,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
         // Then
         given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(org.awaitility.Duration.FIVE_MINUTES).
+                await().timeout(Duration.ofMinutes(5)).
                        untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
                                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
 

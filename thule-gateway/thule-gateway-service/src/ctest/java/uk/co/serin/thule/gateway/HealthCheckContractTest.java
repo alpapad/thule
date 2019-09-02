@@ -1,7 +1,6 @@
 package uk.co.serin.thule.gateway;
 
 import org.awaitility.Awaitility;
-import org.awaitility.Duration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -24,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -73,7 +73,7 @@ public class HealthCheckContractTest {
         // When
         var responseEntities = new ArrayList<ResponseEntity<Map>>();
         Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.TEN_SECONDS). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
+                await().timeout(Duration.ofSeconds(10)). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
                                                                untilAsserted(
                 () -> responseEntities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
 
