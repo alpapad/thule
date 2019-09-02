@@ -21,7 +21,7 @@ function deleteService() {
 }
 
 function installMicrok8s() {
-  if microk8s.status 2>/dev/null 1>/dev/null -ne 0; then
+  if [[ "$(snap find microk8s)" == *"No matching snaps for"* ]]; then
     echo ""
     echo "================================================================================"
     echo "Skipping installation of microk8s because it is already installed"
