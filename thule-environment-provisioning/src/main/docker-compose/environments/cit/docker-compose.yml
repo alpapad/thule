@@ -9,7 +9,7 @@ services:
       TZ: Europe/London
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
+      interval: 30s
       retries: 3
       start_period: 1m
       timeout: 10s
@@ -33,7 +33,7 @@ services:
       TZ: Europe/London
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
+      interval: 30s
       retries: 3
       start_period: 1m
       timeout: 10s
@@ -55,7 +55,7 @@ services:
       TZ: Europe/London
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
+      interval: 30s
       retries: 3
       start_period: 1m
       timeout: 10s
@@ -90,7 +90,7 @@ services:
       TZ: Europe/London
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
+      interval: 30s
       retries: 3
       start_period: 1m
       timeout: 10s
@@ -112,7 +112,7 @@ services:
       TZ: Europe/London
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
+      interval: 30s
       retries: 3
       start_period: 1m
       timeout: 10s
@@ -134,7 +134,7 @@ services:
       TZ: Europe/London
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health || exit 1
-      interval: 10s
+      interval: 30s
       retries: 3
       start_period: 1m
       timeout: 10s
