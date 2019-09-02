@@ -71,16 +71,16 @@ public class HealthCheckContractTest {
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When
-        var responseEntitities = new ArrayList<ResponseEntity<Map>>();
+        var responseEntities = new ArrayList<ResponseEntity<Map>>();
         Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(Duration.TEN_SECONDS). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
                                                                untilAsserted(
-                () -> responseEntitities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
+                () -> responseEntities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
 
         // Then
         verify(getRequestedFor(urlPathEqualTo("/actuator/health")));
 
-        var responseEntity = responseEntitities.stream().findFirst().orElseThrow();
+        var responseEntity = responseEntities.stream().findFirst().orElseThrow();
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
