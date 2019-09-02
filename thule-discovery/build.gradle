@@ -73,9 +73,9 @@ project("thule-discovery-service") {
         testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
         itestCompile project(":thule-discovery-config")
+        itestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
 
         ctestCompile project(":thule-discovery-config")
-        ctestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
 
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
         dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
