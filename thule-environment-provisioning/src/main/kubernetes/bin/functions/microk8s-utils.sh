@@ -5,9 +5,9 @@ function createService() {
   kubernetesConfigurationFile=$1
 
   echo ""
-  echo "Updating service..."
+  echo "Creating service..."
 
-  kubectl replace -f "${kubernetesConfigurationFile}"
+  kubectl create -f "${kubernetesConfigurationFile}"
 }
 
 function deleteService() {
@@ -17,7 +17,7 @@ function deleteService() {
   echo ""
   echo "Deleting service..."
 
-  kubectl delete --all -f "${kubernetesConfigurationFile}"
+  kubectl delete --all --wait=true -f "${kubernetesConfigurationFile}"
 }
 
 function installMicrok8s() {
