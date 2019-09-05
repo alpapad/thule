@@ -7,7 +7,7 @@ function checkHealth() {
   dockerServiceName=$(docker-compose -f "${DOCKER_COMPOSE_FILE}" ps "${serviceName}" | grep "${serviceName}" | cut -d" " -f1)
   healthCheckStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
 
   echo ""
   stateHealth=$(docker inspect --format=\{\{.State.Health\}\} "${dockerServiceName}")

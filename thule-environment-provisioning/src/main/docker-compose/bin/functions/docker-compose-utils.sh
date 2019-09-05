@@ -13,7 +13,7 @@ function createService() {
   dockerServiceName=$(docker-compose -f "${DOCKER_COMPOSE_FILE}" ps "${serviceName}" | grep "${serviceName}" | cut -d" " -f1)
   startupStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - startupStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
 
   echo ""
   echo -n "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
@@ -50,7 +50,7 @@ function deleteService() {
   dockerServiceName=$(docker-compose -f "${DOCKER_COMPOSE_FILE}" ps "${serviceName}" | grep "${serviceName}" | cut -d" " -f1)
   shutdownStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - shutdownStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
 
   echo ""
   echo -n "Waiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."

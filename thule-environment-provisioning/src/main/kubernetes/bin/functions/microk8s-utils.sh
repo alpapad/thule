@@ -12,7 +12,7 @@ function createService() {
   serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
   startupStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - startupStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
 
   echo ""
   echo -n "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
@@ -51,7 +51,7 @@ function deleteService() {
   serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
   shutdownStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - shutdownStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
 
   echo ""
   echo -n "Waiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."

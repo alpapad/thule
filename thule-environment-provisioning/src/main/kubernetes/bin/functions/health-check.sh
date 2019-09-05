@@ -6,7 +6,7 @@ function checkHealth() {
 
   healthCheckStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
   serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
 
   echo ""
