@@ -7,7 +7,7 @@ function createService() {
   echo ""
   echo "Updating service..."
 
-  kubectl apply -f "${kubernetesConfigurationFile}"
+  kubectl replace -f "${kubernetesConfigurationFile}"
 }
 
 function deleteService() {
