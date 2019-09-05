@@ -221,6 +221,7 @@ for serviceName in "${SERVICE_NAMES[@]}"; do
     downloadConfiguration "${kubernetesConfigurationFile}"
   fi
   deleteService "${kubernetesConfigurationFile}"
+  checkShutdown "${kubernetesConfigurationFile}"
   if [[ ${isSpringBootService} == "true" ]]; then
     updateConfiguration "${kubernetesConfigurationFile}"
   fi

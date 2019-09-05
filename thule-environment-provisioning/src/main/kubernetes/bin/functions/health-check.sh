@@ -1,5 +1,47 @@
 #!/bin/bash
 
+function checkShutdown() {
+  # Input parameters
+  kubernetesConfigurationFile=$1
+
+  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
+
+  echo ""
+  echo "================================================================================"
+  echo "Shutting down ${serviceName}..."
+
+  shutdownStartTime=$(date +%s)
+  shutdownResponseCode=0
+  elapsedSeconds=$(($(date +%s) - shutdownStartTime))
+  maxElapsedSeconds=600
+
+  # Wait for service to stop
+  echo ""
+  echo -en "Waiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."
+  serviceInfo=$(kubectl get services --output=json "${serviceName}" 2>/dev/null)
+  podInfo=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" == "" ]] && [[ "${podInfo}" == "" ]]; do
+    echo -en "\rWaiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
+    sleep 5
+    elapsedSeconds=$(($(date +%s) - shutdownStartTime))
+    serviceInfo=$(kubectl get services --output=json "${serviceName}" 2>/dev/null)
+    podInfo=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+  done
+  echo ""
+
+  # Wait for health check to succeed
+  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+    echo "Service shutdown successfully and took ${elapsedSeconds} second(s)"
+  else
+    echo "ERROR: Service failed to shutdown within ${elapsedSeconds} second(s)"
+    shutdownResponseCode=255
+  fi
+
+  echo "================================================================================"
+
+  return ${shutdownResponseCode}
+}
+
 function checkHealth() {
   # Input parameters
   kubernetesConfigurationFile=$1
