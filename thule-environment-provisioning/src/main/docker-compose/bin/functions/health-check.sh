@@ -22,12 +22,13 @@ function checkHealth() {
       elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
       healthStatus=$(docker inspect --format=\{\{.State.Health.Status\}\} "${dockerServiceName}")
     done
-    echo ""
 
     if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+      echo -e "\rWaiting for health check to succeed (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
       echo "Healthcheck succeeded and took ${elapsedSeconds} second(s)"
       healthCheckResponseCode=0
     else
+      echo -e "\rWaiting for health check to succeed (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m done \033[0m"
       echo "ERROR: Healthcheck failed within ${elapsedSeconds} second(s)"
       echo "REASON: Health status is ${healthStatus}"
       echo "HINT: Use the following command to obtain further diagnostics: docker inspect --format='{{json .State.Health}}' ${dockerServiceName}"

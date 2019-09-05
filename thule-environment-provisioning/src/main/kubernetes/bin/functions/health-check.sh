@@ -26,12 +26,13 @@ function checkHealth() {
       elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
       httpStatusCode=$(curl -L -m2 -o /dev/null -s -w '%{http_code}' "${healthCheckUrl}")
     done
-    echo ""
 
     if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+      echo -e "\rWaiting for health check to succeed on ${healthCheckUrl} (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
       echo "Healthcheck on ${healthCheckUrl} succeeded and took ${elapsedSeconds} second(s)"
       healthCheckResponseCode=0
     else
+      echo -e "\rWaiting for health check to succeed on ${healthCheckUrl} (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m done \033[0m"
       echo "ERROR: Healthcheck failed on ${healthCheckUrl} within ${elapsedSeconds} second(s)"
       if [[ ${httpStatusCode} -ne 0 ]]; then
         echo "REASON: HTTP status code ${httpStatusCode}"
