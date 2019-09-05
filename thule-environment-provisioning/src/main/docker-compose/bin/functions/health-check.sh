@@ -12,7 +12,7 @@ function checkHealth() {
   healthCheckStartTime=$(date +%s)
   healthCheckResponseCode=0
   elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
-  maxElapsedSeconds=300
+  maxElapsedSeconds=600
 
   # Wait for service to start
   echo ""
