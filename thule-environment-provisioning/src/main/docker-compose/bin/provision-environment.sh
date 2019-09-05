@@ -241,12 +241,17 @@ done
 ################################################################################
 # Health check
 ################################################################################
-sleep 5
 countOfServicesFailingHealthcheck=0
 for serviceName in "${SERVICE_NAMES[@]}"; do
+  echo ""
+  echo "================================================================================"
+  echo "Checking health of ${serviceName}..."
+
   if ! checkHealth "${serviceName}"; then
     ((countOfServicesFailingHealthcheck++))
   fi
+
+  echo "================================================================================"
 done
 
 echo ""

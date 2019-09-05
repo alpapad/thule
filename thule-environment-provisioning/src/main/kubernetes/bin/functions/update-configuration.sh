@@ -19,7 +19,7 @@ function updateConfiguration() {
     rm -fr "${configDirectory}"
   fi
 
-  echo -n "Replacing old config ${configDirectory} with the new config ${tempConfigDirectory} ..."
+  echo -n "Replacing old config ${configDirectory} with the new config ${tempConfigDirectory}..."
 
   mkdir -p "${configDirectory}"
   mv "${tempConfigDirectory}"/* "${configDirectory}"

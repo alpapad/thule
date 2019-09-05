@@ -221,7 +221,6 @@ for serviceName in "${SERVICE_NAMES[@]}"; do
     downloadConfiguration "${kubernetesConfigurationFile}"
   fi
   deleteService "${kubernetesConfigurationFile}"
-  checkShutdown "${kubernetesConfigurationFile}"
   if [[ ${isSpringBootService} == "true" ]]; then
     updateConfiguration "${kubernetesConfigurationFile}"
   fi
@@ -237,10 +236,16 @@ done
 ################################################################################
 countOfServicesFailingHealthcheck=0
 for serviceName in "${SERVICE_NAMES[@]}"; do
+  echo ""
+  echo "================================================================================"
+  echo "Checking health of ${serviceName}..."
+
   kubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/${serviceName}.yml
   if ! checkHealth "${kubernetesConfigurationFile}"; then
     ((countOfServicesFailingHealthcheck++))
   fi
+
+  echo "================================================================================"
 done
 
 echo ""
