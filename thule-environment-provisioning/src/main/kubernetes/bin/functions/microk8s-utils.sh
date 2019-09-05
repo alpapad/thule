@@ -5,9 +5,9 @@ function createService() {
   kubernetesConfigurationFile=$1
 
   echo ""
-  echo "Creating service..."
+  echo "Updating service..."
 
-  kubectl create -f "${kubernetesConfigurationFile}"
+  kubectl apply -f "${kubernetesConfigurationFile}"
 }
 
 function deleteService() {
