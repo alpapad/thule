@@ -21,7 +21,7 @@ function deleteService() {
 }
 
 function installMicrok8s() {
-  if [[ "$(snap list microk8s)" != *"error"* ]]; then
+  if [[ $(snap info microk8s) ]]; then
     echo ""
     echo "================================================================================"
     echo "Skipping installation of microk8s because it is already installed"
