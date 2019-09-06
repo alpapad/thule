@@ -79,50 +79,97 @@ function deleteService() {
 }
 
 function configureMicrok8s() {
-  if [[ $(grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}" /var/snap/microk8s/current/args/containerd-template.toml) != "" ]]; then
-    echo ""
-    echo "================================================================================"
-    echo "Skipping configuration of microk8s because it is already configured"
-    echo "================================================================================"
+  echo ""
+  echo "================================================================================"
+  echo "About to configure microk8s..."
+
+  microk8sStatus=$(sudo microk8s.status)
+  echo ""
+  echo -n "Enabling dns add-on..."
+  if [[ $(echo "${microk8sStatus}" | grep "dns: enabled") != "" ]]; then
+    echo -e "\rEnabling dns add-on...\033[32m already enabled \033[0m"
   else
     echo ""
-    echo "================================================================================"
-    echo "About to configure microk8s..."
-    echo ""
+    sudo microk8s.enable dns
+    echo -e "Enabling dns add-on...\033[32m done \033[0m"
+  fi
 
+  echo ""
+  echo -n "Enabling storage add-on..."
+  if [[ $(echo "${microk8sStatus}" | grep "storage: enabled") != "" ]]; then
+    echo -e "\rEnabling storage add-on...\033[32m already enabled \033[0m"
+  else
     echo ""
-    echo "Enabling add-ons dns, storage and dashboard..."
-    sudo microk8s.enable dns storage dashboard
+    sudo microk8s.enable storage
+    echo -e "Enabling storage add-on...\033[32m done \033[0m"
+  fi
 
+  echo ""
+  echo -n "Enabling dashboard add-on..."
+  if [[ $(echo "${microk8sStatus}" | grep "dashboard: enabled") != "" ]]; then
+    echo -e "\rEnabling dashboard add-on...\033[32m already enabled \033[0m"
+  else
     echo ""
-    echo "Adding nexus docker registry..."
+    sudo microk8s.enable dashboard
+    echo -e "Enabling dashboard add-on...\033[32m done \033[0m"
+  fi
+
+  echo ""
+  echo -n "Adding nexus docker registry..."
+  if [[ $(sudo grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}" /var/snap/microk8s/current/args/containerd-template.toml) != "" ]]; then
+    echo -e "\rAdding nexus docker registry...\033[32m already added \033[0m"
+  else
     sudo sed -i "/${NEXUS_HOST}:${NEXUS_PORT_DOCKER}/d" /var/snap/microk8s/current/args/containerd-template.toml
     sudo sed -i "/\[plugins.cri.registry.mirrors\]/a \
-    \        [plugins.cri.registry.mirrors.\"${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"] \n\
-    \          endpoint = [\"http://${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"]" /var/snap/microk8s/current/args/containerd-template.toml
+      \        [plugins.cri.registry.mirrors.\"${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"] \n\
+      \          endpoint = [\"http://${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"]" /var/snap/microk8s/current/args/containerd-template.toml
     # Restart microk8s to effect registry changes
     sudo microk8s.stop
     sudo microk8s.start
-
-    echo ""
-    echo "Updating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)' in https://microk8s.io/docs/)..."
-    sudo iptables -P FORWARD ACCEPT
-
-    echo "Creating kubectl alias..."
-    sudo snap alias microk8s.kubectl kubectl
-
-    echo ""
-    echo "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}..."
-    sudo microk8s.kubectl get services kubernetes-dashboard -n kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
-
-    echo ""
-    echo "Enabling skip login for dashboard..."
-    sudo microk8s.kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
-
-    echo ""
-    echo "Have configured microk8s"
-    echo "================================================================================"
+    echo -e "\rAdding nexus docker registry...\033[32m done \033[0m"
   fi
+
+  echo ""
+  echo -n "Updating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)' in https://microk8s.io/docs/)..."
+  if [[ $(sudo iptables -L FORWARD | grep "Chain FORWARD" | grep "ACCEPT") != "" ]]; then
+    echo -e "\rUpdating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)' in https://microk8s.io/docs/)...\033[32m already updated \033[0m"
+  else
+    sudo iptables -P FORWARD ACCEPT
+    echo -e "\rUpdating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)' in https://microk8s.io/docs/)...\033[32m done \033[0m"
+  fi
+
+  echo ""
+  echo -n "Creating kubectl alias..."
+  if [[ ! $(kubectl 1>/dev/null 2>/dev/null) ]]; then
+    echo -e "\rCreating kubectl alias...\033[32m already created \033[0m"
+  else
+    sudo snap alias microk8s.kubectl kubectl
+    echo -e "\rCreating kubectl alias...\033[32m done \033[0m"
+  fi
+
+  echo ""
+  echo -n "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}..."
+  if [[ $(sudo microk8s.kubectl get services kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}") != "" ]]; then
+    echo -e "\rExposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m already created \033[0m"
+  else
+    echo ""
+    sudo microk8s.kubectl get services kubernetes-dashboard -n kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
+    echo -e "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m done \033[0m"
+  fi
+
+  echo ""
+  echo -n "Enabling skip login for dashboard..."
+  if [[ $(sudo microk8s.kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
+    echo -e "\rEnabling skip login for dashboard...\033[32m already created \033[0m"
+  else
+    echo ""
+    sudo microk8s.kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
+    echo -e "Enabling skip login for dashboard...\033[32m done \033[0m"
+  fi
+
+  echo ""
+  echo "Have configured microk8s"
+  echo "================================================================================"
 
   showMicrok8sStatus
 }
