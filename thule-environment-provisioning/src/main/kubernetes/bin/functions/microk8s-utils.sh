@@ -79,7 +79,7 @@ function deleteService() {
 }
 
 function configureMicrok8s() {
-  if [[ $(grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}" /var/snap/microk8s/current/args/containerd-template.toml) == "" ]]; then
+  if [[ $(grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}" /var/snap/microk8s/current/args/containerd-template.toml) != "" ]]; then
     echo ""
     echo "================================================================================"
     echo "Skipping configuration of microk8s because it is already configured"
