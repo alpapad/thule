@@ -83,8 +83,6 @@ function configureMicrok8s() {
   echo "================================================================================"
   echo "About to configure microk8s..."
 
-  sudo microk8s.inspect
-
   microk8sStatus=$(sudo microk8s.status --timeout 600 --wait-ready )
   echo ""
   echo -n "Enabling dns add-on..."
