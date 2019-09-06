@@ -150,7 +150,7 @@ function configureMicrok8s() {
 
   echo ""
   echo -n "Creating kubectl alias..."
-  if [[ ! $(kubectl 1>/dev/null 2>/dev/null) ]]; then
+  if $(kubectl version 1>/dev/null 2>/dev/null); then
     echo -e "\rCreating kubectl alias...\033[32m already created \033[0m"
   else
     sudo snap alias microk8s.kubectl kubectl
