@@ -84,7 +84,7 @@ function configureMicrok8s() {
   echo "================================================================================"
   echo "About to configure microk8s..."
 
-  microk8sStatus=$(sudo microk8s.status)
+  microk8sStatus=$(sudo microk8s.status --wait-ready)
   echo ""
   echo -n "Enabling dns add-on..."
   if [[ $(echo "${microk8sStatus}" | grep "dns: enabled") != "" ]]; then
@@ -180,7 +180,7 @@ function showMicrok8sStatus() {
   echo "================================================================================"
   echo "Microk8s status..."
   echo ""
-  sudo microk8s.status
+  sudo microk8s.status --wait-ready
 
   echo ""
   echo "Nodes, services, pods..."
