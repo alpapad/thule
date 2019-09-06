@@ -18,7 +18,7 @@ function createService() {
   echo -n "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
   serviceInfo=$(sudo microk8s.kubectl get services --output=json "${serviceName}" 2>/dev/null)
   podInfo=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
-  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" ]] && [[ "${podInfo}" != "" ]]; do
+  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" && "${podInfo}" != "" ]]; do
     echo -en "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - startupStartTime))
@@ -57,7 +57,7 @@ function deleteService() {
   echo -n "Waiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."
   serviceInfo=$(sudo microk8s.kubectl get services --output=json "${serviceName}" 2>/dev/null)
   podInfo=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
-  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" == "" ]] && [[ "${podInfo}" == "" ]]; do
+  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" == "" && "${podInfo}" == "" ]]; do
     echo -en "\rWaiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - shutdownStartTime))
