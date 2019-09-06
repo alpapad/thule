@@ -1,2 +1,2 @@
 #!/bin/bash
-PROVISIONING_HOST=piglet
+PROVISIONING_HOST=pooh
