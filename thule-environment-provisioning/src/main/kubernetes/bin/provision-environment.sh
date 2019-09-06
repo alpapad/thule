@@ -138,7 +138,7 @@ if [[ ${PROVISION_LOCALLY} != "true" ]]; then
   echo "About to ship the provisioning scripts to ${PROVISIONING_HOST}..."
   echo ""
 
-  if ! rsync -a --delete --progress "$SCRIPT_DIR_NAME/../../../../" "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"; then
+  if ! rsync -a --delete --progress --rsync-path="mkdir -p ${PROVISIONING_HOST_TARGET_DIRECTORY} && rsync" "$SCRIPT_DIR_NAME/../../../../" "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"; then
     echo ""
     echo "ERROR: Could not ship the provisioning scripts to ${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}:${PROVISIONING_HOST_TARGET_DIRECTORY}"
     echo "Hint: Ensure user ${PROVISIONING_HOST_USERID} has sufficient permissions to ${PROVISIONING_HOST_TARGET_DIRECTORY}"
