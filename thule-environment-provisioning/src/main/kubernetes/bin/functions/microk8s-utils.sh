@@ -79,6 +79,7 @@ function deleteService() {
 }
 
 function configureMicrok8s() {
+  showMicrok8sStatus
   echo ""
   echo "================================================================================"
   echo "About to configure microk8s..."
