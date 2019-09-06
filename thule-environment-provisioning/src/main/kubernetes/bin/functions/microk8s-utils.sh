@@ -179,7 +179,7 @@ function showMicrok8sStatus() {
   echo "================================================================================"
   echo "Microk8s status..."
   echo ""
-  sudo microk8s.status  --timeout 600 --wait-ready
+  sudo microk8s.status --timeout 600 --wait-ready
 
   echo ""
   echo "Nodes, services, pods..."
