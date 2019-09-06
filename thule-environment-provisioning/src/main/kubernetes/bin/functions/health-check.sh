@@ -11,11 +11,11 @@ function checkHealth() {
 
   echo ""
   # jsonpath filters return a list so convert to an array and just cut the first element
-  readinessProbePath=$(kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")].readinessProbe.httpGet.path}" 2>/dev/null | cut -d" " -f1)
+  readinessProbePath=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")].readinessProbe.httpGet.path}" 2>/dev/null | cut -d" " -f1)
   if [[ "${readinessProbePath}" == "" ]]; then
     echo "WARNING: Unable to perform a healthcheck because a readiness probe has not been defined"
   else
-    nodePort=$(kubectl get services --output=jsonpath="{.spec.ports[*].nodePort}" "${serviceName}")
+    nodePort=$(sudo microk8s.kubectl get services --output=jsonpath="{.spec.ports[*].nodePort}" "${serviceName}")
     healthCheckUrl="http://127.0.0.1:${nodePort}${readinessProbePath}"
 
     echo -en "\rWaiting for health check to succeed on ${healthCheckUrl} (up to a maximum of ${maxElapsedSeconds} seconds)..."
