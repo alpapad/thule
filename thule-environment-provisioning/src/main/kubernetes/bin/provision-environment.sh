@@ -196,7 +196,6 @@ if [[ "${CLEAN_ENVIRONMENT}" == "true" ]]; then
   echo "About to clean the environment..."
 
   sudo microk8s.reset
-  configureMicrok8s
 
   echo ""
   echo "Have successfully cleaned the environment"
