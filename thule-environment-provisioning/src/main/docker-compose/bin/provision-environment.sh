@@ -162,7 +162,7 @@ if [[ ${PROVISION_LOCALLY} != "true" ]]; then
   echo "Have successfully shipped the provisioning scripts to ${PROVISIONING_HOST}"
   echo "================================================================================"
 
-  ssh -o StrictHostKeyChecking=no "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}" -t -C "bash -cl '${PROVISIONING_HOST_TARGET_DIRECTORY}/src/main/docker-compose/bin/provision-environment.sh -l $COMMAND_OPTIONS'"
+  ssh -o StrictHostKeyChecking=no "${PROVISIONING_HOST_USERID}@${PROVISIONING_HOST}" -tt -C "bash -cl '${PROVISIONING_HOST_TARGET_DIRECTORY}/src/main/docker-compose/bin/provision-environment.sh -l $COMMAND_OPTIONS'"
   exit
 fi
 
