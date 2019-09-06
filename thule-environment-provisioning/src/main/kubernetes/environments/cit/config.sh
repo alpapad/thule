@@ -1,2 +1,2 @@
 #!/bin/bash
-PROVISIONING_HOST=pluto
+PROVISIONING_HOST=piglet
