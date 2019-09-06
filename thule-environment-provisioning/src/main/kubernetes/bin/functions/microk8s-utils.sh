@@ -90,6 +90,7 @@ function installMicrok8s() {
     echo "About to install microk8s..."
     echo ""
     sudo snap install microk8s --classic
+    sudo usermod -a -G microk8s "$(whoami)"
     microk8s.start # Install automatically starts but does not wait for it to come up, unlike the explicit start command
 
     echo ""
