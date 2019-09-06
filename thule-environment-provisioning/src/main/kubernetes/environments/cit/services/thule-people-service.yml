@@ -52,14 +52,7 @@ spec:
           ports:
             - containerPort: 3306
       tolerations:
-        - key: node.kubernetes.io/not-ready
-          operator: Exists
-          effect: NoExecute
-          tolerationSeconds: 600
-        - key: node.kubernetes.io/unreachable
-          operator: Exists
-          effect: NoExecute
-          tolerationSeconds: 600
+        - operator: Exists
 ---
 apiVersion: v1
 kind: Service
