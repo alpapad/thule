@@ -195,8 +195,8 @@ if [[ "${CLEAN_ENVIRONMENT}" == "true" ]]; then
   echo "================================================================================"
   echo "About to clean the environment..."
 
-  microk8s.reset
-  sudo snap remove microk8s
+  sudo microk8s.reset
+  configureMicrok8s
 
   echo ""
   echo "Have successfully cleaned the environment"
@@ -206,7 +206,7 @@ fi
 ################################################################################
 # Provision
 ################################################################################
-installMicrok8s
+configureMicrok8s
 
 for serviceName in "${SERVICE_NAMES[@]}"; do
   echo ""

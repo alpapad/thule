@@ -78,20 +78,17 @@ function deleteService() {
   return ${shutdownResponseCode}
 }
 
-function installMicrok8s() {
-  if [[ $(snap list microk8s) ]]; then
+function configureMicrok8s() {
+  if [[ $(grep "${NEXUS_HOST}:${NEXUS_PORT_DOCKER}" /var/snap/microk8s/current/args/containerd-template.toml) == "" ]]; then
     echo ""
     echo "================================================================================"
-    echo "Skipping installation of microk8s because it is already installed"
+    echo "Skipping configuration of microk8s because it is already configured"
     echo "================================================================================"
   else
     echo ""
     echo "================================================================================"
-    echo "About to install microk8s..."
+    echo "About to configure microk8s..."
     echo ""
-    sudo snap install microk8s --classic
-    sudo usermod -a -G microk8s "$(whoami)"
-    microk8s.start # Install automatically starts but does not wait for it to come up, unlike the explicit start command
 
     echo ""
     echo "Enabling add-ons dns, storage and dashboard..."
@@ -123,7 +120,7 @@ function installMicrok8s() {
     kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | kubectl replace -f -
 
     echo ""
-    echo "Have installed microk8s"
+    echo "Have configured microk8s"
     echo "================================================================================"
   fi
 
