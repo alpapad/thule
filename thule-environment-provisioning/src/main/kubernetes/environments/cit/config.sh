@@ -1,2 +1,2 @@
 #!/bin/bash
-PROVISIONING_HOST=pooh
+PROVISIONING_HOST=pluto
