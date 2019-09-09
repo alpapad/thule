@@ -99,7 +99,7 @@ project("thule-test") {
         compileOnly("org.projectlombok:lombok")
 
         compile project(":thule-utils")
-        compile("org.awaitility:awaitility:4.0.0")
+        compile("org.awaitility:awaitility:4.0.1")
         compile("org.springframework.boot:spring-boot-starter-actuator")
         compile("org.springframework.boot:spring-boot-starter-test")
         compile("org.springframework.boot:spring-boot-starter-web")
@@ -121,7 +121,7 @@ project("thule-utils") {
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
         compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-        compile("net.logstash.logback:logstash-logback-encoder:6.1")
+        compile("net.logstash.logback:logstash-logback-encoder:6.2")
         compile("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
         compile("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
         compile("org.hibernate:hibernate-core")
