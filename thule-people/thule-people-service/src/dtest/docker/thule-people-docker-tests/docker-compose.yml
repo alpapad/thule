@@ -12,6 +12,7 @@ services:
       SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-people/thule-people-config/src/main/resources/config/
       SPRING_FLYWAY_SCHEMAS: thule
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql
+      THULE_SHARED_LOGGING_LOGSTASH_ENABLED: false
       TZ: Europe/London
     ports:
       - 9094:8080 # Required to allow docker tests to call the restful api
