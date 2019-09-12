@@ -43,6 +43,10 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+      hostAliases:
+        - ip: 192.168.0.102
+          hostnames:
+            - pooh
       tolerations:
         - operator: Exists
       volumes:

@@ -43,4 +43,4 @@ thule:
     logging:
       logstash:
         enabled: true
-        host: 192.168.0.102
+        host: pooh
