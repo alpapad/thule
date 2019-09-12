@@ -8,6 +8,8 @@ spring:
   mail:
     host: localhost
     port: 1025
+  zipkin:
+    enabled: false
 
 # Thule configuration
 thule:

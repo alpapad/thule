@@ -11,6 +11,11 @@ logging:
   level:
     uk.co.serin.thule: trace
 
+# Spring boot configuration
+spring:
+  zipkin:
+    enabled: false
+
 # Thule configuration
 thule:
   shared:

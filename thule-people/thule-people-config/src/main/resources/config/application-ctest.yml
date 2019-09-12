@@ -13,6 +13,8 @@ logging:
 spring:
   flyway:
     schemas: thule
+  zipkin:
+    enabled: false
 
 # Thule configuration
 thule:

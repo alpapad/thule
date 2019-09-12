@@ -11,6 +11,7 @@ services:
       # from a docker volume created at build time which contains the source for this micro-service
       SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-people/thule-people-config/src/main/resources/config/
       SPRING_FLYWAY_SCHEMAS: thule
+      SPRING_ZIPKIN_ENABLED: "false"
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
