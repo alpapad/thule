@@ -8,7 +8,7 @@ services:
       # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
       # from a docker volume created at build time which contains the source for this micro-service
       SPRING_CONFIG_ADDITIONAL_LOCATION: /thule-email/thule-email-config/src/main/resources/config/
-      THULE_SHARED_LOGGING_LOGSTASH_ENABLED: false
+      THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
     ports:
       - 9095:8080 # Required to allow docker tests to call the restful api
