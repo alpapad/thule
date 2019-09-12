@@ -54,3 +54,4 @@ thule:
     logging:
       logstash:
         enabled: true
+        host: pooh
