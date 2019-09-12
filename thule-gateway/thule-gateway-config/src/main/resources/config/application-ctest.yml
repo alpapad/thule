@@ -16,3 +16,7 @@ thule:
         - "thule-discovery-service"
         - "thule-configuration-service"
         - "thule-admin-service"
+  shared:
+    logging:
+      logstash:
+        enabled: false

@@ -3,3 +3,10 @@ spring:
   mail:
     host: localhost
     port: 1025
+
+# Thule configuration
+thule:
+  shared:
+    logging:
+      logstash:
+        enabled: false

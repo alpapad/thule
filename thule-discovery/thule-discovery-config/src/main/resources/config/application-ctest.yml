@@ -10,3 +10,10 @@ eureka:
 logging:
   level:
     uk.co.serin.thule: trace
+
+# Thule configuration
+thule:
+  shared:
+    logging:
+      logstash:
+        enabled: false
