@@ -141,7 +141,7 @@ function configureMicrok8s() {
 
   echo ""
   echo -n "Updating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)' in https://microk8s.io/docs/)..."
-  if [[ $(sudo iptables -L FORWARD | grep "Chain FORWARD" | grep "ACCEPT") == "" ]]; then
+  if [[ $(sudo iptables -L FORWARD | grep "Chain FORWARD" | grep "ACCEPT") != "" ]]; then
     echo -e "\rUpdating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)' in https://microk8s.io/docs/)...\033[32m already updated \033[0m"
   else
     sudo iptables -P FORWARD ACCEPT
