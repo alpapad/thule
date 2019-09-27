@@ -207,6 +207,7 @@ fi
 ################################################################################
 configureMicrok8s
 
+countOfServicesFailingToProvision=0
 for serviceName in "${SERVICE_NAMES[@]}"; do
   echo ""
   echo "================================================================================"
@@ -219,14 +220,23 @@ for serviceName in "${SERVICE_NAMES[@]}"; do
   if [[ ${isSpringBootService} == "true" ]]; then
     downloadConfiguration "${kubernetesConfigurationFile}"
   fi
-  deleteService "${kubernetesConfigurationFile}"
-  if [[ ${isSpringBootService} == "true" ]]; then
-    updateConfiguration "${kubernetesConfigurationFile}"
+  if ! deleteService "${kubernetesConfigurationFile}"; then
+    ((countOfServicesFailingToProvision++))
+  else
+    if [[ ${isSpringBootService} == "true" ]]; then
+      updateConfiguration "${kubernetesConfigurationFile}"
+    fi
+    if ! createService "${kubernetesConfigurationFile}"; then
+      ((countOfServicesFailingToProvision++))
+    fi
   fi
-  createService "${kubernetesConfigurationFile}"
 
   echo ""
-  echo "Have successfully provisioned ${serviceName}"
+  if [[ ${countOfServicesFailingToProvision} -eq 0 ]]; then
+    echo "Have successfully provisioned ${serviceName}"
+  else
+    echo "ERROR: Have failed to provision ${serviceName}"
+  fi
   echo "================================================================================"
 done
 
@@ -265,4 +275,5 @@ echo "==========================================================================
 echo "$SCRIPT_NAME finished at $(date '+%F %T') taking $elapsedSeconds seconds"
 echo "================================================================================"
 
-exit ${countOfServicesFailingHealthcheck}
+exitCode=$((countOfServicesFailingHealthcheck + countOfServicesFailingToProvision))
+exit ${exitCode}
