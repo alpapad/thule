@@ -262,7 +262,7 @@ echo "==========================================================================
 if [[ ${countOfServicesFailingHealthcheck} -eq 0 ]]; then
   echo "Healthcheck has completed and found no problems"
 else
-  echo "Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
+  echo "ERROR: Healthcheck has completed and found ${countOfServicesFailingHealthcheck} service(s) ****FAILED***"
 fi
 echo "================================================================================"
 
