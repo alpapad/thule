@@ -43,7 +43,7 @@ public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBa
      *
      * Another option is to provide Spring with a ApplicationContextInitializer to start the mysql docker container, which is executed after the context
      * has been created but not yet initialized, i.e. no Spring beans have yet been created. This way, when the SpringRunner tries to run the tests,
-     * it already has an application context running. This is the approach taken here and is a performance improvement which can save consdierable
+     * it already has an application context running. This is the approach taken here and is a performance improvement which can save considerable
      * developer time.
      */
     static class MysqlInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
