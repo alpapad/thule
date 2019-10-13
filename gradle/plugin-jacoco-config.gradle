@@ -31,7 +31,7 @@ if (project.tasks.findByName("jacocoTestReport")) {
         // Always create a report even if jacocoTestCoverageVerification fails
         jacocoTestReport.finalizedBy jacocoTestCoverageVerification
     }
-    jacoco.toolVersion = "0.8.4"
+    jacoco.toolVersion = "0.8.5"
 
     // Always run jacoco after running the unit tests
     test.finalizedBy jacocoTestReport
