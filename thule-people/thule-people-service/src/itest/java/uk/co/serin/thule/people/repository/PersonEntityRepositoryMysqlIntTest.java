@@ -36,7 +36,7 @@ public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBa
      * which includes the Flyway spring bean, has failed to initialize. Although the Spring application context has failed to initialize,
      * the SpringRunner will continue processing as normal, i.e. execute any @BeforeClass methods followed by @Before methods and then the actual tests.
      *
-     * One option is to ignore this and when the the SpringRunner tries to run a test (i.e. after executing the @BeforeClass method),
+     * One option is to ignore this and when the SpringRunner tries to run a test (i.e. after executing the @BeforeClass method),
      * it will recognise that their is no Spring context and create one (in the same way that an application context is re-created when using the
      * @DirtiesContext annotation). This time it should succeed because the Flyway spring bean will be able to connect to the mysql database which has
      * been started via the @BeforeClass. The downside to this approach is that it can be extremely slow having to create another application context.
