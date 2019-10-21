@@ -52,7 +52,7 @@ spec:
       volumes:
         - name: config
           hostPath:
-            path: /home/wayne/.thule/thule-configuration-config/config
+            path: /home/wayne/.thule/thule-configuration-service/config
 ---
 apiVersion: v1
 kind: Service

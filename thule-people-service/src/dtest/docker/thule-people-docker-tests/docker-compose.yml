@@ -1,0 +1,27 @@
+version: "3.5"
+services:
+  ################################  thule-people-service  ################################
+  thule-people-service:
+    image: pooh:8084/thule-people-service
+    environment:
+      EUREKA_CLIENT_ENABLED: "false" # Docker tests do not need a discovery registry
+      JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+      SPRING_CLOUD_CONFIG_ENABLED: "false" # Docker tests do not need a configuration service
+      # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
+      # from a docker volume created at build time which contains the source for this micro-service
+      SPRING_FLYWAY_SCHEMAS: thule
+      SPRING_ZIPKIN_ENABLED: "false"
+      THULE_PEOPLESERVICE_MYSQL_HOST: mysql
+      THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
+      TZ: Europe/London
+    ports:
+      - 9094:8080 # Required to allow docker tests to call the restful api
+
+  ################################  Servers and Databases Required By Docker tests  ################################
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/London
+    ports:
+      - 3308:3306 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required

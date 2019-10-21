@@ -22,7 +22,7 @@ services:
       - 7888:8080
     restart: always
     volumes:
-      - /home/wayne/.thule/thule-configuration-config/config:/config
+      - /home/wayne/.thule/thule-configuration-service/config:/config
 
   ################################  thule-discovery-service  ################################
   thule-discovery-service:
