@@ -33,6 +33,12 @@ if (project.tasks.findByName("jacocoTestReport")) {
     }
     jacoco.toolVersion = "0.8.5"
 
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+        }
+    }
+
     // Always run jacoco after running the unit tests
     test.finalizedBy jacocoTestReport
 }
