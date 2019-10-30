@@ -1,8 +1,8 @@
-# Spring boot configuration
+# Spring cloud configuration
 spring:
   cloud:
+    config:
+      enabled: true
     kubernetes:
       discovery:
         enabled: true
-
-# Thule configuration

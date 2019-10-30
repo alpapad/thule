@@ -73,9 +73,8 @@ public class HealthCheckContractTest {
         // When
         var responseEntities = new ArrayList<ResponseEntity<Map>>();
         Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofSeconds(10)). // Allow up to 10 seconds to complete, if it takes longer, asynchronous process is probably not working
-                                                               untilAsserted(
-                () -> responseEntities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
+                await().timeout(Duration.ofSeconds(20)). // Allow up to 20 seconds to complete, if it takes longer, asynchronous process is probably not working
+                    untilAsserted(() -> responseEntities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
 
         // Then
         verify(getRequestedFor(urlPathEqualTo("/actuator/health")));

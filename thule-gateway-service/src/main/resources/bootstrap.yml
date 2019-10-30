@@ -4,6 +4,7 @@ spring:
     name: thule-gateway-service
   cloud:
     config:
+      enabled: false # Most environments (test) do no need a configuration service so it is disabled by default
       # Must set this to true when attempting retry otherwise it will not retry connecting to the configuration server if not available at startup
       failFast: true
       # When to retry accessing the configuration service if it not available at startup
