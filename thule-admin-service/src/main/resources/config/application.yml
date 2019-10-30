@@ -29,6 +29,12 @@ spring:
         status-interval: 5000ms
         status-lifetime: 5000ms
         read-timeout: 5000ms
+    kubernetes:
+      discovery:
+        enabled: true
+        catalog-services-watch:
+          enabled: true
+          catalogServicesWatchDelay: 10000
   cloud:
     kubernetes:
       discovery:
