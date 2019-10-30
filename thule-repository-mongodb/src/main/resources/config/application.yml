@@ -2,7 +2,7 @@
 logging:
   level:
     org.springframework: info
-    uk.co.serin: trace
+    uk.co.serin.thule: trace
 
 # Spring configuration
 spring:
