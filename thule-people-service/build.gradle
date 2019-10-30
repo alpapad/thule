@@ -66,7 +66,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-validation")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.cloud:spring-cloud-starter-config")
-    compile("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    compile("org.springframework.cloud:spring-cloud-starter-kubernetes")
     compile("org.springframework.cloud:spring-cloud-starter-openfeign")
     compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     compile("org.springframework.cloud:spring-cloud-starter-zipkin")
