@@ -23,12 +23,6 @@ management:
 spring:
   application:
     name: thule-admin-service
-##  boot:
-#    admin:
-##      monitor:
-#        status-interval: 5000ms
-#        status-lifetime: 5000ms
-#        read-timeout: 5000ms
   cloud:
     kubernetes:
       discovery:
