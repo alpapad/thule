@@ -35,7 +35,7 @@ ctest {
     afterSuite { descriptor ->
         if (descriptor.getName().contains("Gradle Test Executor")) {
             exec {
-                commandLine "docker-compose", "-f", "src/test/docker/thule-people-tests/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
+                commandLine "docker-compose", "-f", "src/test/docker/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
             }
         }
     }
@@ -67,12 +67,12 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.cloud:spring-cloud-starter-config")
     compile("org.springframework.cloud:spring-cloud-starter-kubernetes")
+    compile("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
     compile("org.springframework.cloud:spring-cloud-starter-openfeign")
     compile("org.springframework.cloud:spring-cloud-starter-sleuth")
     compile("org.springframework.cloud:spring-cloud-starter-zipkin")
     compile("org.springframework.data:spring-data-rest-hal-browser")
-    compile("org.springframework.retry:spring-retry")
-    // Required to retry connecting to the configuration service when it is not available at startup
+    compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
     testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 

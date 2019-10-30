@@ -18,7 +18,7 @@ import java.io.IOException;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class ContractBaseTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/docker-compose-mysql.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
