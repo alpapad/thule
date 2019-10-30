@@ -1,0 +1,8 @@
+# Spring cloud configuration
+spring:
+  cloud:
+    config:
+      enabled: true
+    kubernetes:
+      discovery:
+        enabled: true

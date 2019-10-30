@@ -22,7 +22,7 @@ import java.io.IOException;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = PersonEntityRepositoryMysqlIntTest.MysqlInitializer.class)
 public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-people-tests/docker-compose-mysql.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/docker-compose-mysql.yml");
 
     @AfterClass
     public static void teardownClass() throws IOException {

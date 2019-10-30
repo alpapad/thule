@@ -34,7 +34,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PeopleDockerTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-people-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
     private OAuth2RestTemplate oAuth2RestTemplate;
     @Value("${thule.peopleservice.api.host}")
     private String peopleServiceApiHost;

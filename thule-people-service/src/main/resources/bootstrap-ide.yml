@@ -1,5 +1,1 @@
 # Thule configuration
-thule:
-  configurationservice:
-    host: localhost
-    port: 8888

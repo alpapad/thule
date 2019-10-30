@@ -1,9 +1,3 @@
-# Spring logging
-logging:
-  level:
-    jdbc.sqlonly: info
-    uk.co.serin: trace
-
 # Spring server configuration
 server:
   port: 8094
@@ -15,9 +9,6 @@ spring:
 
 # Thule configuration
 thule:
-  discoveryservice:
-    host: localhost
-    port: 8761
   peopleservice:
     mysql:
       host: localhost

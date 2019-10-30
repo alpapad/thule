@@ -1,11 +1,9 @@
-# Spring logging
-logging:
-  level:
-    jdbc.sqlonly: info
-    uk.co.serin: trace
-
 # Spring boot configuration
 spring:
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: true
   flyway:
     schemas: thule
 
