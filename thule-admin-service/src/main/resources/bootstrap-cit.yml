@@ -3,6 +3,6 @@ spring:
   cloud:
     config:
       enabled: true
-    kubernetes:
-      discovery:
-        enabled: true
+#    kubernetes:
+#      discovery:
+#        enabled: true
