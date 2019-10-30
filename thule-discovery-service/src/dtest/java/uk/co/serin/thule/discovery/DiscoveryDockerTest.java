@@ -38,7 +38,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DiscoveryDockerTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-discovery-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
     @Autowired
     private ActuatorClient actuatorClient;
     @Autowired

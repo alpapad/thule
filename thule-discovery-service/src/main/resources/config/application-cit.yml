@@ -1,4 +1,1 @@
-# Spring logging
-logging:
-  level:
-    uk.co.serin.thule: trace
+# Thule configuration
