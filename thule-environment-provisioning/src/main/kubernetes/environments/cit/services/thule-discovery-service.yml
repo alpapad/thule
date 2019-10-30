@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: thule-discovery-service
-  namespace: default
+  namespace: thule
   labels:
     app: thule-discovery-service
 spec:
@@ -52,7 +52,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: thule-discovery-service
-  namespace: default
+  namespace: thule
   labels:
     app: thule-discovery-service
 spec:

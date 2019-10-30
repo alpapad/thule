@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: thule-configuration-service
-  namespace: default
+  namespace: thule
   labels:
     app: thule-configuration-service
 spec:
@@ -59,7 +59,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: thule-configuration-service
-  namespace: default
+  namespace: thule
   labels:
     app: thule-configuration-service
 spec:
