@@ -21,7 +21,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EmailDockerTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-email-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
     private String baseUrl;
     @Value("${thule.emailservice.api.host}")
     private String emailServiceApiHost;

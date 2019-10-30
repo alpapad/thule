@@ -77,8 +77,8 @@ public class EmailContractTest extends ContractBaseTest {
     @Test
     public void when_smtp_server_is_down_then_response_should_be_accepted() {
         // Given
-        var attachments = Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
-        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body")
+        var attachments = Collections.singleton(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
+        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is another test body")
                          .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
                          .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
         var entity = new HttpEntity<>(email, null);

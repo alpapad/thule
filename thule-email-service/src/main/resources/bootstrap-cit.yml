@@ -3,8 +3,6 @@ spring:
   cloud:
     config:
       enabled: true
-
-# Thule configuration
-thule:
-  configurationservice:
-    host: thule-configuration-service
+    kubernetes:
+      discovery:
+        enabled: true
