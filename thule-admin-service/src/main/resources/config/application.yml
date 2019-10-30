@@ -27,6 +27,10 @@ spring:
     kubernetes:
       discovery:
         enabled: false
+      reload:
+        enabled: true
+        mode: polling
+        period: 5000
   sleuth:
     sampler:
       probability: 1.0
