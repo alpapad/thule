@@ -1,13 +1,3 @@
-# Eureka configuration
-eureka:
-  client:
-    serviceUrl:
-      # Location of peer discovery services to keep the registry in sync across all discovery services, in this case we only have a single node so it refers to itself
-      defaultZone: http://${thule.discoveryservice.host:thule-discovery-service}:${thule.discoveryservice.port:8080}/eureka/
-  instance:
-    # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
-    prefer-ip-address: true
-
 # Spring actuator configuration
 info:
   description: Thule Configuration Service
@@ -16,8 +6,8 @@ info:
 # Spring logging
 logging:
   level:
-    uk.co.serin.thule: info
     org.springframework: info
+    uk.co.serin.thule: trace
 
 # Management endpoint configuration
 management:
@@ -36,6 +26,9 @@ spring:
       server:
         native:
           search-locations: ${thule.configurationservice.search-locations:/config}/{application}
+    kubernetes:
+      discovery:
+        enabled: false
   sleuth:
     sampler:
       probability: 1.0

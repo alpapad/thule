@@ -1,4 +1,4 @@
 # Spring cloud config client configuration
 spring:
   config:
-    additional-location: ../thule-configuration-config/src/main/resources/config/
+    additional-location: ../thule-configuration-service/src/main/resources/config/

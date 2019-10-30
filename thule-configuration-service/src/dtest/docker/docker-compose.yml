@@ -4,11 +4,7 @@ services:
   thule-configuration-service:
     image: pooh:8084/thule-configuration-service
     environment:
-      EUREKA_CLIENT_ENABLED: "false" # Docker tests do not need a discovery registry
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
-      SPRING_CLOUD_CONFIG_ENABLED: "false" # Docker tests do not need a configuration service
-      # Since we are not using the configuration service to provide spring config, we instruct spring to use the config
-      # from a docker volume created at build time which contains the source for this micro-service
       SPRING_ZIPKIN_ENABLED: "false"
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
