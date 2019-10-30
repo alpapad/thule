@@ -158,6 +158,16 @@ function configureMicrok8s() {
   fi
 
   echo ""
+  echo -n "Creating namespace thule..."
+  if [[ $(sudo microk8s.kubectl get namespace thulew 2>&1 | grep "not found") == "" ]]; then
+    echo -e "\rCreating namespace thule...\033[32m already created \033[0m"
+  else
+    echo ""
+    sudo microk8s.kubectl create namespace thule
+    echo -e "Creating namespace thule...\033[32m done \033[0m"
+  fi
+
+  echo ""
   echo -n "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}..."
   if [[ $(sudo microk8s.kubectl get services --namespace=thule kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}") != "" ]]; then
     echo -e "\rExposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m already created \033[0m"
