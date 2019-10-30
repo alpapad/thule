@@ -7,7 +7,7 @@ function createService() {
   echo ""
   echo "Creating service..."
 
-  sudo microk8s.kubectl create -f "${kubernetesConfigurationFile}"
+  sudo microk8s.kubectl create --namespace=thule -f "${kubernetesConfigurationFile}"
 
   serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
   startupStartTime=$(date +%s)
@@ -16,14 +16,14 @@ function createService() {
 
   echo ""
   echo -n "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
-  serviceInfo=$(sudo microk8s.kubectl get services --output=json "${serviceName}" 2>/dev/null)
-  podInfo=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+  serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
+  podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" && "${podInfo}" != "" ]]; do
     echo -en "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - startupStartTime))
-    serviceInfo=$(sudo microk8s.kubectl get services --output=json "${serviceName}" 2>/dev/null)
-    podInfo=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+    serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
+    podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   done
 
   if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
@@ -46,7 +46,7 @@ function deleteService() {
   echo ""
   echo "Deleting service..."
 
-  sudo microk8s.kubectl delete --all -f "${kubernetesConfigurationFile}"
+  sudo microk8s.kubectl delete --all --namespace=thule -f "${kubernetesConfigurationFile}"
 
   serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
   shutdownStartTime=$(date +%s)
@@ -55,14 +55,14 @@ function deleteService() {
 
   echo ""
   echo -n "Waiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."
-  serviceInfo=$(sudo microk8s.kubectl get services --output=json "${serviceName}" 2>/dev/null)
-  podInfo=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+  serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
+  podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" == "" && "${podInfo}" == "" ]]; do
     echo -en "\rWaiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - shutdownStartTime))
-    serviceInfo=$(sudo microk8s.kubectl get services --output=json "${serviceName}" 2>/dev/null)
-    podInfo=$(sudo microk8s.kubectl get pods --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
+    serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
+    podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   done
 
   if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
@@ -159,21 +159,21 @@ function configureMicrok8s() {
 
   echo ""
   echo -n "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}..."
-  if [[ $(sudo microk8s.kubectl get services kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}") != "" ]]; then
+  if [[ $(sudo microk8s.kubectl get services --namespace=thule kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}") != "" ]]; then
     echo -e "\rExposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl get services kubernetes-dashboard -n kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
+    sudo microk8s.kubectl get services kubernetes-dashboard --namespace=kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
     echo -e "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m done \033[0m"
   fi
 
   echo ""
   echo -n "Enabling skip login for dashboard..."
-  if [[ $(sudo microk8s.kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
+  if [[ $(sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
     echo -e "\rEnabling skip login for dashboard...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl get deployment kubernetes-dashboard -n kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
+    sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
     echo -e "Enabling skip login for dashboard...\033[32m done \033[0m"
   fi
 
@@ -196,8 +196,8 @@ function showMicrok8sStatus() {
   sudo microk8s.kubectl get nodes,services,pods --all-namespaces -o wide
 
   dashboardIpAddress=$(sudo microk8s.kubectl get services --namespace=kube-system --no-headers kubernetes-dashboard | tr -s " " | cut -d " " -f3)
-  defaultToken=$(sudo microk8s.kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
-  signinBearerToken=$(sudo microk8s.kubectl -n kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
+  defaultToken=$(sudo microk8s.kubectl --namespace=kube-system get secret | grep default-token | cut -d " " -f1)
+  signinBearerToken=$(sudo microk8s.kubectl --namespace=kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
   echo ""
   echo "Dashboard URL : https://${dashboardIpAddress} or https://localhost:${KUBERNETES_DASHBOARD_NODEPORT}"
   echo "Sign-in bearer token : ${signinBearerToken}"
