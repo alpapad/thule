@@ -5,13 +5,15 @@ services:
     image: pooh:8084/thule-people-service
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+      SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
       SPRING_FLYWAY_SCHEMAS: thule
       SPRING_ZIPKIN_ENABLED: "false"
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
     ports:
-      - 9094:8080 # Required to allow docker tests to call the restful api
+      - 9094:8080
 
   ################################  Servers and Databases Required By Docker tests  ################################
   mysql:

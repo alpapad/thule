@@ -3,12 +3,6 @@ info:
   description: Thule Email Service
   name: ${spring.application.name}
 
-# Spring logging
-logging:
-  level:
-    org.springframework: info
-    uk.co.serin.thule: trace
-
 # Management endpoint configuration
 management:
   endpoints:
@@ -23,10 +17,6 @@ management:
 spring:
   application:
     name: thule-email-service
-  cloud:
-    kubernetes:
-      discovery:
-        enabled: false
   mail:
     host: smtp.gmail.com
     password: 1nsleyopie

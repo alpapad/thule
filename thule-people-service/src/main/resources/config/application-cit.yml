@@ -1,10 +1,4 @@
 # Spring boot configuration
 spring:
-  cloud:
-    kubernetes:
-      discovery:
-        enabled: true
   flyway:
     schemas: thule
-
-# Thule configuration

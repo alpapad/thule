@@ -1,5 +1,14 @@
+# Spring logging
+logging:
+  level:
+    uk.co.serin.thule: trace
+
 # Spring boot configuration
 spring:
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: false
   zipkin:
     enabled: false
 

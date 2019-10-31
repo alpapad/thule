@@ -3,12 +3,6 @@ info:
   description: Thule Admin Service
   name: ${spring.application.name}
 
-# Spring logging
-logging:
-  level:
-    org.springframework: info
-    uk.co.serin.thule: info
-
 # Management endpoint configuration
 management:
   endpoints:

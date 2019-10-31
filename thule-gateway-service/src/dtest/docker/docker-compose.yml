@@ -1,8 +1,8 @@
 version: "3.5"
 services:
-  ################################  thule-email  ################################
-  thule-email:
-    image: pooh:8084/thule-email-service
+  ################################  thule-gateway  ################################
+  thule-gateway:
+    image: pooh:8084/thule-gateway-service
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false"
@@ -11,4 +11,4 @@ services:
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
     ports:
-      - 9095:8080
+      - 9091:8080

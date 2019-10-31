@@ -21,7 +21,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class GatewayDockerTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-gateway-docker-tests/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
     private String gatewayBaseUrl;
     @Value("${thule.gatewayservice.api.host}")
     private String gatewayServiceApiHost;

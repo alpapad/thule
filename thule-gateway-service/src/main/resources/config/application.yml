@@ -3,12 +3,6 @@ info:
   description: Thule Gateway Service
   name: ${spring.application.name}
 
-# Spring logging
-logging:
-  level:
-    org.springframework: info
-    uk.co.serin.thule: trace
-
 # Management endpoint configuration
 management:
   endpoints:
@@ -28,10 +22,6 @@ ribbon:
 spring:
   application:
     name: thule-gateway-service
-  cloud:
-    kubernetes:
-      discovery:
-        enabled: false
   sleuth:
     sampler:
       probability: 1.0

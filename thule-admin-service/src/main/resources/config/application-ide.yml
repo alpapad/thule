@@ -1,7 +1,6 @@
 # Spring logging
 logging:
   level:
-    org.springframework: info
     uk.co.serin.thule: trace
 
 # Spring server configuration
@@ -23,4 +22,3 @@ thule:
     logging:
       logstash:
         enabled: false
-

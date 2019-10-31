@@ -1,7 +1,6 @@
 # Spring logging
 logging:
   level:
-    org.springframework: info
     uk.co.serin.thule: trace
 
 # Spring boot configuration

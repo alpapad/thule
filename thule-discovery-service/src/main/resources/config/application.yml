@@ -12,12 +12,6 @@ info:
   description: Thule Discovery Service
   name: ${spring.application.name}
 
-# Spring logging
-logging:
-  level:
-    org.springframework: info
-    uk.co.serin.thule: trace
-
 # Management endpoint configuration
 management:
   endpoints:
@@ -30,6 +24,8 @@ management:
 
 # Spring boot configuration
 spring:
+  application:
+    name: thule-discovery-service
   sleuth:
     sampler:
       probability: 1.0

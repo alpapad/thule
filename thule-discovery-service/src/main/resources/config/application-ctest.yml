@@ -6,6 +6,11 @@ eureka:
     # By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
     leaseRenewalIntervalInSeconds: 5
 
+# Spring logging
+logging:
+  level:
+    uk.co.serin.thule: trace
+
 # Spring boot configuration
 spring:
   zipkin:

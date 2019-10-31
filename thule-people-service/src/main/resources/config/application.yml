@@ -11,8 +11,6 @@ logging:
     jdbc.resultset: error
     jdbc.sqlonly: error
     jdbc.sqltiming: error
-    org.springframework: info
-    uk.co.serin.thule: trace
 
 # Management endpoint configuration
 management:
@@ -28,10 +26,6 @@ management:
 spring:
   application:
     name: thule-people-service
-  cloud:
-    kubernetes:
-      discovery:
-        enabled: false
   datasource:
     driver-class-name: net.sf.log4jdbc.DriverSpy
     hikari:
