@@ -11,4 +11,4 @@ services:
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
     ports:
-      - 9093:8080 # Required to allow docker tests to call the restful api
+      - 9093:8080
