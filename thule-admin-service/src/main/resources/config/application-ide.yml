@@ -1,4 +1,25 @@
+# Spring logging
+logging:
+  level:
+    org.springframework: info
+    uk.co.serin.thule: trace
+
 # Spring server configuration
 server:
   port: 8093
 
+# Spring boot configuration
+spring:
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: false
+  zipkin:
+    enabled: false
+
+# Thule configuration
+thule:
+  shared:
+    logging:
+      logstash:
+        enabled: false

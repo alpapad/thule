@@ -7,7 +7,7 @@ info:
 logging:
   level:
     org.springframework: info
-    uk.co.serin.thule: trace
+    uk.co.serin.thule: info
 
 # Management endpoint configuration
 management:
@@ -23,10 +23,6 @@ management:
 spring:
   application:
     name: thule-admin-service
-  cloud:
-    kubernetes:
-      discovery:
-        enabled: false
   sleuth:
     sampler:
       probability: 1.0

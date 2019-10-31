@@ -1,5 +1,6 @@
-# Spring cloud configuration
+# Spring boot configuration
 spring:
   cloud:
-    config:
-      enabled: true
+    kubernetes:
+      discovery:
+        enabled: true
