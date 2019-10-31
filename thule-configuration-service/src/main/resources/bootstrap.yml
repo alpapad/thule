@@ -1,4 +1,4 @@
-# Spring cloud config client configuration
+# Spring boot configuration
 spring:
   application:
     name: thule-configuration-service

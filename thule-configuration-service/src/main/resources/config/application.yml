@@ -7,7 +7,7 @@ info:
 logging:
   level:
     org.springframework: info
-    uk.co.serin.thule: trace
+    uk.co.serin.thule: info
 
 # Management endpoint configuration
 management:
@@ -26,9 +26,6 @@ spring:
       server:
         native:
           search-locations: ${thule.configurationservice.search-locations:/config}/{application}
-    kubernetes:
-      discovery:
-        enabled: false
   sleuth:
     sampler:
       probability: 1.0
