@@ -4,7 +4,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:${server.port:8080}/eureka/
   instance:
-    # Hostname will be the docker container hostname by default which will not will not be accessible outside of the host itself, so use ipaddress instead
+    # Hostname will be the docker container hostname by default which will not be accessible outside of the host itself, so use ipaddress instead
     prefer-ip-address: true
 
 # Spring actuator configuration
