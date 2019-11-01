@@ -15,4 +15,4 @@ services:
       - 9888:8080
 
 networks:
-  thule-configuration-service
+  thule-configuration-service:

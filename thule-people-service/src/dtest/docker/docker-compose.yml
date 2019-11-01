@@ -29,4 +29,4 @@ services:
       - 3308:3306 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
 
 networks:
-  thule-people-service
+  thule-people-service:

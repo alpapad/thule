@@ -16,4 +16,4 @@ services:
       - 9095:8080
 
 networks:
-  thule-email-service
+  thule-email-service:

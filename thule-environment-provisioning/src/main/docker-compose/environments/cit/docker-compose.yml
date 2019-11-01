@@ -162,4 +162,4 @@ services:
     restart: always
 
 networks:
-  thule
+  thule:

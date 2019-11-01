@@ -16,4 +16,4 @@ services:
       - 9761:8080
 
 networks:
-  thule-discovery-service
+  thule-discovery-service:
