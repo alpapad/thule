@@ -16,4 +16,4 @@ services:
       - 9093:8080
 
 networks:
-  - thule-admin-service
+  thule-admin-service
