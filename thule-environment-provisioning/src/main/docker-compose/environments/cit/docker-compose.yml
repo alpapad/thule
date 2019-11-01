@@ -18,6 +18,8 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     ports:
       - 7888:8080
     restart: always
@@ -42,6 +44,8 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     ports:
       - 7761:8080
     restart: always
@@ -64,6 +68,8 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     ports:
       - 7093:8080
     restart: always
@@ -79,6 +85,8 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     restart: always
 
   ################################  thule-people-service  ################################
@@ -99,6 +107,8 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     ports:
       - 7094:8080
     restart: always
@@ -121,6 +131,8 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     ports:
       - 7095:8080
     restart: always
@@ -143,6 +155,11 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    networks:
+      - thule
     ports:
       - 7091:8080
     restart: always
+
+networks:
+  - thule

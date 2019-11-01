@@ -1,9 +1,14 @@
-version: "3.5"
+version: "3.7"
 services:
   ################################  Servers and Databases Required By Integration Tests  ################################
   mongo:
     image: mongo
     environment:
       TZ: Europe/London
+    networks:
+      - thule-repository-mongodb
     ports:
       - 27017:27017
+
+networks:
+  - mongodb
