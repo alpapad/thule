@@ -24,16 +24,4 @@ public class HealthCheckContractTest extends BaseContractTest {
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
-
-    @Test
-    public void when_checking_info_then_name_is_the_service_name() {
-        // Given
-        var url= "/actuator/info";
-
-        // When
-        var properties = restTemplate.getForEntity(url, Map.class);
-
-        // Then
-        assertThat(properties.getBody()).contains(Map.entry("name", "thule-discovery-service"));
-    }
 }

@@ -7,19 +7,24 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.Duration;
+import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DiscoveryDockerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
+    private static final String SERVICE_BASE_URL = "http://localhost:9761";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -32,11 +37,24 @@ public class DiscoveryDockerTest {
     }
 
     @Test
-    public void when_checking_health_then_status_is_up() {
-        // Given
-        var actuatorUri = ActuatorUri.of("http://localhost:9761/actuator/health");
+    public void given_service_has_initialized_when_checking_health_then_status_is_up() {
+        waitForTheApplicationToInitialize();
+    }
 
-        // When/Then
+    @Test
+    public void given_service_has_initialized_when_checking_service_name_then_it_is_the_correct_value() {
+        // Given
+        waitForTheApplicationToInitialize();
+
+        // When
+        var properties = new RestTemplate().getForEntity(SERVICE_BASE_URL + "/actuator/info", Map.class);
+
+        // Then
+        assertThat(properties.getBody()).contains(Map.entry("name", "thule-discovery-service"));
+    }
+
+    private void waitForTheApplicationToInitialize() {
+        var actuatorUri = ActuatorUri.of(URI.create(SERVICE_BASE_URL + "/actuator/health"));
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 }
