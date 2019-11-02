@@ -47,10 +47,10 @@ public class DiscoveryDockerTest {
         waitForTheApplicationToInitialize();
 
         // When
-        var properties = new RestTemplate().getForEntity(SERVICE_BASE_URL + "/actuator/info", Map.class);
+        var responseEntity = new RestTemplate().getForEntity(SERVICE_BASE_URL + "/actuator/info", Map.class);
 
         // Then
-        assertThat(properties.getBody()).contains(Map.entry("name", "thule-discovery-service"));
+        assertThat(responseEntity.getBody()).contains(Map.entry("name", "thule-discovery-service"));
     }
 
     private void waitForTheApplicationToInitialize() {
