@@ -6,7 +6,6 @@ services:
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
       SPRING_FLYWAY_SCHEMAS: thule
       SPRING_ZIPKIN_ENABLED: "false"
       THULE_PEOPLESERVICE_MYSQL_HOST: mysql
@@ -26,7 +25,7 @@ services:
     networks:
       - thule-people-service
     ports:
-      - 3308:3306 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
+      - 3306:3306
 
 networks:
   thule-people-service:

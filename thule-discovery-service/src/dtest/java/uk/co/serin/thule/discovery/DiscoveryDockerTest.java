@@ -1,11 +1,9 @@
 package uk.co.serin.thule.discovery;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,11 +20,6 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class DiscoveryDockerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
-    @Value("${thule.discoveryservice.api.host}")
-    private String discoveryServiceApiHost;
-    @Value("${thule.discoveryservice.api.port}")
-    private int discoveryServiceApiPort;
-    private String discoveryServiceBaseUrl;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -38,15 +31,10 @@ public class DiscoveryDockerTest {
         DOCKER_COMPOSE.down();
     }
 
-    @Before
-    public void setUp() {
-        discoveryServiceBaseUrl = String.format("http://%s:%s", discoveryServiceApiHost, discoveryServiceApiPort);
-    }
-
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(discoveryServiceBaseUrl + "/actuator/health");
+        var actuatorUri = ActuatorUri.of("http://localhost:9761/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

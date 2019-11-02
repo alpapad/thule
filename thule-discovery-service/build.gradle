@@ -56,8 +56,6 @@ dependencies {
 
     testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    itestCompile("org.springframework.cloud:spring-cloud-starter-openfeign")
-
     dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 }
