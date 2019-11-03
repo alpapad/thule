@@ -1,6 +1,0 @@
-# Thule configuration
-thule:
-  adminservice:
-    api:
-      host: localhost
-      port: 9093
