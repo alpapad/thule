@@ -15,6 +15,7 @@ services:
     ports:
       - 9091:8080
 
+################################  Networks  ################################
 networks:
   thule-gateway-service:
 

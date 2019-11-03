@@ -15,5 +15,6 @@ services:
     ports:
       - 9761:8080
 
+################################  Networks  ################################
 networks:
   thule-discovery-service:

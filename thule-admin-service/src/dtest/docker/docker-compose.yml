@@ -15,6 +15,7 @@ services:
     ports:
       - 9093:8080
 
+################################  Networks  ################################
 networks:
   thule-admin-service:
 

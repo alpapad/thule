@@ -15,5 +15,6 @@ services:
     ports:
       - 9095:8080
 
+################################  Networks  ################################
 networks:
   thule-email-service:
