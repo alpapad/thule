@@ -17,7 +17,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(SpringRunner.class)
