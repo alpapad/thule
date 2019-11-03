@@ -1,20 +1,21 @@
 package uk.co.serin.thule.email.docker;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.Duration;
+import java.util.Map;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
@@ -22,11 +23,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class EmailDockerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
-    private String baseUrl;
-    @Value("${thule.emailservice.api.host}")
-    private String emailServiceApiHost;
-    @Value("${thule.emailservice.api.port}")
-    private int emailServiceApiPort;
+    private static final String SERVICE_BASE_URL = "http://localhost:9095";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -38,17 +35,25 @@ public class EmailDockerTest {
         DOCKER_COMPOSE.down();
     }
 
-    @Before
-    public void setUp() {
-        baseUrl = "http://" + emailServiceApiHost + ":" + emailServiceApiPort;
+    @Test
+    public void given_service_has_initialized_when_checking_health_then_status_is_up() {
+        waitForTheApplicationToInitialize();
     }
 
     @Test
-    public void when_checking_health_then_status_is_up() {
+    public void given_service_has_initialized_when_checking_service_name_then_it_is_the_correct_value() {
         // Given
-        var actuatorUri = ActuatorUri.of(baseUrl + "/actuator/health");
+        waitForTheApplicationToInitialize();
 
-        // When/Then
+        // When
+        var responseEntity = new RestTemplate().getForEntity(SERVICE_BASE_URL + "/actuator/info", Map.class);
+
+        // Then
+        assertThat(responseEntity.getBody()).contains(Map.entry("name", "thule-email-service"));
+    }
+
+    private void waitForTheApplicationToInitialize() {
+        var actuatorUri = ActuatorUri.of(URI.create(SERVICE_BASE_URL + "/actuator/health"));
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 }

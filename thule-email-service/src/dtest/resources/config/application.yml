@@ -1,6 +1,0 @@
-# Thule configuration
-thule:
-  emailservice:
-    api:
-      host: localhost
-      port: 9095

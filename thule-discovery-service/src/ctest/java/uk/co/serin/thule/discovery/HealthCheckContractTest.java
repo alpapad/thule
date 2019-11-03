@@ -8,7 +8,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.time.Duration;
-import java.util.Map;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 

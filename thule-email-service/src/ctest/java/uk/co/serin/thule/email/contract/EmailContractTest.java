@@ -2,7 +2,6 @@ package uk.co.serin.thule.email.contract;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,24 +24,20 @@ import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class EmailContractTest extends ContractBaseTest {
-    private String emailServiceUrl;
+    private static final String BASE_URL = "/emails";
     private OAuth2RestTemplate oAuth2RestTemplate;
-    @LocalServerPort
-    private int port;
     private ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
     };
 
     @Before
     public void setUp() {
-        emailServiceUrl = String.format("http://localhost:%s/emails", port);
-
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 "username", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 
     @Test
-    public void when_sending_an_email_then_email_is_sent_by_the_smtp_server() {
+    public void when_sending_an_email_then_the_email_is_sent_by_the_smtp_server() {
         // Given
         startEmbeddedSmtpServer();
 
@@ -54,7 +49,7 @@ public class EmailContractTest extends ContractBaseTest {
         var httpEntity = new HttpEntity<>(email);
 
         // When
-        var emailServiceResponse = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, httpEntity, responseType);
+        var emailServiceResponse = oAuth2RestTemplate.exchange(BASE_URL, HttpMethod.POST, httpEntity, responseType);
 
         // Then
         await().until(() -> getSmtpServer().getEmailCount() > 0);
@@ -75,7 +70,7 @@ public class EmailContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_smtp_server_is_down_then_response_should_be_accepted() {
+    public void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
         // Given
         var attachments = Collections.singleton(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
         var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is another test body")
@@ -84,7 +79,7 @@ public class EmailContractTest extends ContractBaseTest {
         var entity = new HttpEntity<>(email, null);
 
         // When
-        var responseEntity = oAuth2RestTemplate.exchange(emailServiceUrl, HttpMethod.POST, entity, responseType);
+        var responseEntity = oAuth2RestTemplate.exchange(BASE_URL, HttpMethod.POST, entity, responseType);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
