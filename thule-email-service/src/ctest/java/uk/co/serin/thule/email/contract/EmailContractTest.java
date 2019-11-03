@@ -2,6 +2,8 @@ package uk.co.serin.thule.email.contract;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -24,13 +26,33 @@ import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class EmailContractTest extends ContractBaseTest {
-    private static final String BASE_URL = "/emails";
+    private String baseUrl;
     private OAuth2RestTemplate oAuth2RestTemplate;
     private ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
     };
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
+        // Given
+        var attachments = Collections.singleton(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
+        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is another test body")
+                         .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
+                         .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
+        var entity = new HttpEntity<>(email, null);
+
+        // When
+        var responseEntity = oAuth2RestTemplate.exchange(baseUrl, HttpMethod.POST, entity, responseType);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+    }
 
     @Before
     public void setUp() {
+        baseUrl = restTemplate.getRootUri() + "/emails";
+
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 "username", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
@@ -49,11 +71,12 @@ public class EmailContractTest extends ContractBaseTest {
         var httpEntity = new HttpEntity<>(email);
 
         // When
-        var emailServiceResponse = oAuth2RestTemplate.exchange(BASE_URL, HttpMethod.POST, httpEntity, responseType);
+        var emailServiceResponse = oAuth2RestTemplate.exchange(baseUrl, HttpMethod.POST, httpEntity, responseType);
 
         // Then
         await().until(() -> getSmtpServer().getEmailCount() > 0);
-        Arrays.stream(getSmtpServer().getMessages()).forEach(message -> System.out.println("Message start:\n===========================\n" + message + "\n==========================="));
+        Arrays.stream(getSmtpServer().getMessages())
+              .forEach(message -> System.out.println("Message start:\n===========================\n" + message + "\n==========================="));
         assertThat(getSmtpServer().getEmailCount()).isEqualTo(1);
 
         assertThat(emailServiceResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
@@ -67,21 +90,5 @@ public class EmailContractTest extends ContractBaseTest {
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[0]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[1]);
         assertThat(actualMailMessage.getFirstHeaderValue("To")).contains(expectedTos[2]);
-    }
-
-    @Test
-    public void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
-        // Given
-        var attachments = Collections.singleton(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
-        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is another test body")
-                         .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
-                         .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
-        var entity = new HttpEntity<>(email, null);
-
-        // When
-        var responseEntity = oAuth2RestTemplate.exchange(BASE_URL, HttpMethod.POST, entity, responseType);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
     }
 }
