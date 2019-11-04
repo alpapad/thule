@@ -3,12 +3,9 @@ package uk.co.serin.thule.people;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.rest.webmvc.support.ETag;
 import org.springframework.hateoas.Resources;
@@ -16,7 +13,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -25,14 +21,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
+import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.people.service.email.EmailServiceClient;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -40,38 +36,26 @@ import java.util.Objects;
 
 import javax.persistence.EntityManager;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.awaitility.Awaitility.given;
-import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.util.StringUtils.trimLeadingCharacter;
 import static org.springframework.util.StringUtils.trimTrailingCharacter;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@AutoConfigureWireMock(port = 0)
-@Import(PeopleContractTestConfiguration.class)
 @WithMockUser
 public class PeopleContractTest extends ContractBaseTest {
-    private static final String EMAILS_PATH = "/emails";
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_CREDENTIALS = "password";
     private static final String MOCK_USERS_NAME = "user";
-    private static final String THULE_EMAIL_SERVICE_RESPONSE = "thule-email-service-response.json";
+    @MockBean
+    private EmailServiceClient emailServiceClient;
     @Autowired
     private EntityManager entityManager;
     private OAuth2RestTemplate oAuth2RestTemplate;
-    private String peopleServiceUrl;
+    private String baseUrl;
     @Autowired
     private PersonRepository personRepository;
-    @LocalServerPort
-    private int port;
     @Autowired
     private StateRepository stateRepository;
     @Autowired
@@ -84,7 +68,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
         // When
         var personResponseEntity =
-                oAuth2RestTemplate.exchange(peopleServiceUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<PersonEntity>>() {
+                oAuth2RestTemplate.exchange(baseUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<PersonEntity>>() {
                 }, 0, 1000);
 
         // Then
@@ -129,7 +113,7 @@ public class PeopleContractTest extends ContractBaseTest {
         var testPerson = createAndPersistPersonWithNoAssociations();
 
         // When
-        var responseEntity = oAuth2RestTemplate.getForEntity(peopleServiceUrl + ID_PATH, PersonEntity.class, testPerson.getId());
+        var responseEntity = oAuth2RestTemplate.getForEntity(baseUrl + ID_PATH, PersonEntity.class, testPerson.getId());
 
         // Then
         var actualPerson = responseEntity.getBody();
@@ -141,7 +125,7 @@ public class PeopleContractTest extends ContractBaseTest {
     @Before
     public void setUp() {
         // Set up service url
-        peopleServiceUrl = String.format("http://localhost:%s/people", port);
+        baseUrl = testRestTemplate.getRootUri() + "/people";
 
         // Setup OAuth2
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, MOCK_USERS_CREDENTIALS, 0,
@@ -154,32 +138,15 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_checking_health_then_status_up() {
-        // Given
-        var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/health", port));
-
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
     public void when_creating_a_person_then_that_person_is_returned() {
         // Given
         var testPerson = buildPersonWithoutAnyAssociations();
-
-        givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
-                aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
+        given(emailServiceClient.sendEmail(any())).willReturn(Email.builder().build());
 
         // When
-        var responseEntity = oAuth2RestTemplate.postForEntity(peopleServiceUrl, testPerson, PersonEntity.class);
+        var responseEntity = oAuth2RestTemplate.postForEntity(baseUrl, testPerson, PersonEntity.class);
 
         // Then
-        given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofMinutes(5)).
-                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
-                               .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
-
         var statusCode = responseEntity.getStatusCode();
         var actualPerson = responseEntity.getBody();
         var etag = ETag.from(Objects.requireNonNull(responseEntity.getHeaders().get(HttpHeaders.ETAG)).stream().findFirst());
@@ -214,20 +181,12 @@ public class PeopleContractTest extends ContractBaseTest {
     public void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
         var person = createAndPersistPersonWithNoAssociations();
-
-        givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
-                aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                           .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
+        given(emailServiceClient.sendEmail(any())).willReturn(Email.builder().build());
 
         // When
-        oAuth2RestTemplate.delete(peopleServiceUrl + ID_PATH, person.getId());
+        oAuth2RestTemplate.delete(baseUrl + ID_PATH, person.getId());
 
         // Then
-        given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofMinutes(5)).
-                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
-                               .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
-
         var deletedPerson = personRepository.findById(person.getId());
         assertThat(deletedPerson).isNotPresent();
     }
@@ -236,10 +195,7 @@ public class PeopleContractTest extends ContractBaseTest {
     public void when_updating_a_person_then_that_person_is_updated() throws InterruptedException {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
-
-        givenThat(post(urlEqualTo(EMAILS_PATH)).withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE)).willReturn(
-                aResponse().withStatus(HttpStatus.ACCEPTED.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBodyFile(THULE_EMAIL_SERVICE_RESPONSE)));
+        given(emailServiceClient.sendEmail(any())).willReturn(Email.builder().build());
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
@@ -251,14 +207,9 @@ public class PeopleContractTest extends ContractBaseTest {
         Thread.sleep(1000); // Allow enough time to lapse for the updatedAt to be updated with a different value
 
         // When
-        oAuth2RestTemplate.put(peopleServiceUrl + ID_PATH, testPerson, testPerson.getId());
+        oAuth2RestTemplate.put(baseUrl + ID_PATH, testPerson, testPerson.getId());
 
         // Then
-        given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofMinutes(5)).
-                       untilAsserted(() -> verify(postRequestedFor(urlPathEqualTo(EMAILS_PATH))
-                               .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_JSON_VALUE))));
-
         var actualPerson = personRepository.findByIdAndFetchAllAssociations(testPerson.getId());
 
         assertThat(actualPerson).isNotSameAs(testPerson);
