@@ -13,7 +13,6 @@ import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 
@@ -22,8 +21,8 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ConfigurationDockerTest {
+    private static final String BASE_URL = "http://localhost:9888";
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
-    private static final String SERVICE_BASE_URL = "http://localhost:9888";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -36,24 +35,24 @@ public class ConfigurationDockerTest {
     }
 
     @Test
-    public void given_service_has_initialized_when_checking_health_then_status_is_up() {
+    public void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
         waitForTheApplicationToInitialize();
     }
 
+    private void waitForTheApplicationToInitialize() {
+        var actuatorUri = ActuatorUri.of(BASE_URL + "/actuator/health");
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+    }
+
     @Test
-    public void given_service_has_initialized_when_checking_service_name_then_it_is_the_correct_value() {
+    public void given_docker_container_has_been_started_when_retrieving_actuator_info_then_it_shows_correct_microservice_is_in_docker_container() {
         // Given
         waitForTheApplicationToInitialize();
 
         // When
-        var responseEntity = new RestTemplate().getForEntity(SERVICE_BASE_URL + "/actuator/info", Map.class);
+        var responseEntity = new RestTemplate().getForEntity(BASE_URL + "/actuator/info", Map.class);
 
         // Then
         assertThat(responseEntity.getBody()).contains(Map.entry("name", "thule-configuration-service"));
-    }
-
-    private void waitForTheApplicationToInitialize() {
-        var actuatorUri = ActuatorUri.of(URI.create(SERVICE_BASE_URL + "/actuator/health"));
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 }

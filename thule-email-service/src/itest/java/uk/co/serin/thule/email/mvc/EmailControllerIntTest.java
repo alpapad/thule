@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = EmailController.class)
 public class EmailControllerIntTest {
-    private static final String BASE_URL = "/emails";
+    private static final String EMAILS_PATH = "/emails";
 
     @MockBean
     private EmailService emailService;
@@ -60,7 +60,7 @@ public class EmailControllerIntTest {
         var content = objectMapper.writeValueAsString(emailRequest);
 
         //When
-        mvc.perform(RestDocumentationRequestBuilders.post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(content).with(csrf()))
+        mvc.perform(RestDocumentationRequestBuilders.post(EMAILS_PATH).contentType(MediaType.APPLICATION_JSON).content(content).with(csrf()))
 
            //Then
            .andExpect(status().isUnauthorized())
@@ -80,7 +80,7 @@ public class EmailControllerIntTest {
         var content = objectMapper.writeValueAsString(email);
 
         // When
-        mvc.perform(post(BASE_URL).contentType(MediaType.APPLICATION_JSON).content(content).with(csrf()))
+        mvc.perform(post(EMAILS_PATH).contentType(MediaType.APPLICATION_JSON).content(content).with(csrf()))
 
            // Then
            .andExpect(status().isAccepted())
