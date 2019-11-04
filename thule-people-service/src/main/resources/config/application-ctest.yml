@@ -8,10 +8,10 @@ spring:
   cloud:
     kubernetes:
       discovery:
+        enabled: false
   datasource:
     password: thule
     username: thule
-      enabled: false
   flyway:
     password: root
     user: root
