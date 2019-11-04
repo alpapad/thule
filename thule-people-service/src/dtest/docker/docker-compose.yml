@@ -26,7 +26,7 @@ services:
     networks:
       - thule-people-service
     ports:
-      - 3308:3306 # Use 3306 for dev, 3307 for itest and 3308 for ctest so they can all execute simultaneously if required
+      - 3306:3306
 
 ################################  Networks  ################################
 networks:
