@@ -9,12 +9,16 @@ server:
 
 # Spring boot configuration
 spring:
+  datasource:
+    password: thule
+    username: thule
   cloud:
     kubernetes:
       discovery:
         enabled: false
   flyway:
-    schemas: thule
+    password: root
+    user: root
   zipkin:
     enabled: false
 
@@ -22,7 +26,7 @@ spring:
 thule:
   peopleservice:
     mysql:
-      host: localhost
+      schema: thule
   shared:
     logging:
       logstash:

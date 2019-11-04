@@ -6,6 +6,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/London
+    networks:
+      - mysql
     ports:
       - 3306:3306
 

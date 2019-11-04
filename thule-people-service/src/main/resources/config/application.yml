@@ -29,23 +29,16 @@ spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.DriverSpy
     hikari:
-      maximumPoolSize: 100
-    password: thule
-    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host:mysql-people-service}:${thule.peopleservice.mysql.port:3306}/${spring.flyway.schemas}?serverTimezone=Europe/London
-    username: thule
+      initializationFailTimeout: -1
+    url: jdbc:log4jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}/${thule.peopleservice.mysql.schema}?serverTimezone=Europe/London
   flyway:
     connect-retries: 120
-    password: root
     placeholders:
       password: ${spring.datasource.password}
-      schema-name: ${spring.flyway.schemas}
+      schema-name: ${thule.peopleservice.mysql.schema}
       username: ${spring.datasource.username}
-    url: jdbc:mysql://${thule.peopleservice.mysql.host:mysql-people-service}:${thule.peopleservice.mysql.port:3306}
-    user: root
-  security:
-    user:
-      password: user
-      roles: USER,ADMIN
+    schemas: ${thule.peopleservice.mysql.schema}
+    url: jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}
   sleuth:
     sampler:
       probability: 1.0
@@ -56,6 +49,11 @@ spring:
 
 # Thule configuration
 thule:
+  peopleservice:
+    mysql:
+      host: localhost
+      port: 3306
+      schema: mysql
   shared:
     logging:
       logstash:
