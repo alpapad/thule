@@ -9,13 +9,13 @@ server:
 
 # Spring boot configuration
 spring:
-  datasource:
-    password: thule
-    username: thule
   cloud:
     kubernetes:
       discovery:
-        enabled: false
+      enabled: false
+  datasource:
+    password: thule
+    username: thule
   flyway:
     password: root
     user: root
