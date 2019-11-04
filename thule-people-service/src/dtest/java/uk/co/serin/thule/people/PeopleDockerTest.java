@@ -1,33 +1,21 @@
 package uk.co.serin.thule.people;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
-import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
@@ -35,12 +23,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class PeopleDockerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/docker-compose.yml");
-    private OAuth2RestTemplate oAuth2RestTemplate;
-    @Value("${thule.peopleservice.api.host}")
-    private String peopleServiceApiHost;
-    @Value("${thule.peopleservice.api.port}")
-    private int peopleServiceApiPort;
-    private String peopleServiceBaseUrl;
+    private static final String BASE_URL = "http://localhost:9094";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -48,42 +31,29 @@ public class PeopleDockerTest {
     }
 
     @AfterClass
-    public static void teardownClass() throws IOException {
+    public static void tearDownClass() throws IOException {
         DOCKER_COMPOSE.down();
     }
 
-    @Before
-    public void setUp() {
-        // Create base url
-        peopleServiceBaseUrl = "http://" + peopleServiceApiHost + ":" + peopleServiceApiPort;
-
-        // Setup OAuth2
-        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "user", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
-        oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
+    @Test
+    public void given_service_has_initialized_when_checking_health_then_status_is_up() {
+        waitForTheApplicationToInitialize();
     }
 
     @Test
-    public void when_checking_health_then_status_is_up() {
+    public void given_service_has_initialized_when_checking_service_name_then_it_is_the_correct_value() {
         // Given
-        var actuatorUri = ActuatorUri.of(peopleServiceBaseUrl + "/actuator/health");
+        waitForTheApplicationToInitialize();
 
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
-    }
-
-    @Test
-    public void when_finding_all_people_then_at_least_one_person_is_found() {
         // When
-        var personResponseEntity = oAuth2RestTemplate
-                .exchange(peopleServiceBaseUrl + "/people", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Map<String, Object>>() {
-                });
+        var responseEntity = new RestTemplate().getForEntity(BASE_URL + "/actuator/info", Map.class);
 
         // Then
-        var embedded = (Map) Objects.requireNonNull(personResponseEntity.getBody()).get("_embedded");
-        var people = (List) embedded.get("people");
+        assertThat(responseEntity.getBody()).contains(Map.entry("name", "thule-people-service"));
+    }
 
-        assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(people).isNotEmpty();
+    private void waitForTheApplicationToInitialize() {
+        var actuatorUri = ActuatorUri.of(BASE_URL + "/actuator/health");
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 }
