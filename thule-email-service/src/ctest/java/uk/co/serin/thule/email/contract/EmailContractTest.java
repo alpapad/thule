@@ -31,7 +31,7 @@ public class EmailContractTest extends ContractBaseTest {
     private ParameterizedTypeReference<Email> responseType = new ParameterizedTypeReference<>() {
     };
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate testRestTemplate;
 
     @Test
     public void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
@@ -51,7 +51,7 @@ public class EmailContractTest extends ContractBaseTest {
 
     @Before
     public void setUp() {
-        baseUrl = restTemplate.getRootUri() + "/emails";
+        baseUrl = testRestTemplate.getRootUri() + "/emails";
 
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
                 "username", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
