@@ -17,7 +17,6 @@ import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -75,9 +74,6 @@ public class EmailContractTest extends ContractBaseTest {
 
         // Then
         await().until(() -> getSmtpServer().getEmailCount() > 0);
-        Arrays.stream(getSmtpServer().getMessages())
-              .forEach(message -> System.out.println("Message start:\n===========================\n" + message + "\n==========================="));
-        assertThat(getSmtpServer().getEmailCount()).isEqualTo(1);
 
         assertThat(emailServiceResponse.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
 
