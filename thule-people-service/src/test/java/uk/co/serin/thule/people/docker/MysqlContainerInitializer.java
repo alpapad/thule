@@ -6,9 +6,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class MysqlContainerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-    public static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/docker-compose-mysql.yml");
+    public static final DockerCompose DOCKER_COMPOSE =
+            new DockerCompose("src/test/docker/docker-compose-mysql.yml", Collections.singletonMap("COMPOSE_PROJECT_NAME", "thule-people-service"));
     /**
      * Flyway is used to apply the sql migration scripts. However, Flyway will fail to connect to the Mysql database if the database has not been started.
      * Ideally the mysql docker container would be started via a @BeforeClass annotation, a constructor or static initializer. However, the test class
