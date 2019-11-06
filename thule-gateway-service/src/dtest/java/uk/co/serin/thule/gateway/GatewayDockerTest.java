@@ -14,7 +14,6 @@ import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Map;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -23,8 +22,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class GatewayDockerTest {
     private static final String BASE_URL = "http://localhost:9091";
-    private static final DockerCompose DOCKER_COMPOSE =
-            new DockerCompose("src/dtest/docker/docker-compose.yml", Collections.singletonMap("COMPOSE_PROJECT_NAME", "thule-gateway-service"));
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-gateway-service-dtests/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {

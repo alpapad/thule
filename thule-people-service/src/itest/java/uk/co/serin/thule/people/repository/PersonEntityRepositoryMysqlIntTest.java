@@ -9,7 +9,6 @@ import uk.co.serin.thule.people.docker.MysqlContainerInitializer;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
-import java.util.Collections;
 
 /**
  * MySql, Oracle, H2 and HSQL embedded database drivers are on the itest classpath. By default, the H2
@@ -22,8 +21,7 @@ import java.util.Collections;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = MysqlContainerInitializer.class)
 public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
-    private static final DockerCompose DOCKER_COMPOSE =
-            new DockerCompose("src/test/docker/docker-compose-mysql.yml", Collections.singletonMap("COMPOSE_PROJECT_NAME", "thule-people-service"));
+    private static final DockerCompose DOCKER_COMPOSE =  new DockerCompose("src/test/docker/thule-people-service-tests/docker-compose-mysql.yml");
 
     @AfterClass
     public static void teardownClass() throws IOException {

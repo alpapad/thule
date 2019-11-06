@@ -20,7 +20,6 @@ import uk.co.serin.thule.utils.utils.RandomUtils;
 import java.io.IOException;
 import java.net.Socket;
 import java.time.Duration;
-import java.util.Collections;
 
 import javax.validation.ConstraintViolationException;
 
@@ -33,8 +32,7 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonEntityRepositoryIntTest {
-    private static final DockerCompose DOCKER_COMPOSE =
-            new DockerCompose("src/test/docker/docker-compose-mongo.yml", Collections.singletonMap("COMPOSE_PROJECT_NAME", "thule-repository-mongodb"));
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
     private static final String MOCK_USERS_NAME = "user";
     private Gson gson = new Gson();
     @Value("${thule.repositorymongodb.mongodb.host:localhost}")
