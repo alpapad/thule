@@ -35,7 +35,7 @@ ctest {
     afterSuite { descriptor ->
         if (descriptor.getName().contains("Gradle Test Executor")) {
             exec {
-                commandLine "docker-compose", "-f", "src/test/docker/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
+                commandLine "docker-compose", "-f", "src/test/docker/thule-people-service-tests/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
             }
         }
     }
