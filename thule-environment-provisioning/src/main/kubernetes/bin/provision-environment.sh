@@ -91,7 +91,8 @@ ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 ENVIRONMENTS_DIRECTORY=${SCRIPT_DIR_NAME}/../environments
 SERVICE_NAMES=$(toLowerCase "$@") # Convert to lowercase
 if [[ -z "${SERVICE_NAMES}" ]]; then
-  SERVICE_NAMES=($(find "${ENVIRONMENTS_DIRECTORY}" -name "*.yml" -type f -printf "%f\n" | sort | sed "s/.yml.*//g"))
+  # Always make the thule-configuration-service first because all other services depend upon it
+  SERVICE_NAMES=(thule-configuration-service $(find "${ENVIRONMENTS_DIRECTORY}" -name "*.yml" -type f -printf "%f\n" | sort | sed "s/.yml.*//g" | sed "s/thule-configuration-service//g"))
 else
   SERVICE_NAMES=(${SERVICE_NAMES})
 fi
@@ -220,15 +221,11 @@ for serviceName in "${SERVICE_NAMES[@]}"; do
   if [[ ${isSpringBootService} == "true" ]]; then
     downloadConfiguration "${kubernetesConfigurationFile}"
   fi
-  if ! deleteService "${kubernetesConfigurationFile}"; then
+  if [[ ${isSpringBootService} == "true" ]]; then
+    updateConfiguration "${kubernetesConfigurationFile}"
+  fi
+  if ! kubectlApply "${kubernetesConfigurationFile}"; then
     ((countOfServicesFailingToProvision++))
-  else
-    if [[ ${isSpringBootService} == "true" ]]; then
-      updateConfiguration "${kubernetesConfigurationFile}"
-    fi
-    if ! createService "${kubernetesConfigurationFile}"; then
-      ((countOfServicesFailingToProvision++))
-    fi
   fi
 
   echo ""

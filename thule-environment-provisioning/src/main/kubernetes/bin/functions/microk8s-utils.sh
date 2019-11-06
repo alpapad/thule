@@ -1,11 +1,46 @@
 #!/bin/bash
 
-function createService() {
+function kubectlApply() {
   # Input parameters
   kubernetesConfigurationFile=$1
 
   echo ""
-  echo "Creating service..."
+  echo "Rolling out changes to micro-service..."
+
+  # Change the kubernetes file to force the rollout
+  currentTime=$(date "+%Y%m%d%H%M%S")
+  sed -i "/ROLLOUT_TIME/{
+  N
+  s/value:.*/value: \"$currentTime\"/
+  }" ${kubernetesConfigurationFile}
+  sudo microk8s.kubectl apply -f "${kubernetesConfigurationFile}"
+
+  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
+  startupStartTime=$(date +%s)
+  maxElapsedSeconds=600
+
+  echo ""
+  echo "Waiting for deployment rollout to finish (up to a maximum of ${maxElapsedSeconds} seconds)..."
+  sudo microk8s.kubectl rollout status deployment/${serviceName} --namespace=thule --timeout=${maxElapsedSeconds}s
+  elapsedSeconds=$(($(date +%s) - startupStartTime))
+
+  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
+    echo "Rollout completed successfully and took ${elapsedSeconds} second(s)"
+    startupResponseCode=0
+  else
+    echo "ERROR: Failed to rollout within ${elapsedSeconds} second(s)"
+    startupResponseCode=255
+  fi
+
+  return ${startupResponseCode}
+}
+
+function kubectlCreate() {
+  # Input parameters
+  kubernetesConfigurationFile=$1
+
+  echo ""
+  echo "Creating micro-service..."
 
   sudo microk8s.kubectl create --namespace=thule -f "${kubernetesConfigurationFile}"
 
@@ -15,11 +50,11 @@ function createService() {
   maxElapsedSeconds=600
 
   echo ""
-  echo -n "Waiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
+  echo -n "Waiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
   serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
   podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" && "${podInfo}" != "" ]]; do
-    echo -en "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
+    echo -en "\rWaiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - startupStartTime))
     serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
@@ -27,24 +62,24 @@ function createService() {
   done
 
   if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-    echo -e "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
+    echo -e "\rWaiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
     echo "Service started successfully and took ${elapsedSeconds} second(s)"
     startupResponseCode=0
   else
-    echo -e "\rWaiting for service to start (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m failed \033[0m"
-    echo "ERROR: Service failed to start within ${elapsedSeconds} second(s)"
+    echo -e "\rWaiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m failed \033[0m"
+    echo "ERROR: Micro-service failed to start within ${elapsedSeconds} second(s)"
     startupResponseCode=255
   fi
 
   return ${startupResponseCode}
 }
 
-function deleteService() {
+function kubectlDelete() {
   # Input parameters
   kubernetesConfigurationFile=$1
 
   echo ""
-  echo "Deleting service..."
+  echo "Deleting micro-service..."
 
   sudo microk8s.kubectl delete --all --namespace=thule -f "${kubernetesConfigurationFile}"
 
@@ -54,11 +89,11 @@ function deleteService() {
   maxElapsedSeconds=600
 
   echo ""
-  echo -n "Waiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."
+  echo -n "Waiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."
   serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
   podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
   until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" == "" && "${podInfo}" == "" ]]; do
-    echo -en "\rWaiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
+    echo -en "\rWaiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
     sleep 5
     elapsedSeconds=$(($(date +%s) - shutdownStartTime))
     serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
@@ -66,12 +101,12 @@ function deleteService() {
   done
 
   if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-    echo -e "\rWaiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
+    echo -e "\rWaiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
     echo "Service shutdown successfully and took ${elapsedSeconds} second(s)"
     shutdownResponseCode=0
   else
-    echo -e "\rWaiting for service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m failed \033[0m"
-    echo "ERROR: Service failed to shutdown within ${elapsedSeconds} second(s)"
+    echo -e "\rWaiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m failed \033[0m"
+    echo "ERROR: Micro-service failed to shutdown within ${elapsedSeconds} second(s)"
     shutdownResponseCode=255
   fi
 
@@ -159,7 +194,7 @@ function configureMicrok8s() {
 
   echo ""
   echo -n "Creating namespace thule..."
-  if [[ $(sudo microk8s.kubectl get namespace thulew 2>&1 | grep "not found") == "" ]]; then
+  if [[ $(sudo microk8s.kubectl get namespace thule 2>&1 | grep "not found") == "" ]]; then
     echo -e "\rCreating namespace thule...\033[32m already created \033[0m"
   else
     echo ""

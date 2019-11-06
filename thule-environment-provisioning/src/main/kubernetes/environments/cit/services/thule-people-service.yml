@@ -27,6 +27,8 @@ spec:
               value: localhost
             - name: TZ
               value: Europe/London
+            - name: ROLLOUT_TIME
+              value:
           livenessProbe:
             httpGet:
               path: /actuator/health
