@@ -22,7 +22,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class AdminDockerTest {
     private static final String BASE_URL = "http://localhost:9093";
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/thule-admin-service-docker-dtests/docker/docker-compose.yml");
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-admin-service-docker-dtests/docker-compose.yml");
 
     @BeforeClass
     public static void setUpClass() throws IOException {
