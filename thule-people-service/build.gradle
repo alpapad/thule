@@ -1,6 +1,5 @@
 buildscript {
-    ext["mockito.version"] = "3.1.0"
-    // Spring boot 2.1.6 uses mockito version 2.23.4 which does not fully support java 12
+    ext["mockito.version"] = "3.1.0" // Spring boot 2.1.6 uses mockito version 2.23.4 which does not fully support java 12
 
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
@@ -9,6 +8,7 @@ buildscript {
 
     dependencies {
         classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT")
+        classpath("uk.co.serin.gradle.scripts:serin-gradle-scripts:1.0.0-SNAPSHOT")
     }
 }
 
@@ -27,7 +27,7 @@ apply plugin: "maven-publish"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Thule gradle plugin config
-apply from: "${rootDir}/../gradle/build-config.gradle"
+apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 
 // Non-standard Thule gradle plugin config
 ctest {

@@ -6,6 +6,7 @@ buildscript {
 
     dependencies {
         classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT")
+        classpath("uk.co.serin.gradle.scripts:serin-gradle-scripts:1.0.0-SNAPSHOT")
     }
 }
 
@@ -20,7 +21,7 @@ plugins {
 apply plugin: "io.spring.dependency-management"
 
 // Standard Serin gradle plugin config
-apply from: "${rootDir}/../gradle/build-config.gradle"
+apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Non-standard Serin gradle plugin config

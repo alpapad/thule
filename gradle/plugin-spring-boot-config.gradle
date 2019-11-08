@@ -1,6 +1,0 @@
-if (project.tasks.findByName("bootJar")) {
-    // Spring boot create META-INF/build-info.properties to automatically add to the spring actutator info
-    springBoot {
-        buildInfo()
-    }
-}
