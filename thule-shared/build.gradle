@@ -22,6 +22,7 @@ subprojects {
     apply plugin: "io.spring.dependency-management"
     apply plugin: "jacoco"
     apply plugin: "java"
+    apply plugin: "java-library"
     apply plugin: "maven-publish"
     apply plugin: "org.sonarqube"
     apply plugin: "org.springframework.boot"
@@ -48,12 +49,12 @@ project("thule-spring-boot-starter") {
         annotationProcessor("org.projectlombok:lombok")
         compileOnly("org.projectlombok:lombok")
 
-        compile project(":thule-utils")
+        api project(":thule-utils")
 
         compileOnly("org.springframework.data:spring-data-jpa")
         compileOnly("org.springframework.security:spring-security-core")
 
-        testCompile project(":thule-spring-boot-starter-test")
+        testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
@@ -63,10 +64,10 @@ project("thule-spring-boot-starter-oauth2") {
         annotationProcessor("org.projectlombok:lombok")
         compileOnly("org.projectlombok:lombok")
 
-        compile project(":thule-spring-boot-starter")
+        implementation project(":thule-spring-boot-starter")
         implementation("org.springframework.cloud:spring-cloud-starter-oauth2")
 
-        testCompile project(":thule-spring-boot-starter-test")
+        testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
@@ -76,20 +77,20 @@ project("thule-spring-boot-starter-oauth2-test") {
         annotationProcessor("org.projectlombok:lombok")
         compileOnly("org.projectlombok:lombok")
 
-        compile project(":thule-spring-boot-starter")
-        compile project(":thule-spring-boot-starter-test")
-        implementation("org.springframework.security:spring-security-test")
+        api project(":thule-spring-boot-starter")
+        api project(":thule-spring-boot-starter-test")
+        api("org.springframework.security:spring-security-test")
     }
 }
 
 project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
     dependencies {
-        compile project(":thule-spring-boot-starter")
-        compile project(":thule-test")
-        implementation("org.springframework.boot:spring-boot-starter-test")
-        implementation("org.springframework.cloud:spring-cloud-contract-wiremock")
-        implementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+        api project(":thule-spring-boot-starter")
+        api project(":thule-test")
+        api("org.springframework.boot:spring-boot-starter-test")
+        api("org.springframework.cloud:spring-cloud-contract-wiremock")
+        api("org.springframework.restdocs:spring-restdocs-mockmvc")
     }
 }
 
@@ -99,12 +100,12 @@ project("thule-test") {
         annotationProcessor("org.projectlombok:lombok")
         compileOnly("org.projectlombok:lombok")
 
-        compile project(":thule-utils")
-        implementation("org.awaitility:awaitility:4.0.1")
-        implementation("org.springframework.boot:spring-boot-starter-actuator")
-        implementation("org.springframework.boot:spring-boot-starter-test")
-        implementation("org.springframework.boot:spring-boot-starter-web")
-        implementation("org.springframework.retry:spring-retry")
+        api project(":thule-utils")
+        api("org.awaitility:awaitility:4.0.1")
+        api("org.springframework.boot:spring-boot-starter-actuator")
+        api("org.springframework.boot:spring-boot-starter-test")
+        api("org.springframework.boot:spring-boot-starter-web")
+        api("org.springframework.retry:spring-retry")
 
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
 
@@ -122,14 +123,14 @@ project("thule-utils") {
         compileOnly("org.springframework.cloud:spring-cloud-starter-oauth2")
         compileOnly("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-        implementation("net.logstash.logback:logstash-logback-encoder:6.2")
-        implementation("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
-        implementation("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
-        implementation("org.hibernate:hibernate-core")
-        implementation("org.springframework.boot:spring-boot-starter-aop")
-        implementation("org.springframework.boot:spring-boot-starter-logging")
-        implementation("org.springframework.boot:spring-boot-starter-validation")
-        implementation("org.springframework.boot:spring-boot-starter-web")
+        api("net.logstash.logback:logstash-logback-encoder:6.2")
+        api("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
+        api("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
+        api("org.hibernate:hibernate-core")
+        api("org.springframework.boot:spring-boot-starter-aop")
+        api("org.springframework.boot:spring-boot-starter-logging")
+        api("org.springframework.boot:spring-boot-starter-validation")
+        api("org.springframework.boot:spring-boot-starter-web")
 
         testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
