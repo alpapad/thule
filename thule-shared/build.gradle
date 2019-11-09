@@ -64,8 +64,8 @@ project("thule-spring-boot-starter-oauth2") {
         annotationProcessor("org.projectlombok:lombok")
         compileOnly("org.projectlombok:lombok")
 
-        implementation project(":thule-spring-boot-starter")
-        implementation("org.springframework.cloud:spring-cloud-starter-oauth2")
+        api project(":thule-spring-boot-starter")
+        api("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         testImplementation project(":thule-spring-boot-starter-test")
     }
