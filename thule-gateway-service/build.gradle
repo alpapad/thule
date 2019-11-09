@@ -44,20 +44,20 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
 
-    compile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
-    compile("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
-    compile("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.cloud:spring-cloud-starter-config")
-    compile("org.springframework.cloud:spring-cloud-starter-kubernetes")
-    compile("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
+    implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+    implementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
+    implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
     compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
-    compile("org.springframework.cloud:spring-cloud-starter-sleuth")
-    compile("org.springframework.cloud:spring-cloud-starter-zipkin")
-    compile("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
+    implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
+    implementation("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
-    testCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+    testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
-    dtestCompile("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 }
