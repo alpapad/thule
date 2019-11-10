@@ -10,7 +10,6 @@ import org.springframework.data.annotation.Version;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -27,7 +26,6 @@ import lombok.ToString;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@Entity
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
