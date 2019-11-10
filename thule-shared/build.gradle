@@ -54,7 +54,6 @@ project("thule-oauth2") {
         implementation("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation("org.springframework.cloud:spring-cloud-starter-oauth2")
     }
 }
 
@@ -117,10 +116,10 @@ project("thule-test") {
         api("org.springframework.boot:spring-boot-starter-actuator")
         api("org.springframework.boot:spring-boot-starter-web")
 
+        compileOnly("org.projectlombok:lombok")
+
         implementation("org.springframework.boot:spring-boot-starter-test")
         implementation("org.springframework.retry:spring-retry")
-
-        compileOnly("org.projectlombok:lombok")
     }
 }
 
