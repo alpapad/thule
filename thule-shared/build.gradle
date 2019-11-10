@@ -50,7 +50,6 @@ project("thule-oauth2") {
 
         compileOnly("org.projectlombok:lombok")
 
-        implementation("org.springframework.boot:spring-boot-starter-logging")
         implementation("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
