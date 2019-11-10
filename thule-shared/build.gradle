@@ -66,8 +66,6 @@ project("thule-spring-boot-starter") {
         api("org.springframework.boot:spring-boot-starter")
 
         compileOnly("org.projectlombok:lombok")
-
-        testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
