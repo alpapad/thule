@@ -75,7 +75,6 @@ project("thule-spring-boot-starter-oauth2") {
 
         api project(":thule-oauth2")
         api project(":thule-spring-boot-starter")
-        api("org.springframework.boot:spring-boot-starter-web")
         api("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         compileOnly("org.projectlombok:lombok")
