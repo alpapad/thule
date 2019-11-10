@@ -6,6 +6,7 @@ pluginManagement {
 
 rootProject.name = "thule-shared"
 
+include "thule-oauth2"
 include "thule-spring-boot-starter"
 include "thule-spring-boot-starter-oauth2"
 include "thule-spring-boot-starter-oauth2-test"

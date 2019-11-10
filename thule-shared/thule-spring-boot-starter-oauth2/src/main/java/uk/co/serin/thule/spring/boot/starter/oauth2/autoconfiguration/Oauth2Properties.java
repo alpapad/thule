@@ -12,8 +12,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Oauth2Properties {
-    @Builder.Default
     private boolean enabled = true;
-    @Builder.Default
     private String signingKey = "gmjtdvNVmQRz8bzw6ae";
 }

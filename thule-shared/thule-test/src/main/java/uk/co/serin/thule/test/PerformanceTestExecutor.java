@@ -3,16 +3,9 @@ package uk.co.serin.thule.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
-
-import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -34,13 +27,13 @@ public class PerformanceTestExecutor {
     private Duration statisticsLoggingInterval = Duration.ofSeconds(10);
     private Duration timeLimit = Duration.ofMinutes(1);
 
-    public OAuth2RestTemplate createOAuth2RestTemplate(long userId) {
-        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", "password", userId, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
-                "gmjtdvNVmQRz8bzw6ae");
-
-        return new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
-    }
+//    public OAuth2RestTemplate createOAuth2RestTemplate(long userId) {
+//        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
+//                "username", "password", userId, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
+//                "gmjtdvNVmQRz8bzw6ae");
+//
+//        return new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
+//    }
 
     public void executeConcurrentThreads(PerformanceTest performanceTest) {
         initialiseTimes();

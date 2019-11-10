@@ -31,17 +31,17 @@ public class PerformanceTestExecutorTest {
     @InjectMocks
     private PerformanceTestExecutor sut;
 
-    @Test
-    public void given_a_userid_then_a_oauth2_rest_template_is_returned() {
-        // Given
-        var userId = 12345678L;
-
-        // When
-        var oAuth2RestTemplate = sut.createOAuth2RestTemplate(userId);
-
-        // Then
-        assertThat(oAuth2RestTemplate).isNotNull();
-    }
+//    @Test
+//    public void given_a_userid_then_a_oauth2_rest_template_is_returned() {
+//        // Given
+//        var userId = 12345678L;
+//
+//        // When
+//        var oAuth2RestTemplate = sut.createOAuth2RestTemplate(userId);
+//
+//        // Then
+//        assertThat(oAuth2RestTemplate).isNotNull();
+//    }
 
     @After
     public void tearDown() {
