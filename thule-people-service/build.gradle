@@ -82,8 +82,5 @@ dependencies {
 
     ctestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
 
-    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
-    dtestImplementation("org.springframework.boot:spring-boot-starter-web")
-    dtestImplementation("org.springframework.cloud:spring-cloud-starter-oauth2")
 }
