@@ -42,9 +42,9 @@ dependencyManagement {
 
 dependencies {
     annotationProcessor("org.projectlombok:lombok")
+
     compileOnly("org.projectlombok:lombok")
 
-    implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
     implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -58,6 +58,9 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
+    itestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
+
+    ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
+
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 }

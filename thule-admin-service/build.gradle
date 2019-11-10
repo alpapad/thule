@@ -41,6 +41,7 @@ dependencyManagement {
 
 dependencies {
     annotationProcessor("org.projectlombok:lombok")
+
     compileOnly("org.projectlombok:lombok")
 
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
@@ -54,6 +55,5 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 }

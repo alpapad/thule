@@ -29,6 +29,7 @@ apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 // Dependencies
 dependencies {
     annotationProcessor("org.projectlombok:lombok")
+
     compileOnly("org.projectlombok:lombok")
 
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")

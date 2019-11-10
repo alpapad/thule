@@ -51,9 +51,9 @@ dependencyManagement {
 
 dependencies {
     annotationProcessor("org.projectlombok:lombok")
+
     compileOnly("org.projectlombok:lombok")
 
-    implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
     implementation("com.googlecode.log4jdbc:log4jdbc:1.2")
     implementation("mysql:mysql-connector-java")
@@ -82,8 +82,6 @@ dependencies {
 
     ctestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
 
-    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
-    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-web")
