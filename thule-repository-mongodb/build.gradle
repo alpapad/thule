@@ -19,10 +19,10 @@ plugins {
     id "org.springframework.boot" version "2.2.1.RELEASE"
 }
 apply plugin: "io.spring.dependency-management"
+apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
 apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Non-standard Serin gradle plugin config
 
