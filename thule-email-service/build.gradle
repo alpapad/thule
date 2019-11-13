@@ -57,8 +57,9 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
-
     testImplementation("com.bitmechanic:dumbster:1.9.0.2")
+
+    itestImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 }
