@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.service.trace;
+package uk.co.serin.thule.utils.trace;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -7,19 +7,17 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Proxy;
 
 @Aspect
-@Component
 public class TracePublicMethodsInterceptor {
-    @Pointcut("@annotation(uk.co.serin.thule.utils.service.trace.TracePublicMethods)")
+    @Pointcut("@annotation(uk.co.serin.thule.utils.trace.TracePublicMethods)")
     public void pointcutDefinitionBasedOnAnnotationForMethod() {
         // Pointcut definition only
     }
 
-    @Pointcut("within(@uk.co.serin.thule.utils.service.trace.TracePublicMethods *)")
+    @Pointcut("within(@uk.co.serin.thule.utils.trace.TracePublicMethods *)")
     public void pointcutDefinitionBasedOnAnnotationForType() {
         // Pointcut definition only
     }

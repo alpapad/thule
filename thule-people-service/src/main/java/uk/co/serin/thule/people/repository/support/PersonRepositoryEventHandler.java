@@ -16,7 +16,7 @@ import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.service.email.EmailServiceClientAsync;
-import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
+import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.util.Collections;
 import java.util.stream.Collectors;

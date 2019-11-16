@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.service.trace;
+package uk.co.serin.thule.utils.trace;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import uk.co.serin.thule.utils.trace.TracePublicMethodsInterceptor;
 
 import java.lang.reflect.Proxy;
 import java.util.Collection;

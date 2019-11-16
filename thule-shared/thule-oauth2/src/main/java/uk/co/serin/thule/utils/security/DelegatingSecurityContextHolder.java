@@ -1,14 +1,12 @@
-package uk.co.serin.thule.utils.service.oauth2;
+package uk.co.serin.thule.utils.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.stereotype.Service;
 
 import uk.co.serin.thule.utils.oauth2.UserAuthenticationDetails;
 
-@Service
 public class DelegatingSecurityContextHolder {
 
     public void clearContext() {

@@ -1,7 +1,7 @@
 package uk.co.serin.thule.people.repository.repositories;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
-import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
+import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.util.List;
 

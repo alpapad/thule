@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.model.state.ActionCode;
-import uk.co.serin.thule.utils.service.trace.TracePublicMethods;
+import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.utils.service.trace;
+package uk.co.serin.thule.utils.trace;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

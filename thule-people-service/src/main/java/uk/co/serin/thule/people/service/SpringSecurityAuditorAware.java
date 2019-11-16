@@ -4,17 +4,16 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import uk.co.serin.thule.utils.service.oauth2.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.utils.security.DelegatingSecurityContextHolder;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
     private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
-
-    public SpringSecurityAuditorAware(DelegatingSecurityContextHolder delegatingSecurityContextHolder) {
-        this.delegatingSecurityContextHolder = delegatingSecurityContextHolder;
-    }
 
     @Override
     public Optional<String> getCurrentAuditor() {

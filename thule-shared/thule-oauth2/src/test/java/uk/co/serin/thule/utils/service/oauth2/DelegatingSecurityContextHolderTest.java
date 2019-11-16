@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 
 import uk.co.serin.thule.utils.oauth2.UserAuthenticationDetails;
+import uk.co.serin.thule.utils.security.DelegatingSecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
