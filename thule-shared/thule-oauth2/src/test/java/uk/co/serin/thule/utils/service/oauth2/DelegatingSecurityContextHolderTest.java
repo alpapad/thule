@@ -3,16 +3,11 @@ package uk.co.serin.thule.utils.service.oauth2;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Request;
 
-import uk.co.serin.thule.utils.oauth2.UserAuthenticationDetails;
 import uk.co.serin.thule.utils.security.DelegatingSecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class DelegatingSecurityContextHolderTest {
     private DelegatingSecurityContextHolder sut = new DelegatingSecurityContextHolder();
@@ -20,23 +15,6 @@ public class DelegatingSecurityContextHolderTest {
     @Before
     public void setup() {
         sut.clearContext();
-    }
-
-    @Test
-    public void when_authentication_is_not_ouath2authentication_then_a_security_exception_is_thrown() {
-        // Given
-        var expectedErrorMessage =
-                "Security context authentication is the wrong type, expecting [OAuth2Authentication] but was [UsernamePasswordAuthenticationToken]";
-
-        var securityContext = new SecurityContextImpl(new UsernamePasswordAuthenticationToken("principal", "credentials"));
-        sut.setContext(securityContext);
-
-        // When
-        var throwable = catchThrowable(() -> sut.getUserAuthenticationDetails());
-
-        // Then
-        assertThat(throwable).isInstanceOf(SecurityException.class);
-        assertThat(throwable.getMessage()).isEqualTo(expectedErrorMessage);
     }
 
     @Test
@@ -114,50 +92,5 @@ public class DelegatingSecurityContextHolderTest {
         var actualContext = sut.getContext();
         assertThat(actualContext).isEqualTo(expectedContext);
         assertThat(actualContext).isNotEqualTo(initialContext);
-    }
-
-    @Test
-    public void when_get_user_authentication_details_then_not_null() {
-        // Given
-        var expectedUserAuthenticationDetails = new UserAuthenticationDetails(999);
-
-        var authentication = new UsernamePasswordAuthenticationToken("username", "password");
-        authentication.setDetails(expectedUserAuthenticationDetails);
-
-        var oAuth2Request = new OAuth2Request(null, "username", null, true, null, null, null, null, null);
-        var oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
-
-        SecurityContext initialContext = new SecurityContextImpl(oAuth2Authentication);
-        sut.setContext(initialContext);
-
-        // When
-        var actualUserAuthenticationDetails = sut.getUserAuthenticationDetails();
-
-        // Then
-        assertThat(actualUserAuthenticationDetails).isNotNull();
-        assertThat(actualUserAuthenticationDetails).isEqualTo(expectedUserAuthenticationDetails);
-    }
-
-    @Test
-    public void when_user_authentication_details_is_the_wrong_type_then_a_security_exception_is_thrown() {
-        // Given
-        var details = "user authentication details as a string";
-        var expectedErrorMessage = String.format("OAuth2 user authentication details are invalid [%s]", details);
-
-        var authentication = new UsernamePasswordAuthenticationToken("username", "password");
-        authentication.setDetails(details);
-
-        var oAuth2Request = new OAuth2Request(null, "username", null, true, null, null, null, null, null);
-        var oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
-        SecurityContext testSecurityContext = new SecurityContextImpl(oAuth2Authentication);
-
-        sut.setContext(testSecurityContext);
-
-        // When
-        var throwable = catchThrowable(() -> sut.getUserAuthenticationDetails());
-
-        // Then
-        assertThat(throwable).isInstanceOf(SecurityException.class);
-        assertThat(throwable.getMessage()).isEqualTo(expectedErrorMessage);
     }
 }
