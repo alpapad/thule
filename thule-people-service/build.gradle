@@ -25,10 +25,10 @@ apply plugin: "jacoco"
 apply plugin: "maven-publish"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
-// Standard Thule gradle plugin config
+// Standard Serin gradle plugin config
 apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 
-// Non-standard Thule gradle plugin config
+// Non-Standard Serin gradle plugin config
 ctest {
     // Remove docker container once the contract tests have completed
     afterSuite { descriptor ->
@@ -54,7 +54,9 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
 
-    implementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2:${thuleSharedVersion}")
+    implementation("uk.co.serin.thule:thule-spring-boot-starter-data:${thuleSharedVersion}")
+    implementation("uk.co.serin.thule:thule-spring-boot-starter-security:${thuleSharedVersion}")
+    implementation("uk.co.serin.thule:thule-spring-boot-starter-security-oauth2:${thuleSharedVersion}")
     implementation("com.googlecode.log4jdbc:log4jdbc:1.2")
     implementation("mysql:mysql-connector-java")
     implementation("org.flywaydb:flyway-core")
@@ -75,12 +77,14 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
+    itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-security-test:${thuleSharedVersion}")
     itestImplementation("com.h2database:h2")
     itestImplementation("com.oracle:ojdbc8:18.3")
     itestImplementation("org.hsqldb:hsqldb")
 
-    ctestImplementation("uk.co.serin.thule:thule-spring-boot-starter-oauth2-test:${thuleSharedVersion}")
+    ctestImplementation("uk.co.serin.thule:thule-spring-boot-starter-security-test:${thuleSharedVersion}")
 
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-web")
 }

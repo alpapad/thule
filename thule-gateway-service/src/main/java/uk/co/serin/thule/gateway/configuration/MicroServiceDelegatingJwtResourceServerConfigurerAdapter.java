@@ -7,7 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 
-import uk.co.serin.thule.spring.boot.starter.oauth2.autoconfiguration.JwtResourceServerConfigurerAdapter;
+import uk.co.serin.thule.spring.boot.starter.security.oauth2.autoconfiguration.JwtResourceServerConfigurerAdapter;
+
 
 @Configuration
 @EnableResourceServer

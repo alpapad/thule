@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.client.token.grant.password.ResourceO
 
 import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
-import uk.co.serin.thule.utils.oauth2.Oauth2Utils;
+import uk.co.serin.thule.security.oauth2.Oauth2Utils;
 
 import java.util.Collections;
 import java.util.stream.Collectors;

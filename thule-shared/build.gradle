@@ -43,52 +43,150 @@ subprojects {
     }
 }
 
-project("thule-oauth2") {
+project("thule-data") {
+    description = "Thule Data"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+
+        api("org.springframework.data:spring-data-commons")
+
+        compileOnly project(":thule-security")
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-security")
+        testImplementation project(":thule-spring-boot-starter-test")
+    }
+}
+
+project("thule-security") {
+    description = "Thule Security"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+
+        api("org.springframework.security:spring-security-core")
+
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-spring-boot-starter-test")
+    }
+}
+
+project("thule-security-oauth2") {
     description = "Thule Oauth2"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+
+        api("org.springframework.cloud:spring-cloud-starter-oauth2")
+
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-spring-boot-starter-test")
+    }
+}
+
+project("thule-test") {
+    description = "Thule Test"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
 
         compileOnly("org.projectlombok:lombok")
 
-        implementation("org.springframework.cloud:spring-cloud-starter-oauth2")
+        implementation("junit:junit")
+        implementation("org.assertj:assertj-core")
+        implementation("org.mockito:mockito-core")
+        implementation("org.slf4j:slf4j-api")
+        implementation("org.springframework.boot:spring-boot-actuator")
+        implementation("org.springframework.retry:spring-retry")
+        implementation("org.springframework:spring-test")
+        implementation("org.springframework:spring-web")
+    }
+}
 
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
+project("thule-utils") {
+    description = "Thule Utils"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+
+        compileOnly("org.projectlombok:lombok")
+
+        implementation("javax.validation:validation-api")
+        implementation("net.logstash.logback:logstash-logback-encoder:6.2")
+        implementation("org.aspectj:aspectjrt")
+        implementation("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
+        implementation("org.slf4j:slf4j-api")
+
+        testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
 project("thule-spring-boot-starter") {
-    description = "Thule Spring Boot Starter Utils"
+    description = "Thule Spring Boot Starter"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
 
         api project(":thule-utils")
         api("org.springframework.boot:spring-boot-starter")
 
+        compileOnly("org.projectlombok:lombok")
+
         implementation("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
 
-        compileOnly("org.projectlombok:lombok")
+        testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
-project("thule-spring-boot-starter-oauth2") {
+project("thule-spring-boot-starter-data") {
+    description = "Thule Spring Boot Starter Data"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+
+        api project(":thule-data")
+        api project(":thule-spring-boot-starter")
+
+        compileOnly project(":thule-security")
+        compileOnly("org.projectlombok:lombok")
+
+        testCompileOnly project(":thule-security")
+
+        testImplementation project(":thule-security")
+        testImplementation project(":thule-spring-boot-starter-test")
+    }
+}
+
+project("thule-spring-boot-starter-security") {
+    description = "Thule Spring Boot Starter Security"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+
+        api project(":thule-security")
+        api project(":thule-spring-boot-starter")
+
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-spring-boot-starter-security-test")
+    }
+}
+
+project("thule-spring-boot-starter-security-oauth2") {
     description = "Thule Spring Boot Starter Oauth2"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
 
-        api project(":thule-oauth2")
+        api project(":thule-security-oauth2")
         api project(":thule-spring-boot-starter")
-        api("org.springframework.cloud:spring-cloud-starter-oauth2")
 
         compileOnly("org.projectlombok:lombok")
 
         testImplementation project(":thule-spring-boot-starter-test")
+        testImplementation project(":thule-spring-boot-starter-security-test")
+        testImplementation("org.springframework.boot:spring-boot-starter-web")
 
         itestImplementation("org.apache.httpcomponents:httpclient")
     }
 }
 
-project("thule-spring-boot-starter-oauth2-test") {
-    description = "Thule Spring Boot Starter Oauth2 Test"
+project("thule-spring-boot-starter-security-test") {
+    description = "Thule Spring Boot Starter Security Test"
     dependencies {
         api project(":thule-spring-boot-starter-test")
         api("org.springframework.security:spring-security-test")
@@ -102,37 +200,5 @@ project("thule-spring-boot-starter-test") {
         api project(":thule-test")
         api("org.awaitility:awaitility:4.0.1")
         api("org.springframework.boot:spring-boot-starter-test")
-    }
-}
-
-project("thule-test") {
-    description = "Thule Test"
-    dependencies {
-        annotationProcessor("org.projectlombok:lombok")
-
-        api("org.springframework.boot:spring-boot-starter-actuator")
-        api("org.springframework.boot:spring-boot-starter-web")
-
-        compileOnly("org.projectlombok:lombok")
-
-        implementation("org.springframework.boot:spring-boot-starter-test")
-        implementation("org.springframework.retry:spring-retry")
-    }
-}
-
-project("thule-utils") {
-    description = "Thule Utils"
-    dependencies {
-        annotationProcessor("org.projectlombok:lombok")
-
-        compileOnly("org.projectlombok:lombok")
-
-        implementation("net.logstash.logback:logstash-logback-encoder:6.2")
-        implementation("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
-        implementation("org.springframework.boot:spring-boot-starter-aop")
-        implementation("org.springframework.boot:spring-boot-starter-logging")
-        implementation("org.springframework.boot:spring-boot-starter-validation")
-
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
 }
