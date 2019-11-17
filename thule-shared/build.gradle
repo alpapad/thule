@@ -177,7 +177,6 @@ project("thule-spring-boot-starter-security-oauth2") {
 
         compileOnly("org.projectlombok:lombok")
 
-        testImplementation project(":thule-spring-boot-starter-test")
         testImplementation project(":thule-spring-boot-starter-security-test")
         testImplementation("org.springframework.boot:spring-boot-starter-web")
 
