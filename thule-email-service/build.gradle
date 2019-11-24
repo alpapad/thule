@@ -28,7 +28,7 @@ apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 // Standard Serin gradle plugin config
 apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 
-// Non-Standard Serin gradle plugin config
+// Non-standard Serin gradle plugin config
 
 description = "Thule Email Service"
 
