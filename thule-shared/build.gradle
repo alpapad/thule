@@ -161,7 +161,7 @@ project("thule-spring-boot-starter-security") {
 
         compileOnly("org.projectlombok:lombok")
 
-        testImplementation project(":thule-spring-boot-starter-security-test")
+        testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
@@ -175,18 +175,10 @@ project("thule-spring-boot-starter-security-oauth2") {
 
         compileOnly("org.projectlombok:lombok")
 
-        testImplementation project(":thule-spring-boot-starter-security-test")
+        testImplementation project(":thule-spring-boot-starter-test")
         testImplementation("org.springframework.boot:spring-boot-starter-web")
 
         itestImplementation("org.apache.httpcomponents:httpclient")
-    }
-}
-
-project("thule-spring-boot-starter-security-test") {
-    description = "Thule Spring Boot Starter Security Test"
-    dependencies {
-        api project(":thule-spring-boot-starter-test")
-        api("org.springframework.security:spring-security-test")
     }
 }
 
