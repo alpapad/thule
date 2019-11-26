@@ -8,7 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActuatorUriTest {
     @Test
-
     public void when_creating_via_string_static_factory_method_then_actuator_uri_contains_uri() {
         // Given
         var uri = "http://localhost";
