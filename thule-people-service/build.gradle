@@ -76,12 +76,9 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-security-test:${thuleSharedVersion}")
     itestImplementation("com.h2database:h2")
     itestImplementation("com.oracle:ojdbc8:18.3")
     itestImplementation("org.hsqldb:hsqldb")
-
-    ctestImplementation("uk.co.serin.thule:thule-spring-boot-starter-security-test:${thuleSharedVersion}")
 
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
