@@ -56,9 +56,9 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     testImplementation("com.bitmechanic:dumbster:1.9.0.2")
-    testImplementation("org.springframework.security:spring-security-test")
 
     itestImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    itestImplementation("org.springframework.security:spring-security-test")
 
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")

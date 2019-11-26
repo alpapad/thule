@@ -81,6 +81,8 @@ dependencies {
     itestImplementation("org.hsqldb:hsqldb")
     itestImplementation("org.springframework.security:spring-security-test")
 
+    ctestImplementation("org.springframework.security:spring-security-test")
+
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-web")
