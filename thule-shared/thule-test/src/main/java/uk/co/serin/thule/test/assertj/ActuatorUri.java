@@ -15,11 +15,11 @@ import lombok.ToString;
 public class ActuatorUri {
     private URI uri;
 
-    public static ActuatorUri of(String uri) {
-        return ActuatorUri.of(URI.create(uri));
+    public static ActuatorUri using(String uri) {
+        return ActuatorUri.using(URI.create(uri));
     }
 
-    public static ActuatorUri of(URI uri) {
+    public static ActuatorUri using(URI uri) {
         return new ActuatorUri(uri);
     }
 }

@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpringBootActuatorAssertTest {
-    private ActuatorUri actuatorUri = ActuatorUri.of("http://localhost");
+    private ActuatorUri actuatorUri = ActuatorUri.using("http://localhost");
     @Mock
     private ResponseEntity<Map<String, Object>> responseEntity;
     private ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<>() {

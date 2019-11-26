@@ -5,18 +5,22 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.web.servlet.config.annotation.CorsRegistration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
-import uk.co.serin.thule.spring.boot.starter.security.oauth2.autoconfiguration.Oauth2AutoConfiguration;
-import uk.co.serin.thule.spring.boot.starter.security.oauth2.autoconfiguration.Oauth2Properties;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Oauth2AutoConfigurationTest {
+    @Mock
+    private CorsRegistration corsRegistration;
+    @Mock
+    private CorsRegistry corsRegistry;
     @Mock
     private Oauth2Properties oauth2Properties;
     @InjectMocks
@@ -39,10 +43,25 @@ public class Oauth2AutoConfigurationTest {
         // Given
 
         // When
-        Oauth2AutoConfiguration thuleOauthAutoConfiguration = new Oauth2AutoConfiguration(new Oauth2Properties());
+        Oauth2AutoConfiguration gohenryOauthAutoConfiguration = new Oauth2AutoConfiguration(new Oauth2Properties());
 
         // Then
-        assertThat(thuleOauthAutoConfiguration).isNotNull();
+        assertThat(gohenryOauthAutoConfiguration).isNotNull();
+    }
+
+    @Test
+    public void cors_configurer_is_configured() {
+        // Given
+        given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
+        given(corsRegistration.allowedMethods(HttpMethod.GET.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(), HttpMethod.POST.name()))
+                .willReturn(corsRegistration);
+
+        //When
+        var corsConfigurer = sut.corsConfigurer();
+        corsConfigurer.addCorsMappings(corsRegistry);
+
+        // Then
+        assertThat(corsConfigurer).isNotNull();
     }
 
     @Test

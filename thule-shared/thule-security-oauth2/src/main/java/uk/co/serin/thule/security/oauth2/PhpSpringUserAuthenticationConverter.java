@@ -4,6 +4,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 
+import uk.co.serin.thule.security.UserAuthenticationDetails;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticat
 
             if (map.containsKey(SpringJwtAccessTokenConverter.JAVA_USERID)) {
                 var userId = map.get(SpringJwtAccessTokenConverter.JAVA_USERID).toString();
-                var userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(userId));
+                var userAuthenticationDetails = UserAuthenticationDetails.builder().userId(Long.parseLong(userId)).build();
                 ((UsernamePasswordAuthenticationToken) authentication).setDetails(userAuthenticationDetails);
             }
 
@@ -47,7 +49,8 @@ public class PhpSpringUserAuthenticationConverter extends DefaultUserAuthenticat
                 throw new UserIdNotFoundException("token does not contain userId");
             }
 
-            var userAuthenticationDetails = new UserAuthenticationDetails(Long.parseLong(data.get(SpringJwtAccessTokenConverter.PHP_USERID).toString()));
+            var userAuthenticationDetails =
+                    UserAuthenticationDetails.builder().userId(Long.parseLong(data.get(SpringJwtAccessTokenConverter.PHP_USERID).toString())).build();
             authentication.setDetails(userAuthenticationDetails);
             return authentication;
         }

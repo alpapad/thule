@@ -5,6 +5,8 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 
+import uk.co.serin.thule.security.UserAuthenticationDetails;
+
 import java.util.Map;
 
 public class SpringJwtAccessTokenConverter extends DefaultAccessTokenConverter {

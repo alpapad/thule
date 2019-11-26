@@ -2,7 +2,6 @@ package uk.co.serin.thule.spring.boot.starter.security.oauth2.autoconfiguration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

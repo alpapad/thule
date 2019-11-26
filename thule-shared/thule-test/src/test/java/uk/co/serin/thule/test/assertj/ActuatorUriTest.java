@@ -14,7 +14,7 @@ public class ActuatorUriTest {
         var uri = "http://localhost";
 
         // When
-        var actuatorUri = ActuatorUri.of(uri);
+        var actuatorUri = ActuatorUri.using(uri);
 
         // Then
         assertThat(actuatorUri).isNotNull();
@@ -27,7 +27,7 @@ public class ActuatorUriTest {
         var uri = URI.create("http://localhost");
 
         // When
-        var actuatorUri = ActuatorUri.of(uri);
+        var actuatorUri = ActuatorUri.using(uri);
 
         // Then
         assertThat(actuatorUri).isNotNull();

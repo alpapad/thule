@@ -2,9 +2,9 @@ package uk.co.serin.thule.shared.oauth2;
 
 import org.springframework.security.core.Authentication;
 
+import uk.co.serin.thule.security.UserAuthenticationDetails;
 import uk.co.serin.thule.security.oauth2.PhpSpringUserAuthenticationConverter;
 import uk.co.serin.thule.security.oauth2.SpringJwtAccessTokenConverter;
-import uk.co.serin.thule.security.oauth2.UserAuthenticationDetails;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

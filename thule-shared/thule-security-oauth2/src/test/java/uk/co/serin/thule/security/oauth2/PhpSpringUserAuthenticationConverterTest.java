@@ -3,10 +3,7 @@ package uk.co.serin.thule.security.oauth2;
 import org.junit.Test;
 import org.springframework.security.core.Authentication;
 
-import uk.co.serin.thule.security.oauth2.PhpSpringUserAuthenticationConverter;
-import uk.co.serin.thule.security.oauth2.SpringJwtAccessTokenConverter;
-import uk.co.serin.thule.security.oauth2.UserAuthenticationDetails;
-import uk.co.serin.thule.security.oauth2.UserIdNotFoundException;
+import uk.co.serin.thule.security.UserAuthenticationDetails;
 
 import java.util.Collections;
 import java.util.HashMap;

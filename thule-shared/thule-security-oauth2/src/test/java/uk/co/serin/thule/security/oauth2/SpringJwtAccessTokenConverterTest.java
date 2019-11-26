@@ -8,8 +8,6 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
-import uk.co.serin.thule.security.oauth2.SpringJwtAccessTokenConverter;
-
 import java.util.Collections;
 import java.util.Map;
 

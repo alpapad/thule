@@ -27,11 +27,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uk.co.serin.thule.spring.boot.starter.security.oauth2.autoconfiguration.Oauth2Properties;
-import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.security.UserAuthenticationDetails;
 import uk.co.serin.thule.security.oauth2.Oauth2Utils;
 import uk.co.serin.thule.security.oauth2.PhpJwtAccessTokenConverter;
-import uk.co.serin.thule.security.oauth2.UserAuthenticationDetails;
+import uk.co.serin.thule.spring.boot.starter.security.oauth2.autoconfiguration.Oauth2Properties;
+import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -90,7 +90,7 @@ public class ResourceServerIntTest {
         var oAuth2Request = new OAuth2Request(null, clientId, null,
                 true, null, null, null, null, null);
         var userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
-        userAuthentication.setDetails(new UserAuthenticationDetails(999));
+        userAuthentication.setDetails(UserAuthenticationDetails.builder().userId(999).build());
         var oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
 
         // Create OAuth2AccessToken
@@ -115,7 +115,7 @@ public class ResourceServerIntTest {
     @Test
     public void when_checking_health_then_health_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(String.format("http://localhost:%s/actuator/health", port));
+        var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/health", port));
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);

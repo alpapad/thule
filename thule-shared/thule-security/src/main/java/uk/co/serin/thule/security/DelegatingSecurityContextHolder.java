@@ -4,6 +4,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Optional;
+
 public class DelegatingSecurityContextHolder {
 
     public void clearContext() {
@@ -24,5 +26,15 @@ public class DelegatingSecurityContextHolder {
 
     public void setContext(SecurityContext context) {
         SecurityContextHolder.setContext(context);
+    }
+
+    public Optional<UserAuthenticationDetails> getUserAuthenticationDetails() {
+        var securityContext = SecurityContextHolder.getContext();
+        var details = securityContext.getAuthentication().getDetails();
+        if (details instanceof  UserAuthenticationDetails) {
+            return Optional.of((UserAuthenticationDetails) details);
+        } else {
+            return Optional.empty();
+        }
     }
 }

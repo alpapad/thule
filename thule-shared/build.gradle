@@ -74,11 +74,14 @@ project("thule-security-oauth2") {
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
 
+        api project(":thule-security")
         api("org.springframework.cloud:spring-cloud-starter-oauth2")
+        api("org.springframework.cloud:spring-cloud-starter-openfeign")
 
         compileOnly("org.projectlombok:lombok")
 
         testImplementation project(":thule-spring-boot-starter-test")
+        testImplementation("org.springframework.boot:spring-boot-starter-web")
     }
 }
 

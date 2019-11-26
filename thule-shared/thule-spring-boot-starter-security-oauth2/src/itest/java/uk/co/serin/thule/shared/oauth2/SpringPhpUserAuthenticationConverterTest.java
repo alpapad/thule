@@ -3,8 +3,8 @@ package uk.co.serin.thule.shared.oauth2;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import uk.co.serin.thule.security.UserAuthenticationDetails;
 import uk.co.serin.thule.security.oauth2.SpringJwtAccessTokenConverter;
-import uk.co.serin.thule.security.oauth2.UserAuthenticationDetails;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class SpringPhpUserAuthenticationConverterTest {
     public void when_given_authentication_object_then_convert_to_map() {
         // Given
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(SpringJwtAccessTokenConverter.PHP_USERNAME, "password");
-        UserAuthenticationDetails userAuthenticationDetails = new UserAuthenticationDetails(999);
+        UserAuthenticationDetails userAuthenticationDetails = UserAuthenticationDetails.builder().userId(999).build();
         token.setDetails(userAuthenticationDetails);
         SpringPhpUserAuthenticationConverter springPhpUserAuthenticationConverter = new SpringPhpUserAuthenticationConverter();
 

@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
@@ -40,10 +41,11 @@ public class JwtResourceServerConfigurerAdapterTest {
     }
 
     @Test
-    public void configure_configures_token_servicess() throws Exception {
+    public void configure_configures_http_security() throws Exception {
         // Given
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.requestMatchers(any())).willReturn(authorizedUrl);
+        given(expressionInterceptUrlRegistry.antMatchers(HttpMethod.OPTIONS, "/**")).willReturn(authorizedUrl);
         given(expressionInterceptUrlRegistry.antMatchers(anyString())).willReturn(authorizedUrl);
         given(authorizedUrl.authenticated()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.and()).willReturn(httpSecurity);

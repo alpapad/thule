@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import uk.co.serin.thule.security.UserAuthenticationDetails;
+
 import java.util.Collection;
 
 public interface Oauth2Utils {
@@ -21,7 +23,7 @@ public interface Oauth2Utils {
         var userAuthentication = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
 
         //Add UserAuthenticationDetails
-        var userAuthenticationDetails = new UserAuthenticationDetails(userId);
+        var userAuthenticationDetails = UserAuthenticationDetails.builder().userId(userId).build();
         userAuthentication.setDetails(userAuthenticationDetails);
 
         var oAuth2Authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);

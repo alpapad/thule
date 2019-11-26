@@ -52,14 +52,14 @@ public class SpringSecurityAuditorAwareTest {
     @Test
     public void when_get_current_auditor_then_current_auditor_is_returned() {
         // Given
-        var principalName = "testAuditor4534";
+        var name = "auditor";
         given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);
-        given(authentication.getName()).willReturn(principalName);
+        given(authentication.getName()).willReturn(name);
 
         // When
         var currentAuditor = sut.getCurrentAuditor();
 
         // Then
-        assertThat(currentAuditor).isEqualTo(Optional.of(principalName));
+        assertThat(currentAuditor).isEqualTo(Optional.of(name));
     }
 }

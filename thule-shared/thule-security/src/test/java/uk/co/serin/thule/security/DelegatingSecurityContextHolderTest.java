@@ -91,4 +91,33 @@ public class DelegatingSecurityContextHolderTest {
         assertThat(actualContext).isEqualTo(expectedContext);
         assertThat(actualContext).isNotEqualTo(initialContext);
     }
+
+    @Test
+    public void given_no_user_authentication_details_when_get_user_authentication_details_then_empty_optional_is_returned() {
+        // Given
+        var initialAuthentication = new UsernamePasswordAuthenticationToken("username", "password");
+        var initialContext = new SecurityContextImpl(initialAuthentication);
+        sut.setContext(initialContext);
+
+        // When
+        var userAuthenticationDetails = sut.getUserAuthenticationDetails();
+
+        // Then
+        assertThat(userAuthenticationDetails).isEmpty();
+    }
+
+    @Test
+    public void given_a_user_authentication_details_when_get_user_authentication_details_then_empty_optional_is_returned() {
+        // Given
+        var initialAuthentication = new UsernamePasswordAuthenticationToken("username", "password");
+        initialAuthentication.setDetails(UserAuthenticationDetails.builder().build());
+        var initialContext = new SecurityContextImpl(initialAuthentication);
+        sut.setContext(initialContext);
+
+        // When
+        var userAuthenticationDetails = sut.getUserAuthenticationDetails();
+
+        // Then
+        assertThat(userAuthenticationDetails).isNotEmpty();
+    }
 }

@@ -8,8 +8,7 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
-import uk.co.serin.thule.security.oauth2.PhpJwtAccessTokenConverter;
-import uk.co.serin.thule.security.oauth2.UserAuthenticationDetails;
+import uk.co.serin.thule.security.UserAuthenticationDetails;
 
 import java.util.Collections;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class PhpJwtAccessTokenConverterTest {
         OAuth2Request oAuth2Request = new OAuth2Request(null, String.valueOf(1234567890), null,
                 true, null, null, null, null, null);
         UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken("", "", Collections.EMPTY_LIST);
-        userAuthentication.setDetails(new UserAuthenticationDetails(12345456L));
+        userAuthentication.setDetails(UserAuthenticationDetails.builder().userId(12345456L).build());
 
         OAuth2Authentication authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
 
