@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
-        mavenLocal()
     }
 
     dependencies {
