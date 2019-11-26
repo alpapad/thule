@@ -29,7 +29,7 @@ public class SecurityIntTest {
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
-        var actuatorUri = ActuatorUri.of(testRestTemplate.getRootUri() + "/actuator/info");
+        var actuatorUri = ActuatorUri.using(testRestTemplate.getRootUri() + "/actuator/info");
 
         // When/Then
         SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);

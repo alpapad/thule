@@ -41,7 +41,7 @@ public class DiscoveryDockerTest {
     }
 
     private void waitForTheApplicationToInitialize() {
-        var actuatorUri = ActuatorUri.of(BASE_URL + "/actuator/health");
+        var actuatorUri = ActuatorUri.using(BASE_URL + "/actuator/health");
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 

@@ -25,7 +25,7 @@ public class HealthCheckContractTest {
     @Test
     public void when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.of(testRestTemplate.getRootUri() + "/actuator/health");
+        var actuatorUri = ActuatorUri.using(testRestTemplate.getRootUri() + "/actuator/health");
 
         // When/Then
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
