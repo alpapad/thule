@@ -1,6 +1,4 @@
 buildscript {
-    ext["mockito.version"] = "3.1.0" // Spring boot 2.1 uses mockito version 2.23.4 which does not fully support java 11+
-
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
         mavenLocal()
@@ -73,7 +71,7 @@ project("thule-security") {
 }
 
 project("thule-security-oauth2") {
-    description = "Thule Oauth2"
+    description = "Thule Security Oauth2"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
 
@@ -169,7 +167,7 @@ project("thule-spring-boot-starter-security") {
 }
 
 project("thule-spring-boot-starter-security-oauth2") {
-    description = "Thule Spring Boot Starter Oauth2"
+    description = "Thule Spring Boot Starter Security Oauth2"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
 
