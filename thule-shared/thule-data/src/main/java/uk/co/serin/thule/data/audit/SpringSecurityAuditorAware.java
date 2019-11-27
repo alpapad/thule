@@ -1,4 +1,4 @@
-package uk.co.serin.thule.data;
+package uk.co.serin.thule.data.audit;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.util.Assert;
@@ -24,4 +24,3 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
         return Optional.of(principalName);
     }
 }
-

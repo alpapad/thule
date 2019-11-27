@@ -27,14 +27,6 @@ public class PerformanceTestExecutor {
     private Duration statisticsLoggingInterval = Duration.ofSeconds(10);
     private Duration timeLimit = Duration.ofMinutes(1);
 
-//    public OAuth2RestTemplate createOAuth2RestTemplate(long userId) {
-//        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-//                "username", "password", userId, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId",
-//                "gmjtdvNVmQRz8bzw6ae");
-//
-//        return new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
-//    }
-
     public void executeConcurrentThreads(PerformanceTest performanceTest) {
         initialiseTimes();
         startStatisticsLogging();

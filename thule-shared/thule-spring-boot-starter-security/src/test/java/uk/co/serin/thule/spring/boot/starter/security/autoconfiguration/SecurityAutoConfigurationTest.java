@@ -8,9 +8,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SpringSecurityAutoConfigurationTest {
+public class SecurityAutoConfigurationTest {
     @InjectMocks
-    private SpringSecurityAutoConfiguration sut;
+    private SecurityAutoConfiguration sut;
 
     @Test
     public void when_delegating_security_context_holder_then_a_delegating_security_context_holder_is_created() {

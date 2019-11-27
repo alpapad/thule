@@ -22,7 +22,7 @@ public class OAuth2FeignRequestInterceptorTest {
 
     @Test
     public void when_authentication_is_not_null_and_instanceof_oauth2authenticationdetails_then_authorization_header_is_added_to_request_template() {
-        //Given
+        // Given
         var requestTemplate = mock(RequestTemplate.class);
         var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("", "");
         var oAuth2AuthenticationDetails = new OAuth2AuthenticationDetails(new MockHttpServletRequest());
@@ -36,16 +36,16 @@ public class OAuth2FeignRequestInterceptorTest {
         ReflectionTestUtils.setField(sut, "delegatingSecurityContextHolder", delegatingSecurityContextHolder);
 
 
-        //When
+        // When
         sut.apply(requestTemplate);
 
-        //Then
+        // Then
         verify(requestTemplate).header(HttpHeaders.AUTHORIZATION, String.format("%s %s", "Bearer", oAuth2AuthenticationDetails.getTokenValue()));
     }
 
     @Test
     public void when_authentication_is_not_null_and_not_instanceof_oauth2authenticationdetails_then_authorization_header_is_not_added_to_request_template() {
-        //Given
+        // Given
         var requestTemplate = mock(RequestTemplate.class);
         var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("", "");
         var securityContext = new SecurityContextImpl(usernamePasswordAuthenticationToken);
@@ -54,16 +54,16 @@ public class OAuth2FeignRequestInterceptorTest {
         delegatingSecurityContextHolder.setContext(securityContext);
         ReflectionTestUtils.setField(sut, "delegatingSecurityContextHolder", delegatingSecurityContextHolder);
 
-        //When
+        // When
         sut.apply(requestTemplate);
 
-        //Then
+        // Then
         verifyNoInteractions(requestTemplate);
     }
 
     @Test
     public void when_authentication_is_null_and_not_instanceof_oauth2authenticationdetails_then_authorization_header_is_not_added_to_request_template() {
-        //Given
+        // Given
         var requestTemplate = mock(RequestTemplate.class);
         var securityContext = new SecurityContextImpl();
 
@@ -71,10 +71,10 @@ public class OAuth2FeignRequestInterceptorTest {
         delegatingSecurityContextHolder.setContext(securityContext);
         ReflectionTestUtils.setField(sut, "delegatingSecurityContextHolder", delegatingSecurityContextHolder);
 
-        //When
+        // When
         sut.apply(requestTemplate);
 
-        //Then
+        // Then
         verifyNoInteractions(requestTemplate);
     }
 

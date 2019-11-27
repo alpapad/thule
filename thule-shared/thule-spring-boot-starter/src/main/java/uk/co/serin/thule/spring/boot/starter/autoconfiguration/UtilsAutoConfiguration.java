@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Configuration
 @NoArgsConstructor
-public class TraceAutoConfiguration {
+public class UtilsAutoConfiguration {
     @Bean
     public TracePublicMethodsInterceptor tracePublicMethodsInterceptor() {
         return new TracePublicMethodsInterceptor();

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.data;
+package uk.co.serin.thule.data.audit;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

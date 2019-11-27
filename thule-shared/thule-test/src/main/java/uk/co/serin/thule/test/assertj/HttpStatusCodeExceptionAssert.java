@@ -20,8 +20,8 @@ public class HttpStatusCodeExceptionAssert extends AbstractAssert<HttpStatusCode
         var actualMessageErrorAttribute = getErrorAttributes().get("message");
         Assert.notNull(actualMessageErrorAttribute, "'message' error attribute cannot be null");
         if (!actualMessageErrorAttribute.equals(expectedMessageErrorMessageAttribute)) {
-            throw new AssertionError(String.format("Expected 'message' error attribute to be [%s] but was [%s]", actualMessageErrorAttribute,
-                    expectedMessageErrorMessageAttribute));
+            throw new AssertionError(String.format("Expected 'message' error attribute to be [%s] but was [%s]", expectedMessageErrorMessageAttribute,
+                    actualMessageErrorAttribute));
         }
 
         return this;

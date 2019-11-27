@@ -8,9 +8,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TraceAutoConfigurationTest {
+public class UtilsAutoConfigurationTest {
     @InjectMocks
-    private TraceAutoConfiguration sut;
+    private UtilsAutoConfiguration sut;
 
     @Test
     public void when_trace_public_methods_interceptor_then_an_instance_is_instantiated() {

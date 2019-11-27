@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class XmlUtilsTest {
-
     @Test
     public void given_invalid_xml_when_pretty_print_then_an_illegal_state_exception_is_thrown() {
         // Given

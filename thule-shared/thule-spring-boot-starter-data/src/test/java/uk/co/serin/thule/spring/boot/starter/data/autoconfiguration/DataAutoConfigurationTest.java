@@ -11,11 +11,11 @@ import uk.co.serin.thule.security.DelegatingSecurityContextHolder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SpringDataAutoConfigurationTest {
+public class DataAutoConfigurationTest {
     @Mock
     private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
-    private SpringDataAutoConfiguration sut;
+    private DataAutoConfiguration sut;
 
     @Test
     public void when_spring_security_auditor_aware_then_a_spring_security_auditor_aware_is_created() {

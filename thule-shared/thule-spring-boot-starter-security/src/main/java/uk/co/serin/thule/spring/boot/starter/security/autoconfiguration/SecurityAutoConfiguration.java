@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import uk.co.serin.thule.security.DelegatingSecurityContextHolder;
 
 @Configuration
-public class SpringSecurityAutoConfiguration {
+public class SecurityAutoConfiguration {
     @Bean
     public DelegatingSecurityContextHolder delegatingSecurityContextHolder() {
         return new DelegatingSecurityContextHolder();
