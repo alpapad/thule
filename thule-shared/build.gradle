@@ -48,10 +48,10 @@ project("thule-data") {
 
         api("org.springframework.data:spring-data-commons")
 
-        compileOnly project(":thule-security")
+        compileOnly project(":thule-security-oauth2")
         compileOnly("org.projectlombok:lombok")
 
-        testImplementation project(":thule-security")
+        testImplementation project(":thule-security-oauth2")
         testImplementation project(":thule-spring-boot-starter-test")
     }
 }
@@ -144,12 +144,10 @@ project("thule-spring-boot-starter-data") {
         api project(":thule-data")
         api project(":thule-spring-boot-starter")
 
-        compileOnly project(":thule-security")
+        compileOnly project(":thule-security-oauth2")
         compileOnly("org.projectlombok:lombok")
 
-        testCompileOnly project(":thule-security")
-
-        testImplementation project(":thule-security")
+        testImplementation project(":thule-security-oauth2")
         testImplementation project(":thule-spring-boot-starter-test")
     }
 }

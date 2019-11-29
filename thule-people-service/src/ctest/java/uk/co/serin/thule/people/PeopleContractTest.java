@@ -26,7 +26,7 @@ import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.service.email.EmailServiceClient;
-import uk.co.serin.thule.security.oauth2.Oauth2Utils;
+import uk.co.serin.thule.security.oauth2.utils.Oauth2Utils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.time.LocalDate;
@@ -128,7 +128,7 @@ public class PeopleContractTest extends ContractBaseTest {
         baseUrl = testRestTemplate.getRootUri() + "/people";
 
         // Setup OAuth2
-        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, MOCK_USERS_CREDENTIALS, 0,
+        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, 0,
                 Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 

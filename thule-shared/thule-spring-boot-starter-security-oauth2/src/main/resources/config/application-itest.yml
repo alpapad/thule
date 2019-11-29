@@ -1,0 +1,6 @@
+# Spring Security configuration
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: gmjtdvNVmQRz8bzw6ae

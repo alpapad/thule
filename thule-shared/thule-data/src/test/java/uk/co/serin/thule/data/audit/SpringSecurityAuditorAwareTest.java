@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 
-import uk.co.serin.thule.security.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
 
 import java.util.Optional;
 

@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.client.token.grant.password.ResourceO
 
 import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
-import uk.co.serin.thule.security.oauth2.Oauth2Utils;
+import uk.co.serin.thule.security.oauth2.utils.Oauth2Utils;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -53,7 +53,7 @@ public class EmailContractTest extends ContractBaseTest {
         baseUrl = testRestTemplate.getRootUri() + "/emails";
 
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", "password", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                "username", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 

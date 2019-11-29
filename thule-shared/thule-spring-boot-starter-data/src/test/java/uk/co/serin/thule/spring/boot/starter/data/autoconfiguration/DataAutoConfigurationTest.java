@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.co.serin.thule.security.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

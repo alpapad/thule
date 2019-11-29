@@ -13,6 +13,13 @@ management:
     health:
       show-details: ALWAYS
 
+# Spring Security configuration
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: gmjtdvNVmQRz8bzw6ae
+
 # Spring boot configuration
 spring:
   application:

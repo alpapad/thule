@@ -6,11 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import uk.co.serin.thule.security.oauth2.Oauth2Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -27,30 +26,16 @@ public class Oauth2AutoConfigurationTest {
     private Oauth2AutoConfiguration sut;
 
     @Test
-    public void access_token_converter_is_configured() {
-        // Given
-        given(oauth2Properties.getSigningKey()).willReturn("signingKey");
-
+    public void when_access_token_customizer_then_an_instance_is_instantiated() {
         // When
-        AccessTokenConverter accessTokenConverter = sut.jwtAccessTokenConverter();
+        var accessTokenConverter = sut.jwtAccessTokenCustomizer();
 
         // Then
         assertThat(accessTokenConverter).isNotNull();
     }
 
     @Test
-    public void class_under_test_instantiates_successfully() {
-        // Given
-
-        // When
-        Oauth2AutoConfiguration gohenryOauthAutoConfiguration = new Oauth2AutoConfiguration(new Oauth2Properties());
-
-        // Then
-        assertThat(gohenryOauthAutoConfiguration).isNotNull();
-    }
-
-    @Test
-    public void cors_configurer_is_configured() {
+    public void when_cors_configurer_then_an_instance_is_instantiated() {
         // Given
         given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
         given(corsRegistration.allowedMethods(HttpMethod.GET.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(), HttpMethod.POST.name()))
@@ -65,27 +50,11 @@ public class Oauth2AutoConfigurationTest {
     }
 
     @Test
-    public void token_services_is_configured() {
-        // Given
-        given(oauth2Properties.getSigningKey()).willReturn("signingKey");
-
+    public void when_jwt_resource_server_configurer_adapter_then_an_instance_is_instantiated() {
         // When
-        ResourceServerTokenServices resourceServerTokenServices = sut.defaultTokenServices();
+        var jwtResourceServerConfigurerAdapter = sut.jwtResourceServerConfigurerAdapter();
 
         // Then
-        assertThat(resourceServerTokenServices).isNotNull();
+        assertThat(jwtResourceServerConfigurerAdapter).isNotNull();
     }
-
-    @Test
-    public void token_store_is_configured() {
-        // Given
-        given(oauth2Properties.getSigningKey()).willReturn("signingKey");
-
-        // When
-        TokenStore tokenStore = sut.tokenStore();
-
-        // Then
-        assertThat(tokenStore).isNotNull();
-    }
-
 }

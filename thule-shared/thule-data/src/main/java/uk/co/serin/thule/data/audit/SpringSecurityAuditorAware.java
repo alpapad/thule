@@ -3,7 +3,7 @@ package uk.co.serin.thule.data.audit;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.util.Assert;
 
-import uk.co.serin.thule.security.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
 
 import java.util.Optional;
 

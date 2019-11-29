@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import uk.co.serin.thule.data.audit.SpringSecurityAuditorAware;
-import uk.co.serin.thule.security.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
 
 @ConditionalOnClass({DelegatingSecurityContextHolder.class})
 @Configuration
