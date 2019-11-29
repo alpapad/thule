@@ -1,6 +1,4 @@
 buildscript {
-    ext["mockito.version"] = "3.1.0" // Spring boot 2.1 uses mockito version 2.23.4 which does not fully support java 11+
-
     repositories {
         maven { url "http://${nexusHost}:${nexusPort}/repository/maven-public" }
     }
