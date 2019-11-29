@@ -48,13 +48,4 @@ public class Oauth2AutoConfigurationTest {
         // Then
         assertThat(corsConfigurer).isNotNull();
     }
-
-    @Test
-    public void when_jwt_resource_server_configurer_adapter_then_an_instance_is_instantiated() {
-        // When
-        var jwtResourceServerConfigurerAdapter = sut.jwtResourceServerConfigurerAdapter();
-
-        // Then
-        assertThat(jwtResourceServerConfigurerAdapter).isNotNull();
-    }
 }

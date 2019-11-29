@@ -46,7 +46,6 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @WithMockUser
 public class PeopleContractTest extends ContractBaseTest {
     private static final String ID_PATH = "/{id}";
-    private static final String MOCK_USERS_CREDENTIALS = "password";
     private static final String MOCK_USERS_NAME = "user";
     @MockBean
     private EmailServiceClient emailServiceClient;

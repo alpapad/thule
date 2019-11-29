@@ -11,6 +11,7 @@ logging:
     jdbc.resultset: error
     jdbc.sqlonly: error
     jdbc.sqltiming: error
+    org.springframework.security: debug
 
 # Management endpoint configuration
 management:
@@ -21,6 +22,13 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+
+# Spring Security configuration
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: gmjtdvNVmQRz8bzw6ae
 
 # Spring boot configuration
 spring:

@@ -54,7 +54,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation("uk.co.serin.thule:thule-spring-boot-starter-data:${thuleSharedVersion}")
-    implementation("uk.co.serin.thule:thule-spring-boot-starter-security:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-security-oauth2:${thuleSharedVersion}")
     implementation("com.googlecode.log4jdbc:log4jdbc:1.2")
     implementation("mysql:mysql-connector-java")
