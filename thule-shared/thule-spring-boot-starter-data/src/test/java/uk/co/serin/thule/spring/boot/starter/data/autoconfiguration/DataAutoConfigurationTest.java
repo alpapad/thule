@@ -18,7 +18,7 @@ public class DataAutoConfigurationTest {
     private DataAutoConfiguration sut;
 
     @Test
-    public void when_spring_security_auditor_aware_then_a_spring_security_auditor_aware_is_created() {
+    public void when_springSecurityAuditorAware_then_an_instance_is_instantiated() {
         // When
         var springSecurityAuditorAware = sut.springSecurityAuditorAware(delegatingSecurityContextHolder);
 

@@ -13,7 +13,7 @@ public class SecurityAutoConfigurationTest {
     private SecurityAutoConfiguration sut;
 
     @Test
-    public void when_delegating_security_context_holder_then_a_delegating_security_context_holder_is_created() {
+    public void when_delegatingSecurityContextHolder_then_an_instance_is_instantiated() {
         // When
         var delegatingSecurityContextHolder = sut.delegatingSecurityContextHolder();
 

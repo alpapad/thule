@@ -9,8 +9,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
-import uk.co.serin.thule.security.oauth2.Oauth2Properties;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -20,13 +18,11 @@ public class Oauth2AutoConfigurationTest {
     private CorsRegistration corsRegistration;
     @Mock
     private CorsRegistry corsRegistry;
-    @Mock
-    private Oauth2Properties oauth2Properties;
     @InjectMocks
     private Oauth2AutoConfiguration sut;
 
     @Test
-    public void when_access_token_customizer_then_an_instance_is_instantiated() {
+    public void when_jwtAccessTokenCustomizer_then_an_instance_is_instantiated() {
         // When
         var accessTokenConverter = sut.jwtAccessTokenCustomizer();
 
@@ -35,7 +31,7 @@ public class Oauth2AutoConfigurationTest {
     }
 
     @Test
-    public void when_cors_configurer_then_an_instance_is_instantiated() {
+    public void when_corsConfigurer_then_an_instance_is_instantiated() {
         // Given
         given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
         given(corsRegistration.allowedMethods(HttpMethod.GET.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(), HttpMethod.POST.name()))
@@ -47,5 +43,14 @@ public class Oauth2AutoConfigurationTest {
 
         // Then
         assertThat(corsConfigurer).isNotNull();
+    }
+
+    @Test
+    public void when_jwtResourceServerConfigurerAdapter_then_an_instance_is_instantiated() {
+        // When
+        var jwtResourceServerConfigurerAdapter = sut.jwtResourceServerConfigurerAdapter();
+
+        // Then
+        assertThat(jwtResourceServerConfigurerAdapter).isNotNull();
     }
 }

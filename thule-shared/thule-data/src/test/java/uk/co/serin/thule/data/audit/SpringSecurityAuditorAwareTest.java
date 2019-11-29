@@ -12,7 +12,6 @@ import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,28 +24,15 @@ public class SpringSecurityAuditorAwareTest {
     private SpringSecurityAuditorAware sut;
 
     @Test
-    public void given_empty_current_auditor_when_get_current_auditor_then_illegal_argument_exception_is_thrown() {
+    public void given_null_authentication_when_get_current_auditor_then_return_empty() {
         // Given
-        var principalName = "";
-        given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);
-        given(authentication.getName()).willReturn(principalName);
+        given(delegatingSecurityContextHolder.getAuthentication()).willReturn(null);
 
         // When
-        var throwable = catchThrowable(() -> sut.getCurrentAuditor());
+        var currentAuditor = sut.getCurrentAuditor();
 
         // Then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class);
-        assertThat(throwable).hasMessage("Principal name is empty");
-    }
-
-    @Test
-    public void given_null_authentication_when_get_current_auditor_then_illegal_argument_exception_is_thrown() {
-        // When
-        var throwable = catchThrowable(() -> sut.getCurrentAuditor());
-
-        // Then
-        assertThat(throwable).isInstanceOf(IllegalArgumentException.class);
-        assertThat(throwable).hasMessage("Authentication is null");
+        assertThat(currentAuditor).isEmpty();
     }
 
     @Test

@@ -13,7 +13,7 @@ public class UtilsAutoConfigurationTest {
     private UtilsAutoConfiguration sut;
 
     @Test
-    public void when_trace_public_methods_interceptor_then_an_instance_is_instantiated() {
+    public void when_tracePublicMethodsInterceptor_then_an_instance_is_instantiated() {
         // When
         var tracePublicMethodsInterceptor = sut.tracePublicMethodsInterceptor();
 

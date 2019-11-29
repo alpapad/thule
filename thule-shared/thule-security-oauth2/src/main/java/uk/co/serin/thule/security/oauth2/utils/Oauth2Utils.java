@@ -37,9 +37,9 @@ public final class Oauth2Utils {
 
     private static OAuth2AccessToken convertJwtToOAuth2AccessToken(String signingKey, Map<String, Object> jwtAsMap) {
         var jwtAsJson = JsonParserFactory.create().formatMap(jwtAsMap);
-        var token = JwtHelper.encode(jwtAsJson, new MacSigner(signingKey)).getEncoded();
+        var jwt = JwtHelper.encode(jwtAsJson, new MacSigner(signingKey)).getEncoded();
 
-        return new DefaultOAuth2AccessToken(token);
+        return new DefaultOAuth2AccessToken(jwt);
     }
 
     public static OAuth2AccessToken createPhpJwtOauth2AccessToken(String userName, long userId, Collection<? extends GrantedAuthority> grantedAuthorities,

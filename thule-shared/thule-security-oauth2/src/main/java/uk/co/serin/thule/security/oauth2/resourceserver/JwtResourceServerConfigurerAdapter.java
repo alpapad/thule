@@ -4,13 +4,11 @@ import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointR
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 import lombok.NoArgsConstructor;
 
 @Configuration
-@EnableResourceServer
 @NoArgsConstructor
 public class JwtResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
     @Override

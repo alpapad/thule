@@ -7,7 +7,6 @@ import org.springframework.core.Ordered;
 
 import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
 
-@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 public class SecurityAutoConfiguration {
     @Bean
