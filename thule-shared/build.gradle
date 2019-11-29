@@ -173,6 +173,7 @@ project("thule-spring-boot-starter-security-oauth2") {
 
         api project(":thule-security-oauth2")
         api project(":thule-spring-boot-starter")
+        api project(":thule-spring-boot-starter-security")
 
         compileOnly("org.projectlombok:lombok")
 

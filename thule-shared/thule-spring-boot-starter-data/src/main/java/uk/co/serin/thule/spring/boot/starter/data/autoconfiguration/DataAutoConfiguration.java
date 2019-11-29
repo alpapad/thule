@@ -5,13 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import uk.co.serin.thule.data.audit.SpringSecurityAuditorAware;
-import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.Oauth2DelegatingSecurityContextHolder;
 
-@ConditionalOnClass({DelegatingSecurityContextHolder.class})
+@ConditionalOnClass({Oauth2DelegatingSecurityContextHolder.class})
 @Configuration
 public class DataAutoConfiguration {
     @Bean
-    public SpringSecurityAuditorAware springSecurityAuditorAware(DelegatingSecurityContextHolder delegatingSecurityContextHolder) {
+    public SpringSecurityAuditorAware springSecurityAuditorAware(Oauth2DelegatingSecurityContextHolder delegatingSecurityContextHolder) {
         return new SpringSecurityAuditorAware(delegatingSecurityContextHolder);
     }
 }

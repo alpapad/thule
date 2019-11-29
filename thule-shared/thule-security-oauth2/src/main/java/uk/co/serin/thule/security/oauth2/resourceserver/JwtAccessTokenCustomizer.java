@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConv
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-import uk.co.serin.thule.security.oauth2.context.UserAuthenticationDetails;
+import uk.co.serin.thule.security.context.UserAuthenticationDetails;
 
 import java.util.HashMap;
 import java.util.Map;

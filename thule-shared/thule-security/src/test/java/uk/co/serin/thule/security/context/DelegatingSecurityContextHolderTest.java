@@ -1,38 +1,34 @@
-package uk.co.serin.thule.security.oauth2.context;
+package uk.co.serin.thule.security.context;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DelegatingSecurityContextHolderTest {
-    protected static final String PASSWORD = "password";
-    protected static final String USER_NAME = "username";
     @Mock
     private SecurityContext anotherSecurityContext;
     @Mock
     private Authentication authentication;
     @Mock
-    private OAuth2Authentication oAuth2Authentication;
-    @Mock
     private SecurityContext securityContext;
-    private DelegatingSecurityContextHolder sut = new DelegatingSecurityContextHolder();
+    @InjectMocks
+    private DelegatingSecurityContextHolder sut;
     @Mock
     private UserAuthenticationDetails userAuthenticationDetails;
 
     @Test
     public void given_a_user_authentication_details_when_get_user_authentication_details_then_a_user_authentication_details_is_returned() {
         // Given
-        given(securityContext.getAuthentication()).willReturn(oAuth2Authentication);
-        given(oAuth2Authentication.getUserAuthentication()).willReturn(authentication);
+        given(securityContext.getAuthentication()).willReturn(authentication);
         given(authentication.getDetails()).willReturn(userAuthenticationDetails);
         sut.setContext(securityContext);
 
@@ -46,8 +42,7 @@ public class DelegatingSecurityContextHolderTest {
     @Test
     public void given_an_invalid_user_authentication_details_when_get_user_authentication_details_then_an_empty_optional_is_returned() {
         // Given
-        given(securityContext.getAuthentication()).willReturn(oAuth2Authentication);
-        given(oAuth2Authentication.getUserAuthentication()).willReturn(authentication);
+        given(securityContext.getAuthentication()).willReturn(authentication);
         given(authentication.getDetails()).willReturn(new Object());
         sut.setContext(securityContext);
 

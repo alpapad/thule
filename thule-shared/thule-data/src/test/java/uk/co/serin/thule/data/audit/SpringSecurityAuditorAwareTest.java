@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 
-import uk.co.serin.thule.security.oauth2.context.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.Oauth2DelegatingSecurityContextHolder;
 
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ public class SpringSecurityAuditorAwareTest {
     @Mock
     private Authentication authentication;
     @Mock
-    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
+    private Oauth2DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
     private SpringSecurityAuditorAware sut;
 

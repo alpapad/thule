@@ -1,4 +1,4 @@
-package uk.co.serin.thule.security.oauth2.context;
+package uk.co.serin.thule.security.context;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

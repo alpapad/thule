@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+uk.co.serin.thule.spring.boot.starter.security.autoconfiguration.SecurityAutoConfiguration
