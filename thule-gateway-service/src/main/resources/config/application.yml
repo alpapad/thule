@@ -18,6 +18,13 @@ ribbon:
   ConnectTimeout: 20000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be connectTimeout or connect-timeout
   ReadTimeout: 60000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be readTimeout or read-timeout
 
+# Spring Security configuration
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: gmjtdvNVmQRz8bzw6ae
+
 # Spring boot configuration
 spring:
   application:
