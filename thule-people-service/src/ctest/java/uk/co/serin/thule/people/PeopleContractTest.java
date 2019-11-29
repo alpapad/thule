@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.rest.webmvc.support.ETag;
-import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -67,7 +67,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
         // When
         var personResponseEntity =
-                oAuth2RestTemplate.exchange(baseUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<Resources<PersonEntity>>() {
+                oAuth2RestTemplate.exchange(baseUrl, HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<CollectionModel<PersonEntity>>() {
                 }, 0, 1000);
 
         // Then

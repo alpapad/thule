@@ -18,7 +18,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.8"
-    id "org.springframework.boot" version "2.1.10.RELEASE"
+    id "org.springframework.boot" version "2.2.1.RELEASE"
 }
 apply plugin: "io.spring.dependency-management"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
@@ -58,7 +58,7 @@ description = "Thule Configuration Service"
 // Dependencies
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Greenwich.SR4")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.RELEASE")
     }
 }
 
