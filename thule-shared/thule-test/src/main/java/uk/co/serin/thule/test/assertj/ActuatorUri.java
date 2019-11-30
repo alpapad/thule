@@ -2,15 +2,12 @@ package uk.co.serin.thule.test.assertj;
 
 import java.net.URI;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 @Getter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString
 public class ActuatorUri {
     private URI uri;
