@@ -5,6 +5,7 @@
 
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <include resource="uk/co/serin/thule/logging/logback/logstash.xml"/>
+
     <jmxConfigurator/>
 
     <root level="INFO">

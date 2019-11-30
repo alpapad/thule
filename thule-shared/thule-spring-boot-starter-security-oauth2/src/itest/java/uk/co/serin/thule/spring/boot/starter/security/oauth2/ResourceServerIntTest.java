@@ -72,4 +72,3 @@ public class ResourceServerIntTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 }
-
