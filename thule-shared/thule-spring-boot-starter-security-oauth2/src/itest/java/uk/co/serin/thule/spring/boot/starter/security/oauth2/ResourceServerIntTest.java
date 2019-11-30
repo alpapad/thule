@@ -39,7 +39,7 @@ public class ResourceServerIntTest {
     public void when_authenticated_using_a_java_generated_jwt_then_access_should_be_granted() {
         // Given
         var jwtOauth2AccessToken =
-                Oauth2Utils.createJwtOauth2AccessToken(USER_NAME, USER_ID, GRANTED_AUTHORITIES, "gohenry-test-service", "gmjtdvNVmQRz8bzw6ae");
+                Oauth2Utils.createJwtOauth2AccessToken(USER_NAME, USER_ID, GRANTED_AUTHORITIES, "gohenry-test-service", "secret");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         // When
@@ -53,7 +53,7 @@ public class ResourceServerIntTest {
     public void when_authenticated_using_a_php_generated_jwt_then_access_should_be_granted() {
         // Given
         var jwtOauth2AccessToken =
-                Oauth2Utils.createPhpJwtOauth2AccessToken(USER_NAME, USER_ID, GRANTED_AUTHORITIES, "gohenry-test-service", "gmjtdvNVmQRz8bzw6ae");
+                Oauth2Utils.createPhpJwtOauth2AccessToken(USER_NAME, USER_ID, GRANTED_AUTHORITIES, "gohenry-test-service", "secret");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         // When
