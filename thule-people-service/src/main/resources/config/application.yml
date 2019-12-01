@@ -3,15 +3,6 @@ info:
   description: Thule People Service
   name: ${spring.application.name}
 
-# Spring logging
-logging:
-  level:
-    jdbc.audit: error
-    jdbc.connection: error
-    jdbc.resultset: error
-    jdbc.sqlonly: error
-    jdbc.sqltiming: error
-
 # Management endpoint configuration
 management:
   endpoints:
