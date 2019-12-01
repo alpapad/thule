@@ -128,7 +128,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
         // Setup OAuth2
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, 0,
-                Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOAS support

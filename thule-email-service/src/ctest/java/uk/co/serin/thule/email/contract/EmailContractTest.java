@@ -53,7 +53,7 @@ public class EmailContractTest extends ContractBaseTest {
         baseUrl = testRestTemplate.getRootUri() + "/emails";
 
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "gmjtdvNVmQRz8bzw6ae");
+                "username", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 

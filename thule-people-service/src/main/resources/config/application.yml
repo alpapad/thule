@@ -27,7 +27,7 @@ security:
   oauth2:
     resource:
       jwt:
-        key-value: gmjtdvNVmQRz8bzw6ae
+        key-value: secret
 
 # Spring boot configuration
 spring:
