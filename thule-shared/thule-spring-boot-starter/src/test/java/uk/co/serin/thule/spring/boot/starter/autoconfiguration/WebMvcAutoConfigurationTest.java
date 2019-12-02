@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
@@ -25,8 +24,7 @@ public class WebMvcAutoConfigurationTest {
     public void when_corsConfigurer_then_cors_mappings_is_configured() {
         // Given
         given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
-        given(corsRegistration.allowedMethods(HttpMethod.GET.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(), HttpMethod.POST.name()))
-                .willReturn(corsRegistration);
+        given(corsRegistration.allowedMethods("*")).willReturn(corsRegistration);
 
         //When
         var corsConfigurer = sut.corsConfigurer();

@@ -30,4 +30,9 @@ public class HelloWorldController {
         assertThat(actualUserName).isEqualTo(ResourceServerIntTest.USER_NAME);
         return "Hello World";
     }
+
+    @GetMapping(value = "/hello")
+    public String hello() {
+        return "Hello World";
+    }
 }
