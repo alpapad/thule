@@ -35,6 +35,8 @@ public class ResourceServerAutoConfigurationTest {
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.requestMatchers(any(EndpointRequest.EndpointRequestMatcher.class))).willReturn(authorizedUrl);
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+        given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs")).willReturn(authorizedUrl);
+        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/**")).willReturn(authorizedUrl);
         given(authorizedUrl.authenticated()).willReturn(expressionInterceptUrlRegistry);
 

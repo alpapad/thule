@@ -33,6 +33,7 @@ public class ResourceServerAutoConfiguration {
                 httpSecurity.cors() // allow pre-flight CORS requests
                     .and().authorizeRequests()
                     .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
+                    .antMatchers("/v2/api-docs").permitAll() // allow swagger docs, even if not authenticated
                     .antMatchers("/**").authenticated(); // everything else must be authenticated
             }
         };
