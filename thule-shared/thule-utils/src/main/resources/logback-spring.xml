@@ -8,6 +8,13 @@
 
     <jmxConfigurator/>
 
+    <logger name="jdbc.audit" level="error"/>
+    <logger name="jdbc.connection" level="error"/>
+    <logger name="jdbc.resultset" level="error"/>
+    <logger name="jdbc.sqlonly" level="error"/>
+    <logger name="jdbc.sqltiming" level="error"/>
+    <logger name="uk.co.serin.thule" level="info"/>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

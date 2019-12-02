@@ -8,9 +8,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SecurityAutoConfigurationTest {
+public class Oauth2SecurityAutoConfigurationTest {
     @InjectMocks
-    private SecurityAutoConfiguration sut;
+    private Oauth2SecurityAutoConfiguration sut;
 
     @Test
     public void when_delegatingSecurityContextHolder_then_an_instance_is_instantiated() {

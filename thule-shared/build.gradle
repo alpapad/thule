@@ -48,10 +48,10 @@ project("thule-data") {
 
         api("org.springframework.data:spring-data-commons")
 
-        compileOnly project(":thule-security-oauth2")
+        compileOnly project(":thule-security")
         compileOnly("org.projectlombok:lombok")
 
-        testImplementation project(":thule-security-oauth2")
+        testImplementation project(":thule-security")
         testImplementation project(":thule-spring-boot-starter-test")
     }
 }
@@ -129,10 +129,12 @@ project("thule-spring-boot-starter") {
         api("org.springframework.boot:spring-boot-starter")
 
         compileOnly("org.projectlombok:lombok")
+        compileOnly("org.springframework:spring-webmvc")
 
         implementation("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
 
         testImplementation project(":thule-spring-boot-starter-test")
+        testImplementation("org.springframework:spring-webmvc")
     }
 }
 

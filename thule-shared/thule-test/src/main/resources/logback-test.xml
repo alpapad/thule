@@ -6,6 +6,11 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
+    <logger name="jdbc.audit" level="error"/>
+    <logger name="jdbc.connection" level="error"/>
+    <logger name="jdbc.resultset" level="error"/>
+    <logger name="jdbc.sqlonly" level="trace"/>
+    <logger name="jdbc.sqltiming" level="error"/>
     <logger name="uk.co.serin.thule" level="trace"/>
 
     <root level="INFO">

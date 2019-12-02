@@ -2,7 +2,7 @@ package uk.co.serin.thule.data.audit;
 
 import org.springframework.data.domain.AuditorAware;
 
-import uk.co.serin.thule.security.oauth2.context.Oauth2DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
 
 import java.util.Optional;
 
@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
-    private Oauth2DelegatingSecurityContextHolder delegatingSecurityContextHolder;
+    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
 
     @Override
     public Optional<String> getCurrentAuditor() {
