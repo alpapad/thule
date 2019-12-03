@@ -135,6 +135,9 @@ project("thule-spring-boot-starter") {
 
         testImplementation project(":thule-spring-boot-starter-test")
         testImplementation("org.springframework:spring-webmvc")
+
+        itestImplementation("org.springframework.boot:spring-boot-starter-web")
+        itestImplementation("org.apache.httpcomponents:httpclient")
     }
 }
 
