@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
-import uk.co.serin.thule.spring.boot.starter.security.oauth2.ResourceServerIntTest;
+import uk.co.serin.thule.spring.boot.starter.security.oauth2.ResourceServerAutoConfigurationIntTest;
 
 import java.util.HashSet;
 
@@ -19,20 +19,15 @@ public class HelloWorldController {
         this.delegatingSecurityContextHolder = delegatingSecurityContextHolder;
     }
 
-    @GetMapping(value = "/assert-correct-security-context")
-    public String assertCorrectSecurityContext() {
+    @GetMapping(value = "/hello")
+    public String hello() {
         var actualGrantedAuthorities = new HashSet<GrantedAuthority>(delegatingSecurityContextHolder.getAuthentication().getAuthorities());
         var actualUserName = delegatingSecurityContextHolder.getAuthentication().getName();
         var actualUserId = delegatingSecurityContextHolder.getUserAuthenticationDetails().orElseThrow().getUserId();
 
-        assertThat(actualGrantedAuthorities).containsExactlyElementsOf(ResourceServerIntTest.GRANTED_AUTHORITIES);
-        assertThat(actualUserId).isEqualTo(ResourceServerIntTest.USER_ID);
-        assertThat(actualUserName).isEqualTo(ResourceServerIntTest.USER_NAME);
-        return "Hello World";
-    }
-
-    @GetMapping(value = "/hello")
-    public String hello() {
+        assertThat(actualGrantedAuthorities).containsExactlyElementsOf(ResourceServerAutoConfigurationIntTest.GRANTED_AUTHORITIES);
+        assertThat(actualUserId).isEqualTo(ResourceServerAutoConfigurationIntTest.USER_ID);
+        assertThat(actualUserName).isEqualTo(ResourceServerAutoConfigurationIntTest.USER_NAME);
         return "Hello World";
     }
 }
