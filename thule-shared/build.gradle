@@ -83,6 +83,11 @@ project("thule-security-oauth2") {
 
         testImplementation project(":thule-spring-boot-starter-test")
         testImplementation("org.springframework.boot:spring-boot-starter-web")
+
+        itestImplementation("org.springframework.cloud:spring-cloud-starter")
+        itestImplementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
+        itestImplementation("org.springframework.security:spring-security-test")
+        itestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     }
 }
 
