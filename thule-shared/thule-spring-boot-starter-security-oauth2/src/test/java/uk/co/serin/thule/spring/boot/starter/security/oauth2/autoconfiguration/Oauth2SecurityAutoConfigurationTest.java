@@ -20,4 +20,13 @@ public class Oauth2SecurityAutoConfigurationTest {
         // Then
         assertThat(delegatingSecurityContextHolder).isNotNull();
     }
+
+    @Test
+    public void when_detailsEnhancedUserAuthenticationConverter_then_an_instance_is_instantiated() {
+        // When
+        var detailsEnhancedUserAuthenticationConverter = sut.detailsEnhancedUserAuthenticationConverter();
+
+        // Then
+        assertThat(detailsEnhancedUserAuthenticationConverter).isNotNull();
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
+import uk.co.serin.thule.security.oauth2.context.UserIdEnhancedUserAuthenticationConverter;
 import uk.co.serin.thule.security.oauth2.resourceserver.JwtAccessTokenCustomizer;
 
 import lombok.NoArgsConstructor;
@@ -21,8 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResourceServerAutoConfiguration {
     @Bean
-    public JwtAccessTokenCustomizer jwtAccessTokenCustomizer() {
-        return new JwtAccessTokenCustomizer();
+    public JwtAccessTokenCustomizer jwtAccessTokenCustomizer(UserIdEnhancedUserAuthenticationConverter userIdEnhancedUserAuthenticationConverter) {
+        return new JwtAccessTokenCustomizer(userIdEnhancedUserAuthenticationConverter);
     }
 
     @Bean
@@ -31,10 +32,10 @@ public class ResourceServerAutoConfiguration {
             @Override
             public void configure(HttpSecurity httpSecurity) throws Exception {
                 httpSecurity.cors() // allow pre-flight CORS requests
-                    .and().authorizeRequests()
-                    .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
-                    .antMatchers("/v2/api-docs").permitAll() // allow swagger docs, even if not authenticated
-                    .antMatchers("/**").authenticated(); // everything else must be authenticated
+                            .and().authorizeRequests()
+                            .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
+                            .antMatchers("/v2/api-docs").permitAll() // allow swagger docs, even if not authenticated
+                            .antMatchers("/**").authenticated(); // everything else must be authenticated
             }
         };
     }

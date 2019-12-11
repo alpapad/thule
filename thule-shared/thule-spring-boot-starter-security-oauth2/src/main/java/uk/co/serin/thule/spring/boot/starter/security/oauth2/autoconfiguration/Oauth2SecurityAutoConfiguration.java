@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import uk.co.serin.thule.security.oauth2.context.Oauth2DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.oauth2.context.UserIdEnhancedUserAuthenticationConverter;
 import uk.co.serin.thule.spring.boot.starter.security.autoconfiguration.SecurityAutoConfiguration;
 
 @AutoConfigureBefore(SecurityAutoConfiguration.class)
@@ -15,5 +16,10 @@ public class Oauth2SecurityAutoConfiguration {
     @ConditionalOnMissingBean
     public Oauth2DelegatingSecurityContextHolder delegatingSecurityContextHolder() {
         return new Oauth2DelegatingSecurityContextHolder();
+    }
+
+    @Bean
+    public UserIdEnhancedUserAuthenticationConverter detailsEnhancedUserAuthenticationConverter() {
+        return new UserIdEnhancedUserAuthenticationConverter();
     }
 }

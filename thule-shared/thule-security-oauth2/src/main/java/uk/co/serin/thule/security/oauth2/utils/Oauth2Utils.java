@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.util.JsonParserFactory;
 
-import uk.co.serin.thule.security.oauth2.resourceserver.JwtAccessTokenCustomizer;
+import uk.co.serin.thule.security.oauth2.context.UserIdEnhancedUserAuthenticationConverter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -45,8 +45,8 @@ public final class Oauth2Utils {
     public static OAuth2AccessToken createPhpJwtOauth2AccessToken(String userName, long userId, Collection<? extends GrantedAuthority> grantedAuthorities,
                                                                   String clientId, String signingKey) {
         var phpDataStructure = Map.of(
-                JwtAccessTokenCustomizer.PHP_USER_ID, userId,
-                JwtAccessTokenCustomizer.PHP_USER_NAME, userName);
+                UserIdEnhancedUserAuthenticationConverter.PHP_USER_ID, userId,
+                UserIdEnhancedUserAuthenticationConverter.PHP_USER_NAME, userName);
 
         var jwtAsMap = Map.of(
                 "authorities", AuthorityUtils.authorityListToSet(grantedAuthorities),

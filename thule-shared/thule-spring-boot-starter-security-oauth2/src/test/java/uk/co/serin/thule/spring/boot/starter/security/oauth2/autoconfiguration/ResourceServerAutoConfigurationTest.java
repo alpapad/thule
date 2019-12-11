@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 
+import uk.co.serin.thule.security.oauth2.context.UserIdEnhancedUserAuthenticationConverter;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -26,6 +28,8 @@ public class ResourceServerAutoConfigurationTest {
     private HttpSecurity httpSecurity;
     @InjectMocks
     private ResourceServerAutoConfiguration sut;
+    @Mock
+    private UserIdEnhancedUserAuthenticationConverter userIdEnhancedUserAuthenticationConverter;
 
     @Test
     public void when_jwtResourceServerConfigurerAdapter_then_an_instance_is_instantiated() throws Exception {
@@ -51,7 +55,7 @@ public class ResourceServerAutoConfigurationTest {
     @Test
     public void when_jwtAccessTokenCustomizer_then_an_instance_is_instantiated() {
         // When
-        var accessTokenConverter = sut.jwtAccessTokenCustomizer();
+        var accessTokenConverter = sut.jwtAccessTokenCustomizer(userIdEnhancedUserAuthenticationConverter);
 
         // Then
         assertThat(accessTokenConverter).isNotNull();
