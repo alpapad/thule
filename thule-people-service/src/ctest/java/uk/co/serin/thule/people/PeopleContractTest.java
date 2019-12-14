@@ -47,18 +47,33 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 public class PeopleContractTest extends ContractBaseTest {
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_NAME = "user";
+    private String baseUrl;
     @MockBean
     private EmailServiceClient emailServiceClient;
     @Autowired
     private EntityManager entityManager;
     private OAuth2RestTemplate oAuth2RestTemplate;
-    private String baseUrl;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
     private StateRepository stateRepository;
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Before
+    public void before() {
+        // Set up service url
+        baseUrl = testRestTemplate.getRootUri() + "/people";
+
+        // Setup OAuth2
+        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, 0,
+                Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
+        oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
+
+        // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOAS support
+        // So, add all the message converters from the TestRestTemplate
+        oAuth2RestTemplate.setMessageConverters(testRestTemplate.getRestTemplate().getMessageConverters());
+    }
 
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() {
@@ -119,21 +134,6 @@ public class PeopleContractTest extends ContractBaseTest {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(actualPerson).isEqualTo(testPerson);
-    }
-
-    @Before
-    public void setUp() {
-        // Set up service url
-        baseUrl = testRestTemplate.getRootUri() + "/people";
-
-        // Setup OAuth2
-        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, 0,
-                Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
-        oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
-
-        // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOAS support
-        // So, add all the message converters from the TestRestTemplate
-        oAuth2RestTemplate.setMessageConverters(testRestTemplate.getRestTemplate().getMessageConverters());
     }
 
     @Test

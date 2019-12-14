@@ -16,6 +16,12 @@ management:
 # Spring Security configuration
 security:
   oauth2:
+    client:
+      access-token-uri: http://thule-authentication-service/oauth/token
+      client-id: ${spring.application.name}
+      client-secret:  secret
+      grant-type: client_credentials
+      scope:  All
     resource:
       jwt:
         key-value: secret

@@ -1,9 +1,24 @@
+# Spring Security configuration
+security:
+  oauth2:
+    client:
+      access-token-uri: http://localhost:${wiremock.server.port}/oauth/token
+    resource:
+      jwt:
+        key-value: secret
+
 # Spring boot configuration
 spring:
   cloud:
     kubernetes:
       discovery:
         enabled: false
+    discovery:
+      client:
+        simple:
+          instances:
+            thule-email-service:
+              - uri: http://localhost:8080
   datasource:
     password: thule
     username: thule
