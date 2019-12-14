@@ -1,6 +1,5 @@
 package uk.co.serin.thule.email.controller;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
