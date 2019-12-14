@@ -60,7 +60,7 @@ metadata:
 spec:
   ports:
     - nodePort: 31091
-      port: 8080
+      port: 80
       targetPort: 8080
   selector:
     app: thule-gateway-service
