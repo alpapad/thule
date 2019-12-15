@@ -77,6 +77,7 @@ dependencies {
     itestImplementation("org.hsqldb:hsqldb")
     itestImplementation("org.springframework.security:spring-security-test")
 
+    ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     ctestImplementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
     ctestImplementation("org.springframework.security:spring-security-test")
 
