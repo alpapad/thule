@@ -30,10 +30,6 @@ security:
 spring:
   application:
     name: thule-people-service
-  cloud:
-    loadbalancer:
-      ribbon:
-        enabled: false
   datasource:
     driver-class-name: net.sf.log4jdbc.DriverSpy
     hikari:
