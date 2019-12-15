@@ -15,6 +15,7 @@ import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,8 @@ public final class Oauth2Utils {
         var jwtAsMap = Map.of(
                 "authorities", AuthorityUtils.authorityListToSet(grantedAuthorities),
                 "client_id", clientId,
-                "exp", LocalDateTime.now().plusDays(10).toInstant(ZoneOffset.UTC).toEpochMilli(),
-                "jti", "bb4915fa-c73b-4185-b3db-367da36abec4",
+                "exp", LocalDateTime.now().plusYears(1).toInstant(ZoneOffset.UTC).toEpochMilli(),
+                "jti", UUID.randomUUID(),
                 "scope", Set.of(),
                 "user_id", userId,
                 "user_name", userName);
@@ -52,8 +53,8 @@ public final class Oauth2Utils {
                 "authorities", AuthorityUtils.authorityListToSet(grantedAuthorities),
                 "client_id", clientId,
                 "data", phpDataStructure,
-                "exp", LocalDateTime.now().plusDays(10).toInstant(ZoneOffset.UTC).toEpochMilli(),
-                "jti", "bb4915fa-c73b-4185-b3db-367da36abec4",
+                "exp", LocalDateTime.now().plusYears(1).toInstant(ZoneOffset.UTC).toEpochMilli(),
+                "jti", UUID.randomUUID(),
                 "scope", Set.of());
 
         return convertJwtToOAuth2AccessToken(signingKey, jwtAsMap);
