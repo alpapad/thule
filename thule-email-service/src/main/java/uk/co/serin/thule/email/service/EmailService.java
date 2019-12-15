@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import uk.co.serin.thule.email.domain.model.Email;
+import uk.co.serin.thule.utils.trace.LogException;
 import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.util.concurrent.Future;
@@ -30,6 +31,7 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     @Async
+    @LogException
     public Future<Email> send(Email email) {
         if (!hasARecipient(email)) {
             throw new ValidationException("At least one recipient email addresses ('TO', 'CC' 'BCC') should be provided");

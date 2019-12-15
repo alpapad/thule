@@ -1,3 +1,12 @@
+# Spring Security configuration
+security:
+  oauth2:
+    client:
+      access-token-uri: http://localhost/oauth/token
+    resource:
+      jwt:
+        key-value: secret
+
 # Spring server configuration
 server:
   port: 8094
@@ -8,6 +17,12 @@ spring:
     kubernetes:
       discovery:
         enabled: false
+    discovery:
+      client:
+        simple:
+          instances:
+            thule-email-service:
+              - uri: http://localhost:8095
   datasource:
     password: thule
     username: thule
