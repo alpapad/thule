@@ -14,15 +14,18 @@ server:
 # Spring boot configuration
 spring:
   cloud:
-    kubernetes:
-      discovery:
-        enabled: false
     discovery:
       client:
         simple:
           instances:
             thule-email-service:
               - uri: http://localhost:8095
+    kubernetes:
+      discovery:
+        enabled: false
+    loadbalancer:
+      ribbon:
+        enabled: false
   datasource:
     password: thule
     username: thule

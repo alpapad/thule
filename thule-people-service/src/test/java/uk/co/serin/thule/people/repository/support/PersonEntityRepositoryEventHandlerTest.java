@@ -15,7 +15,7 @@ import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.people.service.email.EmailServiceClientAsync;
+import uk.co.serin.thule.people.service.email.EmailServiceClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class PersonEntityRepositoryEventHandlerTest {
     @Mock
-    private EmailServiceClientAsync emailServiceClientAsync;
+    private EmailServiceClient emailServiceClientAsync;
     @InjectMocks
     private PersonRepositoryEventHandler personRepositoryEventHandler;
     @Mock
