@@ -28,6 +28,7 @@ public class ApplicationConfigurer {
     static {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
+
     @Bean
     public JwtPropagatingOAuth2FeignRequestInterceptor jwtPropagatingOAuth2FeignRequestInterceptor(
             DelegatingSecurityContextHolder delegatingSecurityContextHolder, OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
