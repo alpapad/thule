@@ -15,7 +15,7 @@ import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.RoleRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.people.service.email.EmailServiceClient;
+import uk.co.serin.thule.people.service.email.EmailServiceClientAsync;
 import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.util.Collections;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @TracePublicMethods
 @Validated
 public class PersonRepositoryEventHandler {
-    private EmailServiceClient emailServiceClient;
+    private EmailServiceClientAsync emailServiceClient;
     private RoleRepository roleRepository;
     private StateRepository stateRepository;
 
