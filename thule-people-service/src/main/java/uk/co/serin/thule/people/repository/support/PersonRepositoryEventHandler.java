@@ -42,7 +42,7 @@ public class PersonRepositoryEventHandler {
     }
 
     private void sendEmail(PersonEntity person, String event) {
-        var email = Email.builder().body(String.format("PersonEntity %s %s has been %s", person.getFirstName(), person.getLastName(), event))
+        var email = Email.builder().body(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event))
                          .subject("Thule people service notification").tos(Collections.singleton(person.getEmailAddress())).build();
         emailServiceClient.sendEmail(email);
     }
