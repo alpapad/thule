@@ -1,10 +1,12 @@
 package uk.co.serin.thule.people;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.rest.webmvc.support.ETag;
@@ -13,7 +15,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
@@ -25,19 +28,19 @@ import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.people.service.email.EmailServiceClient;
 import uk.co.serin.thule.security.oauth2.utils.Oauth2Utils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Objects;
 
 import javax.persistence.EntityManager;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.springframework.util.StringUtils.trimLeadingCharacter;
 import static org.springframework.util.StringUtils.trimTrailingCharacter;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -48,11 +51,11 @@ public class PeopleContractTest extends ContractBaseTest {
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_NAME = "user";
     private String baseUrl;
-    @MockBean
-    private EmailServiceClient emailServiceClient;
     @Autowired
     private EntityManager entityManager;
     private OAuth2RestTemplate oAuth2RestTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -66,8 +69,8 @@ public class PeopleContractTest extends ContractBaseTest {
         baseUrl = testRestTemplate.getRootUri() + "/people";
 
         // Setup OAuth2
-        var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, 0,
-                Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
+        var jwtOauth2AccessToken =
+                Oauth2Utils.createJwtOauth2AccessToken(MOCK_USERS_NAME, 0, AuthorityUtils.createAuthorityList("grantedAuthority"), "clientId", "secret");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
 
         // By default the OAuth2RestTemplate does not have the full set of message converters which the TestRestTemplate has, including the ResourceResourceHttpMessageConverter required for HateOAS support
@@ -137,10 +140,13 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_creating_a_person_then_that_person_is_returned() {
+    public void when_creating_a_person_then_that_person_is_returned() throws JsonProcessingException {
         // Given
         var testPerson = buildPersonWithoutAnyAssociations();
-        given(emailServiceClient.sendEmail(any())).willReturn(Email.builder().build());
+        var email = objectMapper.writeValueAsString(Email.builder().build());
+        givenThat(post(urlEqualTo("/emails")).willReturn(
+                aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                           .withBody(email)));
 
         // When
         var responseEntity = oAuth2RestTemplate.postForEntity(baseUrl, testPerson, PersonEntity.class);
@@ -177,10 +183,13 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_deleting_a_person_then_the_person_no_longer_exists() {
+    public void when_deleting_a_person_then_the_person_no_longer_exists() throws JsonProcessingException {
         // Given
         var person = createAndPersistPersonWithNoAssociations();
-        given(emailServiceClient.sendEmail(any())).willReturn(Email.builder().build());
+        var email = objectMapper.writeValueAsString(Email.builder().build());
+        givenThat(post(urlEqualTo("/emails")).willReturn(
+                aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                           .withBody(email)));
 
         // When
         oAuth2RestTemplate.delete(baseUrl + ID_PATH, person.getId());
@@ -191,10 +200,13 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_updating_a_person_then_that_person_is_updated() throws InterruptedException {
+    public void when_updating_a_person_then_that_person_is_updated() throws InterruptedException, JsonProcessingException {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
-        given(emailServiceClient.sendEmail(any())).willReturn(Email.builder().build());
+        var email = objectMapper.writeValueAsString(Email.builder().build());
+        givenThat(post(urlEqualTo("/emails")).willReturn(
+                aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                           .withBody(email)));
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");
