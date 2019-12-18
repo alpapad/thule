@@ -21,9 +21,9 @@ server:
 spring:
   application:
     name: thule-admin-service
-  boot:
-    admin:
-      context-path: /${spring.application.name}
+#  boot:
+#    admin:
+#      context-path: /${spring.application.name}
   sleuth:
     sampler:
       probability: 1.0
