@@ -58,9 +58,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: service-port
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 5
+            initialDelaySeconds: 300
+            periodSeconds: 30
+            timeoutSeconds: 10
           ports:
             - containerPort: 8080
               name: service-port
@@ -68,9 +68,8 @@ spec:
             httpGet:
               path: /actuator/health
               port: service-port
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 5
+            periodSeconds: 30
+            timeoutSeconds: 10
           volumeMounts:
             - name: config
               mountPath: /config
