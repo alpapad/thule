@@ -19,8 +19,8 @@ management:
       show-details: ALWAYS
 
 # Server configuration
-server:
-  forward-headers-strategy: native
+#server:
+#  forward-headers-strategy: native
 
 # Spring boot configuration
 spring:
