@@ -16,7 +16,7 @@ management:
 
 # Server configuration
 server:
-  forward-headers-strategy: framework
+  forward-headers-strategy: native
 
 # Spring boot configuration
 spring:
