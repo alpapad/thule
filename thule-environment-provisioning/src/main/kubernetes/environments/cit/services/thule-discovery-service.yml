@@ -1,19 +1,46 @@
-apiVersion: apps/v1
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: thule-discovery-service-pod-reader
+  namespace: thule
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: thule-discovery-service-role-binding
+  namespace: thule
+subjects:
+  - kind: ServiceAccount
+    name: thule-discovery-service-account
+    namespace: thule
+roleRef:
+  kind: ClusterRole
+  name: thule-discovery-service-pod-reader
+  apiGroup: rbac.authorization.k8s.io
+---
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: thule-discovery-service
   namespace: thule
-  labels:
-    app: thule-discovery-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: thule-discovery-service
+      namespace: thule
   template:
     metadata:
       labels:
         app: thule-discovery-service
+        namespace: thule
     spec:
+      serviceAccountName: thule-discovery-service-account
       containers:
         - name: thule-discovery-service
           image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
@@ -31,9 +58,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: service-port
-            initialDelaySeconds: 300
-            periodSeconds: 30
-            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
           ports:
             - containerPort: 8080
               name: service-port
@@ -41,27 +68,48 @@ spec:
             httpGet:
               path: /actuator/health
               port: service-port
-            periodSeconds: 30
-            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
       hostAliases:
         - ip: 192.168.0.102
           hostnames:
             - pooh
-      tolerations:
-        - operator: Exists
 ---
-apiVersion: v1
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta1
+metadata:
+  name: thule-discovery-service-hpa
+  namespace: thule
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: thule-discovery-service
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
+---
 kind: Service
+apiVersion: v1
 metadata:
   name: thule-discovery-service
   namespace: thule
-  labels:
-    app: thule-discovery-service
 spec:
+  type: NodePort
   ports:
-    - nodePort: 31761
-      port: 80
+    - port: 80
       targetPort: 8080
   selector:
     app: thule-discovery-service
-  type: NodePort
+    namespace: thule
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: thule-discovery-service-account
+  namespace: thule
