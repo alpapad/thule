@@ -70,6 +70,15 @@ spec:
               port: service-port
             periodSeconds: 30
             timeoutSeconds: 10
+        - name: mysql-people-service
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: TZ
+              value: Europe/London
+          ports:
+            - containerPort: 3306
       hostAliases:
         - ip: 192.168.0.102
           hostnames:
