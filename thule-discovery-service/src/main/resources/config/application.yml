@@ -2,7 +2,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:${server.port:8080}/${spring.application.name}/eureka/
+      defaultZone: http://localhost:${server.port:8080}/eureka/
   instance:
     # Hostname will be the docker container hostname by default which will not be accessible outside of the host itself, so use ipaddress instead
     prefer-ip-address: true
@@ -21,11 +21,6 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
-# Server configuration
-server:
-  servlet:
-    context-path: /${spring.application.name}
 
 # Spring boot configuration
 spring:
