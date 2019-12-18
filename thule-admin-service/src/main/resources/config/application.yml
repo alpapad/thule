@@ -13,6 +13,10 @@ management:
     health:
       show-details: ALWAYS
 
+# Server configuration
+server:
+  use-forward-headers: true
+
 # Spring boot configuration
 spring:
   application:
