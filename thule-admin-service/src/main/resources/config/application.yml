@@ -9,6 +9,7 @@ management:
     web:
       exposure:
         include: "*"
+    base-path: /sba/actuator
   endpoint:
     health:
       show-details: ALWAYS
@@ -21,9 +22,9 @@ server:
 spring:
   application:
     name: thule-admin-service
-#  boot:
-#    admin:
-#      context-path: /${spring.application.name}
+  boot:
+    admin:
+      context-path: /sba
   sleuth:
     sampler:
       probability: 1.0
