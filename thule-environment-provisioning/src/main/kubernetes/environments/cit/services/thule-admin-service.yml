@@ -112,6 +112,25 @@ spec:
               serviceName: thule-admin-service
               servicePort: 80
 ---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: thule-admin-service-ingress2
+  namespace: default
+spec:
+  rules:
+    - host: piglet
+      http:
+        paths:
+          - path: /echoserver(/|$)(.*)
+            backend:
+              serviceName: echoserver
+              servicePort: 8080
+---
 kind: Service
 apiVersion: v1
 metadata:
