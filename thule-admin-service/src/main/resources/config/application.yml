@@ -1,3 +1,8 @@
+logging:
+  level:
+    root: debug
+    org.springframework: debug
+
 # Spring actuator configuration
 info:
   description: Thule Admin Service
