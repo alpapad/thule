@@ -1,19 +1,52 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: thule-admin-service-account
+  namespace: thule
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: thule-admin-service-pod-reader
+  namespace: thule
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: thule-admin-service-role-binding
+  namespace: thule
+subjects:
+  - kind: ServiceAccount
+    name: thule-admin-service-account
+    namespace: thule
+roleRef:
+  kind: ClusterRole
+  name: thule-admin-service-pod-reader
+  apiGroup: rbac.authorization.k8s.io
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: thule-admin-service
   namespace: thule
-  labels:
-    app: thule-admin-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: thule-admin-service
+      namespace: thule
   template:
     metadata:
       labels:
         app: thule-admin-service
+        namespace: thule
     spec:
+      serviceAccountName: thule-admin-service-account
       containers:
         - name: thule-admin-service
           image: pooh:8082/thule-admin-service:1.0.0-SNAPSHOT
@@ -31,9 +64,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: service-port
-            initialDelaySeconds: 300
-            periodSeconds: 30
-            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
           ports:
             - containerPort: 8080
               name: service-port
@@ -41,27 +74,42 @@ spec:
             httpGet:
               path: /actuator/health
               port: service-port
-            periodSeconds: 30
-            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
       hostAliases:
         - ip: 192.168.0.102
           hostnames:
             - pooh
-      tolerations:
-        - operator: Exists
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: thule-admin-service-hpa
+  namespace: thule
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: thule-admin-service
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: thule-admin-service
   namespace: thule
-  labels:
-    app: thule-admin-service
 spec:
+  type: NodePort
   ports:
-    - nodePort: 31093
-      port: 80
+    - port: 80
       targetPort: 8080
   selector:
     app: thule-admin-service
-  type: NodePort
+    namespace: thule

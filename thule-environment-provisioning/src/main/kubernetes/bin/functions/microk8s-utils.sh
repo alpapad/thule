@@ -130,6 +130,16 @@ function configureMicrok8s() {
   echo "Micro8ks is ready to accept commands and took ${elapsedSeconds} second(s)"
 
   echo ""
+  echo -n "Enabling dashboard add-on..."
+  if [[ $(echo "${microk8sStatus}" | grep "dashboard: enabled") != "" ]]; then
+    echo -e "\rEnabling dashboard add-on...\033[32m already enabled \033[0m"
+  else
+    echo ""
+    sudo microk8s.enable dashboard
+    echo -e "Enabling dashboard add-on...\033[32m done \033[0m"
+  fi
+
+  echo ""
   echo -n "Enabling dns add-on..."
   if [[ $(echo "${microk8sStatus}" | grep "dns: enabled") != "" ]]; then
     echo -e "\rEnabling dns add-on...\033[32m already enabled \033[0m"
@@ -140,6 +150,16 @@ function configureMicrok8s() {
   fi
 
   echo ""
+  echo -n "Enabling ingress add-on..."
+  if [[ $(echo "${microk8sStatus}" | grep "ingress: enabled") != "" ]]; then
+    echo -e "\rEnabling ingress add-on...\033[32m already enabled \033[0m"
+  else
+    echo ""
+    sudo microk8s.enable ingress
+    echo -e "Enabling ingress add-on...\033[32m done \033[0m"
+  fi
+
+  echo ""
   echo -n "Enabling storage add-on..."
   if [[ $(echo "${microk8sStatus}" | grep "storage: enabled") != "" ]]; then
     echo -e "\rEnabling storage add-on...\033[32m already enabled \033[0m"
@@ -147,16 +167,6 @@ function configureMicrok8s() {
     echo ""
     sudo microk8s.enable storage
     echo -e "Enabling storage add-on...\033[32m done \033[0m"
-  fi
-
-  echo ""
-  echo -n "Enabling dashboard add-on..."
-  if [[ $(echo "${microk8sStatus}" | grep "dashboard: enabled") != "" ]]; then
-    echo -e "\rEnabling dashboard add-on...\033[32m already enabled \033[0m"
-  else
-    echo ""
-    sudo microk8s.enable dashboard
-    echo -e "Enabling dashboard add-on...\033[32m done \033[0m"
   fi
 
   echo ""
