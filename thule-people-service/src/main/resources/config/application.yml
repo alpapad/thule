@@ -28,7 +28,7 @@ security:
 
 # Server configuration
 server:
-  forward-headers-strategy: native
+  forward-headers-strategy: framework
 
 # Spring boot configuration
 spring:
