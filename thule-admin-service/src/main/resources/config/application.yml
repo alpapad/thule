@@ -13,14 +13,18 @@ management:
     health:
       show-details: ALWAYS
 
+# Server configuration
+server:
+  forward-headers-strategy: framework
+
 # Spring boot configuration
 spring:
   application:
     name: thule-admin-service
-  boot:
-    admin:
-      ui:
-        public-url: /thule-admin-service
+#  boot:
+#    admin:
+#      ui:
+#        public-url: /thule-admin-service
   sleuth:
     sampler:
       probability: 1.0

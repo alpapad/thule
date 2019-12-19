@@ -22,6 +22,10 @@ management:
     health:
       show-details: ALWAYS
 
+# Server configuration
+server:
+  forward-headers-strategy: framework
+
 # Spring boot configuration
 spring:
   application:

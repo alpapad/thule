@@ -100,6 +100,7 @@ metadata:
     kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/thule-gateway-service"
   name: thule-gateway-service-ingress
   namespace: thule
 spec:
