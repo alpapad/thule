@@ -18,8 +18,9 @@ spec:
       serviceAccountName: thule-ping-service-account
       containers:
         - name: thule-ping-service
-          image: pooh:8082/thule-ping-service:1.0.0-SNAPSHOT
+          image: gcr.io/google-containers/echoserver:1.10
           imagePullPolicy: Always
+          env:
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
