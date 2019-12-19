@@ -46,6 +46,7 @@ project("thule-data") {
     description = "Thule Data"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api("org.springframework.data:spring-data-commons")
 
@@ -61,6 +62,7 @@ project("thule-security") {
     description = "Thule Security"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api("org.springframework.security:spring-security-core")
 
@@ -74,6 +76,7 @@ project("thule-security-oauth2") {
     description = "Thule Security Oauth2"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-security")
         api("org.springframework.cloud:spring-cloud-starter-oauth2")
@@ -94,6 +97,7 @@ project("thule-test") {
     description = "Thule Test"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         compileOnly("org.projectlombok:lombok")
 
@@ -112,6 +116,7 @@ project("thule-utils") {
     description = "Thule Utils"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         compileOnly("org.projectlombok:lombok")
 
@@ -129,6 +134,7 @@ project("thule-spring-boot-starter") {
     description = "Thule Spring Boot Starter"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-utils")
         api("org.springframework.boot:spring-boot-starter")
@@ -150,6 +156,7 @@ project("thule-spring-boot-starter-data") {
     description = "Thule Spring Boot Starter Data"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-data")
         api project(":thule-spring-boot-starter")
@@ -166,6 +173,7 @@ project("thule-spring-boot-starter-security") {
     description = "Thule Spring Boot Starter Security"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-security")
         api project(":thule-spring-boot-starter")
@@ -180,6 +188,7 @@ project("thule-spring-boot-starter-security-oauth2") {
     description = "Thule Spring Boot Starter Security Oauth2"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-security-oauth2")
         api project(":thule-spring-boot-starter")
