@@ -21,10 +21,10 @@ server:
 spring:
   application:
     name: thule-admin-service
-#  boot:
-#    admin:
-#      ui:
-#        public-url: /thule-admin-service
+  boot:
+    admin:
+      ui:
+        public-url: /thule-admin-service
   sleuth:
     sampler:
       probability: 1.0
