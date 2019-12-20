@@ -30,7 +30,8 @@ public class CorsIntTest {
     public void given_an_access_control_request_method_http_header_when_making_an_options_request_then_access_should_be_granted_with_no_body_in_the_response() {
         // Given
         var httpHeaders = new LinkedMultiValueMap<String, String>();
-        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpMethod.GET.name());
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpMethod.PATCH.name());
+        httpHeaders.add(HttpHeaders.ORIGIN, "http://localhost");
 
         // When
         var responseEntity = testRestTemplate.exchange("/hello", HttpMethod.OPTIONS, new HttpEntity<>(httpHeaders), String.class);

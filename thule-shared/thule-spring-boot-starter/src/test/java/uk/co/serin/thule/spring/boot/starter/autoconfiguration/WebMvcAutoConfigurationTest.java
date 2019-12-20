@@ -24,6 +24,7 @@ public class WebMvcAutoConfigurationTest {
     public void when_corsConfigurer_then_cors_mappings_is_configured() {
         // Given
         given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
+        given(corsRegistration.allowedMethods("*")).willReturn(corsRegistration);
 
         //When
         var corsConfigurer = sut.corsConfigurer();
