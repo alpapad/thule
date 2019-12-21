@@ -31,7 +31,7 @@ description = "Thule Gateway Service"
 // Dependencies
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.RELEASE")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1")
     }
 }
 
