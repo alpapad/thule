@@ -1,13 +1,13 @@
 #!/bin/bash
 
-function downloadConfiguration() {
+function updateConfiguration() {
   # Input parameters
   kubernetesConfigurationFile=$1
 
   echo ""
   echo "Downloading configuration..."
 
-  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
+  serviceName=$(awk '/app: /{print $NF;exit;}' ${kubernetesConfigurationFile})
   tempDirectory=$(mktemp -d --suffix "${serviceName}")
 
   # Locate the service version
@@ -59,41 +59,21 @@ function downloadConfiguration() {
     exit 255
   fi
 
-  serviceJarFile=$(echo "${serviceDownloadUrl}" | sed 's/.*\(${serviceName}-.*.jar\).*/\1/')
+  # Update the config files
+  if [[ "${serviceName}" == "thule-configuration-service" ]]; then
+    configDirectory=${CONFIGRATION_SERVICE_CONFIG_DIRECTORY}
+    rm -f "${configDirectory}/*.yml"
+  else
+    configDirectory=${CONFIGRATION_SERVICE_CONFIG_DIRECTORY}/${serviceName}
+    rm -fr "${configDirectory}"
+  fi
 
-  # Unzip the config files
-  configDirectoryExpectedByConfigurationService=$(configDirectoryExpectedByConfigurationService)
   echo ""
-  echo "Unzipping ${serviceJarFile} to ${configDirectoryExpectedByConfigurationService}/temp/${serviceName}..."
+  echo -n "Replacing old config with the new config ..."
 
-  rm -fr "${configDirectoryExpectedByConfigurationService}/temp/${serviceName}"
-  mkdir -p "${configDirectoryExpectedByConfigurationService}/temp/${serviceName}"
-  unzip -jq -d "${configDirectoryExpectedByConfigurationService}/temp/${serviceName}" "${tempDirectory}/jar/*.jar" BOOT-INF/classes/config/application*.yml
-}
+  rm -fr "${configDirectory}"
+  mkdir -p "${configDirectory}"
+  unzip -jq -d "${configDirectory}" "${tempDirectory}/jar/*.jar" BOOT-INF/classes/config/application*.yml
 
-function configDirectoryExpectedByConfigurationService() {
-  # Assert that the configuration service kubernetes configuration file exists
-  configurationServiceKubernetesConfigurationFile=${KUBERNETES_CONFIGURATION_DIRECTORY}/thule-configuration-service.yml
-  if [[ ! -f "${configurationServiceKubernetesConfigurationFile}" ]]; then
-    echo ""
-    echo "ERROR: Configuration service kubernetes configuration file for environment [${ENVIRONMENT_NAME}] ${configurationServiceKubernetesConfigurationFile} does not exist"
-    echo "Hint: Have you mistyped the environment name?"
-    echo "================================================================================"
-    exit 255
-  fi
-
-  # Determine where the config-service expects the config files to reside on the filesystem
-  configDirectory=$(grep .*path:.*/config "${configurationServiceKubernetesConfigurationFile}" | sed 's/.*path:\s*\(.*\)/\1/')
-  # Substitute any environments variables or special characters , e.g. $HOME, ~
-  configDirectory=$(eval echo -E "${configDirectory}")
-  # Ensure that the config directory can be created
-  if ! mkdir -p "${configDirectory}"; then
-    echo ""
-    echo "ERROR: Could not create config directory ${configDirectory} as specified in ${configurationServiceKubernetesConfigurationFile}"
-    echo "Hint: Ensure user ${PROVISIONING_HOST_USERID} has sufficient permissions to create ${configDirectory}"
-    echo "================================================================================"
-    exit 255
-  fi
-
-  echo "${configDirectory}"
+  echo -e "\033[32m done \033[0m"
 }

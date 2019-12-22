@@ -53,7 +53,7 @@ spec:
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
-              value:
+              value: "20191222163655"
           livenessProbe:
             httpGet:
               path: /actuator/health

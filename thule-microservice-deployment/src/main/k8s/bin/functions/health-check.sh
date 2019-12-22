@@ -7,7 +7,7 @@ function checkHealth() {
   healthCheckStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - healthCheckStartTime))
   maxElapsedSeconds=600
-  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
+  serviceName=$(awk '/app: /{print $NF;exit;}' ${kubernetesConfigurationFile})
 
   echo ""
   # jsonpath filters return a list so convert to an array and just cut the first element
