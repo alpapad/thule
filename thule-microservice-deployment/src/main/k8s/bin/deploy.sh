@@ -124,7 +124,7 @@ if [[ ${DEPLOY_LOCALLY} != "true" ]]; then
   echo "About to ship the deployment scripts to ${K8S_HOST}..."
   echo ""
 
-  if ! rsync -a --delete --progress --rsync-path="rm -fr ${K8S_HOST_TARGET_DIRECTORY} && mkdir -p ${K8S_HOST_TARGET_DIRECTORY} && rsync" "$SCRIPT_DIR_NAME/../../../../../thule-microservice-deployment" "${K8S_HOST_USERID}@${K8S_HOST}:${K8S_HOST_TARGET_DIRECTORY}"; then
+  if ! rsync -a --delete --progress --rsync-path="mkdir -p ${K8S_HOST_TARGET_DIRECTORY} && rsync" "$SCRIPT_DIR_NAME/../../../../../thule-microservice-deployment" "${K8S_HOST_USERID}@${K8S_HOST}:${K8S_HOST_TARGET_DIRECTORY}"; then
     echo ""
     echo "ERROR: Could not ship the deployment scripts to ${K8S_HOST_USERID}@${K8S_HOST}:${K8S_HOST_TARGET_DIRECTORY}"
     echo "Hint: Ensure user ${K8S_HOST_USERID} has sufficient permissions to ${K8S_HOST_TARGET_DIRECTORY}"
