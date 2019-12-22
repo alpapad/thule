@@ -22,10 +22,10 @@ usage() {
   echo ""
   echo "Options Summary:"
   echo ""
-  echo "  -c, --clean                          Reset and uninstall microk8s"
+  echo "  -e, --environment                    Environment to deploy to, defaults to DEV"
   echo "  -h, --help                           Show this help"
-  echo "  -k, --k8s-host                       Kubernetes host, defaults to pooh"
   echo "  -l, --deploy-locally                 Don't ship this script to the deployment host, deploy on the current host (localhost) instead"
+  echo "  -r, --reset                          Reset microk8s"
   echo ""
   echo ""
   exit
@@ -34,12 +34,12 @@ usage() {
 ################################################################################
 # Process command line options
 ################################################################################
-RESET_ENVIRONMENT=false
 DEPLOY_LOCALLY=false
-K8S_HOST=pooh
+ENVIRONMENT_NAME=dev
+RESET_ENVIRONMENT=false
 
 COMMAND_OPTIONS=$*
-getoptResults=$(getopt -s bash -o hk:lr --long deploy-locally,help,k8s-host:,reset -- "$@")
+getoptResults=$(getopt -s bash -o e:hlr --long environment:,deploy-locally,help,reset -- "$@")
 eval set -- "$getoptResults"
 while true; do
   case "$1" in
@@ -51,8 +51,8 @@ while true; do
     usage
     exit 0
     ;;
-  --k8s-host | -k)
-    K8S_HOST=$2
+  --environment | -e)
+    ENVIRONMENT_NAME=$2
     shift 2
     ;;
   --reset | -r)
@@ -83,8 +83,8 @@ done
 ################################################################################
 # Validate command line options
 ################################################################################
-# k8s-host must be in lowercase
-K8S_HOST=$(toLowerCase "${K8S_HOST}") # Convert to lowercase
+# environment-name must be in lowercase
+ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 
 # k8s-file must be in lowercase
 K8S_FILE=$(toLowerCase "$1") # Convert to lowercase
@@ -102,18 +102,26 @@ if [[ ! -f "${K8S_FILE}" ]]; then
 fi
 
 ################################################################################
-# Load defaults
+# Load config properties
 ################################################################################
-# Load default config properties
 SERVICE_NAME=$(awk '/app: /{print $NF;exit;}' ${K8S_FILE})
-CONFIGRATION_SERVICE_CONFIG_DIRECTORY=/home/wayne/.thule/thule-configuration-service/config
-K8S_HOST_TARGET_DIRECTORY=/home/wayne/.thule/${SERVICE_NAME}
-K8S_HOST_TARGET_DIRECTORY_K8S=${K8S_HOST_TARGET_DIRECTORY}/k8s
-K8S_HOST_USERID=wayne
-KUBERNETES_DASHBOARD_NODEPORT=31050
-NEXUS_HOST=pooh
-NEXUS_PORT_DOCKER=8082
-NEXUS_PORT_MAVEN=8081
+CONFIGS_DIRECTORY=${SCRIPT_DIR_NAME}/../config
+
+# Load default config properties
+source ${CONFIGS_DIRECTORY}/default.sh
+
+# Load environment specific config properties
+if [[ -f "${CONFIGS_DIRECTORY}/${ENVIRONMENT_NAME}.sh" ]]; then source ${CONFIGS_DIRECTORY}/${ENVIRONMENT_NAME}.sh; fi
+
+# Validate config properties
+if [[ -z "${K8S_HOST}" ]]; then
+  echo ""
+  echo "================================================================================"
+  echo "ERROR: Configuration attribute K8S_HOST has not been defined"
+  echo "Hint: Have you mistyped K8S_HOST in ${CONFIGS_DIRECTORY}/${ENVIRONMENT_NAME}.sh?"
+  echo "================================================================================"
+  exit 255
+fi
 
 ################################################################################
 # Execute this script on the target environments host
@@ -164,7 +172,9 @@ echo "==========================================================================
 ################################################################################
 settings="Settings used are as follows...\n\\n\
 CONFIGRATION_SERVICE_CONFIG_DIRECTORY is ${CONFIGRATION_SERVICE_CONFIG_DIRECTORY}\n\
+CONFIGS_DIRECTORY is ${CONFIGS_DIRECTORY}\n\
 DEPLOY_LOCALLY is ${DEPLOY_LOCALLY}\n\
+ENVIRONMENT_NAME is ${ENVIRONMENT_NAME}\n\
 K8S_HOST is ${K8S_HOST}\n\
 K8S_HOST_USERID is ${K8S_HOST_USERID}\n\
 K8S_HOST_TARGET_DIRECTORY is ${K8S_HOST_TARGET_DIRECTORY}\n\
