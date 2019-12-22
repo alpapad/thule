@@ -87,7 +87,7 @@ done
 ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 
 # k8s-file must be in lowercase
-K8S_FILE=$(toLowerCase "$1") # Convert to lowercase
+K8S_FILE="$1"
 K8S_DIR_NAME=$(cd "$(dirname "${K8S_FILE}")" && pwd)
 K8S_FILE_NAME=$(basename "$K8S_FILE")
 
