@@ -214,13 +214,13 @@ function configureMicrok8s() {
   fi
 
   echo ""
-  echo -n "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}..."
-  if [[ $(sudo microk8s.kubectl get services --namespace=thule kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}") != "" ]]; then
-    echo -e "\rExposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m already created \033[0m"
+  echo -n "Exposing dashboard to port ${K8S_DASHBOARD_NODEPORT}..."
+  if [[ $(sudo microk8s.kubectl get services --namespace=thule kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${K8S_DASHBOARD_NODEPORT}") != "" ]]; then
+    echo -e "\rExposing dashboard to port ${K8S_DASHBOARD_NODEPORT}...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl get services kubernetes-dashboard --namespace=kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${KUBERNETES_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
-    echo -e "Exposing dashboard to port ${KUBERNETES_DASHBOARD_NODEPORT}...\033[32m done \033[0m"
+    sudo microk8s.kubectl get services kubernetes-dashboard --namespace=kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${K8S_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
+    echo -e "Exposing dashboard to port ${K8S_DASHBOARD_NODEPORT}...\033[32m done \033[0m"
   fi
 
   echo ""
@@ -255,7 +255,7 @@ function showMicrok8sStatus() {
   defaultToken=$(sudo microk8s.kubectl --namespace=kube-system get secret | grep default-token | cut -d " " -f1)
   signinBearerToken=$(sudo microk8s.kubectl --namespace=kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
   echo ""
-  echo "Dashboard URL : https://${dashboardIpAddress} or https://localhost:${KUBERNETES_DASHBOARD_NODEPORT}"
+  echo "Dashboard URL : https://${dashboardIpAddress} or https://localhost:${K8S_DASHBOARD_NODEPORT}"
   echo "Sign-in bearer token : ${signinBearerToken}"
   echo "================================================================================"
 }

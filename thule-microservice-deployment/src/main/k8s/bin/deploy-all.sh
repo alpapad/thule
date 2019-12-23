@@ -72,7 +72,6 @@ while true; do
 done
 
 SCRIPT_DIR_NAME=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-
 SERVICE_NAMES=(thule-configuration-service $(find ${SCRIPT_DIR_NAME}/../../../../../ -name "*-service" -type d -printf "%f\n" | sort | sed "s/thule-configuration-service//g"))
 
 for serviceName in "${SERVICE_NAMES[@]}"; do
