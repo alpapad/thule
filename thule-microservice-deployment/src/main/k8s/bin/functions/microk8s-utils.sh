@@ -254,7 +254,7 @@ function showMicrok8sStatus() {
   defaultToken=$(sudo microk8s.kubectl --namespace=kube-system get secret | grep default-token | cut -d " " -f1)
   signinBearerToken=$(sudo microk8s.kubectl --namespace=kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
   echo ""
-  echo "Dashboard URL : http://${K8S_HOST}/dashboard"
+  echo "Dashboard URL : http://${K8S_HOST}/dashboard/"
   echo "Sign-in bearer token : ${signinBearerToken}"
   echo "================================================================================"
 }
