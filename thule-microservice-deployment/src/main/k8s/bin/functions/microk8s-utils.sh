@@ -219,7 +219,7 @@ function configureMicrok8s() {
     echo -e "\rCreating ingress for dashboard...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/apply/dashboard-ingress.yml"
+    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/dashboard-ingress.yml"
     echo -e "Creating ingress for dashboard...\033[32m done \033[0m"
   fi
 
@@ -251,11 +251,10 @@ function showMicrok8sStatus() {
   echo "Nodes, services, pods..."
   sudo microk8s.kubectl get nodes,services,pods --all-namespaces -o wide
 
-  dashboardIpAddress=$(sudo microk8s.kubectl get services --namespace=kube-system --no-headers kubernetes-dashboard | tr -s " " | cut -d " " -f3)
   defaultToken=$(sudo microk8s.kubectl --namespace=kube-system get secret | grep default-token | cut -d " " -f1)
   signinBearerToken=$(sudo microk8s.kubectl --namespace=kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
   echo ""
-  echo "Dashboard URL : https://${dashboardIpAddress} or https://localhost:${K8S_DASHBOARD_NODEPORT}"
+  echo "Dashboard URL : http://${K8S_HOST}/dashboard"
   echo "Sign-in bearer token : ${signinBearerToken}"
   echo "================================================================================"
 }
