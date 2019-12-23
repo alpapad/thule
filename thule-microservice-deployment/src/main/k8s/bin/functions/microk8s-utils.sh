@@ -209,7 +209,7 @@ function configureMicrok8s() {
     echo -e "\rCreating namespace thule...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl create namespace thule
+    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-namespace.yml"
     echo -e "Creating namespace thule...\033[32m done \033[0m"
   fi
 
