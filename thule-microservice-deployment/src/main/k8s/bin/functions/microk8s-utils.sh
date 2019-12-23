@@ -214,13 +214,13 @@ function configureMicrok8s() {
   fi
 
   echo ""
-  echo -n "Exposing dashboard to port ${K8S_DASHBOARD_NODEPORT}..."
-  if [[ $(sudo microk8s.kubectl get services --namespace=thule kubernetes-dashboard -n kube-system -o yaml | grep "nodePort: ${K8S_DASHBOARD_NODEPORT}") != "" ]]; then
-    echo -e "\rExposing dashboard to port ${K8S_DASHBOARD_NODEPORT}...\033[32m already created \033[0m"
+  echo -n "Creating ingress for dashboard..."
+  if [[ $(sudo microk8s.kubectl get ingress dashboard --namespace kube-system 2>&1 | grep "not found") == "" ]]; then
+    echo -e "\rCreating ingress for dashboard...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl get services kubernetes-dashboard --namespace=kube-system -o yaml | sed "s/.*type: ClusterIP.*/  type: NodePort/" | sed "/.*port:.*/ a\    nodePort: ${K8S_DASHBOARD_NODEPORT}" | sudo microk8s.kubectl replace -f -
-    echo -e "Exposing dashboard to port ${K8S_DASHBOARD_NODEPORT}...\033[32m done \033[0m"
+    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/apply/dashboard-ingress.yml"
+    echo -e "Creating ingress for dashboard...\033[32m done \033[0m"
   fi
 
   echo ""
