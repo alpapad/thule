@@ -191,17 +191,17 @@ echo -e "${settings}"
 echo "================================================================================"
 
 ################################################################################
-# Clean
+# Reset
 ################################################################################
 if [[ "${RESET_ENVIRONMENT}" == "true" ]]; then
   echo ""
   echo "================================================================================"
-  echo "About to clean the environment..."
+  echo "About to reset the environment..."
 
   sudo microk8s.reset
 
   echo ""
-  echo "Have successfully cleaned the environment"
+  echo "Have successfully reset the environment"
   echo "================================================================================"
 fi
 
