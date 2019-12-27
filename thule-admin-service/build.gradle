@@ -42,7 +42,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
-    implementation("de.codecentric:spring-boot-admin-starter-server:2.2.0")
+    implementation("de.codecentric:spring-boot-admin-starter-server:2.2.1")
     implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
