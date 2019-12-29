@@ -12,7 +12,7 @@ import uk.co.serin.thule.people.domain.model.state.ActionCode;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 
 import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,7 +31,7 @@ public class PeopleServiceTest {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_DISABLED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).nextState(nextState).build();
-        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -45,7 +45,7 @@ public class PeopleServiceTest {
     public void when_disabling_person_already_disabled_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
-        var state = StateEntity.builder().code(StateCode.PERSON_DISABLED).actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_DISABLED).actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -60,7 +60,7 @@ public class PeopleServiceTest {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_DISCARDED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISCARD).nextState(nextState).build();
-        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -74,7 +74,7 @@ public class PeopleServiceTest {
     public void when_discarding_person_already_discarded_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
-        var state = StateEntity.builder().code(StateCode.PERSON_DISCARDED).actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_DISCARDED).actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -88,7 +88,7 @@ public class PeopleServiceTest {
     public void when_enable_person_already_enabled_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).build();
-        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -103,7 +103,7 @@ public class PeopleServiceTest {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_ENABLED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).nextState(nextState).build();
-        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -182,7 +182,7 @@ public class PeopleServiceTest {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_ENABLED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_RECOVER).nextState(nextState).build();
-        var state = StateEntity.builder().actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When
@@ -196,7 +196,7 @@ public class PeopleServiceTest {
     public void when_recovering_an_enabled_person_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
-        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Collections.singleton(allowedAction)).build();
+        var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Set.of(allowedAction)).build();
         var person = PersonEntity.builder().state(state).build();
 
         // When

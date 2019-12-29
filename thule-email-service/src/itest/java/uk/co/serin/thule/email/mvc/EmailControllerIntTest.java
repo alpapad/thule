@@ -21,7 +21,7 @@ import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.email.service.EmailService;
 
-import java.util.Collections;
+import java.util.Set;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -74,9 +74,9 @@ public class EmailControllerIntTest {
         var attachment = Attachment.builder().content(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...")
                                    .label("Attachment").build();
-        var email = Email.builder().attachments(Collections.singleton(attachment))
+        var email = Email.builder().attachments(Set.of(attachment))
                          .body("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...")
-                         .from("from@test.co.uk").subject("This is a test email").tos(Collections.singleton("to@test.co.uk")).build();
+                         .from("from@test.co.uk").subject("This is a test email").tos(Set.of("to@test.co.uk")).build();
         var content = objectMapper.writeValueAsString(email);
 
         // When

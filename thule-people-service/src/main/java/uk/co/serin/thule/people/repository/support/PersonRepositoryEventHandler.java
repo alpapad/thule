@@ -18,7 +18,7 @@ import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.people.service.email.EmailServiceClientAsync;
 import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
-import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +43,7 @@ public class PersonRepositoryEventHandler {
 
     private void sendEmail(PersonEntity person, String event) {
         var email = Email.builder().body(String.format("Person %s %s has been %s", person.getFirstName(), person.getLastName(), event))
-                         .subject("Thule people service notification").tos(Collections.singleton(person.getEmailAddress())).build();
+                         .subject("Thule people service notification").tos(Set.of(person.getEmailAddress())).build();
         emailServiceClient.sendEmail(email);
     }
 

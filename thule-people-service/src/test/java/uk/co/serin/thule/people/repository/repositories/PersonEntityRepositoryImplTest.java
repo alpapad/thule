@@ -8,7 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 
-import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -34,7 +34,7 @@ public class PersonEntityRepositoryImplTest {
 
         given(entityManager.<PersonEntity>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
-        given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
+        given(typedQuery.getResultList()).willReturn(List.of(expectedPerson));
 
         // When
         var actualPeople = personRepositoryImpl
@@ -51,7 +51,7 @@ public class PersonEntityRepositoryImplTest {
 
         given(entityManager.<PersonEntity>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
-        given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
+        given(typedQuery.getResultList()).willReturn(List.of(expectedPerson));
 
         // When
         var actualPeople = personRepositoryImpl
@@ -68,7 +68,7 @@ public class PersonEntityRepositoryImplTest {
 
         given(entityManager.<PersonEntity>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
-        given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
+        given(typedQuery.getResultList()).willReturn(List.of(expectedPerson));
 
         // When
         var actualPeople = personRepositoryImpl.search(null);
@@ -84,7 +84,7 @@ public class PersonEntityRepositoryImplTest {
 
         given(entityManager.<PersonEntity>createQuery(anyString(), any())).willReturn(typedQuery);
         given(typedQuery.setParameter(anyString(), any())).willReturn(typedQuery);
-        given(typedQuery.getResultList()).willReturn(Collections.singletonList(expectedPerson));
+        given(typedQuery.getResultList()).willReturn(List.of(expectedPerson));
 
         // When
         var actualPeople = personRepositoryImpl.search("anything");

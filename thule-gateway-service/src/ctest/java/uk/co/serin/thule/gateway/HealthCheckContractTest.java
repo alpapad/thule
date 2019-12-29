@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -62,12 +62,12 @@ public class HealthCheckContractTest {
                 aResponse().withFixedDelay(2000).withBodyFile("actuator-up-response.json").withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                            .withStatus(HttpStatus.OK.value())));
 
-        given(discoveryClient.getInstances("thule-admin-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-authentication-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-configuration-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-discovery-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-email-service")).willReturn(Collections.singletonList(serviceInstance));
-        given(discoveryClient.getInstances("thule-people-service")).willReturn(Collections.singletonList(serviceInstance));
+        given(discoveryClient.getInstances("thule-admin-service")).willReturn(List.of(serviceInstance));
+        given(discoveryClient.getInstances("thule-authentication-service")).willReturn(List.of(serviceInstance));
+        given(discoveryClient.getInstances("thule-configuration-service")).willReturn(List.of(serviceInstance));
+        given(discoveryClient.getInstances("thule-discovery-service")).willReturn(List.of(serviceInstance));
+        given(discoveryClient.getInstances("thule-email-service")).willReturn(List.of(serviceInstance));
+        given(discoveryClient.getInstances("thule-people-service")).willReturn(List.of(serviceInstance));
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When

@@ -17,7 +17,7 @@ import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.security.oauth2.utils.Oauth2Utils;
 
-import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,9 +35,9 @@ public class EmailContractTest extends ContractBaseTest {
     @Test
     public void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
         // Given
-        var attachments = Collections.singleton(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
-        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is another test body")
-                         .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
+        var attachments = Set.of(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
+        var email = Email.builder().attachments(attachments).bccs(Set.of("bcc@test.co.uk")).body("This is another test body")
+                         .ccs(Set.of("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
                          .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
         var entity = new HttpEntity<>(email, null);
 
@@ -53,7 +53,7 @@ public class EmailContractTest extends ContractBaseTest {
         baseUrl = testRestTemplate.getRootUri() + "/emails";
 
         var jwtOauth2AccessToken = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", 0, Collections.singleton(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
+                "username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret");
         oAuth2RestTemplate = new OAuth2RestTemplate(new ResourceOwnerPasswordResourceDetails(), new DefaultOAuth2ClientContext(jwtOauth2AccessToken));
     }
 
@@ -62,9 +62,9 @@ public class EmailContractTest extends ContractBaseTest {
         // Given
         startEmbeddedSmtpServer();
 
-        var attachments = Collections.singleton(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
-        var email = Email.builder().attachments(attachments).bccs(Collections.singleton("bcc@test.co.uk")).body("This is a test body")
-                         .ccs(Collections.singleton("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
+        var attachments = Set.of(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
+        var email = Email.builder().attachments(attachments).bccs(Set.of("bcc@test.co.uk")).body("This is a test body")
+                         .ccs(Set.of("ccs@test.co.uk")).from("from@test.co.uk").subject("Test subject")
                          .tos(Stream.of("to1@test.co.uk", "to2@test.co.uk", "to3@test.co.uk").collect(Collectors.toSet())).build();
         var expectedAttachment = email.getAttachments().stream().findFirst().orElseThrow();
         var httpEntity = new HttpEntity<>(email);

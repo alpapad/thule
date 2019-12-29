@@ -17,7 +17,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +41,7 @@ public class SpringBootActuatorAssertTest {
         // Given
         given(restTemplate.exchange(actuatorUri.getUri(), HttpMethod.GET, HttpEntity.EMPTY, responseType)).willReturn(responseEntity);
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.OK);
-        given(responseEntity.getBody()).willReturn(Collections.singletonMap("status", "DOWN"));
+        given(responseEntity.getBody()).willReturn(Map.of("status", "DOWN"));
 
         // When
         var throwable = catchThrowableOfType(() -> sut.hasHealthStatus(Status.UP), AssertionError.class);
@@ -98,7 +97,7 @@ public class SpringBootActuatorAssertTest {
         // Given
         given(restTemplate.exchange(actuatorUri.getUri(), HttpMethod.GET, HttpEntity.EMPTY, responseType)).willReturn(responseEntity);
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.OK);
-        given(responseEntity.getBody()).willReturn(Collections.singletonMap("status", "UP"));
+        given(responseEntity.getBody()).willReturn(Map.of("status", "UP"));
 
         // When
         var actualSpringBootActuatorAssert = sut.hasHealthStatus(Status.UP);

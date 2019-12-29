@@ -13,6 +13,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import uk.co.serin.thule.gateway.ApplicationProperties;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public class ThuleServicesHealthIndicatorTest {
     public void when_all_microservices_are_up_then_health_status_should_be_up() throws Exception {
         // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
-        var serviceInstances = Collections.singletonList(serviceInstance);
+        var serviceInstances = List.of(serviceInstance);
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances).willReturn(serviceInstances);
@@ -74,7 +75,7 @@ public class ThuleServicesHealthIndicatorTest {
     public void when_an_execution_exception_then_health_status_should_be_down() throws ExecutionException, InterruptedException {
         // Given
         var serviceIds = Stream.of("Instanceone").collect(Collectors.toList());
-        var serviceInstances = Collections.singletonList(serviceInstance);
+        var serviceInstances = List.of(serviceInstance);
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
@@ -113,7 +114,7 @@ public class ThuleServicesHealthIndicatorTest {
     public void when_one_microservice_is_down_then_health_status_should_be_down() throws Exception {
         // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
-        var serviceInstances = Collections.singletonList(serviceInstance);
+        var serviceInstances = List.of(serviceInstance);
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);
@@ -133,7 +134,7 @@ public class ThuleServicesHealthIndicatorTest {
     public void when_one_microservice_is_down_then_other_microservices_futures_should_be_cancelled() throws Exception {
         // Given
         var serviceIds = Stream.of("Instanceone", "Instancetwo").collect(Collectors.toList());
-        var serviceInstances = Collections.singletonList(serviceInstance);
+        var serviceInstances = List.of(serviceInstance);
 
         given(healthCheck.getServices()).willReturn(serviceIds);
         given(discoveryClient.getInstances(anyString())).willReturn(serviceInstances);

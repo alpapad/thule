@@ -7,7 +7,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -43,7 +43,7 @@ public class DockerComposeTest {
     @Test
     public void when_constructing_with_environment_variables_then_they_are_set_in_the_docker_compose_process() {
         // Given
-        var environmentVariables = Collections.singletonMap("name", "value");
+        var environmentVariables = Map.of("name", "value");
 
         // Then
         sut = new DockerCompose(DOCKER_COMPOSE_FILE, environmentVariables);
