@@ -36,7 +36,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     @Test
     public void when_after_create_then_an_email_notification_is_sent() {
         // When
-        personRepositoryEventHandler.afterCreate(PersonEntity.builder().userId("userId").build());
+        personRepositoryEventHandler.afterCreate(PersonEntity.builder().emailAddress("test@test.com").userId("userId").build());
 
         // Then
         var emailCaptor = ArgumentCaptor.forClass(Email.class);
@@ -50,7 +50,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     @Test
     public void when_after_delete_then_an_email_notification_is_sent() {
         // When
-        personRepositoryEventHandler.afterDelete(PersonEntity.builder().userId("userId").build());
+        personRepositoryEventHandler.afterDelete(PersonEntity.builder().emailAddress("test@test.com").userId("userId").build());
 
         // Then
         var emailCaptor = ArgumentCaptor.forClass(Email.class);
@@ -64,7 +64,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     @Test
     public void when_after_save_then_an_email_notification_is_sent() {
         // When
-        personRepositoryEventHandler.afterSave(PersonEntity.builder().userId("userId").build());
+        personRepositoryEventHandler.afterSave(PersonEntity.builder().emailAddress("test@test.com").userId("userId").build());
 
         // Then
         var emailCaptor = ArgumentCaptor.forClass(Email.class);
