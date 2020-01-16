@@ -208,7 +208,7 @@ project("thule-spring-boot-starter-test") {
     dependencies {
         api project(":thule-spring-boot-starter")
         api project(":thule-test")
-        api("org.awaitility:awaitility:4.0.1")
+        api("org.awaitility:awaitility:4.0.2")
         api("org.springframework.boot:spring-boot-starter-test")
     }
 }
