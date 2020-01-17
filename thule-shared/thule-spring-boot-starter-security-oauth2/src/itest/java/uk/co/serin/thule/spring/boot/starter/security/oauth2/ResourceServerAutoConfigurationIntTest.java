@@ -44,6 +44,7 @@ public class ResourceServerAutoConfigurationIntTest {
         // Given
         var httpHeaders = new LinkedMultiValueMap<String, String>();
         httpHeaders.add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpMethod.GET.name());
+        httpHeaders.add(HttpHeaders.ORIGIN, "http://localhost");
 
         // When
         var responseEntity = testRestTemplate.exchange("/hello", HttpMethod.OPTIONS, new HttpEntity<>(httpHeaders), String.class);
