@@ -36,6 +36,7 @@ public class ResourceServerAutoConfiguration {
                             .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
                             .antMatchers("/swagger**").permitAll() // allow swagger docs, even if not authenticated
                             .antMatchers("/v2/api-docs/**").permitAll() // allow swagger docs, even if not authenticated
+                            .antMatchers("/webjars/springfox-swagger-ui/**").permitAll() // allow swagger docs, even if not authenticated
                             .antMatchers("/**").authenticated(); // everything else must be authenticated
             }
         };
