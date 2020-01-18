@@ -13,10 +13,13 @@ import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor
+@Api("Emails")
 @RestController
 @RequestMapping("/emails")
 @TracePublicMethods
@@ -24,6 +27,7 @@ public class EmailController {
     @NonNull
     private final EmailService emailService;
 
+    @ApiOperation(value = "Creates and sends an email", response = Email.class)
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Email createEmail(@RequestBody @Valid Email email) {
