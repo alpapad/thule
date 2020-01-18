@@ -43,6 +43,8 @@ public class ResourceServerAutoConfigurationTest {
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs/**")).willReturn(authorizedUrl);
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+        given(expressionInterceptUrlRegistry.antMatchers("/webjars/springfox-swagger-ui/**")).willReturn(authorizedUrl);
+        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/**")).willReturn(authorizedUrl);
         given(authorizedUrl.authenticated()).willReturn(expressionInterceptUrlRegistry);
 
