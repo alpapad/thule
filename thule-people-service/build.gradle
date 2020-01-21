@@ -64,7 +64,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
-    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
+    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
@@ -79,7 +79,6 @@ dependencies {
     itestImplementation("org.springframework.security:spring-security-test")
 
     ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
-    ctestImplementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
     ctestImplementation("org.springframework.security:spring-security-test")
 
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
