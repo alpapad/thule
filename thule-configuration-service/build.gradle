@@ -16,7 +16,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.8"
-    id "org.springframework.boot" version "2.2.3.RELEASE"
+    id "org.springframework.boot" version "2.2.4.RELEASE"
 }
 apply plugin: "io.spring.dependency-management"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
