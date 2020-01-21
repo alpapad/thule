@@ -46,7 +46,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
-    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
+    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
     implementation('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
