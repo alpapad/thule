@@ -10,9 +10,6 @@ spring:
     kubernetes:
       discovery:
         enabled: false
-    loadbalancer:
-      ribbon:
-        enabled: false
   datasource:
     password: thule
     username: thule

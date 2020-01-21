@@ -38,6 +38,9 @@ spring:
     kubernetes:
       ribbon:
         mode: service
+    loadbalancer:
+      ribbon:
+        enabled: false
   datasource:
     driver-class-name: net.sf.log4jdbc.DriverSpy
     hikari:
