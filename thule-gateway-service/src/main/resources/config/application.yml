@@ -34,10 +34,10 @@ server:
 spring:
   application:
     name: thule-gateway-service
-  cloud:
-    loadbalancer:
-      ribbon:
-        enabled: false
+#  cloud:
+#    loadbalancer:
+#      ribbon:
+#        enabled: false
   sleuth:
     sampler:
       probability: 1.0
