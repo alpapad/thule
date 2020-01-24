@@ -18,7 +18,6 @@ plugins {
     id "org.sonarqube" version "2.8"
     id "org.springframework.boot" version "2.2.4.RELEASE"
 }
-apply plugin: "io.spring.dependency-management"
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
@@ -54,18 +53,17 @@ task collectConfigs {
 description = "Thule Configuration Service"
 
 // Dependencies
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1")
-    }
-}
-
+def springBootVersion = "2.2.4.RELEASE"
+def thuleSharedVersion = "1.1.0-SNAPSHOT"
 dependencies {
+    annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     compileOnly("org.projectlombok:lombok")
 
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1")
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -76,6 +74,7 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
+    dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-web")
