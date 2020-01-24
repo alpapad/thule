@@ -13,32 +13,27 @@ buildscript {
 plugins {
     id "com.github.ben-manes.versions" version "0.27.0"
     id "org.sonarqube" version "2.8" apply(false)
-    id "org.springframework.boot" version "2.2.4.RELEASE" apply(false)
 }
 
 subprojects {
-    apply plugin: "io.spring.dependency-management"
     apply plugin: "jacoco"
     apply plugin: "java"
     apply plugin: "java-library"
     apply plugin: "maven-publish"
     apply plugin: "org.sonarqube"
-    apply plugin: "org.springframework.boot"
     apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
     // Standard Serin gradle plugin config
     apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 
     // Non-standard Serin gradle plugin config
-    bootJar.enabled = false // Don't need an "über-jar" but still want the rest of the spring boot plugin
-    bootBuildInfo.enabled = false // Don't need the build info in the jar
-    jar.enabled = true // Don't need an "über-jar" but still want the rest of the spring boot plugin
 
     // Dependencies
-    dependencyManagement {
-        imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1")
-        }
+    def springBootVersion = "2.2.4.RELEASE"
+    dependencies {
+        annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1")
     }
 }
 
