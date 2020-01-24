@@ -28,6 +28,7 @@ security:
 
 # Server configuration
 server:
+  # Required so that hateoas links have correct path to resources when using x-forwarded headers via k8s
   forward-headers-strategy: framework
 
 # Spring boot configuration

@@ -24,6 +24,7 @@ management:
 
 # Server configuration
 server:
+  # Required so that links in webapp have correct path to js/html resources when using x-forwarded headers via k8s
   forward-headers-strategy: framework
 
 # Spring boot configuration

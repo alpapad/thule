@@ -27,6 +27,7 @@ security:
 
 # Server configuration
 server:
+  # Required so that zuul forwarded requests have correct path to micro services when using x-forwarded headers via k8s
   forward-headers-strategy: framework
 
 # Spring boot configuration
