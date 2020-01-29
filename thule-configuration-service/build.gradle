@@ -16,7 +16,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "org.sonarqube" version "2.8"
-    id "org.springframework.boot" version "2.2.4.RELEASE"
+    id "org.springframework.boot" version "${springBootVersion}"
 }
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
@@ -53,8 +53,6 @@ task collectConfigs {
 description = "Thule Configuration Service"
 
 // Dependencies
-def springBootVersion = "2.2.4.RELEASE"
-def thuleSharedVersion = "1.1.0-SNAPSHOT"
 dependencies {
     annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     annotationProcessor("org.projectlombok:lombok")
