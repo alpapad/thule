@@ -27,7 +27,6 @@ apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/buil
 
 description = "Thule Discovery Service"
 
-// Dependencies
 dependencies {
     annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     annotationProcessor("org.projectlombok:lombok")
@@ -52,5 +51,6 @@ dependencies {
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
-    dtestImplementation("org.springframework.boot:spring-boot-starter-web")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
+// Dependencies
