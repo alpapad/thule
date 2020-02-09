@@ -7,14 +7,13 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Map;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
@@ -50,9 +49,14 @@ public class GatewayDockerTest {
         waitForTheApplicationToInitialize();
 
         // When
-        var responseEntity = new RestTemplate().getForEntity(BASE_URL + "/actuator/info", Map.class);
+        WebTestClient.bindToServer().baseUrl(BASE_URL).build()
+                     .get().uri("/actuator/info")
+                     .exchange()
+                     .expectStatus().isOk()
+                     .expectBody()
 
-        // Then
-        assertThat(responseEntity.getBody()).contains(Map.entry("name", "thule-gateway-service"));
+                     // Then
+                     .jsonPath("$.name").isNotEmpty()
+                     .jsonPath("$.name").isEqualTo("thule-gateway-service");
     }
 }

@@ -2,19 +2,18 @@ package uk.co.serin.thule.gateway.actuator;
 
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Map;
 import java.util.concurrent.Future;
 
 @Service
 public class ThuleServiceInstanceHealthIndicator {
-    private RestTemplate restTemplate = new RestTemplate();
+    private WebClient webClient = WebClient.create();
 
     /**
      * Performs a health check on a single service instance
@@ -27,9 +26,11 @@ public class ThuleServiceInstanceHealthIndicator {
     public Future<Status> doServiceInstanceHealthCheck(ServiceInstance instance) {
         var url = String.format("%s/actuator/health", instance.getUri());
 
-        var response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, Map.class);
+        var body = webClient.mutate().baseUrl(url).build().get().retrieve()
+                            .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                            }).block();
 
-        if (response.hasBody() && response.getBody().get("status") != null && response.getBody().get("status").toString().equals(Status.UP.getCode())) {
+        if (body != null && body.get("status") != null && body.get("status").toString().equals(Status.UP.getCode())) {
             return new AsyncResult<>(Status.UP);
         } else {
             return new AsyncResult<>(Status.DOWN);

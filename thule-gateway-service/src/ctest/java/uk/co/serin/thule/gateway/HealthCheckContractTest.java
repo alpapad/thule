@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
@@ -18,24 +16,18 @@ import org.springframework.cloud.contract.wiremock.WireMockConfigurationCustomiz
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 import static org.mockito.BDDMockito.given;
 
@@ -46,12 +38,10 @@ import static org.mockito.BDDMockito.given;
 public class HealthCheckContractTest {
     @MockBean(name = "simpleDiscoveryClient")
     private DiscoveryClient discoveryClient;
-    @LocalServerPort
-    private int port;
     @Mock
     private ServiceInstance serviceInstance;
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private WebTestClient webTestClient;
     @Value("${wiremock.server.port}")
     private int wireMockServerPort;
 
@@ -71,17 +61,11 @@ public class HealthCheckContractTest {
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When
-        var responseEntities = new ArrayList<ResponseEntity<Map>>();
-        Awaitility.given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofSeconds(20)). // Allow up to 20 seconds to complete, if it takes longer, asynchronous process is probably not working
-                    untilAsserted(() -> responseEntities.add(testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class)));
+        Awaitility.given().ignoreExceptions().pollInterval(fibonacci())
+                  .await().timeout(Duration.ofSeconds(20)) // Allow up to 20 seconds to complete, if it takes longer, asynchronous process is probably not working
 
-        // Then
-        verify(getRequestedFor(urlPathEqualTo("/actuator/health")));
-
-        var responseEntity = responseEntities.stream().findFirst().orElseThrow();
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+                  // Then
+                  .untilAsserted(() -> webTestClient.get().uri("/actuator/health").exchange().expectStatus().isOk());
     }
 
     @TestConfiguration

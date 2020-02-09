@@ -40,6 +40,7 @@ dependencies {
     implementation("uk.co.serin.thule:thule-spring-boot-starter-security-oauth2:${thuleSharedVersion}")
     implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
@@ -50,12 +51,14 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
+    itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     itestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
 
+    ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
-    dtestImplementation("org.springframework.boot:spring-boot-starter-web")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }

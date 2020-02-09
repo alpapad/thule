@@ -3,11 +3,9 @@ package uk.co.serin.thule.gateway.actuator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -16,16 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ActiveProfiles("itest")
@@ -39,8 +36,6 @@ public class HealthCheckIntTest {
     private int port;
     @Mock
     private ServiceInstance serviceInstance;
-    @Autowired
-    private TestRestTemplate testRestTemplate;
     @Value("${wiremock.server.port}")
     private int wireMockServerPort;
 
@@ -60,9 +55,14 @@ public class HealthCheckIntTest {
         given(serviceInstance.getUri()).willReturn(URI.create("http://localhost:" + wireMockServerPort));
 
         // When
-        var responseEntity = testRestTemplate.getForEntity(String.format("http://localhost:%s/actuator/health", port), Map.class);
+        WebTestClient.bindToServer().baseUrl(String.format("http://localhost:%s",port)).build()
+                     .get().uri("/actuator/info")
+                     .exchange()
+                     .expectStatus().isOk()
+                     .expectBody()
 
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+                     // Then
+                     .jsonPath("$.name").isNotEmpty()
+                     .jsonPath("$.name").isEqualTo("thule-gateway-service");
     }
 }
