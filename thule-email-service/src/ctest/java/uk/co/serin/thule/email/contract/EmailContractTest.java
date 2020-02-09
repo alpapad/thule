@@ -63,6 +63,7 @@ public class EmailContractTest extends ContractBaseTest {
                      .bodyValue(email)
                      .header(HttpHeaders.AUTHORIZATION,"Bearer " + jwt)
                      .exchange()
+
                      // Then
                      .expectStatus().isAccepted();
 

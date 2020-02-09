@@ -74,11 +74,12 @@ dependencies {
     itestImplementation("org.hsqldb:hsqldb")
     itestImplementation("org.springframework.security:spring-security-test")
 
+    ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     ctestImplementation("org.springframework.security:spring-security-test")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
-    dtestImplementation("org.springframework.boot:spring-boot-starter-web")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
