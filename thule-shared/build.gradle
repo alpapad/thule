@@ -32,7 +32,7 @@ subprojects {
     dependencies {
         annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
         implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-        implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR1")
+        implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR2")
     }
 }
 
