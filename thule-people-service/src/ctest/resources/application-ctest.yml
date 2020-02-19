@@ -1,0 +1,7 @@
+# Thule configuration
+thule:
+  shared:
+    oauth2:
+      resourceserver:
+        jws:
+          enabled: false
