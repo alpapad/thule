@@ -21,7 +21,7 @@ import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.security.oauth2.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.JwtUtils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.time.LocalDate;

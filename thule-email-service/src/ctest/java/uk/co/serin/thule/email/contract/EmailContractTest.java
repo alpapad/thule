@@ -9,7 +9,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
-import uk.co.serin.thule.security.oauth2.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.JwtUtils;
 
 import java.util.Arrays;
 import java.util.Set;

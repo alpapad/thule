@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import uk.co.serin.thule.EnableFeignJwtClients;
+import uk.co.serin.thule.feign.EnableFeignJwtClients;
 import uk.co.serin.thule.people.repository.support.ThuleJpaRepository;
 
 import lombok.NoArgsConstructor;
