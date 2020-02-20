@@ -18,13 +18,6 @@ ribbon:
   ConnectTimeout: 20000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be connectTimeout or connect-timeout
   ReadTimeout: 60000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be readTimeout or read-timeout
 
-# Spring Security configuration
-security:
-  oauth2:
-    resource:
-      jwt:
-        key-value: secret
-
 # Server configuration
 server:
   # Required so that zuul forwarded requests have correct path to micro services when using x-forwarded headers via k8s
@@ -34,6 +27,11 @@ server:
 spring:
   application:
     name: thule-gateway-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/thule-test
   sleuth:
     sampler:
       probability: 1.0
