@@ -22,36 +22,6 @@ public class DelegatingSecurityContextHolderTest {
     private SecurityContext securityContext;
     @InjectMocks
     private DelegatingSecurityContextHolder sut;
-    @Mock
-    private UserAuthenticationDetails userAuthenticationDetails;
-
-    @Test
-    public void given_a_user_authentication_details_when_get_user_authentication_details_then_a_user_authentication_details_is_returned() {
-        // Given
-        given(securityContext.getAuthentication()).willReturn(authentication);
-        given(authentication.getDetails()).willReturn(userAuthenticationDetails);
-        sut.setContext(securityContext);
-
-        // When
-        var userAuthenticationDetails = sut.getUserAuthenticationDetails();
-
-        // Then
-        assertThat(userAuthenticationDetails).isNotEmpty();
-    }
-
-    @Test
-    public void given_an_invalid_user_authentication_details_when_get_user_authentication_details_then_an_empty_optional_is_returned() {
-        // Given
-        given(securityContext.getAuthentication()).willReturn(authentication);
-        given(authentication.getDetails()).willReturn(new Object());
-        sut.setContext(securityContext);
-
-        // When
-        var userAuthenticationDetails = sut.getUserAuthenticationDetails();
-
-        // Then
-        assertThat(userAuthenticationDetails).isEmpty();
-    }
 
     @Test
     public void given_context_is_set_when_authentication_is_retrieved_then_authentication_is_not_null() {
@@ -64,18 +34,6 @@ public class DelegatingSecurityContextHolderTest {
 
         // Then
         assertThat(actualAuthentication).isSameAs(authentication);
-    }
-
-    @Test
-    public void given_no_user_authentication_details_when_get_user_authentication_details_then_empty_optional_is_returned() {
-        // Given
-        sut.setContext(securityContext);
-
-        // When
-        var userAuthenticationDetails = sut.getUserAuthenticationDetails();
-
-        // Then
-        assertThat(userAuthenticationDetails).isEmpty();
     }
 
     @Before

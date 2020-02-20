@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+uk.co.serin.thule.spring.boot.starter.resourceserver.autoconfiguration.Oauth2SecurityAutoConfiguration,\
+uk.co.serin.thule.spring.boot.starter.resourceserver.autoconfiguration.ResourceServerAutoConfiguration

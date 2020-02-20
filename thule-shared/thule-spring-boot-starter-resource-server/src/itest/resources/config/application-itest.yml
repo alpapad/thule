@@ -1,0 +1,22 @@
+# Spring actuator configuration
+info:
+  description: Thule Test Service
+  name: ${spring.application.name}
+
+# Spring boot configuration
+spring:
+  application:
+    name: thule-test-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/thule-test
+
+# Thule configuration
+thule:
+  shared:
+    oauth2:
+      resourceserver:
+        jws:
+          enabled: false

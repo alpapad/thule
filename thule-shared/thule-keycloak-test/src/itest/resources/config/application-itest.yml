@@ -1,0 +1,41 @@
+# Spring actuator configuration
+info:
+  description: Thule Test Service
+  name: ${spring.application.name}
+
+# Spring boot configuration
+spring:
+  application:
+    name: thule-test-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/thule-test
+
+######################################### NESTED INTEGRATION TEST PROFILES #######################################
+---
+spring:
+  profiles: itest-feign
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            thule-test-service:
+              - uri: http://localhost:${server.port}
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/auth/realms/thule-test/protocol/openid-connect/token
+        registration:
+          keycloak:
+            authorization-grant-type: client_credentials
+            client-id: thule-test-service
+            client-secret: client-secret # Will be replaced dynamically at runtime with the client secret obtained from keycloak

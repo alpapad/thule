@@ -6,10 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import uk.co.serin.thule.utils.trace.LogExceptionInterceptor;
 import uk.co.serin.thule.utils.trace.TracePublicMethodsInterceptor;
 
-import lombok.NoArgsConstructor;
-
 @Configuration
-@NoArgsConstructor
 public class UtilsAutoConfiguration {
     @Bean
     public LogExceptionInterceptor logExceptionInterceptor() {
