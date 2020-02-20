@@ -50,6 +50,8 @@ spec:
               value: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
             - name: SPRING_PROFILES_ACTIVE
               value: cit
+            - name: THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED
+              value: "false"
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
