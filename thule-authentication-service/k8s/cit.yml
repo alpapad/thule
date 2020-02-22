@@ -62,6 +62,8 @@ spec:
               value: admin
             - name: KEYCLOAK_PASSWORD
               value: admin
+            - name: PROXY_ADDRESS_FORWARDING
+              value: true
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
