@@ -6,14 +6,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.co.serin.thule.security.oauth2.context.Oauth2DelegatingSecurityContextHolder;
+import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DataAutoConfigurationTest {
     @Mock
-    private Oauth2DelegatingSecurityContextHolder delegatingSecurityContextHolder;
+    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
     private DataAutoConfiguration sut;
 

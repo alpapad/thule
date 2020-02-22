@@ -9,7 +9,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
-import uk.co.serin.thule.security.oauth2.utils.Oauth2Utils;
+import uk.co.serin.thule.resourceserver.utils.JwtUtils;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -20,14 +20,13 @@ import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 public class EmailContractTest extends ContractBaseTest {
-    private String jwt;
     @Autowired
     private WebTestClient webTestClient;
 
     @Before
     public void before() {
-        jwt = Oauth2Utils.createJwtOauth2AccessToken(
-                "username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId", "secret").getValue();
+        var jwt = JwtUtils.createKeycloakJwt("username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId");
+        webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();
     }
 
     @Test
@@ -40,7 +39,6 @@ public class EmailContractTest extends ContractBaseTest {
 
         // When
         webTestClient.post().uri("/emails")
-                     .header(HttpHeaders.AUTHORIZATION,"Bearer " + jwt)
                      .bodyValue(email)
                      .exchange()
                      // Then
@@ -61,7 +59,6 @@ public class EmailContractTest extends ContractBaseTest {
         // When
         webTestClient.post().uri("/emails")
                      .bodyValue(email)
-                     .header(HttpHeaders.AUTHORIZATION,"Bearer " + jwt)
                      .exchange()
 
                      // Then
@@ -69,7 +66,8 @@ public class EmailContractTest extends ContractBaseTest {
 
         await().until(() -> Arrays.stream(getSmtpServer().getMessages()).anyMatch(mailMessage -> mailMessage.getBody().contains(email.getBody())));
 
-        var actualMailMessageOptional = Arrays.stream(getSmtpServer().getMessages()).filter(mailMessage -> mailMessage.getBody().contains(email.getBody())).findFirst();
+        var actualMailMessageOptional =
+                Arrays.stream(getSmtpServer().getMessages()).filter(mailMessage -> mailMessage.getBody().contains(email.getBody())).findFirst();
         assertThat(actualMailMessageOptional).isNotEmpty();
         var actualMailMessage = actualMailMessageOptional.orElseThrow();
         assertThat(actualMailMessage.getBody()).contains(expectedAttachment.getContent());

@@ -3,30 +3,25 @@ package uk.co.serin.thule.people;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
+import uk.co.serin.thule.utils.utils.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationConfigurerTest {
-    @Mock
-    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
-    @Mock
-    private OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails;
     @InjectMocks
     private ApplicationConfigurer sut;
 
     @Test
-    public void when_jwtPropagatingOAuth2FeignRequestInterceptor_then_an_instance_is_instantiated() {
+    public void when_accessing_class_static_initializer_then_context_holder_strategy_is_inheritable_thread_local() {
         // When
-        var jwtPropagatingOAuth2FeignRequestInterceptor =
-                sut.jwtPropagatingOAuth2FeignRequestInterceptor(delegatingSecurityContextHolder, oAuth2ProtectedResourceDetails);
+        ClassUtils.forName(ApplicationConfigurer.class.getName());
 
         // Then
-        assertThat(jwtPropagatingOAuth2FeignRequestInterceptor).isNotNull();
+        var contextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+        assertThat(contextHolderStrategy.getClass().getName()).isEqualTo("org.springframework.security.core.context.InheritableThreadLocalSecurityContextHolderStrategy");
     }
 }

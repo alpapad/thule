@@ -6,11 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import lombok.NoArgsConstructor;
-
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@NoArgsConstructor
 public class WebMvcAutoConfiguration {
     @Bean
     public WebMvcConfigurer corsConfigurer() {

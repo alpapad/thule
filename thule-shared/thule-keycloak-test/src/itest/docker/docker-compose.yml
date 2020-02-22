@@ -1,0 +1,33 @@
+version: "3.5"
+services:
+  ################################  thule-spring-boot-starter-security-oauth2  ################################
+  thule-spring-boot-starter-security-oauth2:
+    image: jboss/keycloak:8.0.2
+    environment:
+      DB_VENDOR: mysql
+      DB_ADDR: mysql
+      DB_PASSWORD: password
+      DB_USER: keycloak
+      JDBC_PARAMS: useSSL=false
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      TZ: UTC
+    networks:
+      - thule-spring-boot-starter-security-oauth2
+    ports:
+      - 8080:8080
+
+  ################################  Servers and Databases Required By Docker Tests  ################################
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: keycloak
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: keycloak
+      TZ: UTC
+    networks:
+      - thule-spring-boot-starter-security-oauth2
+
+networks:
+  thule-spring-boot-starter-security-oauth2:

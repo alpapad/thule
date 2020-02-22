@@ -19,3 +19,7 @@ thule:
     logging:
       logstash:
         enabled: false
+    oauth2:
+      resourceserver:
+        jws:
+          enabled: false

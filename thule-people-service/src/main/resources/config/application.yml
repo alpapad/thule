@@ -13,19 +13,6 @@ management:
     health:
       show-details: ALWAYS
 
-# Spring Security configuration
-security:
-  oauth2:
-    client:
-      access-token-uri: http://thule-authentication-service/oauth/token
-      client-id: ${spring.application.name}
-      client-secret:  secret
-      grant-type: client_credentials
-      scope:  All
-    resource:
-      jwt:
-        key-value: secret
-
 # Server configuration
 server:
   # Required so that hateoas links have correct path to resources when using x-forwarded headers via k8s
@@ -55,6 +42,20 @@ spring:
       username: ${spring.datasource.username}
     schemas: ${thule.peopleservice.mysql.schema}
     url: jdbc:mysql://${thule.peopleservice.mysql.host}:${thule.peopleservice.mysql.port}
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/auth/realms/thule-test/protocol/openid-connect/token
+        registration:
+          keycloak:
+            authorization-grant-type: client_credentials
+            client-id: thule-people-service
+            client-secret: client-secret
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/thule-test
   sleuth:
     sampler:
       probability: 1.0

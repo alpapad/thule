@@ -13,13 +13,6 @@ management:
     health:
       show-details: ALWAYS
 
-# Spring Security configuration
-security:
-  oauth2:
-    resource:
-      jwt:
-        key-value: secret
-
 # Spring boot configuration
 spring:
   application:
@@ -34,6 +27,11 @@ spring:
       mail.smtp.auth: true
       mail.smtp.ssl.trust: "*"
       mail.smtp.starttls.enable: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/thule-test
   sleuth:
     sampler:
       probability: 1.0

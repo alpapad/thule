@@ -52,6 +52,79 @@ project("thule-data") {
     }
 }
 
+project("thule-feign") {
+    description = "Thule Feign"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        api("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+        implementation project(":thule-security")
+        implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
+        implementation("org.springframework.security:spring-security-oauth2-client")
+        implementation("org.springframework.security:spring-security-oauth2-jose")
+        implementation("org.springframework.security:spring-security-oauth2-resource-server")
+
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-spring-boot-starter-test")
+        testImplementation("org.springframework.boot:spring-boot-starter-web")
+    }
+}
+
+project("thule-keycloak-test") {
+    // Non-standard Serin gradle plugin config
+    itest {
+        // Remove docker container once the contract tests have completed
+        afterSuite { descriptor ->
+            if (descriptor.getName().contains("Gradle Test Executor")) {
+                exec {
+                    commandLine "docker-compose", "-f", "thule-keycloak-test/src/itest/docker/docker-compose.yml", "down", "-v", "--remove-orphans"
+                }
+            }
+        }
+    }
+
+    description = "Thule Keycloak Test"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        implementation project(":thule-spring-boot-starter")
+        implementation project(":thule-spring-boot-starter-feign")
+        implementation project(":thule-spring-boot-starter-resource-server")
+        implementation("org.springframework.boot:spring-boot-actuator-autoconfigure")
+        implementation("org.springframework.boot:spring-boot-starter-security")
+        implementation("org.springframework.boot:spring-boot-starter-web")
+
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-spring-boot-starter-test")
+
+        itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
+        itestImplementation("org.springframework.security:spring-security-oauth2-client")
+        itestImplementation("org.springframework.security:spring-security-test")
+    }
+}
+
+project("thule-resource-server") {
+    description = "Thule Resource Server"
+    dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        api project(":thule-security")
+        api("org.springframework.security:spring-security-oauth2-jose")
+        api("org.springframework.security:spring-security-oauth2-resource-server")
+
+        compileOnly("org.projectlombok:lombok")
+
+        testImplementation project(":thule-spring-boot-starter-test")
+        testImplementation("org.springframework.boot:spring-boot-starter-web")
+    }
+}
+
 project("thule-security") {
     description = "Thule Security"
     dependencies {
@@ -63,27 +136,6 @@ project("thule-security") {
         compileOnly("org.projectlombok:lombok")
 
         testImplementation project(":thule-spring-boot-starter-test")
-    }
-}
-
-project("thule-security-oauth2") {
-    description = "Thule Security Oauth2"
-    dependencies {
-        annotationProcessor("org.projectlombok:lombok")
-        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-        api project(":thule-security")
-        api("org.springframework.cloud:spring-cloud-starter-oauth2")
-        api("org.springframework.cloud:spring-cloud-starter-openfeign")
-
-        compileOnly("org.projectlombok:lombok")
-
-        testImplementation project(":thule-spring-boot-starter-test")
-        testImplementation("org.springframework.boot:spring-boot-starter-web")
-
-        itestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
-        itestImplementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
-        itestImplementation("org.springframework.security:spring-security-test")
     }
 }
 
@@ -155,21 +207,21 @@ project("thule-spring-boot-starter-data") {
         api project(":thule-data")
         api project(":thule-spring-boot-starter")
 
-        compileOnly project(":thule-security-oauth2")
+        compileOnly project(":thule-security")
         compileOnly("org.projectlombok:lombok")
 
-        testImplementation project(":thule-security-oauth2")
+        testImplementation project(":thule-security")
         testImplementation project(":thule-spring-boot-starter-test")
     }
 }
 
-project("thule-spring-boot-starter-security") {
-    description = "Thule Spring Boot Starter Security"
+project("thule-spring-boot-starter-feign") {
+    description = "Thule Spring Boot Starter Feign"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-        api project(":thule-security")
+        api project(":thule-feign")
         api project(":thule-spring-boot-starter")
 
         compileOnly("org.projectlombok:lombok")
@@ -178,28 +230,32 @@ project("thule-spring-boot-starter-security") {
     }
 }
 
-project("thule-spring-boot-starter-security-oauth2") {
-    description = "Thule Spring Boot Starter Security Oauth2"
+project("thule-spring-boot-starter-resource-server") {
+    description = "Thule Spring Boot Starter Resource Server"
     dependencies {
         annotationProcessor("org.projectlombok:lombok")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-        api project(":thule-security-oauth2")
+        api project(":thule-resource-server")
         api project(":thule-spring-boot-starter")
-        api project(":thule-spring-boot-starter-security")
+        api("org.springframework.boot:spring-boot-actuator-autoconfigure")
+        api("org.springframework.boot:spring-boot-starter-security")
+        api("org.springframework.boot:spring-boot-starter-web")
 
         compileOnly("org.projectlombok:lombok")
 
         testImplementation project(":thule-spring-boot-starter-test")
-        testImplementation("org.springframework.boot:spring-boot-starter-web")
 
-        itestImplementation("org.apache.httpcomponents:httpclient")
+        itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     }
 }
 
 project("thule-spring-boot-starter-test") {
     description = "Thule Spring Boot Starter Test"
     dependencies {
+        annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
         api project(":thule-spring-boot-starter")
         api project(":thule-test")
         api("org.awaitility:awaitility")
