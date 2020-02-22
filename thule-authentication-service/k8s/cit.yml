@@ -91,7 +91,7 @@ spec:
               value: password
             - name: MYSQL_ROOT_PASSWORD
               value: root
-            - name: MYSQL_DATABASE
+            - name: MYSQL_USER
               value: keycloak
             - name: TZ
               value: Europe/London
