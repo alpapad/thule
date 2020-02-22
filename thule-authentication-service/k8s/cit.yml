@@ -49,7 +49,7 @@ spec:
             - name: DB_VENDOR
               value: mysql
             - name: DB_ADDR
-              value: mysql
+              value: localhost
             - name: DB_PASSWORD
               value: password
             - name: DB_USER
