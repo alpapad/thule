@@ -1,6 +1,5 @@
 package uk.co.serin.thule.keycloak.feign;
 
-import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +26,8 @@ import uk.co.serin.thule.keycloak.feign.testservice.Application;
 import uk.co.serin.thule.keycloak.feign.testservice.TestFeignClient;
 import uk.co.serin.thule.resourceserver.utils.JwtUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Tests for Feign.
  *
@@ -43,10 +44,9 @@ import uk.co.serin.thule.resourceserver.utils.JwtUtils;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class KeycloakFeignInterceptorContractTest {
-    private static final String TOKEN_ENDPOINT = "http://localhost:8080/auth/realms/thule-test/protocol/openid-connect/token";
-    private static KeycloakManager keycloakManager = KeycloakManager.instance();
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
+    private KeycloakManager keycloakManager;
     @Autowired
     private TestFeignClient testFeignClient;
 
@@ -57,8 +57,10 @@ public class KeycloakFeignInterceptorContractTest {
 
     @Before
     public void before() {
+        keycloakManager = new KeycloakManager(KeycloakContainerInitializer.KEYCLOAK_BASE_URL, KeycloakContainerInitializer.THULE_REALM_NAME);
+
         // Replace client secret of the thule-test-service with actual client secret created via the KeycloakContainerInitializer
-        var thuleTestServiceClientSecret = keycloakManager.getThuleTestServiceClientSecret();
+        var thuleTestServiceClientSecret = keycloakManager.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
         var keycloakRegistration = clientRegistrationRepository.findByRegistrationId("keycloak");
         ReflectionTestUtils.setField(keycloakRegistration, "clientSecret", thuleTestServiceClientSecret);
     }
@@ -72,19 +74,19 @@ public class KeycloakFeignInterceptorContractTest {
         var feignClientResponse = testFeignClient.hello();
 
         // Then
-        Assertions.assertThat(feignClientResponse).isEqualTo("Hello World");
+        assertThat(feignClientResponse).isEqualTo("Hello World");
     }
 
     private void insertJwtIntoTheSecurityContext() {
         // Obtain thule-test-service client secret from keycloak
-        var thuleTestServiceClientSecret = keycloakManager.getThuleTestServiceClientSecret();
+        var thuleTestServiceClientSecret = keycloakManager.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
 
         // Obtain JWT for thule-test-service from keycloak
         var body = new LinkedMultiValueMap<String, String>();
         body.add("grant_type", "client_credentials");
-        body.add("client_id", KeycloakManager.THULE_TEST_SERVICE_CLIENT_ID);
+        body.add("client_id", KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
         body.add("client_secret", thuleTestServiceClientSecret);
-        var jwtTokenValue = keycloakManager.getJwtFromKeycloak(TOKEN_ENDPOINT, body);
+        var jwtTokenValue = keycloakManager.getJwtFromKeycloak(KeycloakContainerInitializer.KEYCLOAK_TOKEN_ENDPOINT, body);
 
         // Convert JWT from keycloak into a spring security Jwt object
         var jwt = JwtUtils.createKeycloakJwt(jwtTokenValue);
@@ -105,7 +107,7 @@ public class KeycloakFeignInterceptorContractTest {
         var feignClientresponse = testFeignClient.hello();
 
         // Then
-        Assertions.assertThat(feignClientresponse).isEqualTo("Hello World");
+        assertThat(feignClientresponse).isEqualTo("Hello World");
     }
 
     static class RandomPortInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

@@ -1,5 +1,6 @@
 package uk.co.serin.thule.keycloak.resourceserver;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +16,31 @@ import uk.co.serin.thule.keycloak.KeycloakContainerInitializer;
 import uk.co.serin.thule.keycloak.KeycloakManager;
 import uk.co.serin.thule.keycloak.resourceserver.testservice.Application;
 
-@ActiveProfiles({"itest"})
+@ActiveProfiles("itest")
 @ContextConfiguration(initializers = KeycloakContainerInitializer.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class KeycloakResourceServerContractTest {
-    private static final String TOKEN_ENDPOINT = "http://localhost:8080/auth/realms/thule-test/protocol/openid-connect/token";
-    private static KeycloakManager keycloakManager = KeycloakManager.instance();
+    private KeycloakManager keycloakManager;
     @Autowired
     private WebTestClient webTestClient;
+
+    @Before
+    public void before() {
+        keycloakManager = new KeycloakManager(KeycloakContainerInitializer.KEYCLOAK_BASE_URL, KeycloakContainerInitializer.THULE_REALM_NAME);
+    }
 
     @Test
     public void given_a_micro_service_accounts_credentials_when_making_a_restful_call_to_another_micro_service_without_a_user_present_then_a_successful_response_is_returned() {
         //Given
-        var thuleTestServiceClientSecret = keycloakManager.getThuleTestServiceClientSecret();
+        var thuleTestServiceClientSecret = keycloakManager.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
 
         var body = new LinkedMultiValueMap<String, String>();
         body.add("grant_type", "client_credentials");
-        body.add("client_id", KeycloakManager.THULE_TEST_SERVICE_CLIENT_ID);
+        body.add("client_id", KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
         body.add("client_secret", thuleTestServiceClientSecret);
 
-        var jwt = keycloakManager.getJwtFromKeycloak(TOKEN_ENDPOINT, body);
+        var jwt = keycloakManager.getJwtFromKeycloak(KeycloakContainerInitializer.KEYCLOAK_TOKEN_ENDPOINT, body);
 
         //When
         webTestClient.get().uri("/hello")
@@ -52,11 +57,11 @@ public class KeycloakResourceServerContractTest {
         //Given
         var body = new LinkedMultiValueMap<String, String>();
         body.add("grant_type", "password");
-        body.add("username", KeycloakManager.JOHN_DOE_USERNAME);
-        body.add("password", KeycloakManager.JOHN_DOE_PASSWORD);
-        body.add("client_id", KeycloakManager.THULE_WEBAPP_CLIENT_ID);
+        body.add("username", KeycloakContainerInitializer.JOHN_DOE_USERNAME);
+        body.add("password", KeycloakContainerInitializer.JOHN_DOE_PASSWORD);
+        body.add("client_id", KeycloakContainerInitializer.THULE_WEBAPP_CLIENT_ID);
 
-        var jwt = keycloakManager.getJwtFromKeycloak(TOKEN_ENDPOINT, body);
+        var jwt = keycloakManager.getJwtFromKeycloak(KeycloakContainerInitializer.KEYCLOAK_TOKEN_ENDPOINT, body);
 
         //When
         webTestClient.get().uri("/hello")
