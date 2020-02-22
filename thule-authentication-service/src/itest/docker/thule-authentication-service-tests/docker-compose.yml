@@ -11,7 +11,7 @@ services:
       JDBC_PARAMS: useSSL=false
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-      TZ: UTC
+      TZ: Europe/London
     networks:
       - thule-spring-boot-starter-security-oauth2
     ports:
@@ -25,7 +25,7 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: keycloak
-      TZ: UTC
+      TZ: Europe/London
     networks:
       - thule-spring-boot-starter-security-oauth2
 
