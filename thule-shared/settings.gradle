@@ -8,7 +8,6 @@ rootProject.name = "thule-shared"
 
 include "thule-data"
 include "thule-feign"
-include "thule-keycloak-test"
 include "thule-resource-server"
 include "thule-security"
 include "thule-test"

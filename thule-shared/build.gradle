@@ -73,41 +73,6 @@ project("thule-feign") {
     }
 }
 
-project("thule-keycloak-test") {
-    // Non-standard Serin gradle plugin config
-    itest {
-        // Remove docker container once the contract tests have completed
-        afterSuite { descriptor ->
-            if (descriptor.getName().contains("Gradle Test Executor")) {
-                exec {
-                    commandLine "docker-compose", "-f", "thule-keycloak-test/src/itest/docker/docker-compose.yml", "down", "-v", "--remove-orphans"
-                }
-            }
-        }
-    }
-
-    description = "Thule Keycloak Test"
-    dependencies {
-        annotationProcessor("org.projectlombok:lombok")
-        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-        implementation project(":thule-spring-boot-starter")
-        implementation project(":thule-spring-boot-starter-feign")
-        implementation project(":thule-spring-boot-starter-resource-server")
-        implementation("org.springframework.boot:spring-boot-actuator-autoconfigure")
-        implementation("org.springframework.boot:spring-boot-starter-security")
-        implementation("org.springframework.boot:spring-boot-starter-web")
-
-        compileOnly("org.projectlombok:lombok")
-
-        testImplementation project(":thule-spring-boot-starter-test")
-
-        itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
-        itestImplementation("org.springframework.security:spring-security-oauth2-client")
-        itestImplementation("org.springframework.security:spring-security-test")
-    }
-}
-
 project("thule-resource-server") {
     description = "Thule Resource Server"
     dependencies {
