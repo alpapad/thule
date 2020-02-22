@@ -1,7 +1,7 @@
 version: "3.5"
 services:
-  ################################  thule-spring-boot-starter-security-oauth2  ################################
-  thule-spring-boot-starter-security-oauth2:
+  ################################  thule-authentication-service  ################################
+  thule-authentication-service:
     image: jboss/keycloak:8.0.2
     environment:
       DB_VENDOR: mysql
@@ -13,7 +13,7 @@ services:
       KEYCLOAK_PASSWORD: admin
       TZ: Europe/London
     networks:
-      - thule-spring-boot-starter-security-oauth2
+      - thule-authentication-service
     ports:
       - 8080:8080
 
@@ -27,7 +27,7 @@ services:
       MYSQL_USER: keycloak
       TZ: Europe/London
     networks:
-      - thule-spring-boot-starter-security-oauth2
+      - thule-authentication-service
 
 networks:
-  thule-spring-boot-starter-security-oauth2:
+  thule-authentication-service:

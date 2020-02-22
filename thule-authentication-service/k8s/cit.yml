@@ -83,7 +83,7 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 10
         - name: mysql-authentication-service
-          image: mysql
+          image: mysql:5.7
           env:
             - name: MYSQL_DATABASE
               value: keycloak
