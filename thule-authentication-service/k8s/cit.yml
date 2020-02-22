@@ -58,12 +58,12 @@ spec:
               value: useSSL=false
             - name: JDK_JAVA_OPTIONS
               value: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+            - name: KEYCLOAK_FRONTEND_URL
+              value: http://piglet/thule-authentication-service/auth
             - name: KEYCLOAK_USER
               value: admin
             - name: KEYCLOAK_PASSWORD
               value: admin
-            - name: KEYCLOAK_FRONTEND_URL
-              value: http://piglet/thule-authentication-service
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
