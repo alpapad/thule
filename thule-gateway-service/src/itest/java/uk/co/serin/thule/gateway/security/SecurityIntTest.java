@@ -3,7 +3,6 @@ package uk.co.serin.thule.gateway.security;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -20,7 +19,6 @@ import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 import java.time.Duration;
 
 @ActiveProfiles("itest")
-@AutoConfigureWebTestClient(timeout = "10000") //10 seconds
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityIntTest {
@@ -41,7 +39,7 @@ public class SecurityIntTest {
     @Test
     public void when_using_http_basic_authentication_then_access_should_be_denied() {
         // When
-        webTestClient.get().uri("/hello").exchange()
+        webTestClient.mutate().build().get().uri("/hello").exchange()
 
         // Then
             .expectStatus().isUnauthorized();
