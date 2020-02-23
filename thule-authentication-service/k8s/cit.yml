@@ -149,7 +149,7 @@ metadata:
   namespace: thule
   annotations:
     health.path: realms/master/.well-known/openid-configuration
-    management.context-path: auth
+    management.context-path: realms/master/.well-known/openid-configuration
     service-path: auth
 spec:
   type: NodePort
