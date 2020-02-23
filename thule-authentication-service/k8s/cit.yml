@@ -148,9 +148,9 @@ metadata:
   name: thule-authentication-service
   namespace: thule
   annotations:
-    health.path: "/"
-    management.context-path: "auth/"
-    service-path: "auth/"
+    health.path: realms/master/.well-known/openid-configuration
+    management.context-path: auth
+    service-path: auth
 spec:
   type: NodePort
   ports:
