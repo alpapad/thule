@@ -147,6 +147,8 @@ apiVersion: v1
 metadata:
   name: thule-authentication-service
   namespace: thule
+  annotations:
+    management.context-path: auth
 spec:
   type: NodePort
   ports:
