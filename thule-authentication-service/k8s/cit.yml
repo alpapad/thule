@@ -148,6 +148,7 @@ metadata:
   name: thule-authentication-service
   namespace: thule
   annotations:
+    # Spring Boot Admin metadata
     health.path: /
     management.context-path: auth/realms/master/.well-known/openid-configuration
     service-path: auth
