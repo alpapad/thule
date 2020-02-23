@@ -148,6 +148,7 @@ metadata:
   name: thule-authentication-service
   namespace: thule
   annotations:
+    management.context-path: auth
     service-path: auth
 spec:
   type: NodePort
