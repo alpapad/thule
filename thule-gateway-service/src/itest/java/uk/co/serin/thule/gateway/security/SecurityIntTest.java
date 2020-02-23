@@ -1,6 +1,5 @@
 package uk.co.serin.thule.gateway.security;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +27,6 @@ public class SecurityIntTest {
     private int port;
     @Autowired
     private WebTestClient webTestClient;
-
-    @Before
-    public void before() throws InterruptedException {
-        Thread.sleep(10000);
-    }
 
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
