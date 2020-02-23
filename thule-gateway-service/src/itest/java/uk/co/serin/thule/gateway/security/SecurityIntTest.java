@@ -5,52 +5,50 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import java.time.Duration;
 
-import static uk.co.serin.thule.test.assertj.SpringBootActuatorAssert.assertThat;
+import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityIntTest {
-    @LocalServerPort
-    private int port;
     @Autowired
-    private WebTestClient webTestClient;
+    private TestRestTemplate testRestTemplate;
 
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
-        var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/info", port));
+        var actuatorUri = ActuatorUri.using(testRestTemplate.getRootUri() + "/actuator/info");
 
         // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
+        SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
     }
 
     @Test
     public void when_using_http_basic_authentication_then_access_should_be_denied() {
         // When
-        webTestClient.get().uri("/hello").exchange()
+        var responseEntity = testRestTemplate.getForEntity("/hello", String.class);
 
         // Then
-            .expectStatus().isUnauthorized();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @TestConfiguration
-    static class SecurityIntTestConfiguration {
+    static class BankTransferRequestIntTestConfiguration {
         @RestController
-        public static class HelloWorldController {
-            @GetMapping(value = "/hello")
+        public class HelloWorldController {
+            @RequestMapping(value = "/hello")
             public String helloWorld() {
                 return "Hello";
             }

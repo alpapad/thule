@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,6 +19,8 @@ import uk.co.serin.thule.spring.boot.starter.resourceserver.testservice.Applicat
 
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,6 +28,8 @@ public class ResourceServerAutoConfigurationIntTest {
     public static final Set<GrantedAuthority> GRANTED_AUTHORITIES = Set.of(new SimpleGrantedAuthority("ROLE_PUBLIC"));
     public static final int USER_ID = 1234567890;
     public static final String USER_NAME = "user";
+    @Autowired
+    private TestRestTemplate testRestTemplate;
     @Autowired
     private WebTestClient webTestClient;
 
@@ -66,10 +72,9 @@ public class ResourceServerAutoConfigurationIntTest {
     @Test
     public void when_not_authenticated_then_access_should_be_denied() {
         // When
-        webTestClient.get().uri("/hello")
-                     .exchange()
+        var responseEntity = testRestTemplate.getForEntity("/hello", String.class);
 
-                     // Then
-                     .expectStatus().isUnauthorized();
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 }
