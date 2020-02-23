@@ -1,5 +1,6 @@
 package uk.co.serin.thule.gateway.security;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import java.time.Duration;
+
+import static uk.co.serin.thule.test.assertj.SpringBootActuatorAssert.assertThat;
 
 @ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
@@ -27,19 +29,24 @@ public class SecurityIntTest {
     @Autowired
     private WebTestClient webTestClient;
 
+    @Before
+    public void before() throws InterruptedException {
+        Thread.sleep(10000);
+    }
+
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/info", port));
 
         // When/Then
-        SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
+        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
     }
 
     @Test
     public void when_using_http_basic_authentication_then_access_should_be_denied() {
         // When
-        webTestClient.mutate().build().get().uri("/hello").exchange()
+        webTestClient.get().uri("/hello").exchange()
 
         // Then
             .expectStatus().isUnauthorized();
