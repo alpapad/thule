@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,12 +19,16 @@ import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import java.time.Duration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ActiveProfiles("itest")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityIntTest {
     @LocalServerPort
     private int port;
+    @Autowired
+    private TestRestTemplate testRestTemplate;
     @Autowired
     private WebTestClient webTestClient;
 
@@ -39,10 +44,10 @@ public class SecurityIntTest {
     @Test
     public void when_using_http_basic_authentication_then_access_should_be_denied() {
         // When
-        webTestClient.get().uri("/hello").exchange()
+        var responseEntity = testRestTemplate.getForEntity("/hello", String.class);
 
-        //Then
-            .expectStatus().isUnauthorized();
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @TestConfiguration
