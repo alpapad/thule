@@ -49,6 +49,12 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
     implementation("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
 
+    // Spring boot 2.2.4 version 5.2.1 but version 5.2.2 fixes a bug whereby some WebTestClient tests timeout
+    implementation("org.springframework.security:spring-security-config:5.2.2.RELEASE")
+    implementation("org.springframework.security:spring-security-crypto:5.2.2.RELEASE")
+    implementation("org.springframework.security:spring-security-oauth2-jose:5.2.2.RELEASE")
+    implementation("org.springframework.security:spring-security-oauth2-resource-server:5.2.2.RELEASE")
+
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
     itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
