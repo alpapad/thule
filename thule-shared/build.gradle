@@ -112,8 +112,9 @@ project("thule-test") {
 
         compileOnly("org.projectlombok:lombok")
 
-        implementation("junit:junit")
         implementation("org.assertj:assertj-core")
+        implementation("org.junit.jupiter:junit-jupiter-engine")
+        implementation("org.junit.vintage:junit-vintage-engine")
         implementation("org.mockito:mockito-core")
         implementation("org.slf4j:slf4j-api")
         implementation("org.springframework.boot:spring-boot-actuator")
