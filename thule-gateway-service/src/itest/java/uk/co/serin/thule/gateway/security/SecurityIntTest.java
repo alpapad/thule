@@ -10,7 +10,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +28,6 @@ public class SecurityIntTest {
     private int port;
     @Autowired
     private TestRestTemplate testRestTemplate;
-    @Autowired
-    private WebTestClient webTestClient;
 
     @Test
     public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
