@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Configuration
@@ -19,7 +18,6 @@ import lombok.NoArgsConstructor;
 public class ApplicationConfigurer {
     @Bean
     @ConfigurationProperties(prefix = "spring.boot.admin.discovery.converter")
-    @Generated
     public KubernetesServicePathServiceInstanceConverter serviceInstanceConverter() {
         return new KubernetesServicePathServiceInstanceConverter();
     }

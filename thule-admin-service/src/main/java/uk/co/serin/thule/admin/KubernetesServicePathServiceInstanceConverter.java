@@ -7,11 +7,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import lombok.Generated;
-
 import static org.springframework.util.StringUtils.isEmpty;
 
-@Generated
 public class KubernetesServicePathServiceInstanceConverter extends KubernetesServiceInstanceConverter {
 	@Override
 	protected URI getServiceUrl(ServiceInstance instance) {
