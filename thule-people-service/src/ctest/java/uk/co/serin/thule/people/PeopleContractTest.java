@@ -1,7 +1,9 @@
 package uk.co.serin.thule.people;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,37 +63,23 @@ public class PeopleContractTest extends ContractBaseTest {
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();
     }
 
-//    @Test
-//    public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() {
-//        // Given
-//        var testPerson = createAndPersistPersonWithNoAssociations();
-//
-//        // When
-//        var personResponseEntity =
-//                webTestClient.get().uri("/people"), HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<CollectionModel<PersonEntity>>() {
-//                }, 0, 1000);
-//
-//        // Then
-//        var actualPeople = Objects.requireNonNull(personResponseEntity.getBody()).getContent();
-//
-//        assertThat(personResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(actualPeople).contains(testPerson);
-//    }
-
     @Test
-    public void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
+    public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() throws JsonProcessingException {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
 
         // When
-        var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH + ID_PATH, testPerson.getId()).exchange()
+        var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH).exchange()
                                                 .expectStatus().isOk()
-                                                .expectBody(PersonEntity.class)
+                                                .expectBody(String.class)
                                                 .returnResult();
 
         // Then
-        var actualPerson = entityExchangeResult.getResponseBody();
-        assertThat(actualPerson).isEqualTo(testPerson);
+        var embeddedPeople = JsonPath.read(entityExchangeResult.getResponseBody(), "$._embedded.people[*]").toString();
+        var actualPeople = objectMapper.readValue(embeddedPeople, new TypeReference<PersonEntity[]>() {
+        });
+
+        assertThat(actualPeople).contains(testPerson);
     }
 
     private PersonEntity createAndPersistPersonWithNoAssociations() {
@@ -121,6 +109,22 @@ public class PeopleContractTest extends ContractBaseTest {
                                    title("Miss").
                                    userId(userId).
                                    build();
+    }
+
+    @Test
+    public void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
+        // Given
+        var testPerson = createAndPersistPersonWithNoAssociations();
+
+        // When
+        var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH + ID_PATH, testPerson.getId()).exchange()
+                                                .expectStatus().isOk()
+                                                .expectBody(PersonEntity.class)
+                                                .returnResult();
+
+        // Then
+        var actualPerson = entityExchangeResult.getResponseBody();
+        assertThat(actualPerson).isEqualTo(testPerson);
     }
 
     @Test
