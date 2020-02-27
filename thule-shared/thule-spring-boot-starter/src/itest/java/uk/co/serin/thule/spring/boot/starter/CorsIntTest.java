@@ -29,6 +29,7 @@ public class CorsIntTest {
                      .exchange()
 
                      // Then
-                     .expectStatus().isOk();
+                     .expectStatus().isOk()
+                     .expectBody().isEmpty();
     }
 }

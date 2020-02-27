@@ -160,6 +160,7 @@ project("thule-spring-boot-starter") {
         testImplementation("org.springframework:spring-webmvc")
 
         itestImplementation("org.springframework.boot:spring-boot-starter-web")
+        itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     }
 }
 
