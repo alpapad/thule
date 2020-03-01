@@ -9,12 +9,6 @@ spring:
 
 # Thule configuration
 thule:
-  gatewayservice:
-    healthcheck:
-      services:
-        - "thule-discovery-service"
-        - "thule-configuration-service"
-        - "thule-admin-service"
   shared:
     logging:
       logstash:

@@ -13,25 +13,30 @@ management:
     health:
       show-details: ALWAYS
 
-# Ribbon configuration
-ribbon:
-  ConnectTimeout: 20000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be connectTimeout or connect-timeout
-  ReadTimeout: 60000 # Paramater passed to ribbon as is so the property is case sensitive, i.e. it cannot be readTimeout or read-timeout
-
 # Server configuration
 server:
-  # Required so that zuul forwarded requests have correct path to micro services when using x-forwarded headers via k8s
+  # Required so that gateway forwarded requests have correct path to micro services when using x-forwarded headers via k8s
   forward-headers-strategy: framework
 
 # Spring boot configuration
 spring:
   application:
     name: thule-gateway-service
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/auth/realms/thule-test
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          url-expression: "'http://'+serviceId"
+          predicates:
+            - name: Path
+              args:
+                pattern: "'/thule-gateway-service/'+serviceId.toLowerCase()+'/**'"
+          filters:
+            - name: RewritePath
+              args:
+                regexp: "'/thule-gateway-service/' + serviceId.toLowerCase() + '/(?<remaining>.*)'"
+                replacement: "'/${remaining}'"
   sleuth:
     sampler:
       probability: 1.0
@@ -39,17 +44,6 @@ spring:
     base-url: http://pooh:9411
     sender:
       type: web
-
-# Zuul configuration
-zuul:
-  # Defaults to Cookie,Set-Cookie,Authorization but means the basic authentication and auth bearer tokens header will not propagate to
-  # down stream services. Hence Authorization has been removed from the sensitive headers blacklist
-  sensitiveHeaders: Cookie,Set-Cookie
-  ignoredServices:
-    - "thule-admin-service"
-    - "thule-configuration-service"
-    - "thule-discovery-service"
-    - "thule-gateway-service"
 
 # Thule configuration
 thule:

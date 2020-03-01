@@ -37,14 +37,13 @@ dependencies {
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR2")
-    implementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
     implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
+    implementation('org.springframework.cloud:spring-cloud-starter-gateway')
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
-    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon")
-    implementation('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
     implementation("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
@@ -52,10 +51,8 @@ dependencies {
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
     itestImplementation("org.springframework.boot:spring-boot-starter-webflux")
-    itestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
 
     ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
-    ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
