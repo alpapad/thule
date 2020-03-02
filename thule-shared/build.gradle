@@ -149,7 +149,7 @@ project("thule-spring-boot-starter") {
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-utils")
-        api("org.springframework.boot:spring-boot-aop")
+        api("org.springframework.boot:spring-boot-starter-aop")
 
         compileOnly("org.projectlombok:lombok")
         compileOnly("org.springframework:spring-webmvc")
