@@ -19,9 +19,7 @@ spring:
     name: thule-email-service
   mail:
     host: smtp.gmail.com
-    password: 1nsleyopie
     port: 587
-    username: thule@serin-consultancy.co.uk
     properties:
       # mail.debug: true
       mail.smtp.auth: true

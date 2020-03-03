@@ -48,6 +48,16 @@ spec:
           env:
             - name: JDK_JAVA_OPTIONS
               value: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+            - name: SPRING_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: thule-email-service-secret
+                  key: mail-username
+            - name: SPRING_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: thule-email-service-secret
+                  key: mail-password
             - name: SPRING_PROFILES_ACTIVE
               value: cit
             - name: THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED
@@ -114,6 +124,16 @@ spec:
             backend:
               serviceName: thule-email-service
               servicePort: 80
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: thule-email-service-secret
+  namespace: thule
+type: Opaque
+data:
+  mail-username: dGh1bGVAc2VyaW4tY29uc3VsdGFuY3kuY28udWs=
+  mail-password: MW5zbGV5b3BpZQ==
 ---
 kind: Service
 apiVersion: v1
