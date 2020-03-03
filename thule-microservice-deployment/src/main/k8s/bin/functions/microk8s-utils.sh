@@ -204,13 +204,13 @@ function configureMicrok8s() {
   fi
 
   echo ""
-  echo -n "Creating namespace thule..."
-  if [[ $(sudo microk8s.kubectl get namespace thule 2>&1 | grep "not found") == "" ]]; then
-    echo -e "\rCreating namespace thule...\033[32m already created \033[0m"
+  echo -n "Enabling skip login for dashboard..."
+  if [[ $(sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
+    echo -e "\rEnabling skip login for dashboard...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-namespace.yml"
-    echo -e "Creating namespace thule...\033[32m done \033[0m"
+    sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
+    echo -e "Enabling skip login for dashboard...\033[32m done \033[0m"
   fi
 
   echo ""
@@ -224,13 +224,38 @@ function configureMicrok8s() {
   fi
 
   echo ""
-  echo -n "Enabling skip login for dashboard..."
-  if [[ $(sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
-    echo -e "\rEnabling skip login for dashboard...\033[32m already created \033[0m"
+  echo "Have configured microk8s"
+  echo "================================================================================"
+
+  showMicrok8sStatus
+}
+
+function configureThule() {
+  echo ""
+  echo "================================================================================"
+  echo "About to configure microk8s..."
+
+  microk8sStatusStartTime=$(date +%s)
+  elapsedSeconds=$(($(date +%s) - microk8sStatusStartTime))
+
+  echo ""
+  echo -n "Creating namespace for thule..."
+  if [[ $(sudo microk8s.kubectl get namespace thule 2>&1 | grep "not found") == "" ]]; then
+    echo -e "\rCreating namespace for thule...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
-    echo -e "Enabling skip login for dashboard...\033[32m done \033[0m"
+    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-namespace.yml"
+    echo -e "Creating namespace for thule...\033[32m done \033[0m"
+  fi
+
+  echo ""
+  echo -n "Creating secrets for thule..."
+  if [[ $(sudo microk8s.kubectl get secret thule-secrets --namespace thule 2>&1 | grep "not found") == "" ]]; then
+    echo -e "\rCreating secrets for thule...\033[32m already created \033[0m"
+  else
+    echo ""
+    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-secrets.yml"
+    echo -e "Creating secrets for thule...\033[32m done \033[0m"
   fi
 
   echo ""
