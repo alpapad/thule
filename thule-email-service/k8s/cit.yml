@@ -125,15 +125,15 @@ spec:
               serviceName: thule-email-service
               servicePort: 80
 ---
-kind: Secret
-apiVersion: v1
-metadata:
-  name: thule-email-service-secret
-  namespace: thule
-type: Opaque
-data:
-  mail-username: dGh1bGVAc2VyaW4tY29uc3VsdGFuY3kuY28udWs=
-  mail-password: MW5zbGV5b3BpZQ==
+#kind: Secret
+#apiVersion: v1
+#metadata:
+#  name: thule-email-service-secret
+#  namespace: thule
+#type: Opaque
+#data:
+#  mail-username: dGh1bGVAc2VyaW4tY29uc3VsdGFuY3kuY28udWs=
+#  mail-password: MW5zbGV5b3BpZQ==
 ---
 kind: Service
 apiVersion: v1
