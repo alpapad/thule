@@ -233,7 +233,7 @@ function configureMicrok8s() {
 function configureThule() {
   echo ""
   echo "================================================================================"
-  echo "About to configure microk8s..."
+  echo "About to configure thule..."
 
   microk8sStatusStartTime=$(date +%s)
   elapsedSeconds=$(($(date +%s) - microk8sStatusStartTime))
@@ -259,7 +259,7 @@ function configureThule() {
   fi
 
   echo ""
-  echo "Have configured microk8s"
+  echo "Have configured thule"
   echo "================================================================================"
 
   showMicrok8sStatus
