@@ -51,12 +51,12 @@ spec:
             - name: SPRING_MAIL_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: thule-email-service-secret
+                  name: thule-secrets
                   key: mail-username
             - name: SPRING_MAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-email-service-secret
+                  name: thule-secrets
                   key: mail-password
             - name: SPRING_PROFILES_ACTIVE
               value: cit
