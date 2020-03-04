@@ -50,10 +50,16 @@ spec:
               value: mysql
             - name: DB_ADDR
               value: localhost
-            - name: DB_PASSWORD
-              value: password
             - name: DB_USER
-              value: keycloak
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-datasource-app-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-datasource-app-password
             - name: JDBC_PARAMS
               value: useSSL=false
             - name: JDK_JAVA_OPTIONS
@@ -61,9 +67,15 @@ spec:
             - name: KEYCLOAK_FRONTEND_URL
               value: http://piglet/thule-authentication-service/auth
             - name: KEYCLOAK_USER
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-keycloak-admin-username
             - name: KEYCLOAK_PASSWORD
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-keycloak-admin-password
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
@@ -89,12 +101,21 @@ spec:
           env:
             - name: MYSQL_DATABASE
               value: keycloak
-            - name: MYSQL_PASSWORD
-              value: password
-            - name: MYSQL_ROOT_PASSWORD
-              value: root
             - name: MYSQL_USER
-              value: keycloak
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-datasource-app-username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-datasource-app-password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-authenticationservice-datasource-owner-password
             - name: TZ
               value: Europe/London
           ports:
