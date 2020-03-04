@@ -253,8 +253,6 @@ function configureThule() {
   echo ""
   echo "Have configured thule"
   echo "================================================================================"
-
-  showMicrok8sStatus
 }
 
 function showMicrok8sStatus() {
