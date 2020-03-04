@@ -1,12 +1,3 @@
-# Spring boot configuration
-spring:
-  datasource:
-    password: thule
-    username: thule
-  flyway:
-    password: root
-    user: root
-
 # Thule configuration
 thule:
   peopleservice:
