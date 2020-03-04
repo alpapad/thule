@@ -53,22 +53,22 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-peopleservice-datasource-app-username
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-peopleservice-datasource-app-password
             - name: SPRING_FLYWAY_USER
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-peopleservice-datasource-owner-username
             - name: SPRING_FLYWAY_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-peopleservice-datasource-owner-password
             - name: SPRING_PROFILES_ACTIVE
               value: cit
@@ -98,7 +98,7 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-peopleservice-datasource-owner-password
             - name: TZ
               value: Europe/London

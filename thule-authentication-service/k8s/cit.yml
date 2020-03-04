@@ -53,12 +53,12 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-datasource-app-username
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-datasource-app-password
             - name: JDBC_PARAMS
               value: useSSL=false
@@ -69,12 +69,12 @@ spec:
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-keycloak-admin-username
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-keycloak-admin-password
             - name: TZ
               value: Europe/London
@@ -104,17 +104,17 @@ spec:
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-datasource-app-username
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-datasource-app-password
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: thule-secrets
+                  name: thule-application-secrets
                   key: thule-authenticationservice-datasource-owner-password
             - name: TZ
               value: Europe/London

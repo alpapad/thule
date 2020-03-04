@@ -247,7 +247,7 @@ function configureThule() {
   echo ""
   echo -n "Creating secrets for thule..."
   echo ""
-  sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-secrets.yml"
+  sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-application-secrets.yml"
   echo -e "Creating secrets for thule...\033[32m done \033[0m"
 
   echo ""
