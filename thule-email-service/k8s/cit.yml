@@ -52,12 +52,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: thule-secrets
-                  key: email-username
+                  key: thule-emailservice-mail-username
             - name: SPRING_MAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: thule-secrets
-                  key: email-password
+                  key: thule-emailservice-mail-password
             - name: SPRING_PROFILES_ACTIVE
               value: cit
             - name: THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED
