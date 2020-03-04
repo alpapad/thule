@@ -1,0 +1,10 @@
+# Spring boot configuration
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      # mail.debug: true
+      mail.smtp.auth: true
+      mail.smtp.ssl.trust: "*"
+      mail.smtp.starttls.enable: true

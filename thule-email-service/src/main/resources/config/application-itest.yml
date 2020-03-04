@@ -4,9 +4,6 @@ spring:
     kubernetes:
       discovery:
         enabled: false
-  mail:
-    host: localhost
-    port: 1025
   zipkin:
     enabled: false
 

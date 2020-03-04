@@ -4,11 +4,6 @@ spring:
     kubernetes:
       discovery:
         enabled: false
-  mail:
-    host: localhost
-    port: 1025
-    username: test.user
-    password: test.user
   zipkin:
     enabled: false
 
