@@ -60,7 +60,7 @@ spec:
                 secretKeyRef:
                   name: thule-secrets
                   key: thule-peopleservice-datasource-app-password
-            - name: SPRING_FLYWAY_USERNAME
+            - name: SPRING_FLYWAY_USER
               valueFrom:
                 secretKeyRef:
                   name: thule-secrets
