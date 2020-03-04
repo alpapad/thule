@@ -43,7 +43,7 @@ spec:
       serviceAccountName: thule-authentication-service-account
       containers:
         - name: thule-authentication-service
-          image: jboss/keycloak:9.0.0
+          image: jboss/keycloak
           imagePullPolicy: Always
           env:
             - name: DB_VENDOR
