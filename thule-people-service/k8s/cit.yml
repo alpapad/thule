@@ -96,7 +96,10 @@ spec:
           image: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: thule-secrets
+                  key: thule-peopleservice-datasource-owner-password
             - name: TZ
               value: Europe/London
           ports:
