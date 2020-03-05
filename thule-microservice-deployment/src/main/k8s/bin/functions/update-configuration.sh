@@ -71,7 +71,6 @@ function updateConfiguration() {
   echo ""
   echo -n "Replacing old config with the new config ..."
 
-  rm -fr "${configDirectory}"
   mkdir -p "${configDirectory}"
   unzip -jq -d "${configDirectory}" "${tempDirectory}/jar/*.jar" BOOT-INF/classes/config/application*.yml
 
