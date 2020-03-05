@@ -26,10 +26,7 @@ function updateConfiguration() {
     metadataUrl="http://${NEXUS_HOST}:${NEXUS_PORT_MAVEN}/repository/maven-public/uk/co/serin/thule/${serviceName}/${serviceVersion}/maven-metadata.xml"
     echo "Downloading ${serviceName} metadata using ${metadataUrl} from Nexus..."
 
-    mkdir -p "${tempDirectory}/metadata"
-    pushd "${tempDirectory}/metadata"
-    curlResponseCode=$(curl -L -o maven-metadata.xml -w "%{http_code}" "${metadataUrl}")
-    popd
+    curlResponseCode=$(curl --create-dirs -L -o "${tempDirectory}/metadata/maven-metadata.xml" -w "%{http_code}" "${metadataUrl}")
     if [[ ${curlResponseCode} -lt 200 || ${curlResponseCode} -gt 299 ]]; then
       echo ""
       echo "ERROR: Received a HTTP status code of ${curlResponseCode} while trying to download ${metadataUrl}"
@@ -48,10 +45,8 @@ function updateConfiguration() {
   echo ""
   echo "Downloading ${serviceDownloadUrl} from Nexus..."
 
-  mkdir -p "${tempDirectory}/jar"
-  pushd "${tempDirectory}/jar"
-  curlResponseCode=$(curl -L -O -w "%{http_code}" "${serviceDownloadUrl}")
-  popd
+  jarFileName=$(basename "$serviceDownloadUrl")
+  curlResponseCode=$(curl --create-dirs -L -o "${tempDirectory}/jar/${jarFileName}" -w "%{http_code}" "${serviceDownloadUrl}")
   if [[ ${curlResponseCode} -lt 200 || ${curlResponseCode} -gt 299 ]]; then
     echo ""
     echo "ERROR: Received a HTTP status code of ${curlResponseCode} while trying to download ${serviceDownloadUrl}"
