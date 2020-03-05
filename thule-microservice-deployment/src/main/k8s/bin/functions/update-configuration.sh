@@ -45,7 +45,7 @@ function updateConfiguration() {
   echo ""
   echo "Downloading ${serviceDownloadUrl} from Nexus..."
 
-  jarFileName=$(basename "$serviceDownloadUrl")
+  jarFileName=$(basename "${serviceDownloadUrl}")
   curlResponseCode=$(curl --create-dirs -L -o "${tempDirectory}/jar/${jarFileName}" -w "%{http_code}" "${serviceDownloadUrl}")
   if [[ ${curlResponseCode} -lt 200 || ${curlResponseCode} -gt 299 ]]; then
     echo ""
