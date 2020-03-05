@@ -57,7 +57,7 @@ function updateConfiguration() {
   # Update the config files
   if [[ "${serviceName}" == "thule-configuration-service" ]]; then
     configDirectory=${CONFIGRATION_SERVICE_CONFIG_DIRECTORY}
-    rm -f "${configDirectory}/*.yml"
+    rm -f "${configDirectory}"/*.yml
   else
     configDirectory=${CONFIGRATION_SERVICE_CONFIG_DIRECTORY}/${serviceName}
     rm -fr "${configDirectory}"
