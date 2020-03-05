@@ -7,7 +7,7 @@ function updateConfiguration() {
   echo ""
   echo "Downloading configuration..."
 
-  serviceName=$(awk '/app: /{print $NF;exit;}' ${kubernetesConfigurationFile})
+  serviceName=$(awk '/app: /{print $NF;exit;}' "${kubernetesConfigurationFile}")
   tempDirectory=$(mktemp -d --suffix "${serviceName}")
 
   # Locate the service version
