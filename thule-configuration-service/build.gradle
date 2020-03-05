@@ -29,6 +29,7 @@ configurations {
 }
 dependencies {
     config("uk.co.serin.thule:thule-admin-service:latest.integration")
+    config("uk.co.serin.thule:thule-authentication-service:latest.integration")
     config("uk.co.serin.thule:thule-discovery-service:latest.integration")
     config("uk.co.serin.thule:thule-email-service:latest.integration")
     config("uk.co.serin.thule:thule-gateway-service:latest.integration")
