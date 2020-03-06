@@ -1,4 +1,4 @@
-package uk.co.serin.thule.keycloak.feign.testservice;
+package uk.co.serin.thule.authentication.keycloak.resourceserver.testservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -2,11 +2,11 @@ version: "3.5"
 services:
   ################################  thule-authentication-service  ################################
   thule-authentication-service:
-    image: jboss/keycloak:9.0.0
+    image: jboss/keycloak
     environment:
       DB_VENDOR: mysql
       DB_ADDR: mysql
-      DB_PASSWORD: password
+      DB_PASSWORD: keycloak
       DB_USER: keycloak
       JDBC_PARAMS: useSSL=false
       KEYCLOAK_USER: admin
@@ -22,9 +22,9 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: keycloak
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: keycloak
+      MYSQL_PASSWORD: keycloak
+      MYSQL_ROOT_PASSWORD: root
       TZ: Europe/London
     networks:
       - thule-authentication-service

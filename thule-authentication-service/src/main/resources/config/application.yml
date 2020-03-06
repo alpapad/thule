@@ -1,0 +1,15 @@
+# Spring logging configuration
+logging:
+  level:
+    uk.co.serin.thule: trace
+
+# Spring boot configuration
+spring:
+  main:
+    web-application-type: NONE
+
+# Thule configuration
+thule:
+  keycloak:
+    base-url: http://piglet/thule-authentication-service
+    realm: thule
