@@ -20,8 +20,8 @@ import lombok.AllArgsConstructor;
 @Service
 @TracePublicMethods
 public class KeycloakResourceInstaller implements CommandLineRunner {
-    private static final String JOHN_DOE_PASSWORD = "password";
-    private static final String JOHN_DOE_USERNAME = "john.doe@thule.co.uk";
+    private static final String THULE_PASSWORD = "thule";
+    private static final String THULE_USERNAME = "thule@serin-consultancy.co.uk";
     private static final String THULE_EMAIL_SERVICE_CLIENT_ID = "thule-email-service";
     private static final String THULE_PEOPLE_SERVICE_CLIENT_ID = "thule-people-service";
     private static final String THULE_ROLE_NAME = "USER";
@@ -50,7 +50,7 @@ public class KeycloakResourceInstaller implements CommandLineRunner {
         keycloakRepository.createPublicClient(THULE_WEBAPP_CLIENT_ID);
         keycloakRepository.createRoleForClient(THULE_ROLE_NAME, THULE_WEBAPP_CLIENT_ID);
 
-        var userId = keycloakRepository.createUser(JOHN_DOE_USERNAME, JOHN_DOE_PASSWORD);
+        var userId = keycloakRepository.createUser(THULE_USERNAME, THULE_PASSWORD);
         keycloakRepository.createUserRoleMapping(userId, THULE_EMAIL_SERVICE_CLIENT_ID, THULE_ROLE_NAME);
         keycloakRepository.createUserRoleMapping(userId, THULE_PEOPLE_SERVICE_CLIENT_ID, THULE_ROLE_NAME);
         keycloakRepository.createUserRoleMapping(userId, THULE_WEBAPP_CLIENT_ID, THULE_ROLE_NAME);
