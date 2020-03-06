@@ -12,4 +12,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://thule-authentication-server/auth/realms/thule
+          issuer-uri: http://piglet/thule-authentication-server/auth/realms/thule
