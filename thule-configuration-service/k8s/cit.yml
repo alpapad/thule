@@ -77,6 +77,9 @@ spec:
         - ip: 192.168.0.102
           hostnames:
             - pooh
+        - ip: 192.168.0.104
+          hostnames:
+            - piglet
       volumes:
         - name: config
           hostPath:
