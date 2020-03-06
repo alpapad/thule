@@ -5,7 +5,7 @@ function kubectlApply() {
   kubernetesConfigurationFile=$1
 
   echo ""
-  echo "Rolling out changes to micro-service..."
+  echo "Applying k8s file..."
 
   # Change the kubernetes file to force the rollout
   currentTime=$(date "+%Y%m%d%H%M%S")
@@ -13,104 +13,31 @@ function kubectlApply() {
   N
   s/value:.*/value: \"$currentTime\"/
   }" ${kubernetesConfigurationFile}
-  sudo microk8s.kubectl apply -f "${kubernetesConfigurationFile}"
 
-  serviceName=$(awk '/app: /{print $NF;exit;}' ${kubernetesConfigurationFile})
+  kubectl apply -f "${kubernetesConfigurationFile}"
+}
+
+function kubectlRolloutStatus() {
+  # Input parameters
+  kubernetesConfigurationFile=$1
+
+  serviceName=$(awk '/app: /{print $NF;exit;}' "${kubernetesConfigurationFile}")
   startupStartTime=$(date +%s)
   maxElapsedSeconds=600
 
   echo ""
   echo "Waiting for deployment rollout to finish (up to a maximum of ${maxElapsedSeconds} seconds)..."
-  sudo microk8s.kubectl rollout status deployment/${serviceName} --namespace=thule --timeout=${maxElapsedSeconds}s
-  elapsedSeconds=$(($(date +%s) - startupStartTime))
-
-  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-    echo "Rollout completed successfully and took ${elapsedSeconds} second(s)"
-    startupResponseCode=0
-  else
-    echo "ERROR: Failed to rollout within ${elapsedSeconds} second(s)"
-    startupResponseCode=255
-  fi
-
-  return ${startupResponseCode}
-}
-
-function kubectlCreate() {
-  # Input parameters
-  kubernetesConfigurationFile=$1
-
-  echo ""
-  echo "Creating micro-service..."
-
-  sudo microk8s.kubectl create --namespace=thule -f "${kubernetesConfigurationFile}"
-
-  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
-  startupStartTime=$(date +%s)
-  elapsedSeconds=$(($(date +%s) - startupStartTime))
-  maxElapsedSeconds=600
-
-  echo ""
-  echo -n "Waiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)..."
-  serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
-  podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
-  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" != "" && "${podInfo}" != "" ]]; do
-    echo -en "\rWaiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
-    sleep 5
+  if kubectl rollout status deployment/${serviceName} --namespace=thule --timeout=${maxElapsedSeconds}s; then
     elapsedSeconds=$(($(date +%s) - startupStartTime))
-    serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
-    podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
-  done
-
-  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-    echo -e "\rWaiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
-    echo "Service started successfully and took ${elapsedSeconds} second(s)"
-    startupResponseCode=0
+    echo "Rollout completed successfully and took ${elapsedSeconds} second(s)"
+    rolloutsStatusResponseCode=0
   else
-    echo -e "\rWaiting for micro-service to start (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m failed \033[0m"
-    echo "ERROR: Micro-service failed to start within ${elapsedSeconds} second(s)"
-    startupResponseCode=255
+    elapsedSeconds=$(($(date +%s) - startupStartTime))
+    echo "ERROR: Failed to rollout within ${elapsedSeconds} second(s)"
+    rolloutsStatusResponseCode=255
   fi
 
-  return ${startupResponseCode}
-}
-
-function kubectlDelete() {
-  # Input parameters
-  kubernetesConfigurationFile=$1
-
-  echo ""
-  echo "Deleting micro-service..."
-
-  sudo microk8s.kubectl delete --all --namespace=thule -f "${kubernetesConfigurationFile}"
-
-  serviceName=$(basename "${kubernetesConfigurationFile}" | sed "s/.yml.*//g")
-  shutdownStartTime=$(date +%s)
-  elapsedSeconds=$(($(date +%s) - shutdownStartTime))
-  maxElapsedSeconds=600
-
-  echo ""
-  echo -n "Waiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)..."
-  serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
-  podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
-  until [[ ${elapsedSeconds} -ge ${maxElapsedSeconds} ]] || [[ "${serviceInfo}" == "" && "${podInfo}" == "" ]]; do
-    echo -en "\rWaiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...${elapsedSeconds}s"
-    sleep 5
-    elapsedSeconds=$(($(date +%s) - shutdownStartTime))
-    serviceInfo=$(sudo microk8s.kubectl get services --namespace=thule --output=json "${serviceName}" 2>/dev/null)
-    podInfo=$(sudo microk8s.kubectl get pods --namespace=thule --output=jsonpath="{..containers[?(@.name==\"${serviceName}\")]}" 2>/dev/null | cut -d" " -f1)
-  done
-
-  if [[ ${elapsedSeconds} -lt ${maxElapsedSeconds} ]]; then
-    echo -e "\rWaiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...\033[32m done \033[0m"
-    echo "Service shutdown successfully and took ${elapsedSeconds} second(s)"
-    shutdownResponseCode=0
-  else
-    echo -e "\rWaiting for micro-service to shutdown (up to a maximum of ${maxElapsedSeconds} seconds)...\033[31m failed \033[0m"
-    echo "ERROR: Micro-service failed to shutdown within ${elapsedSeconds} second(s)"
-    shutdownResponseCode=255
-  fi
-
-  return ${shutdownResponseCode}
+  return ${rolloutsStatusResponseCode}
 }
 
 function configureMicrok8s() {
@@ -128,6 +55,15 @@ function configureMicrok8s() {
   elapsedSeconds=$(($(date +%s) - microk8sStatusStartTime))
   echo -e "\rWaiting for microk8s to be ready to accept commands...\033[32m done \033[0m"
   echo "Micro8ks is ready to accept commands and took ${elapsedSeconds} second(s)"
+
+  echo ""
+  echo -n "Creating kubectl alias..."
+  if $(kubectl version 1>/dev/null 2>/dev/null); then
+    echo -e "\rCreating kubectl alias...\033[32m already created \033[0m"
+  else
+    sudo snap alias microk8s.kubectl kubectl
+    echo -e "\rCreating kubectl alias...\033[32m done \033[0m"
+  fi
 
   echo ""
   echo -n "Enabling dashboard add-on..."
@@ -184,7 +120,7 @@ function configureMicrok8s() {
     echo -e "\rAdding nexus docker registry...\033[32m done \033[0m"
   fi
 
-  # Updating iptables (see 'My pods cant reach the internet or each other (but my MicroK8s host machine can)'
+  # Updating iptables (see https://microk8s.io/docs/troubleshooting - 'My pods cant reach the internet or each other (but my MicroK8s host machine can)'
   echo ""
   echo -n "Updating iptables..."
   if [[ $(sudo iptables -L FORWARD | grep "Chain FORWARD" | grep "ACCEPT") != "" ]]; then
@@ -195,39 +131,28 @@ function configureMicrok8s() {
   fi
 
   echo ""
-  echo -n "Creating kubectl alias..."
-  if $(kubectl version 1>/dev/null 2>/dev/null); then
-    echo -e "\rCreating kubectl alias...\033[32m already created \033[0m"
-  else
-    sudo snap alias microk8s.kubectl kubectl
-    echo -e "\rCreating kubectl alias...\033[32m done \033[0m"
-  fi
-
-  echo ""
   echo -n "Enabling skip login for dashboard..."
-  if [[ $(sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
+  if [[ $(kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | grep "enable-skip-login") != "" ]]; then
     echo -e "\rEnabling skip login for dashboard...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | sudo microk8s.kubectl replace -f -
+    kubectl get deployment kubernetes-dashboard --namespace=kube-system -o yaml | sed "/.*--auto-generate-certificates.*/ a\        - --enable-skip-login" | kubectl replace -f -
     echo -e "Enabling skip login for dashboard...\033[32m done \033[0m"
   fi
 
   echo ""
   echo -n "Creating ingress for dashboard..."
-  if [[ $(sudo microk8s.kubectl get ingress dashboard --namespace kube-system 2>&1 | grep "not found") == "" ]]; then
+  if [[ $(kubectl get ingress dashboard --namespace kube-system 2>&1 | grep "not found") == "" ]]; then
     echo -e "\rCreating ingress for dashboard...\033[32m already created \033[0m"
   else
     echo ""
-    sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/dashboard-ingress.yml"
+    kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/dashboard-ingress.yml"
     echo -e "Creating ingress for dashboard...\033[32m done \033[0m"
   fi
 
   echo ""
   echo "Have configured microk8s"
   echo "================================================================================"
-
-  showMicrok8sStatus
 }
 
 function configureThule() {
@@ -241,13 +166,13 @@ function configureThule() {
   echo ""
   echo -n "Creating namespace for thule..."
   echo ""
-  sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-namespace.yml"
+  kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-namespace.yml"
   echo -e "Creating namespace for thule...\033[32m done \033[0m"
 
   echo ""
   echo -n "Creating secrets for thule..."
   echo ""
-  sudo microk8s.kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-application-secrets.yml"
+  kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/thule-application-secrets.yml"
   echo -e "Creating secrets for thule...\033[32m done \033[0m"
 
   echo ""
@@ -264,10 +189,10 @@ function showMicrok8sStatus() {
 
   echo ""
   echo "Nodes, services, pods..."
-  sudo microk8s.kubectl get nodes,services,pods --all-namespaces -o wide
+  kubectl get nodes,services,pods --all-namespaces -o wide
 
-  defaultToken=$(sudo microk8s.kubectl --namespace=kube-system get secret | grep default-token | cut -d " " -f1)
-  signinBearerToken=$(sudo microk8s.kubectl --namespace=kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
+  defaultToken=$(kubectl --namespace=kube-system get secret | grep default-token | cut -d " " -f1)
+  signinBearerToken=$(kubectl --namespace=kube-system describe secret "$defaultToken" | grep token: | tr -s " " | cut -d " " -f2)
   echo ""
   echo "Dashboard URL : http://${K8S_HOST}/dashboard/"
   echo "Sign-in bearer token : ${signinBearerToken}"

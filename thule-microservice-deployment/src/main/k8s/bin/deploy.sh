@@ -5,7 +5,7 @@
 ################################################################################
 usage() {
   scriptName=$(basename "$0")
-  echo "Provisions a service (e.g. CONFIGURATION-SERVICE) in an environment (e.g. QA, PROD) by shipping this script and supporting config to that environments host and then executing it as follows:"
+  echo "Uses kubectl to apply a k8s file in an environment (e.g. QA, PROD) by shipping this script and supporting config to that environments host and then executing it as follows:"
   echo ""
   echo "If the -l option has not been specified:"
   echo "- Ships this script to the environments host"
@@ -87,8 +87,9 @@ done
 ENVIRONMENT_NAME=$(toLowerCase "${ENVIRONMENT_NAME}") # Convert to lowercase
 
 # k8s-file
-K8S_FILE="$1"
+K8S_FILE=$(realpath "$1")
 K8S_FILE_NAME=$(basename "$K8S_FILE")
+K8S_FILE_IN_COMMAND_OPTIONS="$1"
 
 # K8S_FILE must exist
 if [[ ! -f "${K8S_FILE}" ]]; then
@@ -103,8 +104,8 @@ fi
 ################################################################################
 # Load config properties
 ################################################################################
-SERVICE_NAME=$(awk '/app: /{print $NF;exit;}' ${K8S_FILE})
 CONFIGS_DIRECTORY=${SCRIPT_DIR_NAME}/../config
+SERVICE_NAME=$(grep -oP "(?<=/)thule-.*-service?(?=.*)" <<< "${K8S_FILE}")
 
 # Load default config properties
 source ${CONFIGS_DIRECTORY}/default.sh
@@ -121,6 +122,10 @@ if [[ -z "${K8S_HOST}" ]]; then
   echo "================================================================================"
   exit 255
 fi
+
+# Defaults based on config properties
+K8S_HOST_TARGET_DIRECTORY=${K8S_HOST_TARGET_BASE_DIRECTORY}/${SERVICE_NAME}
+K8S_HOST_TARGET_DIRECTORY_K8S=${K8S_HOST_TARGET_DIRECTORY}/k8s
 
 ################################################################################
 # Execute this script on the target environments host
@@ -151,7 +156,7 @@ if [[ ${DEPLOY_LOCALLY} != "true" ]]; then
   echo "Have successfully shipped the deployment scripts to ${K8S_HOST}"
   echo "================================================================================"
 
-  COMMAND_OPTIONS="${COMMAND_OPTIONS/$K8S_FILE/$K8S_HOST_TARGET_DIRECTORY_K8S/$K8S_FILE_NAME}"
+  COMMAND_OPTIONS="${COMMAND_OPTIONS/$K8S_FILE_IN_COMMAND_OPTIONS/$K8S_HOST_TARGET_DIRECTORY_K8S/$K8S_FILE_NAME}"
   ssh -o StrictHostKeyChecking=no "${K8S_HOST_USERID}@${K8S_HOST}" -tt -C "bash -cl '${K8S_HOST_TARGET_DIRECTORY}/thule-microservice-deployment/src/main/k8s/bin/deploy.sh -l $COMMAND_OPTIONS'"
   exit
 fi
@@ -170,8 +175,6 @@ echo "==========================================================================
 # Show settings
 ################################################################################
 settings="Settings used are as follows...\n\\n\
-CONFIGRATION_SERVICE_CONFIG_DIRECTORY is ${CONFIGRATION_SERVICE_CONFIG_DIRECTORY}\n\
-CONFIGS_DIRECTORY is ${CONFIGS_DIRECTORY}\n\
 DEPLOY_LOCALLY is ${DEPLOY_LOCALLY}\n\
 ENVIRONMENT_NAME is ${ENVIRONMENT_NAME}\n\
 K8S_HOST is ${K8S_HOST}\n\
@@ -209,42 +212,24 @@ fi
 ################################################################################
 configureMicrok8s
 configureThule
+showMicrok8sStatus
 
 echo ""
 echo "================================================================================"
-echo "About to deploy ${SERVICE_NAME}..."
+echo "About to deploy ${K8S_FILE}..."
 
-isSpringBootService=$(sed -n "s/.*- name\s*:\s*SPRING_PROFILES_ACTIVE.*/true/p" "${K8S_FILE}")
-isSpringBootService=${isSpringBootService:-false}
-
-if [[ ${isSpringBootService} == "true" ]]; then
+isSpringBootService=$(grep -q ".*- name\s*:\s*SPRING_PROFILES_ACTIVE" "${K8S_FILE}"; echo "$?")
+if [[ ${isSpringBootService} -eq 0 ]]; then
   updateConfiguration "${K8S_FILE}"
 fi
-if kubectlApply "${K8S_FILE}"; then
-  echo ""
-  echo "Have successfully deployed ${SERVICE_NAME}"
-else
-  echo ""
-  echo "ERROR: Have failed to deploy ${SERVICE_NAME}"
-  exit 255
-fi
-echo "================================================================================"
 
-################################################################################
-# Health check
-################################################################################
-echo ""
-echo "================================================================================"
-echo "Checking health of ${SERVICE_NAME}..."
+kubectlApply "${K8S_FILE}"
 
-if checkHealth "${K8S_FILE}"; then
-  echo ""
-  echo "Healthcheck has completed and found no problems"
-else
-  echo ""
-  echo "ERROR: Healthcheck has ****FAILED*** for ${SERVICE_NAME}"
-  exit 255
+isDeployment=$(grep -q "kind:\s*Deployment" "${K8S_FILE}"; echo "$?")
+if [[ "${isDeployment}" -eq 0 ]]; then
+  kubectlRolloutStatus "${K8S_FILE}"
 fi
+
 echo "================================================================================"
 
 ################################################################################

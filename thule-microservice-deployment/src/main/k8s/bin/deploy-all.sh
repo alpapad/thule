@@ -5,7 +5,7 @@
 ################################################################################
 usage() {
   scriptName=$(basename "$0")
-  echo "Provisions a service (e.g. CONFIGURATION-SERVICE) in an environment (e.g. QA, PROD) by shipping this script and supporting config to that environments host and then executing it as follows:"
+  echo "Uses kubectl to apply a k8s file in an environment (e.g. QA, PROD) by shipping this script and supporting config to that environments host and then executing it as follows:"
   echo ""
   echo "If the -l option has not been specified:"
   echo "- Ships this script to the environments host"
@@ -72,8 +72,8 @@ while true; do
 done
 
 SCRIPT_DIR_NAME=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-SERVICE_NAMES=(thule-configuration-service $(find ${SCRIPT_DIR_NAME}/../../../../../ -name "*-service" -type d -printf "%f\n" | sort | sed "s/thule-configuration-service//g"))
 
-for serviceName in "${SERVICE_NAMES[@]}"; do
+serviceNames=(thule-configuration-service $(find ${SCRIPT_DIR_NAME}/../../../../../ -name "*-service" -type d -printf "%f\n" | sort | sed "s/thule-configuration-service//g"))
+for serviceName in "${serviceNames[@]}"; do
   ${SCRIPT_DIR_NAME}/deploy.sh ${COMMAND_OPTIONS} ${SCRIPT_DIR_NAME}/../../../../../${serviceName}/k8s/${ENVIRONMENT_NAME}.yml
 done
