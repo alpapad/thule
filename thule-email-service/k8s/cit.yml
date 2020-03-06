@@ -60,8 +60,6 @@ spec:
                   key: thule-emailservice-mail-password
             - name: SPRING_PROFILES_ACTIVE
               value: cit
-            - name: THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED
-              value: "false"
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME

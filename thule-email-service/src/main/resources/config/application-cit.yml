@@ -8,3 +8,8 @@ spring:
       mail.smtp.auth: true
       mail.smtp.ssl.trust: "*"
       mail.smtp.starttls.enable: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://thule-authentication-server/auth/realms/thule

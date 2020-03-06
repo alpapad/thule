@@ -48,8 +48,6 @@ spec:
           env:
             - name: JDK_JAVA_OPTIONS
               value: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
-            - name: THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED
-              value: "false"
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -70,6 +68,11 @@ spec:
                 secretKeyRef:
                   name: thule-application-secrets
                   key: thule-peopleservice-datasource-owner-password
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: thule-keycloak-secrets
+                  key: thule-people-service-client-secret
             - name: SPRING_PROFILES_ACTIVE
               value: cit
             - name: TZ
