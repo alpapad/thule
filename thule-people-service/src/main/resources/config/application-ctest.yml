@@ -19,11 +19,6 @@ spring:
   flyway:
     password: root
     user: root
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/auth/realms/thule-test
   zipkin:
     enabled: false
 

@@ -1,3 +1,15 @@
+# Spring boot configuration
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            token-uri: http://piglet/thule-authentication-service/auth/realms/thule/protocol/openid-connect/token
+      resourceserver:
+        jwt:
+          issuer-uri: http://piglet/thule-authentication-service/auth/realms/thule
+
 # Thule configuration
 thule:
   peopleservice:
