@@ -30,7 +30,8 @@ public class DockerCompose {
     }
 
     public void down() throws IOException {
-        var command = Stream.of(dockerComposeCommandPrefix, new String[]{"down", "-v", "--remove-orphans"}).flatMap(Stream::of).toArray(String[]::new);
+        var arguments = new String[]{"down", "-v", "--remove-orphans"};
+        var command = Stream.of(dockerComposeCommandPrefix, arguments).flatMap(Stream::of).toArray(String[]::new);
         var dockerComposeDown = processBuilder.command(command).start();
         try {
             dockerComposeDown.waitFor();
@@ -47,7 +48,8 @@ public class DockerCompose {
     }
 
     public void up() throws IOException {
-        var command = Stream.of(dockerComposeCommandPrefix, new String[]{"up"}).flatMap(Stream::of).toArray(String[]::new);
+        var arguments = new String[]{"up"};
+        var command = Stream.of(dockerComposeCommandPrefix, arguments).flatMap(Stream::of).toArray(String[]::new);
         dockerComposeUp = processBuilder.command(command).start();
     }
 }

@@ -20,8 +20,11 @@ import uk.co.serin.thule.resourceserver.keycloak.KeycloakUnsignedJwtDecoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceServerAutoConfigurationTest {
@@ -78,6 +81,10 @@ public class ResourceServerAutoConfigurationTest {
 
         // When
         sut.configure(httpSecurity);
+
+        // Then
+        verify(expressionInterceptUrlRegistry, times(2)).antMatchers(anyString());
+        verify(expressionInterceptUrlRegistry).requestMatchers(any());
     }
 
     @Test
