@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 public class ApplicationConfigurer {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http.authorizeExchange(exchanges -> {
-                    exchanges
-                            .matchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
-                            .pathMatchers("/thule-*-service/**").permitAll(); // allow micro-service urls to be unauthenticated (authentication is done in the down-stream micro-service)
-                }
+        http.authorizeExchange(exchanges -> exchanges
+                        .matchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
+                        .pathMatchers("/thule-*-service/**").permitAll() // allow micro-service urls to be unauthenticated (authentication is done in the down-stream micro-service)
+
         ).anonymous(); // everything else must be forbidden
 
         return http.build();

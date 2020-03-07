@@ -12,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -48,10 +49,11 @@ public class ApplicationConfigurerTest {
         given(serverHttpSecurity.build()).willReturn(securityWebFilterChain);
 
         // When
-        sut.springSecurityFilterChain(serverHttpSecurity);
+        var securityWebFilterChain = sut.springSecurityFilterChain(serverHttpSecurity);
 
         // Then
         var customizer = customizerArgumentCaptor.getValue();
         customizer.customize(authorizeExchangeSpec); // Test lambda
+        assertThat(securityWebFilterChain).isNotNull();
     }
 }
