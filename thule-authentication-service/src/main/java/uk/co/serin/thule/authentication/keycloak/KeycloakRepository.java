@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("squid:S1192") // Suppress String literals should not be duplicated
 @TracePublicMethods
 public class KeycloakRepository {
     private String adminRealmsPath;
