@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import uk.co.serin.thule.feign.EnableFeignJwtClients;
 import uk.co.serin.thule.people.repository.support.ThuleJpaRepository;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Configuration
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @EnableFeignJwtClients
 @EnableJpaAuditing
 @EnableJpaRepositories(repositoryBaseClass = ThuleJpaRepository.class)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationConfigurer {
     static {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
