@@ -118,7 +118,7 @@ public class KeycloakRepository {
         webClient.post().uri(adminUrl).bodyValue(client).exchange().block();
     }
 
-    public String createUser(String userName, String password) {
+    public String createUser(String userName, String password, String firstName, String lastName) {
         var adminUrl = adminRealmsPath + "/users";
 
         // Delete
@@ -133,9 +133,9 @@ public class KeycloakRepository {
                 "value", password);
         var user = Map.of(
                 "credentials", new Map[]{credential},
-                "firstName", "John",
+                "firstName", firstName,
                 "enabled", Boolean.TRUE,
-                "lastName", "Doe",
+                "lastName", lastName,
                 "username", userName);
         var clientResponse = webClient.post().uri(adminUrl).bodyValue(user).exchange().block();
         var url = clientResponse.headers().header(HttpHeaders.LOCATION).stream().findFirst().orElseThrow();

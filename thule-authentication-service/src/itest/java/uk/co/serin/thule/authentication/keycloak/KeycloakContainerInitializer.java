@@ -16,7 +16,7 @@ import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 public class KeycloakContainerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     public static final String JOHN_DOE_PASSWORD = "password";
-    public static final String JOHN_DOE_USERNAME = "john.doe@thule.co.uk";
+    public static final String JOHN_DOE_USERNAME = "john.doe@serin-consultancy.co.uk";
     public static final String THULE_ROLE_NAME = "USER";
     public static final String THULE_TEST_SERVICE_CLIENT_ID = "thule-test-service";
     public static final String THULE_WEBAPP_CLIENT_ID = "thule-webapp";
@@ -68,7 +68,7 @@ public class KeycloakContainerInitializer implements ApplicationContextInitializ
         keycloakRepository.createPublicClient(THULE_WEBAPP_CLIENT_ID);
         keycloakRepository.createRoleForClient(THULE_ROLE_NAME, THULE_WEBAPP_CLIENT_ID);
 
-        var userId = keycloakRepository.createUser(JOHN_DOE_USERNAME, JOHN_DOE_PASSWORD);
+        var userId = keycloakRepository.createUser(JOHN_DOE_USERNAME, JOHN_DOE_PASSWORD, "John", "Doe");
         keycloakRepository.createUserRoleMapping(userId, THULE_TEST_SERVICE_CLIENT_ID, THULE_ROLE_NAME);
         keycloakRepository.createUserRoleMapping(userId, THULE_WEBAPP_CLIENT_ID, THULE_ROLE_NAME);
     }
