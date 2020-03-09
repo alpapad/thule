@@ -16,7 +16,8 @@ import javax.annotation.PostConstruct;
 @SuppressWarnings("squid:S1192") // Suppress String literals should not be duplicated
 @TracePublicMethods
 public class KeycloakRepository {
-    private String adminRealmsPath = "/admin/realms/";
+    private static final String ADMIN_REALMS = "/admin/realms/";
+    private String adminRealmsPath = ADMIN_REALMS;
     private String keycloakBaseUrl;
     private KeycloakProperties keycloakProperties;
     private String realmName;
@@ -168,7 +169,7 @@ public class KeycloakRepository {
     public void init() {
         keycloakBaseUrl = keycloakProperties.getBaseUrl();
         realmName = keycloakProperties.getRealm();
-        adminRealmsPath = adminRealmsPath + realmName;
+        adminRealmsPath = ADMIN_REALMS + realmName;
 
         webClientWithoutAdminBearerAuth = webClientWithoutAdminBearerAuth.mutate().baseUrl(keycloakBaseUrl + "/auth").build();
         var adminJwt = getJwtFromKeycloakForAdminUser();
