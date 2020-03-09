@@ -24,6 +24,7 @@ public class KeycloakResourceInstaller implements CommandLineRunner {
     private static final String THULE_PEOPLE_SERVICE_CLIENT_ID = "thule-people-service";
     private static final String THULE_ROLE_NAME = "USER";
     private static final String THULE_WEBAPP_CLIENT_ID = "thule-webapp";
+    private static String secretsFile = "build/thule-keycloak-secrets.yml";
     private KeycloakRepository keycloakRepository;
     private SpringTemplateEngine springTemplateEngine;
 
@@ -68,7 +69,7 @@ public class KeycloakResourceInstaller implements CommandLineRunner {
         // Create the k8s secrets file
         var thuleKeycloakSecrets = springTemplateEngine.process("thule-keycloak-secrets-template", context);
         try {
-            FileCopyUtils.copy(thuleKeycloakSecrets, new FileWriter(new File("build/thule-keycloak-secrets.yml")));
+            FileCopyUtils.copy(thuleKeycloakSecrets, new FileWriter(new File(secretsFile)));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

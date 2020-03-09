@@ -52,6 +52,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+    testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-feign:${thuleSharedVersion}")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")

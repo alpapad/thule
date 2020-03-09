@@ -11,134 +11,111 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 @SuppressWarnings("squid:S1192") // Suppress String literals should not be duplicated
 @TracePublicMethods
 public class KeycloakRepository {
-    private String adminRealmsPath;
+    private String adminRealmsPath = "/admin/realms/";
     private String keycloakBaseUrl;
     private KeycloakProperties keycloakProperties;
     private String realmName;
-    private WebClient webClient;
+    private WebClient webClientWithAdminBearerAuth = WebClient.create();
+    private WebClient webClientWithoutAdminBearerAuth = WebClient.create();
 
     public KeycloakRepository(KeycloakProperties keycloakProperties) {
         this.keycloakProperties = keycloakProperties;
-        this.keycloakBaseUrl = keycloakProperties.getBaseUrl();
-        this.realmName = keycloakProperties.getRealm();
-        this.adminRealmsPath = "/admin/realms/" + realmName;
-
-        var adminJwt = getJwtFromKeycloakForAdminUser();
-        webClient = WebClient.builder().baseUrl(keycloakBaseUrl + "/auth").defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + adminJwt).build();
-    }
-
-    private String getJwtFromKeycloakForAdminUser() {
-        var body = new LinkedMultiValueMap<String, String>();
-        body.add("grant_type", "password");
-        body.add("username", keycloakProperties.getAdmin().getUsername());
-        body.add("password", keycloakProperties.getAdmin().getPassword());
-        body.add("client_id", keycloakProperties.getAdmin().getClientId());
-
-        return getJwtFromKeycloak("master", body);
-    }
-
-    private String getJwtFromKeycloak(String realmName, LinkedMultiValueMap<String, String> body) {
-        var token = WebClient.builder().baseUrl(keycloakBaseUrl).build()
-                             .post().uri("/auth/realms/{realmName}/protocol/openid-connect/token", realmName).bodyValue(body)
-                             .retrieve()
-                             .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-                             }).block();
-
-        return token.get("access_token").toString();
     }
 
     public void createPublicClient(String clientId) {
         var adminUrl = adminRealmsPath + "/clients";
 
         // Delete
-        var clients = webClient.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
+        var clients = webClientWithAdminBearerAuth.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
         Arrays.stream(clients).filter(realm -> realm.get("id").equals(clientId))
-              .forEach(client -> webClient.delete().uri(adminUrl + "/{id}", client.get("id")).exchange().block());
+              .forEach(client -> webClientWithAdminBearerAuth.delete().uri(adminUrl + "/{id}", client.get("id")).exchange().block());
 
         // Create
         var client = Map.of(
-                "directAccessGrantsEnabled", Boolean.TRUE,
-                "enabled", Boolean.TRUE,
+                "directAccessGrantsEnabled", true,
+                "enabled", true,
                 "id", clientId,
                 "name", clientId,
-                "publicClient", Boolean.TRUE,
+                "publicClient", true,
                 "redirectUris", new String[]{keycloakBaseUrl},
-                "standardFlowEnabled", Boolean.TRUE);
-        webClient.post().uri(adminUrl).bodyValue(client).exchange().block();
+                "standardFlowEnabled", true);
+        webClientWithAdminBearerAuth.post().uri(adminUrl).bodyValue(client).exchange().block();
     }
 
     public void createRealm() {
         var adminUrl = "/admin/realms";
 
         // Delete
-        var realms = webClient.get().uri(adminUrl).retrieve().bodyToMono(Map[].class).block();
+        var realms = webClientWithAdminBearerAuth.get().uri(adminUrl).retrieve().bodyToMono(Map[].class).block();
         Arrays.stream(realms).filter(realm -> realm.get("realm").equals(realmName))
-              .forEach(realm -> webClient.delete().uri(adminUrl + "/{realm}", realm.get("realm")).exchange().block());
+              .forEach(realm -> webClientWithAdminBearerAuth.delete().uri(adminUrl + "/{realm}", realm.get("realm")).exchange().block());
 
         // Create
         var realm = Map.of(
                 "realm", realmName,
-                "enabled", Boolean.TRUE);
-        webClient.post().uri(adminUrl).bodyValue(realm).exchange().block();
+                "enabled", true);
+        webClientWithAdminBearerAuth.post().uri(adminUrl).bodyValue(realm).exchange().block();
     }
 
     public void createRoleForClient(String roleName, String clientId) {
         var adminUrl = adminRealmsPath + "/clients/{clientId}/roles";
 
         // Delete
-        var roles = webClient.get().uri(adminUrl, clientId).retrieve().bodyToMono(Map[].class).block();
+        var roles = webClientWithAdminBearerAuth.get().uri(adminUrl, clientId).retrieve().bodyToMono(Map[].class).block();
         Arrays.stream(roles).filter(realm -> realm.get("name").equals(roleName))
-              .forEach(role -> webClient.delete().uri(adminUrl + "/{name}", clientId, role.get("name")).exchange().block());
+              .forEach(role -> webClientWithAdminBearerAuth.delete().uri(adminUrl + "/{name}", clientId, role.get("name")).exchange().block());
 
         // Create
         var role = Map.of("name", roleName);
-        webClient.post().uri(adminUrl, clientId).bodyValue(role).exchange().block();
+        webClientWithAdminBearerAuth.post().uri(adminUrl, clientId).bodyValue(role).exchange().block();
     }
 
     public void createServiceClient(String clientId) {
         var adminUrl = adminRealmsPath + "/clients";
 
         // Delete
-        var clients = webClient.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
+        var clients = webClientWithAdminBearerAuth.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
         Arrays.stream(clients).filter(realm -> realm.get("id").equals(clientId))
-              .forEach(client -> webClient.delete().uri(adminUrl + "/{id}", client.get("id")).exchange().block());
+              .forEach(client -> webClientWithAdminBearerAuth.delete().uri(adminUrl + "/{id}", client.get("id")).exchange().block());
 
         // Create
         var client = Map.of(
-                "authorizationServicesEnabled", Boolean.TRUE,
-                "directAccessGrantsEnabled", Boolean.TRUE,
-                "enabled", Boolean.TRUE,
+                "authorizationServicesEnabled", true,
+                "directAccessGrantsEnabled", true,
+                "enabled", true,
                 "id", clientId,
                 "name", clientId,
                 "redirectUris", new String[]{keycloakBaseUrl},
-                "serviceAccountsEnabled", Boolean.TRUE,
-                "standardFlowEnabled", Boolean.TRUE);
-        webClient.post().uri(adminUrl).bodyValue(client).exchange().block();
+                "serviceAccountsEnabled", true,
+                "standardFlowEnabled", true);
+        webClientWithAdminBearerAuth.post().uri(adminUrl).bodyValue(client).exchange().block();
     }
 
     public String createUser(String userName, String password, String firstName, String lastName) {
         var adminUrl = adminRealmsPath + "/users";
 
         // Delete
-        var users = webClient.get().uri(adminUrl + "?search={username}", userName).retrieve().bodyToMono(Map[].class).block();
+        var users = webClientWithAdminBearerAuth.get().uri(adminUrl + "?search={username}", userName).retrieve().bodyToMono(Map[].class).block();
         Arrays.stream(users).filter(realm -> realm.get("username").equals(userName))
-              .forEach(user -> webClient.delete().uri(adminUrl + "/{id}", user.get("username")).exchange().block());
+              .forEach(user -> webClientWithAdminBearerAuth.delete().uri(adminUrl + "/{id}", user.get("username")).exchange().block());
 
         // Create
         var credential = Map.of(
                 "type", "password",
-                "temporary", Boolean.FALSE,
+                "temporary", false,
                 "value", password);
         var user = Map.of(
                 "credentials", new Map[]{credential},
                 "firstName", firstName,
-                "enabled", Boolean.TRUE,
+                "enabled", true,
                 "lastName", lastName,
                 "username", userName);
-        var clientResponse = webClient.post().uri(adminUrl).bodyValue(user).exchange().block();
+        var clientResponse = webClientWithAdminBearerAuth.post().uri(adminUrl).bodyValue(user).exchange().block();
         var url = clientResponse.headers().header(HttpHeaders.LOCATION).stream().findFirst().orElseThrow();
 
         // Create role mappings for user
@@ -148,15 +125,15 @@ public class KeycloakRepository {
 
     public void createUserRoleMapping(String userId, String clientId, String roleName) {
         var adminUrl = adminRealmsPath + "/clients/{clientId}/roles/{roleName}";
-        var role = webClient.get().uri(adminUrl, clientId, roleName).retrieve().bodyToMono(Map.class).block();
+        var role = webClientWithAdminBearerAuth.get().uri(adminUrl, clientId, roleName).retrieve().bodyToMono(Map.class).block();
 
         adminUrl = adminRealmsPath + "/users/{userId}/role-mappings/clients/{clientId}";
-        webClient.post().uri(adminUrl, userId, clientId).bodyValue(List.of(role)).exchange().block();
+        webClientWithAdminBearerAuth.post().uri(adminUrl, userId, clientId).bodyValue(List.of(role)).exchange().block();
     }
 
     public String getClientSecret(String clientId) {
-        return webClient.get().uri(adminRealmsPath + "/clients/{clientId}/client-secret", clientId).retrieve()
-                        .bodyToMono(Map.class).block().get("value").toString();
+        return webClientWithAdminBearerAuth.get().uri(adminRealmsPath + "/clients/{clientId}/client-secret", clientId).retrieve()
+                                           .bodyToMono(Map.class).block().get("value").toString();
     }
 
     public String getJwtFromKeycloakForService(String clientId, String clientSecret) {
@@ -168,6 +145,15 @@ public class KeycloakRepository {
         return getJwtFromKeycloak(realmName, body);
     }
 
+    private String getJwtFromKeycloak(String realmName, LinkedMultiValueMap<String, String> body) {
+        var token = webClientWithoutAdminBearerAuth.post().uri("/realms/{realmName}/protocol/openid-connect/token", realmName).bodyValue(body)
+                                                   .retrieve()
+                                                   .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                                                   }).block();
+
+        return token.get("access_token").toString();
+    }
+
     public String getJwtFromKeycloakForUser(String username, String password, String clientId) {
         var body = new LinkedMultiValueMap<String, String>();
         body.add("grant_type", "password");
@@ -176,5 +162,26 @@ public class KeycloakRepository {
         body.add("client_id", clientId);
 
         return getJwtFromKeycloak(realmName, body);
+    }
+
+    @PostConstruct
+    public void init() {
+        keycloakBaseUrl = keycloakProperties.getBaseUrl();
+        realmName = keycloakProperties.getRealm();
+        adminRealmsPath = adminRealmsPath + realmName;
+
+        webClientWithoutAdminBearerAuth = webClientWithoutAdminBearerAuth.mutate().baseUrl(keycloakBaseUrl + "/auth").build();
+        var adminJwt = getJwtFromKeycloakForAdminUser();
+        webClientWithAdminBearerAuth = webClientWithoutAdminBearerAuth.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + adminJwt).build();
+    }
+
+    private String getJwtFromKeycloakForAdminUser() {
+        var body = new LinkedMultiValueMap<String, String>();
+        body.add("grant_type", "password");
+        body.add("username", keycloakProperties.getAdmin().getUsername());
+        body.add("password", keycloakProperties.getAdmin().getPassword());
+        body.add("client_id", keycloakProperties.getAdmin().getClientId());
+
+        return getJwtFromKeycloak("master", body);
     }
 }

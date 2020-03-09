@@ -59,6 +59,7 @@ public class KeycloakContainerInitializer implements ApplicationContextInitializ
 
     private void createKeycloakResources() {
         var keycloakRepository = new KeycloakRepository(keycloakProperties);
+        keycloakRepository.init();
 
         keycloakRepository.createRealm();
 
