@@ -39,8 +39,10 @@ dependencies {
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
     implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.cloud:spring-cloud-security")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation('org.springframework.cloud:spring-cloud-starter-gateway')
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")

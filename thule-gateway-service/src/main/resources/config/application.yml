@@ -24,6 +24,8 @@ spring:
     name: thule-gateway-service
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true
@@ -33,10 +35,19 @@ spring:
               args:
                 pattern: "'/thule-gateway-service/'+serviceId.toLowerCase()+'/**'"
           filters:
-            - name: RewritePath
+            - name: StripPrefix
               args:
-                regexp: "'/thule-gateway-service/' + serviceId.toLowerCase() + '/(?<remaining>.*)'"
-                replacement: "'/${remaining}'"
+                parts: 2
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/auth/realms/thule-test
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: thule-gateway-service
   sleuth:
     sampler:
       probability: 1.0

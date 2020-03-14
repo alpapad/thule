@@ -1,0 +1,8 @@
+# Spring boot configuration
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://piglet/thule-authentication-service/auth/realms/thule
