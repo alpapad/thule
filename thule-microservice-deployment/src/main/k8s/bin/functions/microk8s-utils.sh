@@ -14,7 +14,13 @@ function kubectlApply() {
   s/value:.*/value: \"$currentTime\"/
   }" ${kubernetesConfigurationFile}
 
-  kubectl apply -f "${kubernetesConfigurationFile}"
+  if kubectl apply -f "${kubernetesConfigurationFile}"; then
+    applyResponseCode=0
+  else
+    applyResponseCode=255
+  fi
+
+  return ${applyResponseCode}
 }
 
 function kubectlRolloutStatus() {
