@@ -9,13 +9,11 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter;
 
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Configuration
 @EnableDiscoveryClient
 @NoArgsConstructor
-@Generated
 public class ApplicationConfigurer {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
@@ -28,7 +26,7 @@ public class ApplicationConfigurer {
         // Require authentication for all requests
         http.authorizeExchange().anyExchange().authenticated();
 
-        // Allow showing /home within a frame
+        // Allow allow frames
         http.headers().frameOptions().mode(XFrameOptionsServerHttpHeadersWriter.Mode.SAMEORIGIN);
 
         // Disable CSRF in the gateway to prevent conflicts with proxied service CSRF
