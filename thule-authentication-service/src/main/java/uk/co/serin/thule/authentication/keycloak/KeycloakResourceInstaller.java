@@ -14,19 +14,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 @Service
 @TracePublicMethods
 public class KeycloakResourceInstaller implements CommandLineRunner {
-    private static final String THULE_EMAIL_SERVICE_CLIENT_ID = "thule-email-service";
+    private static final String THULE_GATEWAY_SERVICE_CLIENT_ID = "thule-gateway-service";
     private static final String THULE_PEOPLE_SERVICE_CLIENT_ID = "thule-people-service";
     private static final String THULE_ROLE_NAME = "USER";
     private static final String THULE_WEBAPP_CLIENT_ID = "thule-webapp";
-    private static String secretsFile = "build/thule-keycloak-secrets.yml";
     private KeycloakRepository keycloakRepository;
+    private String secretsFile = "build/thule-keycloak-secrets.yml";
     private SpringTemplateEngine springTemplateEngine;
+
+    public KeycloakResourceInstaller(KeycloakRepository keycloakRepository, SpringTemplateEngine springTemplateEngine) {
+        this.keycloakRepository = keycloakRepository;
+        this.springTemplateEngine = springTemplateEngine;
+    }
 
     @Override
     public void run(String... args) {
@@ -37,9 +39,9 @@ public class KeycloakResourceInstaller implements CommandLineRunner {
     private void createKeycloakResources() {
         keycloakRepository.createRealm();
 
-        // Thule Email Service
-        keycloakRepository.createServiceClient(THULE_EMAIL_SERVICE_CLIENT_ID);
-        keycloakRepository.createRoleForClient(THULE_ROLE_NAME, THULE_EMAIL_SERVICE_CLIENT_ID);
+        // Thule Gateway Service
+        keycloakRepository.createServiceClient(THULE_GATEWAY_SERVICE_CLIENT_ID);
+        keycloakRepository.createRoleForClient(THULE_ROLE_NAME, THULE_GATEWAY_SERVICE_CLIENT_ID);
 
         // Thule People Service
         keycloakRepository.createServiceClient(THULE_PEOPLE_SERVICE_CLIENT_ID);
@@ -50,16 +52,16 @@ public class KeycloakResourceInstaller implements CommandLineRunner {
         keycloakRepository.createRoleForClient(THULE_ROLE_NAME, THULE_WEBAPP_CLIENT_ID);
 
         var userId = keycloakRepository.createUser("thule@serin-consultancy.co.uk", "thule", "Project", "Thule");
-        keycloakRepository.createUserRoleMapping(userId, THULE_EMAIL_SERVICE_CLIENT_ID, THULE_ROLE_NAME);
+        keycloakRepository.createUserRoleMapping(userId, THULE_GATEWAY_SERVICE_CLIENT_ID, THULE_ROLE_NAME);
         keycloakRepository.createUserRoleMapping(userId, THULE_PEOPLE_SERVICE_CLIENT_ID, THULE_ROLE_NAME);
         keycloakRepository.createUserRoleMapping(userId, THULE_WEBAPP_CLIENT_ID, THULE_ROLE_NAME);
     }
 
     private void createK8sSecretsFile() {
-        var thuleEmailServiceClientSecret = Base64Utils.encodeToString(keycloakRepository.getClientSecret(THULE_EMAIL_SERVICE_CLIENT_ID).getBytes());
+        var thuleGatewayServiceClientSecret = Base64Utils.encodeToString(keycloakRepository.getClientSecret(THULE_GATEWAY_SERVICE_CLIENT_ID).getBytes());
         var thulePeopleServiceClientSecret = Base64Utils.encodeToString(keycloakRepository.getClientSecret(THULE_PEOPLE_SERVICE_CLIENT_ID).getBytes());
         var templateVariables = Map.<String, Object>of(
-                "thuleEmailServiceClientSecret", thuleEmailServiceClientSecret,
+                "thuleGatewayServiceClientSecret", thuleGatewayServiceClientSecret,
                 "thulePeopleServiceClientSecret", thulePeopleServiceClientSecret);
 
         // Create thymeleaf context for variable substitution

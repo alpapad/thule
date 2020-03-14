@@ -38,13 +38,13 @@ public class KeycloakResourceInstallerTest {
 
         // Then
         verify(keycloakRepository).createRealm();
-        verify(keycloakRepository).createServiceClient("thule-email-service");
-        verify(keycloakRepository).createRoleForClient("USER", "thule-email-service");
+        verify(keycloakRepository).createServiceClient("thule-gateway-service");
+        verify(keycloakRepository).createRoleForClient("USER", "thule-gateway-service");
         verify(keycloakRepository).createServiceClient("thule-people-service");
         verify(keycloakRepository).createRoleForClient("USER", "thule-people-service");
         verify(keycloakRepository).createPublicClient("thule-webapp");
         verify(keycloakRepository).createRoleForClient("USER", "thule-webapp");
-        verify(keycloakRepository).createUserRoleMapping("12345678", "thule-email-service", "USER");
+        verify(keycloakRepository).createUserRoleMapping("12345678", "thule-gateway-service", "USER");
         verify(keycloakRepository).createUserRoleMapping("12345678", "thule-people-service", "USER");
         verify(keycloakRepository).createUserRoleMapping("12345678", "thule-webapp", "USER");
     }
