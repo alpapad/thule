@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -60,7 +59,7 @@ public class ResourceServerAutoConfigurationTest {
         given(corsConfigurer.and()).willReturn(httpSecurity);
 
         given(httpSecurity.authorizeRequests()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.requestMatchers(any(EndpointRequest.EndpointRequestMatcher.class))).willReturn(authorizedUrl);
+        given(expressionInterceptUrlRegistry.antMatchers("/actuator/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs")).willReturn(authorizedUrl);
@@ -83,8 +82,7 @@ public class ResourceServerAutoConfigurationTest {
         sut.configure(httpSecurity);
 
         // Then
-        verify(expressionInterceptUrlRegistry, times(2)).antMatchers(anyString());
-        verify(expressionInterceptUrlRegistry).requestMatchers(any());
+        verify(expressionInterceptUrlRegistry, times(3)).antMatchers(anyString());
     }
 
     @Test

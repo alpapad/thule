@@ -1,6 +1,5 @@
 package uk.co.serin.thule.spring.boot.starter.resourceserver.autoconfiguration;
 
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
@@ -55,7 +54,7 @@ public class ResourceServerAutoConfiguration extends WebSecurityConfigurerAdapte
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and() // allow pre-flight CORS requests
                     .authorizeRequests() // specify requests that are authorised
-                    .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // allow actuator endpoints, even if not authenticated
+                    .antMatchers("/actuator/**").permitAll() // allow actuator endpoints, even if not authenticated
                     .antMatchers("/v2/api-docs").permitAll() // allow swagger docs, even if not authenticated
                     .antMatchers("/**").authenticated().and() // everything else must be authenticated
                     .oauth2ResourceServer().jwt() // configure oauth2 resource server using JWTs

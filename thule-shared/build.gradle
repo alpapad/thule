@@ -60,13 +60,12 @@ project("thule-feign") {
 
         api("org.springframework.cloud:spring-cloud-starter-openfeign")
 
+        compileOnly("org.projectlombok:lombok")
+
         implementation project(":thule-security")
         implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
-        implementation("org.springframework.security:spring-security-oauth2-client")
-        implementation("org.springframework.security:spring-security-oauth2-jose")
-        implementation("org.springframework.security:spring-security-oauth2-resource-server")
-
-        compileOnly("org.projectlombok:lombok")
+        implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+        implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
         testImplementation project(":thule-spring-boot-starter-test")
         testImplementation("org.springframework.boot:spring-boot-starter-web")
@@ -80,8 +79,7 @@ project("thule-resource-server") {
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
         api project(":thule-security")
-        api("org.springframework.security:spring-security-oauth2-jose")
-        api("org.springframework.security:spring-security-oauth2-resource-server")
+        api("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
         compileOnly("org.projectlombok:lombok")
 
@@ -96,7 +94,7 @@ project("thule-security") {
         annotationProcessor("org.projectlombok:lombok")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-        api("org.springframework.security:spring-security-core")
+        api("org.springframework.boot:spring-boot-starter-security")
 
         compileOnly("org.projectlombok:lombok")
 
@@ -110,16 +108,13 @@ project("thule-test") {
         annotationProcessor("org.projectlombok:lombok")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
+        api("org.springframework.boot:spring-boot-starter-test")
+
         compileOnly("org.projectlombok:lombok")
 
-        implementation("org.assertj:assertj-core")
-        implementation("org.junit.jupiter:junit-jupiter-engine")
         implementation("org.junit.vintage:junit-vintage-engine")
-        implementation("org.mockito:mockito-core")
-        implementation("org.slf4j:slf4j-api")
         implementation("org.springframework.boot:spring-boot-actuator")
         implementation("org.springframework.retry:spring-retry")
-        implementation("org.springframework:spring-test")
         implementation("org.springframework:spring-web")
     }
 }
@@ -204,11 +199,10 @@ project("thule-spring-boot-starter-resource-server") {
 
         api project(":thule-resource-server")
         api project(":thule-spring-boot-starter")
-        api("org.springframework.boot:spring-boot-actuator-autoconfigure")
-        api("org.springframework.boot:spring-boot-starter-security")
-        api("org.springframework.boot:spring-boot-starter-web")
 
         compileOnly("org.projectlombok:lombok")
+
+        implementation("org.springframework.boot:spring-boot-starter-web")
 
         testImplementation project(":thule-spring-boot-starter-test")
 
@@ -225,6 +219,5 @@ project("thule-spring-boot-starter-test") {
         api project(":thule-spring-boot-starter")
         api project(":thule-test")
         api("org.awaitility:awaitility")
-        api("org.springframework.boot:spring-boot-starter-test")
     }
 }
