@@ -8,17 +8,20 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import uk.co.serin.thule.gateway.wiremock.WiremockInitializer;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import java.time.Duration;
 
 @ActiveProfiles("itest")
+@ContextConfiguration(initializers = WiremockInitializer.class)
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityIntTest {
@@ -28,12 +31,12 @@ public class SecurityIntTest {
     private WebTestClient webTestClient;
 
     @Test
-    public void given_not_authenticated_user_when_using_proxying_a_service_then_access_should_be_denied() {
+    public void given_not_authenticated_user_when_using_service_then_access_should_be_found() {
         // When
         webTestClient.get().uri("/hello").exchange()
 
                      // Then
-                     .expectStatus().isForbidden();
+                     .expectStatus().isFound();
     }
 
     @Test

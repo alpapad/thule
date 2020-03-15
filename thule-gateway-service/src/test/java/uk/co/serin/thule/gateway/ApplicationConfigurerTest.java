@@ -27,7 +27,9 @@ public class ApplicationConfigurerTest {
     @Mock
     private ServerHttpSecurity.CsrfSpec csrfSpec;
     @Captor
-    private ArgumentCaptor<Customizer<ServerHttpSecurity.LogoutSpec>> customizerArgumentCaptor;
+    private ArgumentCaptor<Customizer<ServerHttpSecurity.LogoutSpec>> logoutCustomizerArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Customizer<ServerHttpSecurity.AuthorizeExchangeSpec>> authorizeExchangeCustomizerArgumentCaptor;
     @Mock
     private ServerHttpSecurity.HeaderSpec.FrameOptionsSpec frameOptionsSpec;
     @Mock
@@ -48,7 +50,11 @@ public class ApplicationConfigurerTest {
         // Given
         given(serverHttpSecurity.oauth2Login()).willReturn(oAuth2LoginSpec);
 
-        given(serverHttpSecurity.logout(customizerArgumentCaptor.capture())).willReturn(serverHttpSecurity);
+        given(serverHttpSecurity.logout(logoutCustomizerArgumentCaptor.capture())).willReturn(serverHttpSecurity);
+
+        given(serverHttpSecurity.authorizeExchange(authorizeExchangeCustomizerArgumentCaptor.capture())).willReturn(serverHttpSecurity);
+        given(authorizeExchangeSpec.pathMatchers("/actuator/**")).willReturn(access);
+        given(access.permitAll()).willReturn(authorizeExchangeSpec);
 
         given(serverHttpSecurity.authorizeExchange()).willReturn(authorizeExchangeSpec);
         given(authorizeExchangeSpec.anyExchange()).willReturn(access);
@@ -67,8 +73,12 @@ public class ApplicationConfigurerTest {
         var securityWebFilterChain = sut.springSecurityFilterChain(serverHttpSecurity, clientRegistrationRepository);
 
         // Then
-        var customizer = customizerArgumentCaptor.getValue();
-        customizer.customize(logoutSpec); // Test lambda
+        var logoutCustomizer = logoutCustomizerArgumentCaptor.getValue();
+        logoutCustomizer.customize(logoutSpec); // Test lambda
+
+        var authorizeExchangeCustomizer = authorizeExchangeCustomizerArgumentCaptor.getValue();
+        authorizeExchangeCustomizer.customize(authorizeExchangeSpec); // Test lambda
+
         assertThat(securityWebFilterChain).isNotNull();
     }
 }

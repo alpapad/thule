@@ -23,6 +23,9 @@ public class ApplicationConfigurer {
         // Also logout at the OpenID Connect provider
         http.logout(logout -> logout.logoutSuccessHandler(new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
 
+        // Allow actuator endpoints, even if not authenticated
+        http.authorizeExchange(exchanges -> exchanges.pathMatchers("/actuator/**").permitAll());
+
         // Require authentication for all requests
         http.authorizeExchange().anyExchange().authenticated();
 

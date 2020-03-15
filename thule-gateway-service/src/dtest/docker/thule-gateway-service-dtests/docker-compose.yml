@@ -7,6 +7,7 @@ services:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false"
       SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://172.41.0.1:8077/auth/realms/thule-test
       SPRING_ZIPKIN_ENABLED: "false"
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       TZ: Europe/London
@@ -18,4 +19,8 @@ services:
 ################################  Networks  ################################
 networks:
   thule-gateway-service:
-
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet:  172.41.0.1/24
