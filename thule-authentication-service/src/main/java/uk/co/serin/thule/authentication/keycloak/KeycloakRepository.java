@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import javax.annotation.PostConstruct;
 public class KeycloakRepository {
     private static final String ADMIN_REALMS = "/admin/realms/";
     private String adminRealmsPath = ADMIN_REALMS;
-    private String keycloakBaseUrl;
+    private URI keycloakBaseUrl;
     private KeycloakProperties keycloakProperties;
     private String realmName;
     private WebClient webClientWithAdminBearerAuth = WebClient.create();
@@ -30,6 +31,7 @@ public class KeycloakRepository {
 
     public void createPublicClient(String clientId) {
         var adminUrl = adminRealmsPath + "/clients";
+        var redirectUri = keycloakBaseUrl.getScheme() + "://" + keycloakBaseUrl.getAuthority() + "/*";
 
         // Delete
         var clients = webClientWithAdminBearerAuth.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
@@ -43,7 +45,7 @@ public class KeycloakRepository {
                 "id", clientId,
                 "name", clientId,
                 "publicClient", true,
-                "redirectUris", new String[]{keycloakBaseUrl},
+                "redirectUris", new String[]{redirectUri},
                 "standardFlowEnabled", true);
         webClientWithAdminBearerAuth.post().uri(adminUrl).bodyValue(client).exchange().block();
     }
@@ -78,6 +80,7 @@ public class KeycloakRepository {
 
     public void createServiceClient(String clientId) {
         var adminUrl = adminRealmsPath + "/clients";
+        var redirectUri = keycloakBaseUrl.getScheme() + "://" + keycloakBaseUrl.getAuthority() + "/*";
 
         // Delete
         var clients = webClientWithAdminBearerAuth.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
@@ -91,7 +94,7 @@ public class KeycloakRepository {
                 "enabled", true,
                 "id", clientId,
                 "name", clientId,
-                "redirectUris", new String[]{keycloakBaseUrl},
+                "redirectUris", new String[]{redirectUri},
                 "serviceAccountsEnabled", true,
                 "standardFlowEnabled", true);
         webClientWithAdminBearerAuth.post().uri(adminUrl).bodyValue(client).exchange().block();

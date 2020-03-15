@@ -3,6 +3,8 @@ package uk.co.serin.thule.authentication.keycloak;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +23,7 @@ public class KeycloakProperties {
     @Builder.Default
     private Admin admin = new Admin();
     @Builder.Default
-    private String baseUrl = "http://localhost";
+    private URI baseUrl = URI.create("http://localhost");
     @Builder.Default
     private String realm = "master";
 

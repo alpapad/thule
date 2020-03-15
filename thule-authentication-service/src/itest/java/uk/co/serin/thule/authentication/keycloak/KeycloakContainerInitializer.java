@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import uk.co.serin.thule.utils.docker.DockerCompose;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.Duration;
 
 import static org.awaitility.Awaitility.given;
@@ -31,7 +32,7 @@ public class KeycloakContainerInitializer implements ApplicationContextInitializ
         var applicationProperties = yaml.getObject();
 
         keycloakProperties = new KeycloakProperties();
-        keycloakProperties.setBaseUrl(applicationProperties.get("thule.keycloak.base-url").toString());
+        keycloakProperties.setBaseUrl(URI.create(applicationProperties.get("thule.keycloak.base-url").toString()));
         keycloakProperties.setRealm(applicationProperties.get("thule.keycloak.realm").toString());
 
         if (!initialized) {
@@ -49,9 +50,7 @@ public class KeycloakContainerInitializer implements ApplicationContextInitializ
             // Wait until keycloak is up by ensuring the home page is available
             given().ignoreExceptions().pollInterval(fibonacci()).
                     await().timeout(Duration.ofMinutes(5)).
-                           untilAsserted(() -> {
-                               webClient.get().retrieve().bodyToMono(String.class).block();
-                           });
+                           untilAsserted(() -> webClient.get().retrieve().bodyToMono(String.class).block());
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

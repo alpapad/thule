@@ -16,6 +16,7 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -53,6 +54,7 @@ public class KeycloakRepositoryTest {
 
         var keycloakPostWasExecuted = mockWebClientResponses(responseBody);
         ReflectionTestUtils.setField(sut, "webClientWithAdminBearerAuth", webClient);
+        ReflectionTestUtils.setField(sut, "keycloakBaseUrl", URI.create("http://localhost"));
 
         // When
         sut.createPublicClient(TEST_CLIENT_ID);
@@ -91,6 +93,7 @@ public class KeycloakRepositoryTest {
 
         var keycloakPostWasExecuted = mockWebClientResponses(responseBody);
         ReflectionTestUtils.setField(sut, "webClientWithAdminBearerAuth", webClient);
+        ReflectionTestUtils.setField(sut, "keycloakBaseUrl", URI.create("http://localhost"));
 
         // When
         sut.createServiceClient(TEST_CLIENT_ID);
