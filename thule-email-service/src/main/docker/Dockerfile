@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk12:slim
+FROM adoptopenjdk/openjdk11:slim
 
 ################################  Create user  ################################
 ENV GID 1000
