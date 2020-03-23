@@ -12,3 +12,11 @@ spring:
         initialInterval: 3000
       # Location of the configuration service
       uri: http://${thule.configurationservice.host:thule-configuration-service}:${thule.configurationservice.port:80}/
+    kubernetes:
+      reload:
+        enabled: true
+        monitoring-secrets: true
+        strategy: shutdown
+      secrets:
+        enable-api: true
+        name: thule-keycloak-secrets

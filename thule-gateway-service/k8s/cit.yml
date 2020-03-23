@@ -6,7 +6,7 @@ metadata:
   namespace: thule
 rules:
   - apiGroups: [""]
-    resources: ["pods"]
+    resources: ["pods", "secrets"]
     verbs: ["get", "list", "watch"]
 ---
 kind: ClusterRoleBinding
