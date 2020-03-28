@@ -1,12 +1,10 @@
 package uk.co.serin.thule.discovery;
 
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.SocketUtils;
 
@@ -20,7 +18,6 @@ import org.springframework.util.SocketUtils;
  * This way both the application server and the eureka client can use a 'random' port.
  */
 @ActiveProfiles("ctest")
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ContextConfiguration(initializers = BaseContractTest.RandomPortInitializer.class)
 abstract class BaseContractTest {

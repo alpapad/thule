@@ -5,8 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.data.rest.webmvc.support.ETag;
@@ -57,7 +57,7 @@ public class PeopleContractTest extends ContractBaseTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    @Before
+    @BeforeEach
     public void before() {
         var jwt = JwtUtils.createKeycloakJwt(MOCK_USERS_NAME, 0, AuthorityUtils.createAuthorityList("grantedAuthority"), "clientId");
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();

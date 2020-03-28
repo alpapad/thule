@@ -4,15 +4,12 @@ import com.dumbster.smtp.ServerOptions;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
 
-import org.junit.After;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @ActiveProfiles("ctest")
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class ContractBaseTest {
     private SmtpServer smtpServer;
@@ -25,7 +22,7 @@ public abstract class ContractBaseTest {
         return smtpServer;
     }
 
-    @After
+    @AfterEach
     public void stopEmbeddedServer() {
         if (smtpServer != null) {
             smtpServer.stop();

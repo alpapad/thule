@@ -1,10 +1,10 @@
 package uk.co.serin.thule.email.controller;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import uk.co.serin.thule.email.domain.model.Email;
 import uk.co.serin.thule.email.service.EmailService;
@@ -12,7 +12,7 @@ import uk.co.serin.thule.email.service.EmailService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EmailControllerTest {
     @InjectMocks
     private EmailController emailController;

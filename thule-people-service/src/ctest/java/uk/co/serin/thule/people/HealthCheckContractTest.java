@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.web.server.LocalServerPort;
 

@@ -2,16 +2,14 @@ package uk.co.serin.thule.repository.mongodb.repository;
 
 import com.google.gson.Gson;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import uk.co.serin.thule.repository.mongodb.domain.entity.PersonEntity;
 import uk.co.serin.thule.utils.docker.DockerCompose;
@@ -29,7 +27,6 @@ import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 @ActiveProfiles("itest")
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonEntityRepositoryIntTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
@@ -42,12 +39,12 @@ public class PersonEntityRepositoryIntTest {
     @Autowired
     private PersonRepository personRepository;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() throws IOException {
         DOCKER_COMPOSE.downAndUp();
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() throws IOException {
         DOCKER_COMPOSE.down();
     }
@@ -147,7 +144,7 @@ public class PersonEntityRepositoryIntTest {
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion() + 1);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Wait until MongoDb is up by checking that the port is available
         given().ignoreExceptions().pollInterval(fibonacci()).

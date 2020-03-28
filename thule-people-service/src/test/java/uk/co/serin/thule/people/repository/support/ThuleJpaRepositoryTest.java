@@ -1,10 +1,10 @@
 package uk.co.serin.thule.people.repository.support;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ThuleJpaRepositoryTest {
     @Mock
     private EntityManager entityManager;
@@ -27,7 +27,7 @@ public class ThuleJpaRepositoryTest {
     @Mock
     private TypedQuery<Serializable> typedQuery;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         given(entityManager.getDelegate()).willReturn(new Object());
         thuleJpaRepository = new ThuleJpaRepository<>(jpaEntityInformation, entityManager);

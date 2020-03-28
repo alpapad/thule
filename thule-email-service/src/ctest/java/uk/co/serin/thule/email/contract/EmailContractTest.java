@@ -1,7 +1,7 @@
 package uk.co.serin.thule.email.contract;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +23,7 @@ public class EmailContractTest extends ContractBaseTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    @Before
+    @BeforeEach
     public void before() {
         var jwt = JwtUtils.createKeycloakJwt("username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId");
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();

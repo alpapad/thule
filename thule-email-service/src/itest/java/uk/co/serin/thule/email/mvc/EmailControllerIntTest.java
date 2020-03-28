@@ -2,8 +2,7 @@ package uk.co.serin.thule.email.mvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,7 +12,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import uk.co.serin.thule.email.controller.EmailController;
@@ -39,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("itest")
 @AutoConfigureRestDocs(outputDir = "build/snippets")
-@RunWith(SpringRunner.class)
 @WebMvcTest(value = EmailController.class)
 public class EmailControllerIntTest {
     private static final String EMAILS_PATH = "/emails";

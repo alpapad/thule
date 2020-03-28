@@ -1,9 +1,8 @@
 package uk.co.serin.thule.authentication.keycloak.feign;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
@@ -14,7 +13,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.SocketUtils;
@@ -40,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ActiveProfiles({"itest", "itest-feign"})
 @ContextConfiguration(initializers = {KeycloakFeignInterceptorIntTest.RandomPortInitializer.class, KeycloakContainerInitializer.class})
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class KeycloakFeignInterceptorIntTest {
     @Autowired
@@ -50,12 +47,12 @@ public class KeycloakFeignInterceptorIntTest {
     @Autowired
     private TestFeignClient testFeignClient;
 
-    @After
+    @AfterEach
     public void after() {
         SecurityContextHolder.clearContext();
     }
 
-    @Before
+    @BeforeEach
     public void before() {
         // Replace client secret of the thule-test-service with actual client secret created via the KeycloakContainerInitializer
         var thuleTestServiceClientSecret = keycloakRepository.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);

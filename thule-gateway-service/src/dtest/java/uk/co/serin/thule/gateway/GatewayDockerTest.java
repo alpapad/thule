@@ -1,13 +1,11 @@
 package uk.co.serin.thule.gateway;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import uk.co.serin.thule.gateway.wiremock.WiremockInitializer;
@@ -20,18 +18,17 @@ import java.time.Duration;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ContextConfiguration(initializers = WiremockInitializer.class)
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class GatewayDockerTest {
     private static final String BASE_URL = "http://localhost:9091";
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-gateway-service-dtests/docker-compose.yml");
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() throws IOException {
         DOCKER_COMPOSE.downAndUp();
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() throws IOException {
         DOCKER_COMPOSE.down();
     }

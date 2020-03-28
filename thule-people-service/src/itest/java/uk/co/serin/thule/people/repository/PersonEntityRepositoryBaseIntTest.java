@@ -1,14 +1,12 @@
 package uk.co.serin.thule.people.repository;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
@@ -34,7 +32,6 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  */
 @DataJpaTest
 @Import(PersonEntityRepositoryIntTestConfiguration.class)
-@RunWith(SpringRunner.class)
 @WithMockUser
 public abstract class PersonEntityRepositoryBaseIntTest {
     private static final String MOCK_USERS_NAME = "user";
@@ -174,7 +171,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion() + 1);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         personEntityRepositoryIntTestHelper = new PersonEntityRepositoryIntTestHelper(countryRepository, roleRepository, stateRepository);
     }

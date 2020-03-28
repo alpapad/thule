@@ -1,6 +1,6 @@
 package uk.co.serin.thule.people.repository;
 
-import org.junit.AfterClass;
+import org.junit.jupiter.api.AfterAll;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
     private static final DockerCompose DOCKER_COMPOSE =  new DockerCompose("src/test/docker/thule-people-service-tests/docker-compose-mysql.yml");
 
-    @AfterClass
+    @AfterAll
     public static void teardownClass() throws IOException {
         DOCKER_COMPOSE.down();
     }
