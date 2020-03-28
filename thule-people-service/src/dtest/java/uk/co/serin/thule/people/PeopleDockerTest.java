@@ -1,33 +1,35 @@
 package uk.co.serin.thule.people;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.utils.docker.DockerCompose;
 
-import java.io.IOException;
+import java.io.File;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @SpringBootTest
+@Testcontainers
 public class PeopleDockerTest {
-    private static final String BASE_URL = "http://localhost:9094";
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-people-service-dtests/docker-compose.yml");
+    private static String baseUrl;
 
-    @BeforeAll
-    public static void setUpClass() throws IOException {
-        DOCKER_COMPOSE.downAndUp();
-    }
+    @Container
+    private static DockerComposeContainer<?> dockerCompose =
+            new DockerComposeContainer<>(new File("src/dtest/docker/docker-compose.yml"))
+                    .withExposedService("thule-people-service_1", 8080);
 
-    @AfterAll
-    public static void tearDownClass() throws IOException {
-        DOCKER_COMPOSE.down();
+    @DynamicPropertySource
+    private static void mysqlProperties(DynamicPropertyRegistry registry) {
+        baseUrl = String.format("http://localhost:%s", dockerCompose.getServicePort("thule-people-service_1", 8080));
     }
 
     @Test
@@ -36,7 +38,7 @@ public class PeopleDockerTest {
     }
 
     private void waitForTheApplicationToInitialize() {
-        var actuatorUri = ActuatorUri.using(BASE_URL + "/actuator/health");
+        var actuatorUri = ActuatorUri.using(baseUrl + "/actuator/health");
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
@@ -46,7 +48,7 @@ public class PeopleDockerTest {
         waitForTheApplicationToInitialize();
 
         // When
-        WebTestClient.bindToServer().baseUrl(BASE_URL).build()
+        WebTestClient.bindToServer().baseUrl(baseUrl).build()
                      .get().uri("/actuator/info")
                      .exchange()
                      .expectStatus().isOk()

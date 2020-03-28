@@ -24,16 +24,6 @@ apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 
 // Non-standard Serin gradle plugin config
-ctest {
-    // Remove docker container once the contract tests have completed
-    afterSuite { descriptor ->
-        if (descriptor.getName().contains("Gradle Test Executor")) {
-            exec {
-                commandLine "docker-compose", "-f", "src/test/docker/thule-people-service-tests/docker-compose-mysql.yml", "down", "-v", "--remove-orphans"
-            }
-        }
-    }
-}
 
 description = "Thule People Service"
 
@@ -47,6 +37,7 @@ dependencies {
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
+    implementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-data:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-feign:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
@@ -75,13 +66,19 @@ dependencies {
     itestImplementation("com.oracle:ojdbc8:18.3")
     itestImplementation("org.hsqldb:hsqldb")
     itestImplementation("org.springframework.security:spring-security-test")
+    itestImplementation("org.testcontainers:junit-jupiter")
+    itestImplementation("org.testcontainers:mysql")
 
     ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     ctestImplementation("org.springframework.security:spring-security-test")
+    ctestImplementation("org.testcontainers:junit-jupiter")
+    ctestImplementation("org.testcontainers:mysql")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    dtestImplementation("org.testcontainers:junit-jupiter")
 }

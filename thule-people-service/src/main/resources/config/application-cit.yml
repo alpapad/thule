@@ -9,9 +9,3 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://piglet/thule-authentication-service/auth/realms/thule
-
-# Thule configuration
-thule:
-  peopleservice:
-    mysql:
-      schema: thule

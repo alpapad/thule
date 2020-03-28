@@ -1,14 +1,12 @@
 package uk.co.serin.thule.people.repository;
 
-import org.junit.jupiter.api.AfterAll;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-
-import uk.co.serin.thule.people.docker.MysqlContainerInitializer;
-import uk.co.serin.thule.utils.docker.DockerCompose;
-
-import java.io.IOException;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * MySql, Oracle, H2 and HSQL embedded database drivers are on the itest classpath. By default, the H2
@@ -19,12 +17,13 @@ import java.io.IOException;
  */
 @ActiveProfiles("itest")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ContextConfiguration(initializers = MysqlContainerInitializer.class)
+@Testcontainers
 public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
-    private static final DockerCompose DOCKER_COMPOSE =  new DockerCompose("src/test/docker/thule-people-service-tests/docker-compose-mysql.yml");
+    @Container
+    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql").withUsername("root").withPassword(null);
 
-    @AfterAll
-    public static void teardownClass() throws IOException {
-        DOCKER_COMPOSE.down();
+    @DynamicPropertySource
+    private static void mysqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("thule.peopleservice.mysql.port", mysql::getFirstMappedPort);
     }
 }

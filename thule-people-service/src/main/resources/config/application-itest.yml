@@ -8,16 +8,12 @@ spring:
     password: thule
     username: thule
   flyway:
-    password: root
     user: root
   zipkin:
     enabled: false
 
 # Thule configuration
 thule:
-  peopleservice:
-    mysql:
-      schema: thule
   shared:
     logging:
       logstash:
