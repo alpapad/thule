@@ -17,6 +17,8 @@ public interface XmlUtils {
             var formattedXml = new StreamResult(new StringWriter());
 
             var transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
             transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
             var transformer = transformerFactory.newTransformer();
