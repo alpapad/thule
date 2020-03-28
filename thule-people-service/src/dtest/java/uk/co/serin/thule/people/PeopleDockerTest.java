@@ -25,7 +25,8 @@ public class PeopleDockerTest {
     @Container
     private static DockerComposeContainer<?> dockerCompose =
             new DockerComposeContainer<>(new File("src/dtest/docker/docker-compose.yml"))
-                    .withExposedService("thule-people-service_1", 8080);
+                    .withExposedService("thule-people-service_1", 8080)
+                    .withLocalCompose(true);
 
     @DynamicPropertySource
     private static void mysqlProperties(DynamicPropertyRegistry registry) {
