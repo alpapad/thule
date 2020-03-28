@@ -4,7 +4,4 @@ spring:
     config:
       enabled: false
     kubernetes:
-      reload:
-        enabled: false
-      secrets:
-        enabled: false
+      enabled: false
