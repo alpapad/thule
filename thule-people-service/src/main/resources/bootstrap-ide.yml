@@ -3,3 +3,8 @@ spring:
   cloud:
     config:
       enabled: false
+    kubernetes:
+      reload:
+        enabled: false
+      secrets:
+        enabled: false
