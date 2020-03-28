@@ -1,12 +1,12 @@
 package uk.co.serin.thule.test;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PerformanceTestExecutorTest {
     @Spy
     private ExecutorService executorService = Executors.newCachedThreadPool();
@@ -31,7 +31,7 @@ public class PerformanceTestExecutorTest {
     @InjectMocks
     private PerformanceTestExecutor sut;
 
-    @After
+    @AfterEach
     public void tearDown() {
         ReflectionTestUtils.setField(PerformanceTestExecutor.class, "logger", LoggerFactory.getLogger(PerformanceTestExecutor.class));
     }

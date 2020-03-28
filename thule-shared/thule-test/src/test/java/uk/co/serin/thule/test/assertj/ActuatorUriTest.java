@@ -1,6 +1,6 @@
 package uk.co.serin.thule.test.assertj;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 

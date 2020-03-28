@@ -1,15 +1,15 @@
 package uk.co.serin.thule.test.assertj;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ThuleAssertionsTest {
     @Mock
     private HttpStatusCodeException httpStatusCodeException;

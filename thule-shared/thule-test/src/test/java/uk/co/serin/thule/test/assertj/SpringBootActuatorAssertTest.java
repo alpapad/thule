@@ -1,10 +1,10 @@
 package uk.co.serin.thule.test.assertj;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SpringBootActuatorAssertTest {
     private ActuatorUri actuatorUri = ActuatorUri.using("http://localhost");
     @Mock
@@ -106,7 +106,7 @@ public class SpringBootActuatorAssertTest {
         assertThat(actualSpringBootActuatorAssert).isSameAs(sut);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         sut = SpringBootActuatorAssert.assertThat(actuatorUri);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
