@@ -3,47 +3,147 @@ ALTER SESSION SET CURRENT_SCHEMA = ${schema-name};
 -- Create tables
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE actions CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE actions(id INTEGER GENERATED ALWAYS AS IDENTITY, code VARCHAR(30) NOT NULL, description VARCHAR(100) NOT NULL, next_state_id INTEGER, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE actions
+(
+    id            INTEGER GENERATED ALWAYS AS IDENTITY,
+    code          VARCHAR(30)  NOT NULL,
+    description   VARCHAR(100) NOT NULL,
+    next_state_id INTEGER,
+    version       INTEGER      NOT NULL,
+    created_at    TIMESTAMP    NOT NULL,
+    created_by    VARCHAR(100) NOT NULL,
+    updated_at    TIMESTAMP    NOT NULL,
+    updated_by    VARCHAR(100) NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE addresses CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE addresses(id INTEGER GENERATED ALWAYS AS IDENTITY, address_line1 VARCHAR(30) NOT NULL, address_line2 VARCHAR(30), address_type VARCHAR(10) NOT NULL, town VARCHAR(30) NOT NULL, county VARCHAR(30) NOT NULL, country_id INTEGER NOT NULL, post_code VARCHAR(9) NOT NULL, state_id INTEGER NOT NULL, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE addresses
+(
+    id            INTEGER GENERATED ALWAYS AS IDENTITY,
+    address_line1 VARCHAR(30)  NOT NULL,
+    address_line2 VARCHAR(30),
+    address_type  VARCHAR(10)  NOT NULL,
+    town          VARCHAR(30)  NOT NULL,
+    county        VARCHAR(30)  NOT NULL,
+    country_id    INTEGER      NOT NULL,
+    post_code     VARCHAR(9)   NOT NULL,
+    state_id      INTEGER      NOT NULL,
+    version       INTEGER      NOT NULL,
+    created_at    TIMESTAMP    NOT NULL,
+    created_by    VARCHAR(100) NOT NULL,
+    updated_at    TIMESTAMP    NOT NULL,
+    updated_by    VARCHAR(100) NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE countries CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE countries(id INTEGER GENERATED ALWAYS AS IDENTITY, iso_code_three_characters VARCHAR(3) NOT NULL UNIQUE, iso_code_two_characters VARCHAR(2) NOT NULL UNIQUE, iso_name VARCHAR(100) NOT NULL, iso_number VARCHAR(3) NOT NULL UNIQUE, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE countries
+(
+    id                        INTEGER GENERATED ALWAYS AS IDENTITY,
+    iso_code_three_characters VARCHAR(3)   NOT NULL UNIQUE,
+    iso_code_two_characters   VARCHAR(2)   NOT NULL UNIQUE,
+    iso_name                  VARCHAR(100) NOT NULL,
+    iso_number                VARCHAR(3)   NOT NULL UNIQUE,
+    version                   INTEGER      NOT NULL,
+    created_at                TIMESTAMP    NOT NULL,
+    created_by                VARCHAR(100) NOT NULL,
+    updated_at                TIMESTAMP    NOT NULL,
+    updated_by                VARCHAR(100) NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE people CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE people(id INTEGER GENERATED ALWAYS AS IDENTITY, date_of_birth DATE NOT NULL, date_of_expiry DATE NOT NULL, date_of_password_expiry DATE NOT NULL, email_address VARCHAR(100), first_name VARCHAR(30) NOT NULL, home_address_id INTEGER, last_name VARCHAR(30) NOT NULL, password VARCHAR(100) NOT NULL, second_name VARCHAR(30), state_id INTEGER NOT NULL, title VARCHAR(30), user_id VARCHAR(100) NOT NULL UNIQUE, work_address_id INTEGER, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE people
+(
+    id                      INTEGER GENERATED ALWAYS AS IDENTITY,
+    date_of_birth           DATE         NOT NULL,
+    date_of_expiry          DATE         NOT NULL,
+    date_of_password_expiry DATE         NOT NULL,
+    email_address           VARCHAR(100),
+    first_name              VARCHAR(30)  NOT NULL,
+    home_address_id         INTEGER,
+    last_name               VARCHAR(30)  NOT NULL,
+    password                VARCHAR(100) NOT NULL,
+    second_name             VARCHAR(30),
+    state_id                INTEGER      NOT NULL,
+    title                   VARCHAR(30),
+    user_id                 VARCHAR(100) NOT NULL UNIQUE,
+    work_address_id         INTEGER,
+    version                 INTEGER      NOT NULL,
+    created_at              TIMESTAMP    NOT NULL,
+    created_by              VARCHAR(100) NOT NULL,
+    updated_at              TIMESTAMP    NOT NULL,
+    updated_by              VARCHAR(100) NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE people_roles CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE people_roles(person_id INTEGER NOT NULL, role_id INTEGER NOT NULL);
+CREATE TABLE people_roles
+(
+    person_id INTEGER NOT NULL,
+    role_id   INTEGER NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE photographs CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE photographs(id INTEGER GENERATED ALWAYS AS IDENTITY, hash VARCHAR(255) NOT NULL, photo BLOB NOT NULL, person_id INTEGER NOT NULL, positin INTEGER NOT NULL, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE photographs
+(
+    id         INTEGER GENERATED ALWAYS AS IDENTITY,
+    hash       VARCHAR(255) NOT NULL,
+    photo      BLOB         NOT NULL,
+    person_id  INTEGER      NOT NULL,
+    positin    INTEGER      NOT NULL,
+    version    INTEGER      NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    created_by VARCHAR(100) NOT NULL,
+    updated_at TIMESTAMP    NOT NULL,
+    updated_by VARCHAR(100) NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE roles CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE roles(id INTEGER GENERATED ALWAYS AS IDENTITY, code VARCHAR(30) NOT NULL UNIQUE, description VARCHAR(30) NOT NULL, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE roles
+(
+    id          INTEGER GENERATED ALWAYS AS IDENTITY,
+    code        VARCHAR(30)  NOT NULL UNIQUE,
+    description VARCHAR(30)  NOT NULL,
+    version     INTEGER      NOT NULL,
+    created_at  TIMESTAMP    NOT NULL,
+    created_by  VARCHAR(100) NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL,
+    updated_by  VARCHAR(100) NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE state_actions CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE state_actions(state_id INTEGER NOT NULL, action_id INTEGER NOT NULL);
+CREATE TABLE state_actions
+(
+    state_id  INTEGER NOT NULL,
+    action_id INTEGER NOT NULL
+);
 
 
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE states CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-CREATE TABLE states(id INTEGER GENERATED ALWAYS AS IDENTITY, code VARCHAR(30) NOT NULL, description VARCHAR(100) NOT NULL, version INTEGER NOT NULL, created_at TIMESTAMP NOT NULL, created_by VARCHAR(100) NOT NULL, updated_at TIMESTAMP NOT NULL, updated_by VARCHAR(100) NOT NULL);
+CREATE TABLE states
+(
+    id          INTEGER GENERATED ALWAYS AS IDENTITY,
+    code        VARCHAR(30)  NOT NULL,
+    description VARCHAR(100) NOT NULL,
+    version     INTEGER      NOT NULL,
+    created_at  TIMESTAMP    NOT NULL,
+    created_by  VARCHAR(100) NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL,
+    updated_by  VARCHAR(100) NOT NULL
+);
 
 
 -- Create primary key constraints
