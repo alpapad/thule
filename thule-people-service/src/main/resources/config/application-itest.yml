@@ -42,11 +42,11 @@ spring:
   # Spring boot configuration
   datasource:
     password: thule
-    url: jdbc:log4jdbc:oracle:thin:@//localhost:1521/XEPDB1
+    url: jdbc:log4jdbc:oracle:thin:@//localhost:${thule.peopleservice.oracle.port}/XEPDB1
     username: thule
   flyway:
     locations: classpath:oracle/db/migration
     password: oracle
     schemas: THULE # Flyway will force schema name to be whichever case is specified but needs to be upper case for oracle
-    url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
+    url: jdbc:oracle:thin:@//localhost:${thule.peopleservice.oracle.port}/XEPDB1
     user: system

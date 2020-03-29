@@ -70,6 +70,7 @@ dependencies {
     itestImplementation("org.springframework.security:spring-security-test")
     itestImplementation("org.testcontainers:junit-jupiter")
     itestImplementation("org.testcontainers:mysql")
+    itestImplementation("org.testcontainers:oracle-xe")
 
     ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
