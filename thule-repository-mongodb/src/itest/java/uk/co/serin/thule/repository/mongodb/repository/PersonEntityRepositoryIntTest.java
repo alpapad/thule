@@ -40,12 +40,12 @@ public class PersonEntityRepositoryIntTest {
     private PersonRepository personRepository;
 
     @BeforeAll
-    public static void setUpClass() throws IOException {
+    public static void beforeAll() throws IOException {
         DOCKER_COMPOSE.downAndUp();
     }
 
     @AfterAll
-    public static void tearDownClass() throws IOException {
+    public static void afterAll() throws IOException {
         DOCKER_COMPOSE.down();
     }
 
@@ -145,7 +145,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void beforeEach() {
         // Wait until MongoDb is up by checking that the port is available
         given().ignoreExceptions().pollInterval(fibonacci()).
                 await().timeout(Duration.ofMinutes(5)).

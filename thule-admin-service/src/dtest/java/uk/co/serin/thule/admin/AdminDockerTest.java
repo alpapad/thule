@@ -21,12 +21,12 @@ public class AdminDockerTest {
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-admin-service-dtests/docker-compose.yml");
 
     @BeforeAll
-    public static void setUpClass() throws IOException {
+    public static void beforeAll() throws IOException {
         DOCKER_COMPOSE.downAndUp();
     }
 
     @AfterAll
-    public static void tearDownClass() throws IOException {
+    public static void afterAll() throws IOException {
         DOCKER_COMPOSE.down();
     }
 

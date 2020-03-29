@@ -107,7 +107,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void beforeEach() {
         sut = SpringBootActuatorAssert.assertThat(actuatorUri);
         ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
     }

@@ -24,7 +24,7 @@ public class EmailContractTest extends ContractBaseTest {
     private WebTestClient webTestClient;
 
     @BeforeEach
-    public void before() {
+    public void beforeEach() {
         var jwt = JwtUtils.createKeycloakJwt("username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId");
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();
     }

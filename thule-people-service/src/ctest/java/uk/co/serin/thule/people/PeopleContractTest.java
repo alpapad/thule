@@ -58,7 +58,7 @@ public class PeopleContractTest extends ContractBaseTest {
     private WebTestClient webTestClient;
 
     @BeforeEach
-    public void before() {
+    public void beforeEach() {
         var jwt = JwtUtils.createKeycloakJwt(MOCK_USERS_NAME, 0, AuthorityUtils.createAuthorityList("grantedAuthority"), "clientId");
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();
     }

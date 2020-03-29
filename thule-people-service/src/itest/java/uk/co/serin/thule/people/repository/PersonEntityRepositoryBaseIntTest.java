@@ -172,7 +172,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void beforeEach() {
         personEntityRepositoryIntTestHelper = new PersonEntityRepositoryIntTestHelper(countryRepository, roleRepository, stateRepository);
     }
 

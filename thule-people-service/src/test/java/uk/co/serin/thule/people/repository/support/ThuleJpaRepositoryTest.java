@@ -28,7 +28,7 @@ public class ThuleJpaRepositoryTest {
     private TypedQuery<Serializable> typedQuery;
 
     @BeforeEach
-    public void setUp() {
+    public void beforeEach() {
         given(entityManager.getDelegate()).willReturn(new Object());
         thuleJpaRepository = new ThuleJpaRepository<>(jpaEntityInformation, entityManager);
     }

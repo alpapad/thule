@@ -37,7 +37,7 @@ public class DelegatingSecurityContextHolderTest {
     }
 
     @BeforeEach
-    public void setup() {
+    public void beforeEach() {
         sut.clearContext();
     }
 

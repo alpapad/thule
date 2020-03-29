@@ -32,7 +32,7 @@ public class PerformanceTestExecutorTest {
     private PerformanceTestExecutor sut;
 
     @AfterEach
-    public void tearDown() {
+    public void afterEach() {
         ReflectionTestUtils.setField(PerformanceTestExecutor.class, "logger", LoggerFactory.getLogger(PerformanceTestExecutor.class));
     }
 
