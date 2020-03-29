@@ -56,7 +56,7 @@ function configureMicrok8s() {
 
   echo ""
   echo -n "Waiting for microk8s to be ready to accept commands..."
-  microk8sStatus=$(sudo microk8s.status --timeout 600 --wait-ready )
+  microk8sStatus=$(sudo microk8s.status --timeout 600 --wait-ready)
 
   elapsedSeconds=$(($(date +%s) - microk8sStatusStartTime))
   echo -e "\rWaiting for microk8s to be ready to accept commands...\033[32m done \033[0m"

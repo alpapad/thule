@@ -105,7 +105,7 @@ fi
 # Load config properties
 ################################################################################
 CONFIGS_DIRECTORY=${SCRIPT_DIR_NAME}/../config
-SERVICE_NAME=$(grep -oP "(?<=/)thule-.*-service?(?=.*)" <<< "${K8S_FILE}")
+SERVICE_NAME=$(grep -oP "(?<=/)thule-.*-service?(?=.*)" <<<"${K8S_FILE}")
 
 # Load default config properties
 source ${CONFIGS_DIRECTORY}/default.sh
@@ -218,14 +218,20 @@ echo ""
 echo "================================================================================"
 echo "About to deploy ${K8S_FILE}..."
 
-isSpringBootService=$(grep -q ".*- name\s*:\s*SPRING_PROFILES_ACTIVE" "${K8S_FILE}"; echo "$?")
+isSpringBootService=$(
+  grep -q ".*- name\s*:\s*SPRING_PROFILES_ACTIVE" "${K8S_FILE}"
+  echo "$?"
+)
 if [[ ${isSpringBootService} -eq 0 ]]; then
   updateConfiguration "${K8S_FILE}"
 fi
 
 kubectlApply "${K8S_FILE}"
 
-isDeployment=$(grep -q "kind:\s*Deployment" "${K8S_FILE}"; echo "$?")
+isDeployment=$(
+  grep -q "kind:\s*Deployment" "${K8S_FILE}"
+  echo "$?"
+)
 if [[ "${isDeployment}" -eq 0 ]]; then
   kubectlRolloutStatus "${K8S_FILE}"
 fi
