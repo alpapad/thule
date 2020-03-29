@@ -3,8 +3,8 @@
     <!-- Log any errors with logback itself, for example, SSL or TCP communication errors with logstash -->
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
-    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
     <logger name="jdbc.audit" level="error"/>
     <logger name="jdbc.connection" level="error"/>

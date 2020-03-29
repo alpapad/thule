@@ -20,14 +20,14 @@ public class AdminDockerTest {
     private static final String BASE_URL = "http://localhost:9093";
     private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-admin-service-dtests/docker-compose.yml");
 
-    @BeforeAll
-    public static void beforeAll() throws IOException {
-        DOCKER_COMPOSE.downAndUp();
-    }
-
     @AfterAll
     public static void afterAll() throws IOException {
         DOCKER_COMPOSE.down();
+    }
+
+    @BeforeAll
+    public static void beforeAll() throws IOException {
+        DOCKER_COMPOSE.downAndUp();
     }
 
     @Test

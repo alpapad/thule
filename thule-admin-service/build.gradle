@@ -39,12 +39,14 @@ dependencies {
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("de.codecentric:spring-boot-admin-starter-server:2.2.2")
-    implementation("org.jolokia:jolokia-core") // Required for JMX support when using the Admin server
+    // Required for JMX support when using the Admin server
+    implementation("org.jolokia:jolokia-core")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
-    implementation("org.springframework.retry:spring-retry") // Required to retry connecting to the configuration service when it is not available at startup
+    // Required to retry connecting to the configuration service when it is not available at startup
+    implementation("org.springframework.retry:spring-retry")
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 

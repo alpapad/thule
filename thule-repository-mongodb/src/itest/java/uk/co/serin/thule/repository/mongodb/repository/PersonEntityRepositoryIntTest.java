@@ -39,14 +39,22 @@ public class PersonEntityRepositoryIntTest {
     @Autowired
     private PersonRepository personRepository;
 
+    @AfterAll
+    public static void afterAll() throws IOException {
+        DOCKER_COMPOSE.down();
+    }
+
     @BeforeAll
     public static void beforeAll() throws IOException {
         DOCKER_COMPOSE.downAndUp();
     }
 
-    @AfterAll
-    public static void afterAll() throws IOException {
-        DOCKER_COMPOSE.down();
+    @BeforeEach
+    public void beforeEach() {
+        // Wait until MongoDb is up by checking that the port is available
+        given().ignoreExceptions().pollInterval(fibonacci()).
+                await().timeout(Duration.ofMinutes(5)).
+                       untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
     }
 
     @Test
@@ -142,14 +150,6 @@ public class PersonEntityRepositoryIntTest {
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion() + 1);
-    }
-
-    @BeforeEach
-    public void beforeEach() {
-        // Wait until MongoDb is up by checking that the port is available
-        given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofMinutes(5)).
-                       untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
     }
 
     @Test

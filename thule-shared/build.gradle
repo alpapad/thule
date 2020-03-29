@@ -129,7 +129,8 @@ project("thule-utils") {
         implementation("javax.validation:validation-api")
         implementation("net.logstash.logback:logstash-logback-encoder:6.3")
         implementation("org.aspectj:aspectjrt")
-        implementation("org.codehaus.janino:janino") // Required by logback if-condition statements in the logback xml configuration
+        // Required by logback if-condition statements in the logback xml configuration
+        implementation("org.codehaus.janino:janino")
         implementation("org.slf4j:slf4j-api")
 
         testImplementation project(":thule-spring-boot-starter-test")
@@ -148,7 +149,8 @@ project("thule-spring-boot-starter") {
         compileOnly("org.projectlombok:lombok")
         compileOnly("org.springframework:spring-webmvc")
 
-        implementation("org.glassfish.jaxb:jaxb-runtime") // Required by anything using JAXB when using java 9+
+        // Required by anything using JAXB when using java 9+
+        implementation("org.glassfish.jaxb:jaxb-runtime")
 
         testImplementation project(":thule-spring-boot-starter-test")
         testImplementation("org.springframework:spring-webmvc")

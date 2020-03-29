@@ -22,6 +22,7 @@ public class ApplicationConfigurerTest {
 
         // Then
         var contextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
-        assertThat(contextHolderStrategy.getClass().getName()).isEqualTo("org.springframework.security.core.context.InheritableThreadLocalSecurityContextHolderStrategy");
+        assertThat(contextHolderStrategy.getClass().getName())
+                .isEqualTo("org.springframework.security.core.context.InheritableThreadLocalSecurityContextHolderStrategy");
     }
 }

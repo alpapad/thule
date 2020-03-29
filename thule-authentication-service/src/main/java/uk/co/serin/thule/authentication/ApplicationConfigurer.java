@@ -14,16 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationConfigurer {
     @Bean
-    public KeycloakRepository keycloakRepository(KeycloakProperties keycloakProperties) {
-        return new KeycloakRepository(keycloakProperties);
-    }
-
-    @Bean
     public ClassLoaderTemplateResolver classLoaderTemplateResolver() {
         var classLoaderTemplateResolver = new ClassLoaderTemplateResolver();
         classLoaderTemplateResolver.setPrefix("templates/secrets/");
         classLoaderTemplateResolver.setSuffix(".yml");
         classLoaderTemplateResolver.setTemplateMode(TemplateMode.TEXT);
         return classLoaderTemplateResolver;
+    }
+
+    @Bean
+    public KeycloakRepository keycloakRepository(KeycloakProperties keycloakProperties) {
+        return new KeycloakRepository(keycloakProperties);
     }
 }

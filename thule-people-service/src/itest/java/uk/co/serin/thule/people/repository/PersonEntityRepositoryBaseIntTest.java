@@ -47,6 +47,11 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
+    @BeforeEach
+    public void beforeEach() {
+        personEntityRepositoryIntTestHelper = new PersonEntityRepositoryIntTestHelper(countryRepository, roleRepository, stateRepository);
+    }
+
     @Test
     public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
@@ -169,11 +174,6 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         assertThat(actualPerson.getUpdatedAt()).isAfter(expectedPerson.getUpdatedAt());
         assertThat(actualPerson.getUpdatedBy()).isNotEmpty();
         assertThat(actualPerson.getVersion()).isEqualTo(expectedPerson.getVersion() + 1);
-    }
-
-    @BeforeEach
-    public void beforeEach() {
-        personEntityRepositoryIntTestHelper = new PersonEntityRepositoryIntTestHelper(countryRepository, roleRepository, stateRepository);
     }
 
     @Test

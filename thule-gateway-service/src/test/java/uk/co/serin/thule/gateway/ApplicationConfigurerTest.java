@@ -20,20 +20,20 @@ import static org.mockito.BDDMockito.given;
 public class ApplicationConfigurerTest {
     @Mock
     private ServerHttpSecurity.AuthorizeExchangeSpec.Access access;
+    @Captor
+    private ArgumentCaptor<Customizer<ServerHttpSecurity.AuthorizeExchangeSpec>> authorizeExchangeCustomizerArgumentCaptor;
     @Mock
     private ServerHttpSecurity.AuthorizeExchangeSpec authorizeExchangeSpec;
     @Mock
     private ReactiveClientRegistrationRepository clientRegistrationRepository;
     @Mock
     private ServerHttpSecurity.CsrfSpec csrfSpec;
-    @Captor
-    private ArgumentCaptor<Customizer<ServerHttpSecurity.LogoutSpec>> logoutCustomizerArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Customizer<ServerHttpSecurity.AuthorizeExchangeSpec>> authorizeExchangeCustomizerArgumentCaptor;
     @Mock
     private ServerHttpSecurity.HeaderSpec.FrameOptionsSpec frameOptionsSpec;
     @Mock
     private ServerHttpSecurity.HeaderSpec headerSpec;
+    @Captor
+    private ArgumentCaptor<Customizer<ServerHttpSecurity.LogoutSpec>> logoutCustomizerArgumentCaptor;
     @Mock
     private ServerHttpSecurity.LogoutSpec logoutSpec;
     @Mock

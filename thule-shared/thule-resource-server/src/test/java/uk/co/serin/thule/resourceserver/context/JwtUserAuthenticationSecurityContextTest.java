@@ -22,11 +22,11 @@ public class JwtUserAuthenticationSecurityContextTest {
     @Mock
     private Authentication authentication;
     @Mock
+    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
+    @Mock
     private JwtAuthenticationToken jwtAuthenticationToken;
     @Mock
     private SecurityContext securityContext;
-    @Mock
-    private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
     private JwtUserAuthenticationSecurityContext sut;
 

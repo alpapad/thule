@@ -23,6 +23,11 @@ public class DelegatingSecurityContextHolderTest {
     @InjectMocks
     private DelegatingSecurityContextHolder sut;
 
+    @BeforeEach
+    public void beforeEach() {
+        sut.clearContext();
+    }
+
     @Test
     public void given_context_is_set_when_authentication_is_retrieved_then_authentication_is_not_null() {
         // Given
@@ -34,11 +39,6 @@ public class DelegatingSecurityContextHolderTest {
 
         // Then
         assertThat(actualAuthentication).isSameAs(authentication);
-    }
-
-    @BeforeEach
-    public void beforeEach() {
-        sut.clearContext();
     }
 
     @Test

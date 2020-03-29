@@ -10,13 +10,13 @@ import java.net.URI;
 import static org.springframework.util.StringUtils.isEmpty;
 
 public class KubernetesServicePathServiceInstanceConverter extends KubernetesServiceInstanceConverter {
-	@Override
-	protected URI getServiceUrl(ServiceInstance instance) {
-		var servicePath = instance.getMetadata().get("service-path");
-		if (!isEmpty(servicePath)) {
-			return UriComponentsBuilder.fromUri(instance.getUri()).path("/").path(servicePath).path("/").build().toUri();
-		}
+    @Override
+    protected URI getServiceUrl(ServiceInstance instance) {
+        var servicePath = instance.getMetadata().get("service-path");
+        if (!isEmpty(servicePath)) {
+            return UriComponentsBuilder.fromUri(instance.getUri()).path("/").path(servicePath).path("/").build().toUri();
+        }
 
-		return super.getServiceUrl(instance);
-	}
+        return super.getServiceUrl(instance);
+    }
 }

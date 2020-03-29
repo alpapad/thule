@@ -47,17 +47,17 @@ public class KeycloakFeignInterceptorIntTest {
     @Autowired
     private TestFeignClient testFeignClient;
 
-    @AfterEach
-    public void clearSecurityContext() {
-        SecurityContextHolder.clearContext();
-    }
-
     @BeforeEach
     public void beforeEach() {
         // Replace client secret of the thule-test-service with actual client secret created via the KeycloakContainerInitializer
         var thuleTestServiceClientSecret = keycloakRepository.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
         var keycloakRegistration = clientRegistrationRepository.findByRegistrationId("keycloak");
         ReflectionTestUtils.setField(keycloakRegistration, "clientSecret", thuleTestServiceClientSecret);
+    }
+
+    @AfterEach
+    public void clearSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test

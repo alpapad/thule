@@ -36,6 +36,12 @@ public class SpringBootActuatorAssertTest {
     private RetryTemplate retryTemplate = new RetryTemplate();
     private SpringBootActuatorAssert sut;
 
+    @BeforeEach
+    public void beforeEach() {
+        sut = SpringBootActuatorAssert.assertThat(actuatorUri);
+        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
+    }
+
     @Test
     public void given_down_health_status_when_expecting_up_health_status_then_assertion_error_contains_health_status_is_down_message() {
         // Given
@@ -104,12 +110,6 @@ public class SpringBootActuatorAssertTest {
 
         // Then
         assertThat(actualSpringBootActuatorAssert).isSameAs(sut);
-    }
-
-    @BeforeEach
-    public void beforeEach() {
-        sut = SpringBootActuatorAssert.assertThat(actuatorUri);
-        ReflectionTestUtils.setField(sut, "restTemplate", restTemplate);
     }
 
     @Test
