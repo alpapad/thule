@@ -72,10 +72,11 @@ dependencies {
     itestImplementation("org.testcontainers:mysql")
     itestImplementation("org.testcontainers:oracle-xe")
 
+    ctestImplementation("org.mock-server:mockserver-client-java:5.10.0")
     ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
-    ctestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
     ctestImplementation("org.springframework.security:spring-security-test")
     ctestImplementation("org.testcontainers:junit-jupiter")
+    ctestImplementation("org.testcontainers:mockserver")
     ctestImplementation("org.testcontainers:mysql")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")

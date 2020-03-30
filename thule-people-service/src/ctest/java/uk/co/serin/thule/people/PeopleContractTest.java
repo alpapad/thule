@@ -32,10 +32,8 @@ import java.util.Objects;
 
 import javax.persistence.EntityManager;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
 import static org.springframework.util.StringUtils.trimLeadingCharacter;
 import static org.springframework.util.StringUtils.trimTrailingCharacter;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
@@ -132,9 +130,11 @@ public class PeopleContractTest extends ContractBaseTest {
         // Given
         var testPerson = buildPersonWithoutAnyAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
-        givenThat(post(urlEqualTo("/emails")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBody(email)));
+        mockServerClient
+                .when(request().withMethod("POST").withPath("/emails"))
+                .respond(response().withBody(email)
+                                   .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                   .withStatusCode(HttpStatus.OK.value()));
 
         // When
         var entityExchangeResult = webTestClient.post().uri(PEOPLE_PATH)
@@ -177,9 +177,11 @@ public class PeopleContractTest extends ContractBaseTest {
         // Given
         var person = createAndPersistPersonWithNoAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
-        givenThat(post(urlEqualTo("/emails")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBody(email)));
+        mockServerClient
+                .when(request().withMethod("POST").withPath("/emails"))
+                .respond(response().withBody(email)
+                                   .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                   .withStatusCode(HttpStatus.OK.value()));
 
         // When
         webTestClient.delete().uri(PEOPLE_PATH + ID_PATH, person.getId()).exchange();
@@ -194,9 +196,11 @@ public class PeopleContractTest extends ContractBaseTest {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
-        givenThat(post(urlEqualTo("/emails")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                           .withBody(email)));
+        mockServerClient
+                .when(request().withMethod("POST").withPath("/emails"))
+                .respond(response().withBody(email)
+                                   .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                   .withStatusCode(HttpStatus.OK.value()));
 
         testPerson.setFirstName("updatedFirstName");
         testPerson.setSecondName("updatedSecondName");

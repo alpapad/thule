@@ -21,7 +21,7 @@ public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBa
     private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql").withUsername("root").withPassword(null);
 
     @DynamicPropertySource
-    private static void mysqlProperties(DynamicPropertyRegistry registry) {
+    private static void addDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("thule.peopleservice.mysql.port", mysql::getFirstMappedPort);
     }
 }

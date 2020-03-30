@@ -6,7 +6,7 @@ spring:
         simple:
           instances:
             thule-email-service:
-              - uri: http://localhost:${wiremock.server.port}
+              - uri: http://localhost:${mock.server.port}
     loadbalancer:
       ribbon:
         enabled: false
