@@ -6,7 +6,7 @@ services:
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
+      SPRING_CLOUD_KUBERNETES_ENABLED: "false"
       SPRING_DATASOURCE_USERNAME: root
       SPRING_FLYWAY_ENABLED: "false"
       SPRING_ZIPKIN_ENABLED: "false"
