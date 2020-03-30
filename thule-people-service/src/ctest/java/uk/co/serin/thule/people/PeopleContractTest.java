@@ -133,7 +133,7 @@ public class PeopleContractTest extends ContractBaseTest {
         var testPerson = buildPersonWithoutAnyAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
         givenThat(post(urlEqualTo("/emails")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                            .withBody(email)));
 
         // When
@@ -178,7 +178,7 @@ public class PeopleContractTest extends ContractBaseTest {
         var person = createAndPersistPersonWithNoAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
         givenThat(post(urlEqualTo("/emails")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                            .withBody(email)));
 
         // When
@@ -195,7 +195,7 @@ public class PeopleContractTest extends ContractBaseTest {
         var testPerson = createAndPersistPersonWithNoAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
         givenThat(post(urlEqualTo("/emails")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                            .withBody(email)));
 
         testPerson.setFirstName("updatedFirstName");
