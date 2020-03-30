@@ -8,8 +8,7 @@ spring:
             thule-email-service:
               - uri: http://localhost:${wiremock.server.port}
     kubernetes:
-      discovery:
-        enabled: false
+      enabled: false
     loadbalancer:
       ribbon:
         enabled: false
