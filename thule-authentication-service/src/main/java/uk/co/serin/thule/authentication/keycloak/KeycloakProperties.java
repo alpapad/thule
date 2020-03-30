@@ -35,7 +35,9 @@ public class KeycloakProperties {
     public static class Admin {
         @Builder.Default
         private String clientId = "admin-cli";
+        @Builder.Default
         private String password = "admin";
+        @Builder.Default
         private String username = "admin";
     }
 }
