@@ -1,30 +1,18 @@
 version: "3.7"
 services:
   ################################  thule-email  ################################
-  thule-email:
+  thule-email-service:
     image: pooh:8084/thule-email-service
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
+      SPRING_CLOUD_KUBERNETES_ENABLED: "false"
       SPRING_MAIL_HOST: mailhog
       SPRING_ZIPKIN_ENABLED: "false"
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"
       THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED: "false"
       TZ: Europe/London
-    networks:
-      - thule-email-service
-    ports:
-      - 9095:8080
 
   ################################  Servers and Databases Required By Docker tests  ################################
   mailhog:
     image: mailhog/mailhog
-    networks:
-      - thule-email-service
-    ports:
-      - 1025:1025
-
-################################  Networks  ################################
-networks:
-  thule-email-service:
