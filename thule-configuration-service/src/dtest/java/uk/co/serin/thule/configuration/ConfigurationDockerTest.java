@@ -29,7 +29,7 @@ public class ConfigurationDockerTest {
                     .withLocalCompose(true);
 
     @DynamicPropertySource
-    private static void mysqlProperties(DynamicPropertyRegistry registry) {
+    private static void baseUrl(DynamicPropertyRegistry registry) {
         baseUrl = String.format("http://localhost:%s", dockerCompose.getServicePort("thule-configuration-service_1", 8080));
     }
 

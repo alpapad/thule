@@ -22,7 +22,7 @@ public class PersonEntityRepositoryOracleIntTest extends PersonEntityRepositoryB
             new OracleContainer("pooh:8082/oracle-database:18.4.0-xe-initialized").withEnv("ORACLE_PDB", "system").withEnv("ORACLE_PWD", "oracle");
 
     @DynamicPropertySource
-    private static void mysqlProperties(DynamicPropertyRegistry registry) {
+    private static void oracleProperties(DynamicPropertyRegistry registry) {
         registry.add("thule.peopleservice.oracle.port", oracle::getFirstMappedPort);
     }
 }

@@ -29,7 +29,7 @@ public class AdminDockerTest {
                     .withLocalCompose(true);
 
     @DynamicPropertySource
-    private static void mysqlProperties(DynamicPropertyRegistry registry) {
+    private static void baseUrl(DynamicPropertyRegistry registry) {
         baseUrl = String.format("http://localhost:%s", dockerCompose.getServicePort("thule-admin-service_1", 8080));
     }
 
