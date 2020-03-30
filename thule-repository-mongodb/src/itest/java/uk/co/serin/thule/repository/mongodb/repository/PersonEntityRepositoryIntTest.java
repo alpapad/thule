@@ -2,59 +2,38 @@ package uk.co.serin.thule.repository.mongodb.repository;
 
 import com.google.gson.Gson;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import uk.co.serin.thule.repository.mongodb.domain.entity.PersonEntity;
-import uk.co.serin.thule.utils.docker.DockerCompose;
 import uk.co.serin.thule.utils.utils.RandomUtils;
-
-import java.io.IOException;
-import java.net.Socket;
-import java.time.Duration;
 
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.awaitility.Awaitility.given;
-import static org.awaitility.pollinterval.FibonacciPollInterval.fibonacci;
 
 @ActiveProfiles("itest")
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class PersonEntityRepositoryIntTest {
-    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/test/docker/thule-repository-mongodb-tests/docker-compose-mongo.yml");
     private static final String MOCK_USERS_NAME = "user";
+    @Container
+    private static GenericContainer<?> mongodb = new GenericContainer<>("mongo").withExposedPorts(27017);
     private Gson gson = new Gson();
-    @Value("${thule.repositorymongodb.mongodb.host:localhost}")
-    private String mongodbHost;
-    @Value("${thule.repositorymongodb.mongodb.port:27017}")
-    private int mongodbPort;
     @Autowired
     private PersonRepository personRepository;
 
-    @AfterAll
-    public static void afterAll() throws IOException {
-        DOCKER_COMPOSE.down();
-    }
-
-    @BeforeAll
-    public static void beforeAll() throws IOException {
-        DOCKER_COMPOSE.downAndUp();
-    }
-
-    @BeforeEach
-    public void beforeEach() {
-        // Wait until MongoDb is up by checking that the port is available
-        given().ignoreExceptions().pollInterval(fibonacci()).
-                await().timeout(Duration.ofMinutes(5)).
-                       untilAsserted(() -> new Socket(mongodbHost, mongodbPort).close());
+    @DynamicPropertySource
+    private static void mongodbProperties(DynamicPropertyRegistry registry) {
+        registry.add("thule.repositorymongodb.mongodb.port", mongodb::getFirstMappedPort);
     }
 
     @Test

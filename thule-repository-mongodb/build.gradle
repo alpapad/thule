@@ -36,10 +36,13 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    implementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     testImplementation("com.google.code.gson:gson")
+
+    itestImplementation("org.testcontainers:junit-jupiter")
 }
