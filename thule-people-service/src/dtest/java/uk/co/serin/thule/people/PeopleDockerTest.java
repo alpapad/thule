@@ -17,8 +17,8 @@ import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@SpringBootTest
 @Testcontainers
+@SpringBootTest
 public class PeopleDockerTest {
     private static String baseUrl;
 

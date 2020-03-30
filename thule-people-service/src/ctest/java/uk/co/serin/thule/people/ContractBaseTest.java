@@ -11,8 +11,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @ActiveProfiles("ctest")
 @AutoConfigureWireMock(port = 0)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class ContractBaseTest {
     @Container
     private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql").withUsername("root").withPassword(null);

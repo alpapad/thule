@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.TransactionSystemException;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.repository.repositories.CountryRepository;
@@ -30,6 +31,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * Auditing not being configured because it is enabled in a @Configuration class! Therefore
  * it is enabled in the inner configuration class.
  */
+@Testcontainers
 @DataJpaTest
 @Import(PersonEntityRepositoryIntTestConfiguration.class)
 @WithMockUser
