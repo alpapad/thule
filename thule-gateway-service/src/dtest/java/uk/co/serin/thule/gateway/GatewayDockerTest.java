@@ -1,36 +1,36 @@
 package uk.co.serin.thule.gateway;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
+import uk.co.serin.thule.gateway.wiremock.WiremockInitializer;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
+import uk.co.serin.thule.utils.docker.DockerCompose;
 
-import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-@Testcontainers
+@ContextConfiguration(initializers = WiremockInitializer.class)
 @SpringBootTest
 public class GatewayDockerTest {
-    private static String baseUrl;
+    private static final String BASE_URL = "http://localhost:9091";
+    private static final DockerCompose DOCKER_COMPOSE = new DockerCompose("src/dtest/docker/thule-gateway-service-dtests/docker-compose.yml");
 
-    @Container
-    private static DockerComposeContainer<?> dockerCompose =
-            new DockerComposeContainer<>(new File("src/dtest/docker/docker-compose.yml"))
-                    .withExposedService("thule-gateway-service_1", 8080)
-                    .withLocalCompose(true);
+    @AfterAll
+    public static void afterAll() throws IOException {
+        DOCKER_COMPOSE.down();
+    }
 
-    @DynamicPropertySource
-    private static void baseUrl(DynamicPropertyRegistry registry) {
-        baseUrl = String.format("http://localhost:%s", dockerCompose.getServicePort("thule-gateway-service_1", 8080));
+    @BeforeAll
+    public static void beforeAll() throws IOException {
+        DOCKER_COMPOSE.downAndUp();
     }
 
     @Test
@@ -39,7 +39,7 @@ public class GatewayDockerTest {
     }
 
     private void waitForTheApplicationToInitialize() {
-        var actuatorUri = ActuatorUri.using(baseUrl + "/actuator/health");
+        var actuatorUri = ActuatorUri.using(BASE_URL + "/actuator/health");
         assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
     }
 
@@ -49,7 +49,7 @@ public class GatewayDockerTest {
         waitForTheApplicationToInitialize();
 
         // When
-        WebTestClient.bindToServer().baseUrl(baseUrl).build()
+        WebTestClient.bindToServer().baseUrl(BASE_URL).build()
                      .get().uri("/actuator/info")
                      .exchange()
                      .expectStatus().isOk()

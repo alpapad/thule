@@ -21,7 +21,7 @@ public class WiremockInitializer implements ApplicationContextInitializer<Config
         var wireMockServerPort = SocketUtils.findAvailableTcpPort();
         TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext, "wiremock.server.port=" + wireMockServerPort);
 
-        return wireMockServerPort;
+        return 8077;
     }
 
     private void mockOpenidConfigurationResponse(int wiremockServerPort) {
@@ -35,11 +35,11 @@ public class WiremockInitializer implements ApplicationContextInitializer<Config
 
     private String openidConfiguration(int wiremockServerPort) {
         return "{" +
-                "  \"issuer\": \"http://localhost:" + wiremockServerPort + "/auth/realms/thule-test\"," +
-                "  \"authorization_endpoint\": \"http://localhost:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/auth\"," +
-                "  \"token_endpoint\": \"http://localhost:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/token\"," +
-                "  \"userinfo_endpoint\": \"http://localhost:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/userinfo\"," +
-                "  \"jwks_uri\": \"http://localhost:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/certs\"," +
+                "  \"issuer\": \"http://172.41.0.1:" + wiremockServerPort + "/auth/realms/thule-test\"," +
+                "  \"authorization_endpoint\": \"http://172.41.0.1:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/auth\"," +
+                "  \"token_endpoint\": \"http://172.41.0.1:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/token\"," +
+                "  \"userinfo_endpoint\": \"http://172.41.0.1:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/userinfo\"," +
+                "  \"jwks_uri\": \"http://172.41.0.1:" + wiremockServerPort + "/auth/realms/thule-test/protocol/openid-connect/certs\"," +
                 "  \"subject_types_supported\": [" +
                 "    \"public\"," +
                 "    \"pairwise\"" +

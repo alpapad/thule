@@ -37,8 +37,8 @@ dependencies {
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
-    // Required for JMX support when using the Admin server
     implementation("org.jolokia:jolokia-core")
+    // Required for JMX support when using the Admin server
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -50,8 +50,8 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-config")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
-    // Required to retry connecting to the configuration service when it is not available at startup
     implementation("org.springframework.retry:spring-retry")
+    // Required to retry connecting to the configuration service when it is not available at startup
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
@@ -62,10 +62,8 @@ dependencies {
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
-    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     dtestImplementation("org.springframework.cloud:spring-cloud-contract-wiremock")
-    dtestImplementation("org.testcontainers:junit-jupiter")
 }
