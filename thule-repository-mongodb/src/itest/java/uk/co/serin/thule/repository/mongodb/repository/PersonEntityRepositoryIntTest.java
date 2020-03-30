@@ -32,7 +32,7 @@ public class PersonEntityRepositoryIntTest {
     private PersonRepository personRepository;
 
     @DynamicPropertySource
-    private static void mongodbProperties(DynamicPropertyRegistry registry) {
+    private static void addDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("thule.repositorymongodb.mongodb.port", mongodb::getFirstMappedPort);
     }
 

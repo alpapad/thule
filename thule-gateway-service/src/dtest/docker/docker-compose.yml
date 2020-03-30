@@ -1,12 +1,12 @@
 version: "3.7"
 services:
   ################################  thule-gateway  ################################
-  thule-gateway:
+  thule-gateway-service:
     image: pooh:8084/thule-gateway-service
     environment:
       JDK_JAVA_OPTIONS: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
       SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
+      SPRING_CLOUD_KUBERNETES_ENABLED: "false"
       SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://172.41.0.1:8077/auth/realms/thule-test
       SPRING_ZIPKIN_ENABLED: "false"
       THULE_SHARED_LOGGING_LOGSTASH_ENABLED: "false"

@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.support.TestPropertySourceUtils;
@@ -28,7 +29,7 @@ public class WiremockInitializer implements ApplicationContextInitializer<Config
         var mockHttpServer = new WireMockServer(wiremockServerPort);
 
         mockHttpServer.stubFor(WireMock.get(WireMock.urlEqualTo("/auth/realms/thule-test/.well-known/openid-configuration")).willReturn(
-                WireMock.aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                WireMock.aResponse().withStatus(HttpStatus.OK.value()).withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .withBody(openidConfiguration(wiremockServerPort))));
         mockHttpServer.start();
     }
