@@ -1,8 +1,5 @@
 # Spring boot configuration
 spring:
-  cloud:
-    kubernetes:
-      enabled: false
   datasource:
     password: thule
     username: thule

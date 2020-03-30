@@ -11,8 +11,6 @@ spring:
           instances:
             thule-email-service:
               - uri: http://localhost:8095
-    kubernetes:
-      enabled: false
   datasource:
     password: thule
     username: thule
