@@ -5,9 +5,12 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import uk.co.serin.thule.gateway.wiremock.WiremockInitializer;
+import uk.co.serin.thule.gateway.testcontainers.OpenIdMockServerContainer;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
 import java.time.Duration;
@@ -15,11 +18,19 @@ import java.time.Duration;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ActiveProfiles("ctest")
-@ContextConfiguration(initializers = WiremockInitializer.class)
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HealthCheckContractTest {
+    @Container
+    private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer();
     @LocalServerPort
     private int port;
+
+    @DynamicPropertySource
+    public static void addDynamicProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        dynamicPropertyRegistry.add("mock.server.ipaddress", mockserver::getContainerIpAddress);
+        dynamicPropertyRegistry.add("mock.server.port", mockserver::getServerPort);
+    }
 
     @Test
     public void when_checking_health_then_status_is_up() {

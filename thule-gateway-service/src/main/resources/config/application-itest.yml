@@ -1,15 +1,11 @@
 # Spring boot configuration
 spring:
-  cloud:
-    kubernetes:
-      discovery:
-        enabled: false
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:${wiremock.server.port}/auth/realms/thule-test
+            issuer-uri: http://${mock.server.ipaddress}:${mock.server.port}/auth/realms/thule-test
   zipkin:
     enabled: false
 

@@ -7,25 +7,36 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import uk.co.serin.thule.gateway.wiremock.WiremockInitializer;
+import uk.co.serin.thule.gateway.testcontainers.OpenIdMockServerContainer;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import java.time.Duration;
 
 @ActiveProfiles("itest")
-@ContextConfiguration(initializers = WiremockInitializer.class)
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SecurityIntTest {
+    @Container
+    private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer();
     @LocalServerPort
     private int port;
     @Autowired
     private WebTestClient webTestClient;
+
+    @DynamicPropertySource
+    public static void addDynamicProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        dynamicPropertyRegistry.add("mock.server.ipaddress", mockserver::getContainerIpAddress);
+        dynamicPropertyRegistry.add("mock.server.port", mockserver::getServerPort);
+    }
 
     @Test
     public void given_not_authenticated_user_when_using_service_then_access_should_be_found() {
