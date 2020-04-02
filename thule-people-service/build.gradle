@@ -85,4 +85,5 @@ dependencies {
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     dtestImplementation("org.testcontainers:junit-jupiter")
+    dtestImplementation("org.testcontainers:mysql")
 }
