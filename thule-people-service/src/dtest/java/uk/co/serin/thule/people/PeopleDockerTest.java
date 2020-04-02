@@ -26,7 +26,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 public class PeopleDockerTest {
     private static final String MYSQL_ALIAS = "mysql";
     @Container
-    private static MySQLContainer<?> mailhog = createMySqlContainer();
+    private static MySQLContainer<?> mysql = createMySqlContainer();
     @Container
     private static GenericContainer<?> springBootService = createSpringBootService();
     private String baseUrl;
@@ -50,7 +50,7 @@ public class PeopleDockerTest {
         environmentVariables.put("TZ", "Europe/London");
 
         return new GenericContainer("pooh:8084/thule-people-service")
-                .dependsOn(mailhog)
+                .dependsOn(mysql)
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(environmentVariables)
                 .withExposedPorts(8080)
