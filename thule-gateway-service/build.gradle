@@ -37,7 +37,6 @@ dependencies {
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
-    implementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     // Required for JMX support when using the Admin server
     implementation("org.jolokia:jolokia-core")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -54,6 +53,7 @@ dependencies {
     // Required to retry connecting to the configuration service when it is not available at startup
     implementation("org.springframework.retry:spring-retry")
 
+    testImplementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     testImplementation("org.mock-server:mockserver-client-java:5.10.0")
     testImplementation("org.testcontainers:junit-jupiter")
