@@ -1,62 +1,73 @@
 package uk.co.serin.thule.discovery;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import uk.co.serin.thule.test.assertj.ActuatorUri;
 
-import java.io.File;
 import java.time.Duration;
+import java.util.Map;
 
+import static java.lang.Boolean.FALSE;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @Testcontainers
 @SpringBootTest
 public class DiscoveryDockerTest {
-    private static String baseUrl;
-
     @Container
-    private static DockerComposeContainer<?> dockerCompose =
-            new DockerComposeContainer<>(new File("src/dtest/docker/docker-compose.yml"))
-                    .withExposedService("thule-discovery-service_1", 8080)
-                    .withLocalCompose(true);
+    private static GenericContainer<?> springBootService = createSpringBootService();
+    private String baseUrl;
 
-    @DynamicPropertySource
-    private static void baseUrl(DynamicPropertyRegistry registry) {
-        baseUrl = String.format("http://localhost:%s", dockerCompose.getServicePort("thule-discovery-service_1", 8080));
+    private static GenericContainer<?> createSpringBootService() {
+        return new GenericContainer("pooh:8084/thule-discovery-service")
+                .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
+                .withEnv(Map.of("EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS", "5", // By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
+                        "JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",
+                        "SPRING_CLOUD_CONFIG_ENABLED", FALSE.toString(),
+                        "SPRING_ZIPKIN_ENABLED", FALSE.toString(),
+                        "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
+                        "TZ", "Europe/London"))
+                .withExposedPorts(8080);
+    }
+
+    @BeforeEach
+    public void beforeEach() {
+        baseUrl = String.format("http://%s:%s", springBootService.getContainerIpAddress(), springBootService.getFirstMappedPort());
     }
 
     @Test
     public void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
-        waitForTheApplicationToInitialize();
-    }
-
-    private void waitForTheApplicationToInitialize() {
+        // Given
         var actuatorUri = ActuatorUri.using(baseUrl + "/actuator/health");
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+
+        // When
+        assertThat(actuatorUri)
+                .waitingForMaximum(Duration.ofMinutes(5))
+
+                //Then
+                .hasHealthStatus(Status.UP);
     }
 
     @Test
     public void given_docker_container_has_been_started_when_retrieving_actuator_info_then_it_shows_correct_microservice_is_in_docker_container() {
-        // Given
-        waitForTheApplicationToInitialize();
-
         // When
-        WebTestClient.bindToServer().baseUrl(baseUrl).build()
-                     .get().uri("/actuator/info")
-                     .exchange()
-                     .expectStatus().isOk()
-                     .expectBody()
+        WebTestClient
+                .bindToServer().baseUrl(baseUrl).build()
+                .get().uri("/actuator/info")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
 
-                     // Then
-                     .jsonPath("$.name").isNotEmpty()
-                     .jsonPath("$.name").isEqualTo("thule-discovery-service");
+                // Then
+                .jsonPath("$.name").isNotEmpty()
+                .jsonPath("$.name").isEqualTo("thule-discovery-service");
     }
 }
