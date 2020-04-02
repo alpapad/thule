@@ -26,8 +26,6 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class GatewayDockerTest {
     private static final String MOCK_SERVER_ALIAS = "mockserver";
-    private static final String SPRING_BOOT_IMAGE_NAME = "pooh:8084/thule-gateway-service";
-    private static final int SPRING_BOOT_PORT = 8080;
     @Container
     private static MockServerContainer mockserver = createMockServerContainer();
     @Container
@@ -39,7 +37,7 @@ public class GatewayDockerTest {
     }
 
     private static GenericContainer<?> createSpringBootService() {
-        return new GenericContainer(SPRING_BOOT_IMAGE_NAME)
+        return new GenericContainer("pooh:8084/thule-gateway-service")
                 .dependsOn(mockserver)
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(Map.of("JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",
@@ -50,7 +48,7 @@ public class GatewayDockerTest {
                         "SPRING_ZIPKIN_ENABLED", FALSE.toString(),
                         "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
-                .withExposedPorts(SPRING_BOOT_PORT)
+                .withExposedPorts(8080)
                 .withNetwork(Network.SHARED);
     }
 

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,14 +22,12 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @Testcontainers
 @SpringBootTest
 public class AdminDockerTest {
-    private static final String SPRING_BOOT_IMAGE_NAME = "pooh:8084/thule-admin-service";
-    private static final int SPRING_BOOT_PORT = 8080;
     @Container
     private static GenericContainer<?> springBootService = createSpringBootService();
     private String baseUrl;
 
     private static GenericContainer<?> createSpringBootService() {
-        return new GenericContainer(SPRING_BOOT_IMAGE_NAME)
+        return new GenericContainer("pooh:8084/thule-admin-service")
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(Map.of("JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",
                         "SPRING_CLOUD_CONFIG_ENABLED", FALSE.toString(),
@@ -38,8 +35,7 @@ public class AdminDockerTest {
                         "SPRING_ZIPKIN_ENABLED", FALSE.toString(),
                         "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
-                .withExposedPorts(SPRING_BOOT_PORT)
-                .withNetwork(Network.SHARED);
+                .withExposedPorts(8080);
     }
 
     @BeforeEach
