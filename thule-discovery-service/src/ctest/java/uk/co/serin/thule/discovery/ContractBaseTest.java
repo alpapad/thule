@@ -19,8 +19,8 @@ import org.springframework.util.SocketUtils;
  */
 @ActiveProfiles("ctest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@ContextConfiguration(initializers = BaseContractTest.RandomPortInitializer.class)
-abstract class BaseContractTest {
+@ContextConfiguration(initializers = ContractBaseTest.RandomPortInitializer.class)
+abstract class ContractBaseTest {
     static class RandomPortInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {

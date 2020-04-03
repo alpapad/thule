@@ -10,7 +10,7 @@ import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class HealthCheckContractTest extends BaseContractTest {
+public class HealthCheckContractTest extends ContractBaseTest {
     @LocalServerPort
     private int port;
 

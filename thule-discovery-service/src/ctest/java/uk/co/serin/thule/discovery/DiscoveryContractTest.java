@@ -10,7 +10,7 @@ import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DiscoveryContractTest extends BaseContractTest {
+public class DiscoveryContractTest extends ContractBaseTest {
     @Autowired
     private DiscoveryClient discoveryClient;
 
