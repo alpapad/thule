@@ -17,7 +17,6 @@ import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.SocketUtils;
 
 import uk.co.serin.thule.authentication.KeycloakBaseIntTest;
-import uk.co.serin.thule.authentication.KeycloakContainer;
 import uk.co.serin.thule.authentication.feign.testservice.Application;
 import uk.co.serin.thule.authentication.feign.testservice.TestFeignClient;
 import uk.co.serin.thule.resourceserver.utils.JwtUtils;
@@ -45,7 +44,7 @@ public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
     @DynamicPropertySource
     public static void addClientSecret(DynamicPropertyRegistry dynamicPropertyRegistry) {
         dynamicPropertyRegistry.add("spring.security.oauth2.client.registration.keycloak.client-secret",
-                () -> getKeycloakRepository().getClientSecret(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID));
+                () -> getKeycloakRepository().getClientSecret(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID));
     }
 
     @AfterEach
@@ -67,11 +66,11 @@ public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
 
     private void insertJwtIntoTheSecurityContext() {
         // Obtain thule-test-service client secret from keycloak
-        var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID);
+        var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID);
 
         // Obtain JWT for thule-test-service from keycloak
-        var jwtTokenValue = getKeycloakRepository()
-                .getJwtFromKeycloakForService(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
+        var jwtTokenValue =
+                getKeycloakRepository().getJwtFromKeycloakForService(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
 
         // Convert JWT from keycloak into a spring security Jwt object
         var jwt = JwtUtils.createKeycloakJwt(jwtTokenValue);

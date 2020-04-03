@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import uk.co.serin.thule.authentication.KeycloakBaseIntTest;
-import uk.co.serin.thule.authentication.KeycloakContainer;
 import uk.co.serin.thule.authentication.resourceserver.testservice.Application;
 
 @ActiveProfiles("itest")
@@ -20,34 +19,36 @@ public class KeycloakResourceServerIntTest extends KeycloakBaseIntTest {
     @Test
     public void given_a_micro_service_accounts_credentials_when_making_a_restful_call_to_another_micro_service_without_a_user_present_then_a_successful_response_is_returned() {
         //Given
-        var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID);
-        var jwt = getKeycloakRepository().getJwtFromKeycloakForService(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
+        var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID);
+        var jwt = getKeycloakRepository().getJwtFromKeycloakForService(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
 
         //When
-        webTestClient.get().uri("/hello")
-                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-                     .exchange()
+        webTestClient
+                .get().uri("/hello")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                .exchange()
 
-                     // Then
-                     .expectStatus().isOk()
-                     .expectBody(String.class).isEqualTo("Hello World");
+                // Then
+                .expectStatus().isOk()
+                .expectBody(String.class).isEqualTo("Hello World");
     }
 
     @Test
     public void given_a_users_credentials_when_making_a_restful_call_to_a_micro_service_then_a_successful_response_is_returned() {
         //Given
         var jwt = getKeycloakRepository().getJwtFromKeycloakForUser(
-                KeycloakContainer.JOHN_DOE_USERNAME,
-                KeycloakContainer.JOHN_DOE_PASSWORD,
-                KeycloakContainer.THULE_WEBAPP_CLIENT_ID);
+                KeycloakBaseIntTest.JOHN_DOE_USERNAME,
+                KeycloakBaseIntTest.JOHN_DOE_PASSWORD,
+                KeycloakBaseIntTest.THULE_WEBAPP_CLIENT_ID);
 
         //When
-        webTestClient.get().uri("/hello")
-                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-                     .exchange()
+        webTestClient
+                .get().uri("/hello")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                .exchange()
 
-                     // Then
-                     .expectStatus().isOk()
-                     .expectBody(String.class).isEqualTo("Hello World");
+                // Then
+                .expectStatus().isOk()
+                .expectBody(String.class).isEqualTo("Hello World");
     }
 }
