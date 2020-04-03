@@ -25,16 +25,6 @@ apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
 
 // Non-standard Serin gradle plugin config
-itest {
-    // Remove docker container once the contract tests have completed
-    afterSuite { descriptor ->
-        if (descriptor.getName().contains("Gradle Test Executor")) {
-            exec {
-                commandLine "docker-compose", "-f", "src/itest/docker/thule-authentication-service-tests/docker-compose.yml", "down", "-v", "--remove-orphans"
-            }
-        }
-    }
-}
 
 description = "Thule Authentication Service"
 
@@ -54,8 +44,12 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
+    itestImplementation platform("org.testcontainers:testcontainers-bom:1.13.0")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-feign:${thuleSharedVersion}")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+    itestImplementation("mysql:mysql-connector-java")
     itestImplementation("org.springframework.security:spring-security-oauth2-client")
+    itestImplementation("org.testcontainers:junit-jupiter")
+    itestImplementation("org.testcontainers:mysql")
 }

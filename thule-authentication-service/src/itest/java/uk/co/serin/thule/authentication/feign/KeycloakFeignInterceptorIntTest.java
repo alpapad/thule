@@ -1,7 +1,6 @@
-package uk.co.serin.thule.authentication.keycloak.feign;
+package uk.co.serin.thule.authentication.feign;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,18 +8,18 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.support.TestPropertySourceUtils;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.SocketUtils;
 
-import uk.co.serin.thule.authentication.keycloak.KeycloakContainerInitializer;
-import uk.co.serin.thule.authentication.keycloak.KeycloakRepository;
-import uk.co.serin.thule.authentication.keycloak.feign.testservice.Application;
-import uk.co.serin.thule.authentication.keycloak.feign.testservice.TestFeignClient;
+import uk.co.serin.thule.authentication.KeycloakBaseIntTest;
+import uk.co.serin.thule.authentication.KeycloakContainer;
+import uk.co.serin.thule.authentication.feign.testservice.Application;
+import uk.co.serin.thule.authentication.feign.testservice.TestFeignClient;
 import uk.co.serin.thule.resourceserver.utils.JwtUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,22 +36,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  * before the application is initialized. This way both the application server and feign client can use a 'random' port.
  */
 @ActiveProfiles({"itest", "itest-feign"})
-@ContextConfiguration(initializers = {KeycloakFeignInterceptorIntTest.RandomPortInitializer.class, KeycloakContainerInitializer.class})
+@ContextConfiguration(initializers = KeycloakFeignInterceptorIntTest.RandomPortInitializer.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class KeycloakFeignInterceptorIntTest {
-    @Autowired
-    private ClientRegistrationRepository clientRegistrationRepository;
-    @Autowired
-    private KeycloakRepository keycloakRepository;
+public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
     @Autowired
     private TestFeignClient testFeignClient;
 
-    @BeforeEach
-    public void beforeEach() {
-        // Replace client secret of the thule-test-service with actual client secret created via the KeycloakContainerInitializer
-        var thuleTestServiceClientSecret = keycloakRepository.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
-        var keycloakRegistration = clientRegistrationRepository.findByRegistrationId("keycloak");
-        ReflectionTestUtils.setField(keycloakRegistration, "clientSecret", thuleTestServiceClientSecret);
+    @DynamicPropertySource
+    public static void addClientSecret(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        dynamicPropertyRegistry.add("spring.security.oauth2.client.registration.keycloak.client-secret",
+                () -> getKeycloakRepository().getClientSecret(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID));
     }
 
     @AfterEach
@@ -74,11 +67,11 @@ public class KeycloakFeignInterceptorIntTest {
 
     private void insertJwtIntoTheSecurityContext() {
         // Obtain thule-test-service client secret from keycloak
-        var thuleTestServiceClientSecret = keycloakRepository.getClientSecret(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID);
+        var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID);
 
         // Obtain JWT for thule-test-service from keycloak
-        var jwtTokenValue =
-                keycloakRepository.getJwtFromKeycloakForService(KeycloakContainerInitializer.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
+        var jwtTokenValue = getKeycloakRepository()
+                .getJwtFromKeycloakForService(KeycloakContainer.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
 
         // Convert JWT from keycloak into a spring security Jwt object
         var jwt = JwtUtils.createKeycloakJwt(jwtTokenValue);

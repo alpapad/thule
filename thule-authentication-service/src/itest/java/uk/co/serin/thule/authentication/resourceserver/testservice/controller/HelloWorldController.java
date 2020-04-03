@@ -1,4 +1,4 @@
-package uk.co.serin.thule.authentication.keycloak.resourceserver.testservice.controller;
+package uk.co.serin.thule.authentication.resourceserver.testservice.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

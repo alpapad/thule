@@ -1,4 +1,4 @@
-package uk.co.serin.thule.authentication.keycloak.feign.testservice;
+package uk.co.serin.thule.authentication.feign.testservice;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
