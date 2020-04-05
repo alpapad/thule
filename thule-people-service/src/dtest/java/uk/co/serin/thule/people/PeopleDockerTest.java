@@ -10,6 +10,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -32,7 +33,12 @@ public class PeopleDockerTest {
     private String baseUrl;
 
     private static MySQLContainer<?> createMySqlContainer() {
-        return new MySQLContainer<>("mysql").withNetwork(Network.SHARED).withNetworkAliases(MYSQL_ALIAS).withUsername("root").withPassword(null);
+        return new MySQLContainer<>("mysql")
+                .withImagePullPolicy(PullPolicy.alwaysPull())
+                .withNetwork(Network.SHARED)
+                .withNetworkAliases(MYSQL_ALIAS)
+                .withUsername("root")
+                .withPassword(null);
     }
 
     private static GenericContainer<?> createSpringBootService() {
@@ -54,6 +60,7 @@ public class PeopleDockerTest {
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(environmentVariables)
                 .withExposedPorts(8080)
+                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED);
     }
 

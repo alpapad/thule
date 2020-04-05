@@ -7,6 +7,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -18,7 +19,10 @@ public abstract class ContractBaseTest {
     @Container
     private static MockServerContainer mockServer = new MockServerContainer("5.10.0");
     @Container
-    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql").withUsername("root").withPassword(null);
+    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql")
+            .withImagePullPolicy(PullPolicy.alwaysPull())
+            .withUsername("root")
+            .withPassword(null);
 
     @DynamicPropertySource
     private static void addDynamicProperties(DynamicPropertyRegistry registry) {

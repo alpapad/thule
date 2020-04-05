@@ -8,6 +8,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Network;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -54,6 +55,7 @@ public class KeycloakBaseIntTest {
                         "KEYCLOAK_USER", KEYCLOAK_USER,
                         "KEYCLOAK_PASSWORD", KEYCLOAK_PASSWORD
                 ))
+                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withKeycloakResourceProvider(createKeycloakResourceProvider())
                 .withNetwork(Network.SHARED);
     }
@@ -96,6 +98,7 @@ public class KeycloakBaseIntTest {
     private static MySQLContainer<?> createMySqlContainer() {
         return new MySQLContainer<>("mysql:5.7")
                 .withDatabaseName(MYSQL_DATABASE_NAME)
+                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED)
                 .withNetworkAliases(MYSQL_ALIAS)
                 .withUsername(MYSQL_USER)

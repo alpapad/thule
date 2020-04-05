@@ -5,6 +5,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 
 /**
@@ -18,7 +19,10 @@ import org.testcontainers.junit.jupiter.Container;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
     @Container
-    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql").withUsername("root").withPassword(null);
+    private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql")
+            .withUsername("root")
+            .withImagePullPolicy(PullPolicy.alwaysPull())
+            .withPassword(null);
 
     @DynamicPropertySource
     private static void addDynamicProperties(DynamicPropertyRegistry registry) {

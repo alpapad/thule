@@ -9,6 +9,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -47,6 +48,7 @@ public class EmailDockerTest {
                         "THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
                 .withExposedPorts(8080)
+                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED);
     }
 

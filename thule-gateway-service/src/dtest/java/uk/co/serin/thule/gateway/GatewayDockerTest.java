@@ -10,6 +10,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -49,6 +50,7 @@ public class GatewayDockerTest {
                         "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
                 .withExposedPorts(8080)
+                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED);
     }
 

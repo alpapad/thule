@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -34,7 +35,8 @@ public class ConfigurationDockerTest {
                         "SPRING_ZIPKIN_ENABLED", FALSE.toString(),
                         "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
-                .withExposedPorts(8080);
+                .withExposedPorts(8080)
+                .withImagePullPolicy(PullPolicy.alwaysPull());
     }
 
     @BeforeEach
