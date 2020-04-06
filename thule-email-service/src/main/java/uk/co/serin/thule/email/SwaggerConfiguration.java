@@ -23,9 +23,10 @@ public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).host("piglet").pathMapping("thule-email-service")
-                                                      .select().apis(RequestHandlerSelectors.basePackage(EmailController.class.getPackageName()))
-                                                      .paths(PathSelectors.any()).build();
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo()).host("piglet").pathMapping("thule-email-service")
+                .select().apis(RequestHandlerSelectors.basePackage(EmailController.class.getPackageName()))
+                .paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo() {
