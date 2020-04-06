@@ -22,7 +22,11 @@ public class HealthCheckContractTest extends ContractBaseTest {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/health", port));
 
-        // When/Then
-        assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHealthStatus(Status.UP);
+        // When
+        assertThat(actuatorUri)
+                .waitingForMaximum(Duration.ofMinutes(5))
+
+                // Then
+                .hasHealthStatus(Status.UP);
     }
 }

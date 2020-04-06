@@ -48,13 +48,13 @@ public class AdminDockerTest {
     @Test
     public void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
         // Given
-        var actuatorUri = ActuatorUri.using(baseUrl + "/actuator/health");
+        var actuatorUri = ActuatorUri.using(String.format("%s/actuator/health", baseUrl));
 
         // When
         assertThat(actuatorUri)
                 .waitingForMaximum(Duration.ofMinutes(5))
 
-                //Then
+                // Then
                 .hasHealthStatus(Status.UP);
     }
 

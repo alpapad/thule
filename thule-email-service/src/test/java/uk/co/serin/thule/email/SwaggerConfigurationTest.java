@@ -19,13 +19,13 @@ public class SwaggerConfigurationTest {
 
     @Test
     public void when_creating_a_docket_then_a_docket_is_returned() {
-        //Given
+        // Given
         given(buildProperties.getVersion()).willReturn("1.0.0");
 
-        //When
+        // When
         var docket = sut.api();
 
-        //Then
+        // Then
         assertThat(docket).isNotNull();
     }
 }

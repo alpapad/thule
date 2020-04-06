@@ -41,7 +41,7 @@ public class JwtUserAuthenticationSecurityContextTest {
         // When
         var userAuthenticationOptional = sut.getUserAuthentication();
 
-        //Then
+        // Then
         assertThat(userAuthenticationOptional).isEmpty();
     }
 
@@ -56,7 +56,7 @@ public class JwtUserAuthenticationSecurityContextTest {
         // When
         var userAuthenticationOptional = sut.getUserAuthentication();
 
-        //Then
+        // Then
         assertThat(userAuthenticationOptional).isNotEmpty();
         assertThat(userAuthenticationOptional.orElseThrow().getUserId()).isEqualTo(USER_ID);
     }
@@ -70,7 +70,7 @@ public class JwtUserAuthenticationSecurityContextTest {
         // When
         var userAuthenticationOptional = sut.getUserAuthentication();
 
-        //Then
+        // Then
         assertThat(userAuthenticationOptional).isEmpty();
     }
 }

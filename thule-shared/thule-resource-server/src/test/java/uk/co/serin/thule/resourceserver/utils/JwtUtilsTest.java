@@ -38,7 +38,7 @@ public class JwtUtilsTest {
         // When
         var jwt = JwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID);
 
-        //Then
+        // Then
         assertThat(jwt.getHeaders()).containsKey("kid");
         assertThat(jwt.getIssuedAt()).isNotNull();
         assertThat(jwt.getExpiresAt()).isEqualTo(jwt.getIssuedAt().plus(Duration.ofDays(10)));
@@ -64,7 +64,7 @@ public class JwtUtilsTest {
         var illegalStateException =
                 catchThrowableOfType(() -> ReflectionTestUtils.invokeMethod(JwtUtils.class, "createKeycloakJwt", jwt), IllegalStateException.class);
 
-        //Then
+        // Then
         assertThat(illegalStateException).isNotNull();
     }
 
@@ -76,7 +76,7 @@ public class JwtUtilsTest {
         // When
         var illegalStateException = catchThrowableOfType(() -> JwtUtils.createKeycloakJwt(invalidJwtTokenValue), IllegalStateException.class);
 
-        //Then
+        // Then
         assertThat(illegalStateException).isNotNull();
     }
 
@@ -89,7 +89,7 @@ public class JwtUtilsTest {
         // When
         var jwt = JwtUtils.createKeycloakJwt(jwtTokenValue);
 
-        //Then
+        // Then
         assertThat(jwt.getHeaders()).containsKey("kid");
         assertThat(jwt.getIssuedAt()).isNotNull();
         assertThat(jwt.getExpiresAt()).isEqualTo(jwt.getIssuedAt().plus(Duration.ofDays(10)));

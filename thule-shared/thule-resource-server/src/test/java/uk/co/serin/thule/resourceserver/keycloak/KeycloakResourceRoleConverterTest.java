@@ -33,7 +33,7 @@ public class KeycloakResourceRoleConverterTest {
         // When
         var grantedAuthorities = sut.convert(jwt);
 
-        //Then
+        // Then
         assertThat(grantedAuthorities).isEmpty();
     }
 
@@ -49,7 +49,7 @@ public class KeycloakResourceRoleConverterTest {
         // When
         var grantedAuthorities = sut.convert(jwt);
 
-        //Then
+        // Then
         assertThat(grantedAuthorities).isEmpty();
     }
 
@@ -66,7 +66,7 @@ public class KeycloakResourceRoleConverterTest {
         // When
         var grantedAuthorities = sut.convert(jwt);
 
-        //Then
+        // Then
         assertThat(grantedAuthorities).containsExactly(grantedAuthorities.toArray(GrantedAuthority[]::new));
     }
 
@@ -84,7 +84,7 @@ public class KeycloakResourceRoleConverterTest {
         // When
         var grantedAuthorities = sut.convert(jwt);
 
-        //Then
+        // Then
         assertThat(grantedAuthorities).containsExactly(grantedAuthorities.toArray(GrantedAuthority[]::new));
     }
 
@@ -102,7 +102,7 @@ public class KeycloakResourceRoleConverterTest {
         // When
         var grantedAuthorities = sut.convert(jwt);
 
-        //Then
+        // Then
         assertThat(grantedAuthorities).isEmpty();
     }
 }

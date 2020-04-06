@@ -18,11 +18,11 @@ public class KeycloakResourceServerIntTest extends KeycloakBaseIntTest {
 
     @Test
     public void given_a_micro_service_accounts_credentials_when_making_a_restful_call_to_another_micro_service_without_a_user_present_then_a_successful_response_is_returned() {
-        //Given
+        // Given
         var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID);
         var jwt = getKeycloakRepository().getJwtFromKeycloakForService(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
 
-        //When
+        // When
         webTestClient
                 .get().uri("/hello")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
@@ -35,13 +35,13 @@ public class KeycloakResourceServerIntTest extends KeycloakBaseIntTest {
 
     @Test
     public void given_a_users_credentials_when_making_a_restful_call_to_a_micro_service_then_a_successful_response_is_returned() {
-        //Given
+        // Given
         var jwt = getKeycloakRepository().getJwtFromKeycloakForUser(
                 KeycloakBaseIntTest.JOHN_DOE_USERNAME,
                 KeycloakBaseIntTest.JOHN_DOE_PASSWORD,
                 KeycloakBaseIntTest.THULE_WEBAPP_CLIENT_ID);
 
-        //When
+        // When
         webTestClient
                 .get().uri("/hello")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)

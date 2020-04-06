@@ -36,7 +36,7 @@ public class KeycloakUnsignedJwtDecoderTest {
         // When
         var jwt = sut.decode(jwtTokenValue);
 
-        //Then
+        // Then
         assertThat(jwt.getHeaders()).containsKey("kid");
         assertThat(jwt.getIssuedAt()).isNotNull();
         assertThat(jwt.getExpiresAt()).isEqualTo(jwt.getIssuedAt().plus(Duration.ofDays(10)));

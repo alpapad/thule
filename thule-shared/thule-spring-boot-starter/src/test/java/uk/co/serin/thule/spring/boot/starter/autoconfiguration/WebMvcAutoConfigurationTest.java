@@ -26,11 +26,11 @@ public class WebMvcAutoConfigurationTest {
         given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
         given(corsRegistration.allowedMethods("*")).willReturn(corsRegistration);
 
-        //When
+        // When
         var corsConfigurer = sut.corsConfigurer();
         corsConfigurer.addCorsMappings(corsRegistry);
 
-        //Then
+        // Then
         assertThat(corsConfigurer).isNotNull();
     }
 }

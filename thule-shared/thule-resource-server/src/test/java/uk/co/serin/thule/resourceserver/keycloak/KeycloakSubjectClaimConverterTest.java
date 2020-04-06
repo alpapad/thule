@@ -23,7 +23,7 @@ public class KeycloakSubjectClaimConverterTest {
         // When
         var convertedClaims = sut.convert(claims);
 
-        //Then
+        // Then
         assertThat(convertedClaims).containsEntry("sub", USER_NAME);
     }
 }

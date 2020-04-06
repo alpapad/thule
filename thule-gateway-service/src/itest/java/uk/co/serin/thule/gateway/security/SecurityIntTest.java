@@ -17,9 +17,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import uk.co.serin.thule.gateway.testcontainers.OpenIdMockServerContainer;
 import uk.co.serin.thule.test.assertj.ActuatorUri;
-import uk.co.serin.thule.test.assertj.SpringBootActuatorAssert;
 
 import java.time.Duration;
+
+import static uk.co.serin.thule.test.assertj.SpringBootActuatorAssert.assertThat;
 
 @ActiveProfiles("itest")
 @Testcontainers
@@ -52,8 +53,12 @@ public class SecurityIntTest {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/info", port));
 
-        // When/Then
-        SpringBootActuatorAssert.assertThat(actuatorUri).waitingForMaximum(Duration.ofMinutes(5)).hasHttpStatus(HttpStatus.OK);
+        // When
+        assertThat(actuatorUri)
+                .waitingForMaximum(Duration.ofMinutes(5))
+
+                // Then
+                .hasHttpStatus(HttpStatus.OK);
     }
 
     @TestConfiguration

@@ -59,7 +59,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.createPublicClient(TEST_CLIENT_ID);
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 
@@ -98,7 +98,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.createServiceClient(TEST_CLIENT_ID);
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 
@@ -114,7 +114,7 @@ public class KeycloakRepositoryTest {
         // When
         var actualClientSecret = sut.getClientSecret(TEST_CLIENT_ID);
 
-        //Then
+        // Then
         assertThat(actualClientSecret).isEqualTo(TEST_CLIENT_SECRET);
     }
 
@@ -131,7 +131,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.createRealm();
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 
@@ -147,7 +147,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.createRoleForClient(TEST_ROLE, TEST_CLIENT_ID);
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 
@@ -163,7 +163,7 @@ public class KeycloakRepositoryTest {
         // When
         var actualJwt = sut.getJwtFromKeycloakForService(TEST_CLIENT_ID, TEST_ROLE);
 
-        //Then
+        // Then
         assertThat(actualJwt).isEqualTo(TEST_JWT);
     }
 
@@ -179,7 +179,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.createUser(TEST_USERNAME, TEST_PASSWORD, TEST_FIRST_NAME, TEST_LAST_NAME);
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 
@@ -195,7 +195,7 @@ public class KeycloakRepositoryTest {
         // When
         var actualJwt = sut.getJwtFromKeycloakForUser(TEST_USERNAME, TEST_PASSWORD, TEST_CLIENT_ID);
 
-        //Then
+        // Then
         assertThat(actualJwt).isEqualTo(TEST_JWT);
     }
 
@@ -211,7 +211,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.createUserRoleMapping(TEST_ID, TEST_CLIENT_ID, TEST_ROLE);
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 
@@ -229,7 +229,7 @@ public class KeycloakRepositoryTest {
         // When
         sut.init();
 
-        //Then
+        // Then
         assertThat(keycloakPostWasExecuted).isTrue();
     }
 }

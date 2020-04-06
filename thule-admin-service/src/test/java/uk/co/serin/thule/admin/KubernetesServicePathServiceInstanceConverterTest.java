@@ -32,7 +32,7 @@ public class KubernetesServicePathServiceInstanceConverterTest {
         // When
         var serviceUrl = sut.getServiceUrl(serviceInstance);
 
-        //Then
+        // Then
         assertThat(serviceUrl).isEqualTo(expectedUri);
     }
 
@@ -47,7 +47,7 @@ public class KubernetesServicePathServiceInstanceConverterTest {
         // When
         var serviceUrl = sut.getServiceUrl(serviceInstance);
 
-        //Then
+        // Then
         assertThat(serviceUrl).isEqualTo(expectedUri);
     }
 }

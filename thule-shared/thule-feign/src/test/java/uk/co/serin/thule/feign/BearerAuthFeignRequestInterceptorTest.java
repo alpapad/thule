@@ -53,7 +53,7 @@ public class BearerAuthFeignRequestInterceptorTest {
         // When
         sut.apply(requestTemplate);
 
-        //Then
+        // Then
         verify(requestTemplate).header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN_VALUE);
     }
 
@@ -68,7 +68,7 @@ public class BearerAuthFeignRequestInterceptorTest {
         // When
         sut.apply(requestTemplate);
 
-        //Then
+        // Then
         verify(requestTemplate).header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN_VALUE);
     }
 }

@@ -32,7 +32,7 @@ public class FeignJwtClientConfigurationTest {
         var bearerAuthFeignRequestInterceptor =
                 sut.bearerAuthFeignRequestInterceptor(delegatingSecurityContextHolder, oAuth2AuthorizedClientManager);
 
-        //Then
+        // Then
         assertThat(bearerAuthFeignRequestInterceptor).isNotNull();
     }
 
@@ -41,7 +41,7 @@ public class FeignJwtClientConfigurationTest {
         // When
         var oAuth2AuthorizedClientManager = sut.oAuth2AuthorizedClientManager(clientRegistrationRepository, oAuth2AuthorizedClientService);
 
-        //Then
+        // Then
         assertThat(oAuth2AuthorizedClientManager).isNotNull();
     }
 }

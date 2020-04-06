@@ -56,10 +56,10 @@ public class EmailControllerIntTest {
         var emailRequest = Email.builder().build();
         var content = objectMapper.writeValueAsString(emailRequest);
 
-        //When
+        // When
         mvc.perform(RestDocumentationRequestBuilders.post(EMAILS_PATH).contentType(MediaType.APPLICATION_JSON).content(content).with(csrf()))
 
-           //Then
+           // Then
            .andExpect(status().isUnauthorized())
            .andDo(document("post-emails/http-response-401"));
     }
