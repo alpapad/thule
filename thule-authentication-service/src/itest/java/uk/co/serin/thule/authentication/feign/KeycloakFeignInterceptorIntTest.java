@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.SocketUtils;
 
 import uk.co.serin.thule.authentication.KeycloakBaseIntTest;
@@ -97,8 +97,7 @@ public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
     static class RandomPortInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
-            var randomPort = SocketUtils.findAvailableTcpPort();
-            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext, "server.port=" + randomPort);
+            TestPropertyValues.of("server.port=" + SocketUtils.findAvailableTcpPort()).applyTo(applicationContext);
         }
     }
 }

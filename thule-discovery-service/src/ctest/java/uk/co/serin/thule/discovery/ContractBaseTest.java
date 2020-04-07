@@ -1,11 +1,11 @@
 package uk.co.serin.thule.discovery;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.SocketUtils;
 
 /**
@@ -24,8 +24,7 @@ abstract class ContractBaseTest {
     static class RandomPortInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
-            var randomPort = SocketUtils.findAvailableTcpPort();
-            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext, "server.port=" + randomPort);
+            TestPropertyValues.of("server.port=" + SocketUtils.findAvailableTcpPort()).applyTo(applicationContext);
         }
     }
 }
