@@ -22,9 +22,6 @@ apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/buil
 
 // Non-standard Serin gradle plugin config, if any
 
-// Project settings
-description = "Thule Email Service"
-
 // Dependencies
 dependencies {
     annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")

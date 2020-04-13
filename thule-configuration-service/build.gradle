@@ -47,9 +47,6 @@ task collectConfigs {
     }
 }
 
-// Project settings
-description = "Thule Configuration Service"
-
 // Dependencies
 dependencies {
     annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")

@@ -21,9 +21,6 @@ apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/buil
 
 // Non-standard Serin gradle plugin config, if any
 
-// Project settings
-description = "Thule Discovery Service"
-
 dependencies {
     annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     annotationProcessor("org.projectlombok:lombok")
