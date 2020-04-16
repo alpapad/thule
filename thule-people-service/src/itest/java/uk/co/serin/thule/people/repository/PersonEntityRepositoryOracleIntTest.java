@@ -18,11 +18,19 @@ import org.testcontainers.junit.jupiter.Container;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonEntityRepositoryOracleIntTest extends PersonEntityRepositoryBaseIntTest {
     @Container
-    private static OracleContainer oracle =
-            new OracleContainer("pooh:8082/oracle-database:18.4.0-xe-initialized").withEnv("ORACLE_PDB", "system").withEnv("ORACLE_PWD", "oracle");
+    private static final OracleContainer oracle = createOracleContainer();
 
     @DynamicPropertySource
     private static void addDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("thule.peopleservice.oracle.port", oracle::getFirstMappedPort);
+    }
+
+    private static OracleContainer createOracleContainer() {
+        var oracleContainer = new OracleContainer("pooh:8082/oracle-database:18.4.0-xe-initialized")
+                .withEnv("ORACLE_PDB", "system")
+                .withEnv("ORACLE_PWD", "oracle");
+        oracleContainer.addExposedPorts(1521, 8080);
+
+        return oracleContainer;
     }
 }
