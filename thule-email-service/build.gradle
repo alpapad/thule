@@ -31,7 +31,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR4")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
     implementation("io.springfox:springfox-swagger2:2.9.2")
     implementation("io.springfox:springfox-swagger-ui:2.9.2")

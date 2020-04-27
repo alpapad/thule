@@ -31,7 +31,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR4")
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
