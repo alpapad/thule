@@ -45,7 +45,7 @@ dependencies {
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.0")
+    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.1")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
