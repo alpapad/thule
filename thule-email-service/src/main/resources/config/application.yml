@@ -30,6 +30,7 @@ spring:
 
 # Thule configuration
 thule:
+  wibble: testing123
   shared:
     logging:
       logstash:
