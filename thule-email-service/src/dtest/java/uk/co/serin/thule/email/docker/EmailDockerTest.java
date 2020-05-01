@@ -48,7 +48,6 @@ public class EmailDockerTest {
                         "THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
                 .withExposedPorts(8080)
-                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED);
     }
 
