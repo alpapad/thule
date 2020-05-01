@@ -60,7 +60,6 @@ public class PeopleDockerTest {
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(environmentVariables)
                 .withExposedPorts(8080)
-                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED);
     }
 

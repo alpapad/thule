@@ -50,7 +50,6 @@ public class GatewayDockerTest {
                         "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
                 .withExposedPorts(8080)
-                .withImagePullPolicy(PullPolicy.alwaysPull())
                 .withNetwork(Network.SHARED);
     }
 

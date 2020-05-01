@@ -56,7 +56,7 @@ spec:
               value:
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: service-port
             initialDelaySeconds: 300
             periodSeconds: 30
@@ -66,7 +66,7 @@ spec:
               name: service-port
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: service-port
             periodSeconds: 30
             timeoutSeconds: 10

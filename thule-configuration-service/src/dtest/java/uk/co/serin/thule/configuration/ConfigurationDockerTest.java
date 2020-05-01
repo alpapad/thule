@@ -35,8 +35,7 @@ public class ConfigurationDockerTest {
                         "SPRING_ZIPKIN_ENABLED", FALSE.toString(),
                         "THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString(),
                         "TZ", "Europe/London"))
-                .withExposedPorts(8080)
-                .withImagePullPolicy(PullPolicy.alwaysPull());
+                .withExposedPorts(8080);
     }
 
     @BeforeEach
