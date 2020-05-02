@@ -59,7 +59,7 @@ dependencies {
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
     itestImplementation("com.h2database:h2")
-    itestImplementation("com.oracle:ojdbc8:18.3")
+    itestImplementation("com.oracle.ojdbc:ojdbc10")
     itestImplementation("org.hsqldb:hsqldb")
     itestImplementation("org.springframework.security:spring-security-test")
     itestImplementation("org.testcontainers:junit-jupiter")
