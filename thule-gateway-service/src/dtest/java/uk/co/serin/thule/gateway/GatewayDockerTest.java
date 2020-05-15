@@ -10,7 +10,6 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -28,9 +27,9 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 public class GatewayDockerTest {
     private static final String MOCK_SERVER_ALIAS = "mockserver";
     @Container
-    private static MockServerContainer mockserver = createMockServerContainer();
+    private static final MockServerContainer mockserver = createMockServerContainer();
     @Container
-    private static GenericContainer<?> springBootService = createSpringBootService();
+    private static final GenericContainer<?> springBootService = createSpringBootService();
     private String baseUrl;
 
     private static MockServerContainer createMockServerContainer() {

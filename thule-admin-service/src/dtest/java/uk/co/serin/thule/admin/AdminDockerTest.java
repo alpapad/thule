@@ -23,7 +23,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class AdminDockerTest {
     @Container
-    private static GenericContainer<?> springBootService = createSpringBootService();
+    private static final GenericContainer<?> springBootService = createSpringBootService();
     private String baseUrl;
 
     private static GenericContainer<?> createSpringBootService() {

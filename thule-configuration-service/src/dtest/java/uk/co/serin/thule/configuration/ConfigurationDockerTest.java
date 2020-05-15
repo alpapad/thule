@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -24,7 +23,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest
 public class ConfigurationDockerTest {
     @Container
-    private static GenericContainer<?> springBootService = createSpringBootService();
+    private static final GenericContainer<?> springBootService = createSpringBootService();
     private String baseUrl;
 
     private static GenericContainer<?> createSpringBootService() {
