@@ -48,7 +48,7 @@ dependencies {
     // Required to retry connecting to the configuration service when it is not available at startup
     implementation("org.springframework.retry:spring-retry")
 
-    testImplementation platform("org.testcontainers:testcontainers-bom:1.14.1")
+    testImplementation platform("org.testcontainers:testcontainers-bom:1.14.2")
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     testImplementation("org.mock-server:mockserver-client-java:5.10.0")
     testImplementation("org.testcontainers:junit-jupiter")
@@ -59,7 +59,7 @@ dependencies {
     ctestImplementation("org.springframework.boot:spring-boot-starter-webflux")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.1")
+    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.2")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.mock-server:mockserver-client-java:5.10.0")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")

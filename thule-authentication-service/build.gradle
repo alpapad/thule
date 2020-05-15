@@ -38,7 +38,7 @@ dependencies {
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
-    itestImplementation platform("org.testcontainers:testcontainers-bom:1.14.1")
+    itestImplementation platform("org.testcontainers:testcontainers-bom:1.14.2")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-feign:${thuleSharedVersion}")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
     itestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
