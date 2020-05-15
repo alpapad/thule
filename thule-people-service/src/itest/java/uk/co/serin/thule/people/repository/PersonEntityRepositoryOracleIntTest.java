@@ -29,7 +29,6 @@ public class PersonEntityRepositoryOracleIntTest extends PersonEntityRepositoryB
         var oracleContainer = new OracleContainer("pooh:8082/oracle-database:18.4.0-xe-initialized")
                 .withEnv("ORACLE_PDB", "system")
                 .withEnv("ORACLE_PWD", "oracle");
-        oracleContainer.addExposedPorts(1521, 8080);
 
         return oracleContainer;
     }
