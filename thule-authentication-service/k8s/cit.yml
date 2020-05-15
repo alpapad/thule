@@ -175,7 +175,7 @@ metadata:
     # Spring Boot Admin metadata
     health.path: /
     management.context-path: /auth/realms/master/.well-known/openid-configuration
-    service-path: auth
+    service-path: /auth
 spec:
   type: NodePort
   ports:
