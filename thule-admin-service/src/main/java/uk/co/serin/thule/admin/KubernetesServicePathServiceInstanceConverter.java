@@ -3,6 +3,7 @@ package uk.co.serin.thule.admin;
 import de.codecentric.boot.admin.server.cloud.discovery.KubernetesServiceInstanceConverter;
 
 import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
@@ -13,7 +14,7 @@ public class KubernetesServicePathServiceInstanceConverter extends KubernetesSer
     protected URI getServiceUrl(ServiceInstance instance) {
         var servicePath = instance.getMetadata().get("service-path");
         if (!isEmpty(servicePath)) {
-            return URI.create(servicePath);
+            return UriComponentsBuilder.fromUri(instance.getUri()).path(servicePath).build().toUri();
         }
 
         return super.getServiceUrl(instance);

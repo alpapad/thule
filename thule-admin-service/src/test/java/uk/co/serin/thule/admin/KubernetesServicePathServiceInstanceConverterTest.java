@@ -24,9 +24,10 @@ public class KubernetesServicePathServiceInstanceConverterTest {
     @Test
     public void given_a_service_path_metadata_when_getServiceUrl_then_required_service_url_is_returned() {
         // Given
-        var expectedUri = URI.create("/thule-test-service");
+        var expectedUri = URI.create(LOCALHOST_URI + "/thule-test-service");
 
-        given(serviceInstance.getMetadata()).willReturn(Map.of("service-path", "/thule-test-service"));
+        given(serviceInstance.getMetadata()).willReturn(Map.of("service-path", "thule-test-service"));
+        given(serviceInstance.getUri()).willReturn(URI.create(LOCALHOST_URI));
 
         // When
         var serviceUrl = sut.getServiceUrl(serviceInstance);
