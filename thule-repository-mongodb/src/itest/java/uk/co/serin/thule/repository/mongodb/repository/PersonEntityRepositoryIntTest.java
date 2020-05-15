@@ -8,8 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.images.PullPolicy;
+import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -27,9 +26,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 public class PersonEntityRepositoryIntTest {
     private static final String MOCK_USERS_NAME = "user";
     @Container
-    private static GenericContainer<?> mongodb = new GenericContainer<>("mongo")
-            .withImagePullPolicy(PullPolicy.alwaysPull())
-            .withExposedPorts(27017);
+    private static MongoDBContainer mongodb = new MongoDBContainer();
     private Gson gson = new Gson();
     @Autowired
     private PersonRepository personRepository;

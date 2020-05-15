@@ -39,4 +39,5 @@ dependencies {
     testImplementation("com.google.code.gson:gson")
 
     itestImplementation("org.testcontainers:junit-jupiter")
+    itestImplementation("org.testcontainers:mongodb")
 }
