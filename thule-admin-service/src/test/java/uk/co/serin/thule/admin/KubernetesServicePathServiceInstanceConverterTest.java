@@ -39,7 +39,7 @@ public class KubernetesServicePathServiceInstanceConverterTest {
     @Test
     public void given_no_service_path_metadata_when_getServiceUrl_then_default_service_url_is_returned() {
         // Given
-        var expectedUri = URI.create(LOCALHOST_URI + "/");
+        var expectedUri = URI.create(LOCALHOST_URI);
 
         given(serviceInstance.getMetadata()).willReturn(Map.of());
         given(serviceInstance.getUri()).willReturn(URI.create(LOCALHOST_URI));
