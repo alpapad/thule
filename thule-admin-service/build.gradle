@@ -30,7 +30,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR4")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR5")
     implementation("uk.co.serin.thule:thule-spring-boot-starter:${thuleSharedVersion}")
     implementation("de.codecentric:spring-boot-admin-starter-server:2.2.3")
     // Required for JMX support when using the Admin server
