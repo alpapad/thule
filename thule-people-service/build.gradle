@@ -31,7 +31,7 @@ dependencies {
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR4")
-    implementation platform("org.testcontainers:testcontainers-bom:1.14.2")
+    implementation platform("org.testcontainers:testcontainers-bom:1.14.3")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-data:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-feign:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-resource-server:${thuleSharedVersion}")
@@ -74,7 +74,7 @@ dependencies {
     ctestImplementation("org.testcontainers:mysql")
 
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.2")
+    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.3")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
