@@ -125,7 +125,7 @@ project("thule-utils") {
         compileOnly("org.projectlombok:lombok")
 
         implementation("javax.validation:validation-api")
-        implementation("net.logstash.logback:logstash-logback-encoder:6.3")
+        implementation("net.logstash.logback:logstash-logback-encoder:6.4")
         implementation("org.aspectj:aspectjrt")
         // Required by logback if-condition statements in the logback xml configuration
         implementation("org.codehaus.janino:janino")
