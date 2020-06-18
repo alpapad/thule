@@ -30,6 +30,7 @@ dependencies {
     config("uk.co.serin.thule:thule-email-service:latest.integration")
     config("uk.co.serin.thule:thule-gateway-service:latest.integration")
     config("uk.co.serin.thule:thule-people-service:latest.integration")
+    config("uk.co.serin.thule:thule-ui:latest.integration")
 }
 task collectConfigs {
     doLast {
