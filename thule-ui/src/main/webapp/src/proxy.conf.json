@@ -1,0 +1,6 @@
+{
+  "/assets": {
+    "target": "/thule-ui/",
+    "secure": false
+  }
+}
