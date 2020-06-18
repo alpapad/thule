@@ -1,5 +1,5 @@
-apiVersion: extensions/v1beta1
 kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
 metadata:
   name: dashboard
   annotations:

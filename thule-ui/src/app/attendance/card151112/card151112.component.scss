@@ -1,0 +1,263 @@
+:host {
+
+  width: 100%;
+  height: auto;
+  margin: 0 0 8px 0;
+  display: block;
+  
+  .heading20 {
+    margin: 0;
+    color: var(--text-basic-color);
+  }
+    
+  .space541112 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text121 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .select13 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .space722123 {
+    height: auto;
+    min-height: 2rem;
+    width: 50%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0 24px 0 0;
+    margin: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text122 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .select12 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .space7221214 {
+    height: auto;
+    min-height: 2rem;
+    width: 50%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0 24px 0 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text123 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .select10 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .space72212112 {
+    height: auto;
+    min-height: 2rem;
+    width: 50%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0 24px 0 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text124 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .select11 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .space72212123 {
+    height: auto;
+    min-height: 2rem;
+    width: 50%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0 24px 0 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .button8 {
+    margin: 0 8px 0 0;
+    width: auto;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+    
+    span {
+      display: inline;
+    }
+    
+    > nb-icon {
+      display: none;
+    }
+  }
+    
+  .space722121212 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space641112 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .card151112 {
+    width: 100%;
+    height: 100%;
+    margin: 0 0 8px 0;
+  }
+    
+  @media (max-width: 1024px) {
+    .select13 {
+      width: 100%;
+    }
+    
+    .space722123 {
+      padding: 0 24px 0 0;
+    }
+    
+    .space7221214 {
+      padding: 0 24px 0 0;
+    }
+    
+    .space72212112 {
+      padding: 0 24px 0 0;
+    }
+    
+    .space72212123 {
+      padding: 0 24px 0 0;
+    }
+  }
+    
+  @media (max-width: 768px) {
+    .space722123 {
+      height: auto;
+      min-height: 2rem;
+      width: 50%;
+    }
+    
+    .space7221214 {
+      height: auto;
+      min-height: 2rem;
+      width: 50%;
+      padding: 0 24px 0 0;
+    }
+    
+    .space72212112 {
+      height: auto;
+      min-height: 2rem;
+      width: 50%;
+    }
+    
+    .space72212123 {
+      height: auto;
+      min-height: 2rem;
+      width: 50%;
+    }width: 100%;
+    height: auto;
+    margin: 8px 0;
+    flex-grow: 0;
+  }
+    
+  @media (max-width: 480px) {
+    .space722123 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .space7221214 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .space72212112 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .space72212123 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+      padding: 0;
+    }
+  }
+    
+  @media (max-width: 320px) {
+    .space722123 {
+      padding: 0;
+    }
+    
+    .space7221214 {
+      padding: 0;
+    }
+    
+    .space72212112 {
+      padding: 0;
+    }
+    
+    .space72212123 {
+      padding: 0;
+    }
+  }
+  
+}

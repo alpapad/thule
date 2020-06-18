@@ -1,0 +1,224 @@
+:host {
+
+  width: calc(100% - 4px);
+  height: auto;
+  margin: 8px 4px 8px 0;
+  display: block;
+  
+  .heading30 {
+    margin: 0;
+    color: var(--text-basic-color);
+  }
+    
+  .space17211 {
+    height: auto;
+    min-height: 2rem;
+    width: 180px;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .icon91 {
+    margin: 0 4px 0 0;
+    font-size: var(--icon-medium-size);
+    color: var(--text-hint-color);
+  }
+    
+  .icon92 {
+    margin: 0 4px;
+    font-size: var(--icon-medium-size);
+    color: var(--text-hint-color);
+  }
+    
+  .space171111 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-end;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space14121 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .checkbox7 {
+    margin: 0;
+  }
+    
+  .icon93 {
+    font-size: var(--icon-medium-size);
+    color: var(--text-hint-color);
+  }
+    
+  .space37 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .checkbox8 {
+    margin: 0;
+  }
+    
+  .icon94 {
+    font-size: var(--icon-medium-size);
+    color: var(--text-hint-color);
+  }
+    
+  .space371 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .checkbox9 {
+    margin: 0;
+  }
+    
+  .icon95 {
+    font-size: var(--icon-medium-size);
+    color: var(--text-hint-color);
+  }
+    
+  .space3711 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .checkbox10 {
+    margin: 0;
+  }
+    
+  .icon96 {
+    font-size: var(--icon-medium-size);
+    color: var(--text-hint-color);
+  }
+    
+  .space37111 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space14252111 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .input31 {
+    margin: 16px 0 0 0;
+    width: 100%;
+  }
+    
+  .space1425211 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space15111 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .card2111 {
+    width: 100%;
+    height: 100%;
+    margin: 8px 4px 8px 0;
+  }
+    
+  @media (max-width: 768px) {
+    .space17211 {
+      height: auto;
+      min-height: 2rem;
+      width: 180px;
+    }
+  }
+    
+  @media (max-width: 320px) {
+    .space17211 {
+      height: auto;
+      min-height: 2rem;
+      width: 150px;
+    }
+    
+    .space171111 {
+      height: auto;
+      min-height: 2rem;
+      flex-grow: 1;
+      flex-basis: 0;
+      justify-content: flex-end;
+    }width: 100%;
+    height: auto;
+    flex-grow: 0;
+  }
+  
+}

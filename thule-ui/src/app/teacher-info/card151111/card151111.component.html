@@ -1,0 +1,77 @@
+<nb-card class="card151111">
+  <nb-card-header>
+    <div class="space space541111">
+      <h6 class="heading16 text-undefined text-alignment-left text-transform-none">Teacher information</h6>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="space space641111">
+      <div class="space space722122">
+        <label class="text96 text-undefined text-alignment-left text-transform-none label">First Name</label>
+        <input nbInput class="input10 size-xl-medium" placeholder="2017-2018" type="text" shape="rectangle" status="basic">
+        <label class="text102 text-undefined text-alignment-left text-transform-none label">Last Name</label>
+        <input nbInput class="input13 size-xl-medium" placeholder="2017-2018" type="text" shape="rectangle" status="basic">
+        <label class="text98 text-undefined text-alignment-left text-transform-none label">Gender</label>
+        <nb-select class="select5 size-xl-medium" placeholder="select" status="primary">    
+            <nb-option value="Male">Male</nb-option>    
+            <nb-option value="Female">Female</nb-option>
+        </nb-select>
+      </div>
+      <div class="space space7221213">
+        <label class="text107 text-undefined text-alignment-left text-transform-none label">Registration Number</label>
+        <input nbInput class="input16 size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic">
+        <label class="text108 text-undefined text-alignment-left text-transform-none label">Date of Birth</label>
+        
+          <input [nbDatepicker]="datepicker1" nbInput class="datepicker size-xl-medium" placeholder="Enter Date" shape="rectangle" status="basic">
+          <nb-datepicker #datepicker1>
+          </nb-datepicker>
+        
+        <label class="text103 text-undefined text-alignment-left text-transform-none label">Religion</label>
+        <input nbInput class="input17 size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic">
+      </div>
+      <div class="space space72212111">
+        <label class="text99 text-undefined text-alignment-left text-transform-none label">Phone</label>
+        <input nbInput class="input11 size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic">
+        <label class="text104 text-undefined text-alignment-left text-transform-none label">Email</label>
+        <input nbInput class="input14 size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic">
+        <label class="text105 text-undefined text-alignment-left text-transform-none label">Address</label>
+        <input nbInput class="input15 size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic">
+      </div>
+      <div class="space space72212122">
+        <label class="text106 text-undefined text-alignment-left text-transform-none label">Class</label>
+        <nb-select class="select7 size-xl-medium" placeholder="select" status="primary">    
+            <nb-option value="1">1</nb-option>    
+            <nb-option value="2">2</nb-option>    
+            <nb-option value="3">3</nb-option>
+        </nb-select>
+        <label class="text97 text-undefined text-alignment-left text-transform-none label">Section</label>
+        <nb-select class="select4 size-xl-medium" placeholder="select" status="primary">    
+            <nb-option value="A">A</nb-option>    
+            <nb-option value="B">B</nb-option>    
+            <nb-option value="C">C</nb-option>
+        </nb-select>
+        <label class="text100 text-undefined text-alignment-left text-transform-none label">Subject</label>
+        <nb-select class="select6 size-xl-medium" placeholder="select" status="primary">    
+            <nb-option value="Mathematics">Mathematics</nb-option>    
+            <nb-option value="Literature">Literature</nb-option>    
+            <nb-option value="Physics">Physics</nb-option>
+        </nb-select>
+      </div>
+      <div class="space space7221212111">
+        <p class="text101 text-undefined text-alignment-left text-transform-none paragraph">Upload Teacher Photo (150 X 150)</p>
+        <input nbInput class="input12 size-xl-medium" placeholder="Enter Value" type="file" shape="rectangle" status="basic">
+      </div>
+      <div class="space space722121211">
+        <button nbButton class="button4 size-xl-medium" appearance="filled" status="success">
+          <nb-icon class="icon btn-icon" icon="star"></nb-icon>
+          <span>save</span>
+        </button>
+        <button nbButton class="button5 size-xl-medium" appearance="filled" status="primary">
+          <nb-icon class="icon btn-icon" icon="star"></nb-icon>
+          <span>reset</span>
+        </button>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

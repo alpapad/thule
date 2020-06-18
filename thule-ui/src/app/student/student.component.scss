@@ -1,0 +1,89 @@
+:host {
+  
+  .space4 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space3 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 8px 0 0 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space32 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 8px 0 0 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space-component {
+    height: 100%;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  @media (max-width: 1024px) {
+    .space-component {
+      height: 100%;
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+    
+  @media (max-width: 768px) {
+    .space4 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+    }
+  }
+    
+  @media (max-width: 480px) {
+    .space-component {
+      height: 100%;
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+    
+  @media (max-width: 320px) {
+    .space32 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+    }
+    
+    .space-component {
+      height: 100%;
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+  
+}

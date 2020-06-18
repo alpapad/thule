@@ -1,0 +1,161 @@
+:host {
+
+  width: calc(100% - 8px);
+  height: auto;
+  margin: 0 8px 8px 0;
+  display: block;
+  
+  .heading13 {
+    margin: 0;
+    color: var(--text-basic-color);
+  }
+    
+  .space5411 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text67 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .input4 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .text68 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .input5 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .text69 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .select {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .text70 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .select1 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .text71 {
+    margin: 0 4px 0 0;
+    color: var(--text-hint-color);
+  }
+    
+  .input6 {
+    margin: 4px 0 20px 0;
+    width: 100%;
+  }
+    
+  .space7221 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .button1 {
+    margin: 0 8px 0 0;
+    width: auto;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+    
+    span {
+      display: inline;
+    }
+    
+    > nb-icon {
+      display: none;
+    }
+  }
+    
+  .button2 {
+    margin: 0;
+    width: auto;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+    
+    span {
+      display: inline;
+    }
+    
+    > nb-icon {
+      display: none;
+    }
+  }
+    
+  .space72211 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-between;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space6411 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .card1511 {
+    width: 100%;
+    height: 100%;
+    margin: 0 8px 8px 0;
+  }
+    
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    margin: 8px 0;
+    flex-grow: 0;
+  }
+  
+}

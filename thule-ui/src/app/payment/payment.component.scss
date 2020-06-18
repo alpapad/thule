@@ -1,0 +1,29 @@
+:host {
+  
+  .space102221 {
+    height: 100%;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  @media (max-width: 768px) {
+    .space102221 {
+      height: 100%;
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+    
+  @media (max-width: 320px) {
+    .space102221 {
+      align-items: flex-start;
+      align-content: flex-start;
+    }
+  }
+  
+}

@@ -1,0 +1,371 @@
+:host {
+
+  width: 80%;
+  height: auto;
+  margin: 0 0 8px 0;
+  display: block;
+  
+  .heading22 {
+    margin: 0;
+    color: var(--text-basic-color);
+  }
+    
+  .heading23 {
+    color: var(--text-primary-color);
+  }
+    
+  .space46 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0 0 16px 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text128 {
+    margin: 0 0 4px 0;
+    color: var(--text-basic-color);
+  }
+    
+  .input21 {
+    width: 100%;
+  }
+    
+  .space491 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space48 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0 0 16px 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text129 {
+    margin: 0 0 4px 0;
+    color: var(--text-basic-color);
+  }
+    
+  .input22 {
+    width: 100%;
+  }
+    
+  .space4921 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0 16px 0 0;
+    overflow: visible;
+    background-color: unset;
+    background-size: contain;
+  }
+    
+  .text400 {
+    margin: 0 0 4px 0;
+    color: var(--text-basic-color);
+  }
+    
+  .input35 {
+    width: 100%;
+  }
+    
+  .space49211 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    background-color: unset;
+    background-size: contain;
+  }
+    
+  .space481 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0 0 16px 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text130 {
+    margin: 0 0 4px 0;
+    color: var(--text-basic-color);
+  }
+    
+  .input23 {
+    input {
+      width: 100%;
+    }
+    width: 100%;
+  }
+    
+  .space482 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0 0 16px 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space461 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .button9 {
+    margin: 0 16px 0 0;
+    width: auto;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+    
+    span {
+      display: inline;
+    }
+    
+    > nb-icon {
+      display: none;
+    }
+  }
+    
+  .button10 {
+    width: 100px;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+    
+    span {
+      display: inline;
+    }
+    
+    > nb-icon {
+      display: none;
+    }
+  }
+    
+  .space4611 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-end;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space452 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0;
+    margin: 24px 48px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space6411121 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .card1511121 {
+    width: 100%;
+    height: 100%;
+    margin: 0 0 8px 0;
+    > nb-card-body {
+      padding: 0;
+    }
+  }
+    
+  @media (max-width: 1024px) {
+    .space46 {
+      margin: 24px 0;
+    }
+    
+    .space4611 {
+      margin: 16px 0 0 0;
+    }
+    
+    .space6411121 {
+      align-items: center;
+      align-content: center;
+      justify-content: flex-start;
+    }width: 80%;
+    height: auto;
+    flex-grow: 0;
+  }
+    
+  @media (max-width: 768px) {
+    .input21 {
+      width: 100%;
+    }
+    
+    .space48 {
+      justify-content: flex-start;
+    }
+    
+    .input22 {
+      margin: 0 0 16px 0;
+    }
+    
+    .space4921 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+      margin: 0;
+    }
+    
+    .space49211 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+    }
+    
+    .space452 {
+      height: auto;
+      min-height: 2rem;
+      flex-grow: 1;
+      flex-basis: 0;
+      margin: 24px;
+    }
+    
+    .space6411121 {
+      height: auto;
+      min-height: 2rem;
+      flex-grow: 1;
+      flex-basis: 0;
+    }width: 80%;
+    height: auto;
+    margin: 8px 0;
+    flex-grow: 0;
+  }
+    
+  @media (max-width: 480px) {
+    .input21 {
+      width: 100%;
+    }
+    
+    .space48 {
+      padding: 0;
+      margin: 0 0 16px 0;
+    }
+    
+    .input22 {
+      margin: 0 0 16px 0;
+    }
+    
+    .space4921 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+    }
+    
+    .button9 {
+      margin: 0 8px 0 0;
+    }
+    
+    .space452 {
+      height: auto;
+      min-height: 2rem;
+      flex-grow: 1;
+      flex-basis: 0;
+      margin: 24px;
+    }
+    
+    .space6411121 {
+      height: auto;
+      min-height: 2rem;
+      flex-grow: 1;
+      flex-basis: 0;
+    }width: 95%;
+    height: auto;
+    flex-grow: 0;
+  }
+    
+  @media (max-width: 320px) {
+    .space4921 {
+      margin: 0 0 16px 0;
+    }
+    
+    .space452 {
+      height: auto;
+      min-height: 2rem;
+      width: 100%;
+      margin: 24px 16px;
+    }
+    
+    .space6411121 {
+      justify-content: center;
+    }width: 100%;
+    height: auto;
+    margin: 0;
+    flex-grow: 0;
+  }
+  
+}

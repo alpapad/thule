@@ -1,0 +1,126 @@
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: thule-ui-pod-reader
+  namespace: thule
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "secrets"]
+    verbs: ["get", "list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: thule-ui-role-binding
+  namespace: thule
+roleRef:
+  kind: ClusterRole
+  name: thule-ui-pod-reader
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: thule-ui-account
+    namespace: thule
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: thule-ui
+  namespace: thule
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thule-ui
+      namespace: thule
+  template:
+    metadata:
+      labels:
+        app: thule-ui
+        namespace: thule
+    spec:
+      serviceAccountName: thule-ui-account
+      containers:
+        - name: thule-ui
+          image: pooh:8082/thule-ui:1.0.0-SNAPSHOT
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: ROLLOUT_TIME
+              value:
+          livenessProbe:
+            httpGet:
+              path: /
+              port: service-port
+            initialDelaySeconds: 300
+            periodSeconds: 30
+            timeoutSeconds: 10
+          ports:
+            - containerPort: 8080
+              name: service-port
+          readinessProbe:
+            httpGet:
+              path: /
+              port: service-port
+            periodSeconds: 30
+            timeoutSeconds: 10
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta1
+metadata:
+  name: thule-ui-hpa
+  namespace: thule
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: thule-ui
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/thule-ui"
+  name: thule-ui-ingress
+  namespace: thule
+spec:
+  rules:
+    - host: piglet
+      http:
+        paths:
+          - path: /thule-ui(/|$)(.*)
+            backend:
+              serviceName: thule-ui
+              servicePort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: thule-ui
+  namespace: thule
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: thule-ui
+    namespace: thule
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: thule-ui-account
+  namespace: thule
