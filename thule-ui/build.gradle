@@ -44,7 +44,7 @@ task buildAngular(type:Exec) {
     if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
         commandLine "npx", "ng.cmd", "build"
     } else {
-        commandLine "npx", "ng", "build", "--prod"
+        commandLine "npx", "ng", "build", "--prod", "--deploy-url", "/thule-ui/"
     }
 }
 
