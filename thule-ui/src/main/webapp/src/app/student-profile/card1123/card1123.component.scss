@@ -4,12 +4,12 @@
   height: auto;
   margin: 0 4px 0 0;
   display: block;
-  
+
   .icon25 {
     font-size: var(--icon-giant-size);
     color: var(--text-alternative-color);
   }
-    
+
   .space304 {
     height: 76px;
     width: 30%;
@@ -19,10 +19,10 @@
     padding: 0;
     overflow: visible;
     background-color: unset;
-    background-image: url('/assets/images/BG4.jpg');
+    background-image: url('./assets/images/BG4.jpg');
     background-size: cover;
   }
-    
+
   .space30131 {
     height: auto;
     min-height: 2rem;
@@ -38,17 +38,17 @@
     display: none;
     background-color: unset;
   }
-    
+
   .heading10 {
     margin: 0 0 8px 0;
     color: var(--text-basic-color);
   }
-    
+
   .text30 {
     margin: 0 4px 0 0;
     color: var(--text-basic-color);
   }
-    
+
   .space3013 {
     height: auto;
     min-height: 2rem;
@@ -63,7 +63,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space3123 {
     height: auto;
     min-height: 2rem;
@@ -76,32 +76,32 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .card1123 {
     width: 100%;
     height: 100%;
     margin: 0 4px 0 0;
-    
+
     > nb-card-header {
       padding: 0;
     }
-    
+
     > nb-card-body {
       padding: 0;
     }
-    
+
     > nb-card-footer {
       padding: 0;
     }
   }
-    
+
   @media (max-width: 768px) {
     .space304 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
-    
+
     .space3013 {
       height: auto;
       min-height: 2rem;
@@ -111,21 +111,21 @@
     margin: 0 0 4px 0;
     flex-grow: 0;
   }
-    
+
   @media (max-width: 480px) {
     .space304 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
-    
+
     .space3013 {
       height: auto;
       min-height: 2rem;
       width: 66.66666666666667%;
       margin: 0;
     }
-    
+
     .space3123 {
       height: 76px;
       flex-grow: 1;
@@ -134,16 +134,16 @@
     height: auto;
     flex-grow: 0;
   }
-    
+
   @media (max-width: 320px) {
     .icon25 {
       display: none;
     }
-    
+
     .space304 {
       display: none;
     }
-    
+
     .space30131 {
       height: 4px;
       width: 100%;
@@ -152,22 +152,22 @@
       background-color: var(--color-danger-default);
       background-image: none;
     }
-    
+
     .heading10 {
       margin: 8px 0 0 0;
     }
-    
+
     .text30 {
       margin: 0;
     }
-    
+
     .space3013 {
       height: auto;
       min-height: 2rem;
       width: 83.33333333333333%;
       margin: 4px 0 0 0;
     }
-    
+
     .space3123 {
       height: 76px;
       flex-grow: 1;
@@ -178,10 +178,10 @@
     }width: 50%;
     height: auto;
     flex-grow: 0;
-    
+
     .card1123 {
       background-image: none;
     }
   }
-  
+
 }

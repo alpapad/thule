@@ -4,12 +4,12 @@
   height: auto;
   margin: 0 4px 0 0;
   display: block;
-  
+
   .icon22 {
     font-size: var(--icon-giant-size);
     color: var(--text-alternative-color);
   }
-    
+
   .space30 {
     height: 76px;
     width: 30%;
@@ -19,10 +19,10 @@
     padding: 0;
     overflow: visible;
     background-color: unset;
-    background-image: url('/assets/images/BG1.jpg');
+    background-image: url('./assets/images/BG1.jpg');
     background-size: cover;
   }
-    
+
   .space3014 {
     height: auto;
     min-height: 2rem;
@@ -38,17 +38,17 @@
     display: none;
     background-color: unset;
   }
-    
+
   .heading7 {
     margin: 0 0 8px 0;
     color: var(--text-basic-color);
   }
-    
+
   .text27 {
     margin: 0 4px 0 0;
     color: var(--text-basic-color);
   }
-    
+
   .space301 {
     height: auto;
     min-height: 2rem;
@@ -63,7 +63,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space312 {
     height: auto;
     min-height: 2rem;
@@ -76,32 +76,32 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .card112 {
     width: 100%;
     height: 100%;
     margin: 0 4px 0 0;
-    
+
     > nb-card-header {
       padding: 0;
     }
-    
+
     > nb-card-body {
       padding: 0;
     }
-    
+
     > nb-card-footer {
       padding: 0;
     }
   }
-    
+
   @media (max-width: 768px) {
     .space30 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
-    
+
     .space301 {
       height: auto;
       min-height: 2rem;
@@ -111,33 +111,33 @@
     margin: 0 4px 4px 0;
     flex-grow: 0;
   }
-    
+
   @media (max-width: 480px) {
     .space30 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
-    
+
     .space301 {
       height: auto;
       min-height: 2rem;
       width: 66.66666666666667%;
       margin: 0;
     }
-    
+
     .space312 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
   }
-    
+
   @media (max-width: 320px) {
     .space30 {
       display: none;
     }
-    
+
     .space3014 {
       height: 4px;
       width: 100%;
@@ -146,22 +146,22 @@
       background-color: var(--color-primary-default);
       background-image: none;
     }
-    
+
     .heading7 {
       margin: 8px 0 0 0;
     }
-    
+
     .text27 {
       margin: 0;
     }
-    
+
     .space301 {
       height: auto;
       min-height: 2rem;
       width: 83.33333333333333%;
       margin: 4px 0 0 0;
     }
-    
+
     .space312 {
       height: 76px;
       flex-grow: 1;
@@ -173,10 +173,10 @@
     height: auto;
     margin: 0 6px 4px 0;
     flex-grow: 0;
-    
+
     .card112 {
       background-image: none;
     }
   }
-  
+
 }

@@ -4,12 +4,12 @@
   height: auto;
   margin: 0 4px 0 0;
   display: block;
-  
+
   .icon23 {
     font-size: var(--icon-giant-size);
     color: var(--text-alternative-color);
   }
-    
+
   .space302 {
     height: 76px;
     width: 30%;
@@ -19,10 +19,10 @@
     padding: 0;
     overflow: visible;
     background-color: unset;
-    background-image: url('/assets/images/BG2.jpg');
+    background-image: url('./assets/images/BG2.jpg');
     background-size: cover;
   }
-    
+
   .space30111 {
     height: auto;
     min-height: 2rem;
@@ -38,17 +38,17 @@
     display: none;
     background-color: unset;
   }
-    
+
   .heading8 {
     margin: 0 0 8px 0;
     color: var(--text-basic-color);
   }
-    
+
   .text28 {
     margin: 0 4px 0 0;
     color: var(--text-basic-color);
   }
-    
+
   .space3011 {
     height: auto;
     min-height: 2rem;
@@ -63,7 +63,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space3121 {
     height: auto;
     min-height: 2rem;
@@ -76,32 +76,32 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .card1121 {
     width: 100%;
     height: 100%;
     margin: 0 4px 0 0;
-    
+
     > nb-card-header {
       padding: 0;
     }
-    
+
     > nb-card-body {
       padding: 0;
     }
-    
+
     > nb-card-footer {
       padding: 0;
     }
   }
-    
+
   @media (max-width: 768px) {
     .space302 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
-    
+
     .space3011 {
       height: auto;
       min-height: 2rem;
@@ -111,37 +111,37 @@
     margin: 0 0 4px 0;
     flex-grow: 0;
   }
-    
+
   @media (max-width: 480px) {
     .space302 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
-    
+
     .space3011 {
       height: auto;
       min-height: 2rem;
       width: 66.66666666666667%;
       margin: 0;
     }
-    
+
     .space3121 {
       height: 76px;
       flex-grow: 1;
       flex-basis: 0;
     }
   }
-    
+
   @media (max-width: 320px) {
     .icon23 {
       display: none;
     }
-    
+
     .space302 {
       display: none;
     }
-    
+
     .space30111 {
       height: 4px;
       width: 100%;
@@ -150,22 +150,22 @@
       background-color: var(--color-success-default);
       background-image: none;
     }
-    
+
     .heading8 {
       margin: 8px 0 0 0;
     }
-    
+
     .text28 {
       margin: 0;
     }
-    
+
     .space3011 {
       height: auto;
       min-height: 2rem;
       width: 83.33333333333333%;
       margin: 4px 0 0 0;
     }
-    
+
     .space3121 {
       align-items: flex-start;
       align-content: flex-start;
@@ -173,10 +173,10 @@
     }width: 50%;
     height: auto;
     flex-grow: 0;
-    
+
     .card1121 {
       background-image: none;
     }
   }
-  
+
 }

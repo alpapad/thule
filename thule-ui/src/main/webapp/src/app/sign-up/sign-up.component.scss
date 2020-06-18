@@ -1,5 +1,5 @@
 :host {
-  
+
   .image7 {
     margin: 0;
     width: auto;
@@ -7,7 +7,7 @@
     border-radius: 0;
     object-fit: fill;
   }
-    
+
   .space3112211 {
     height: auto;
     min-height: 2rem;
@@ -17,20 +17,20 @@
     justify-content: center;
     overflow: visible;
     background-color: unset;
-    background-image: url('/assets/images/chairs-classroom-college-desks-289740.jpg');
+    background-image: url('./assets/images/chairs-classroom-college-desks-289740.jpg');
     background-size: cover;
   }
-    
+
   .heading24 {
     margin: 0 0 16px 0;
     color: var(--text-basic-color);
   }
-    
+
   .text134 {
     margin: 0 0 16px 0;
     color: var(--text-basic-color);
   }
-    
+
   .button12 {
     margin: 0 8px 0 0;
     width: auto;
@@ -38,16 +38,16 @@
     > nb-icon.btn-icon.icon {
       margin: 0;
     }
-    
+
     span {
       display: none;
     }
-    
+
     > nb-icon {
       display: inline;
     }
   }
-    
+
   .button13 {
     margin: 0;
     width: auto;
@@ -55,16 +55,16 @@
     > nb-icon.btn-icon.icon {
       margin: 0;
     }
-    
+
     span {
       display: none;
     }
-    
+
     > nb-icon {
       display: inline;
     }
   }
-    
+
   .button18 {
     margin: 0 0 0 8px;
     width: auto;
@@ -72,16 +72,16 @@
     > nb-icon.btn-icon.icon {
       margin: 0;
     }
-    
+
     span {
       display: none;
     }
-    
+
     > nb-icon {
       display: inline;
     }
   }
-    
+
   .space71111 {
     height: auto;
     min-height: 2rem;
@@ -92,12 +92,12 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .text136 {
     margin: 0;
     color: var(--text-hint-color);
   }
-    
+
   .space911111 {
     height: auto;
     min-height: 2rem;
@@ -109,37 +109,37 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .text131 {
     margin: 16px 0 4px 0;
     color: var(--text-basic-color);
   }
-    
+
   .input24 {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .text132 {
     margin: 0 0 4px 0;
     color: var(--text-basic-color);
   }
-    
+
   .input25 {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .text133 {
     margin: 0 0 4px 0;
     color: var(--text-basic-color);
   }
-    
+
   .input26 {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .button11 {
     margin: 0 16px 0 0;
     width: 120px;
@@ -147,34 +147,34 @@
     > nb-icon.btn-icon.icon {
       margin: 0;
     }
-    
+
     span {
       display: inline;
     }
-    
+
     > nb-icon {
       display: none;
     }
   }
-    
+
   .text135 {
     margin: 0;
     color: var(--text-basic-color);
   }
-    
+
   .link {
     margin: 0 0 0 8px;
     color: var(--text-primary-color);
-    
+
     &:hover {
       color: var(--text-primary-hover-color);
     }
-    
+
     &:focus {
       color: var(--text-primary-focus-color);
     }
   }
-    
+
   .space4112211 {
     height: auto;
     min-height: 2rem;
@@ -186,7 +186,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space5112211 {
     height: auto;
     min-height: 2rem;
@@ -199,7 +199,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space2112111 {
     height: auto;
     min-height: 2rem;
@@ -211,7 +211,7 @@
     overflow-x: visible;
     overflow-y: auto;
   }
-    
+
   .space612211 {
     height: 100%;
     flex-grow: 1;
@@ -222,7 +222,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   @media (max-width: 1024px) {
     .space5112211 {
       height: auto;
@@ -231,107 +231,107 @@
       padding: 0 40px;
     }
   }
-    
+
   @media (max-width: 768px) {
     .space3112211 {
       display: none;
     }
-    
+
     .button11 {
       margin: 0 16px 0 0;
     }
-    
+
     .space5112211 {
       height: auto;
       min-height: 2rem;
       width: 66.66666666666667%;
       padding: 0 30px;
     }
-    
+
     .space2112111 {
       height: auto;
       min-height: 2rem;
       width: 100%;
     }
   }
-    
+
   @media (max-width: 480px) {
     .image7 {
       width: auto;
       height: 50px;
     }
-    
+
     .space3112211 {
       height: auto;
       min-height: 2rem;
       width: 25%;
     }
-    
+
     .button11 {
       margin: 16px 16px 16px 0;
     }
-    
+
     .text135 {
       margin: 0 8px 0 0;
     }
-    
+
     .link {
       margin: 0;
     }
-    
+
     .space4112211 {
       align-items: center;
       align-content: center;
       padding: 0;
       margin: 16px 0 0 0;
     }
-    
+
     .space5112211 {
       height: auto;
       min-height: 2rem;
       width: 91.66666666666667%;
       padding: 0 20px;
     }
-    
+
     .space2112111 {
       height: auto;
       min-height: 2rem;
       width: 100%;
     }
   }
-    
+
   @media (max-width: 320px) {
     .space3112211 {
       display: none;
     }
-    
+
     .button11 {
       margin: 0 16px 16px 0;
     }
-    
+
     .space4112211 {
       height: auto;
       min-height: 2rem;
       width: 100%;
     }
-    
+
     .space5112211 {
       height: auto;
       min-height: 2rem;
       width: 100%;
     }
-    
+
     .space2112111 {
       height: auto;
       min-height: 2rem;
       width: 100%;
     }
-    
+
     .space612211 {
       height: 100%;
       flex-grow: 1;
       flex-basis: 0;
     }
   }
-  
+
 }
