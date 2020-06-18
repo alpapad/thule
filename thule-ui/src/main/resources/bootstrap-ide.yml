@@ -1,0 +1,7 @@
+# Spring boot configuration
+spring:
+  cloud:
+    config:
+      enabled: false
+    kubernetes:
+      enabled: false

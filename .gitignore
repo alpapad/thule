@@ -4,6 +4,7 @@
 .idea
 .project
 .sonar
+package-lock.json
 build
 out
 target

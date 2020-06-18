@@ -1,0 +1,91 @@
+buildscript {
+    dependencies {
+        classpath("uk.co.serin.gradle.plugins:sonarqube-build-breaker-plugin:1.0.0-SNAPSHOT")
+        classpath("uk.co.serin.gradle.scripts:serin-gradle-scripts:1.0.0-SNAPSHOT")
+    }
+}
+
+// Plugins
+plugins {
+    id "com.github.ben-manes.versions" version "0.28.0"
+    id "jacoco"
+    id "java"
+    id "maven-publish"
+    id "org.sonarqube" version "3.0"
+    id "org.springframework.boot" version "${springBootVersion}"
+}
+apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
+
+// Standard Serin gradle plugin config
+apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
+
+// Non-standard Serin gradle plugin config, if any
+def webappDir = "$projectDir/src/main/webapp"
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$webappDir/dist", "$projectDir/src/main/resources"]
+        }
+    }
+}
+
+processResources {
+    dependsOn "buildAngular"
+}
+
+task buildAngular(type:Exec) {
+    // installAngular should be run prior to this task
+    dependsOn "installAngular"
+    workingDir "$webappDir"
+    inputs.dir "$webappDir"
+    // Add task to the standard build group
+    group = BasePlugin.BUILD_GROUP
+    // ng doesn't exist as a file in windows -> ng.cmd
+    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+        commandLine "ng.cmd", "build"
+    } else {
+        commandLine "ng", "build"
+    }
+}
+
+task installAngular(type:Exec) {
+    workingDir "$webappDir"
+    inputs.dir "$webappDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+        commandLine "npm.cmd", "install"
+    } else {
+        commandLine "npm", "install"
+    }
+}
+
+// Dependencies
+dependencies {
+    annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    compileOnly("org.projectlombok:lombok")
+
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR5")
+    implementation platform("org.testcontainers:testcontainers-bom:1.14.3")
+    // Required for JMX support when using the Admin server
+    implementation("org.jolokia:jolokia-core")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-config")
+    // Required to retry connecting to the configuration service when it is not available at startup
+    implementation("org.springframework.retry:spring-retry")
+
+    testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+
+    dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.3")
+    dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
+    dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    dtestImplementation("org.testcontainers:junit-jupiter")
+}

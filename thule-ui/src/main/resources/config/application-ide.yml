@@ -1,0 +1,10 @@
+# Spring server configuration
+server:
+  port: 8094
+
+# Thule configuration
+thule:
+  shared:
+    logging:
+      logstash:
+        enabled: false

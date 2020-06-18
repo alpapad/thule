@@ -46,13 +46,17 @@ spec:
           image: pooh:8082/thule-ui:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
+            - name: JDK_JAVA_OPTIONS
+              value: -XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m
+            - name: SPRING_PROFILES_ACTIVE
+              value: cit
             - name: TZ
               value: Europe/London
             - name: ROLLOUT_TIME
               value:
           livenessProbe:
             httpGet:
-              path: /
+              path: /actuator/health/liveness
               port: service-port
             initialDelaySeconds: 300
             periodSeconds: 30
@@ -62,7 +66,7 @@ spec:
               name: service-port
           readinessProbe:
             httpGet:
-              path: /
+              path: /actuator/health/readiness
               port: service-port
             periodSeconds: 30
             timeoutSeconds: 10

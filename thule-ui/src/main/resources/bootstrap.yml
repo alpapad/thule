@@ -1,0 +1,22 @@
+# Spring boot configuration
+spring:
+  application:
+    name: thule-ui
+  cloud:
+    config:
+      # Must set this to true when attempting retry otherwise it will not retry connecting to the configuration server if not available at startup
+      failFast: true
+      # When to retry accessing the configuration service if it not available at startup
+      retry:
+        maxAttempts: 9999
+        initialInterval: 3000
+      # Location of the configuration service
+      uri: http://${thule.configurationservice.host:thule-configuration-service}:${thule.configurationservice.port:80}/
+    kubernetes:
+      reload:
+        enabled: true
+        monitoring-secrets: true
+        strategy: shutdown
+      secrets:
+        enable-api: true
+        name: thule-keycloak-secrets

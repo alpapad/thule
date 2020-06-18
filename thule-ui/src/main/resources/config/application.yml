@@ -1,0 +1,34 @@
+# Spring actuator configuration
+info:
+  description: Thule UI
+  name: ${spring.application.name}
+
+# Management endpoint configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+# Spring boot configuration
+spring:
+  application:
+    name: thule-ui
+  cloud:
+    kubernetes:
+      ribbon:
+        mode: service
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+# Thule configuration
+thule:
+  shared:
+    logging:
+      logstash:
+        enabled: true
+        host: pooh
