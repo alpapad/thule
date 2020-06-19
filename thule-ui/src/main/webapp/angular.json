@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "baseHref": "/thule-ui",
+            "baseHref": "/thule-ui/",
             "deployUrl": "/thule-ui/",
             "outputPath": "dist/static",
             "index": "src/index.html",
