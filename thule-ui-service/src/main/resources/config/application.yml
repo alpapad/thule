@@ -1,6 +1,6 @@
 # Spring actuator configuration
 info:
-  description: Thule UI
+  description: Thule UI Service
   name: ${spring.application.name}
 
 # Management endpoint configuration
