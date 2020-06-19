@@ -18,17 +18,16 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "baseHref": "/thule-ui/",
-            "deployUrl": "/thule-ui/",
             "outputPath": "dist/static",
+            "baseHref": "/thule-ui/",
+            "rebaseRootRelativeCssUrls": true,
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
+              "src/assets"
             ],
             "styles": [
               "./node_modules/leaflet/dist/leaflet.css",
