@@ -29,7 +29,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "src/assets/", "output": "./assets/" }
             ],
             "styles": [
               "./node_modules/leaflet/dist/leaflet.css",
