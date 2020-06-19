@@ -25,9 +25,10 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
+            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              { "glob": "**/*", "input": "src/assets/", "output": "/thule-ui/assets/" }
             ],
             "styles": [
               "./node_modules/leaflet/dist/leaflet.css",
