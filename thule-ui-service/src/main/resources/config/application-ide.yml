@@ -1,6 +1,6 @@
 # Spring server configuration
 server:
-  port: 8094
+  port: 8092
 
 # Thule configuration
 thule:
