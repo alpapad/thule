@@ -1,7 +1,7 @@
 # Spring boot configuration
 spring:
   application:
-    name: thule-ui
+    name: thule-ui-service
   cloud:
     config:
       # Must set this to true when attempting retry otherwise it will not retry connecting to the configuration server if not available at startup

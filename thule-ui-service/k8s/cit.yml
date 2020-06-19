@@ -2,7 +2,7 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: thule-ui-pod-reader
+  name: thule-ui-service-pod-reader
   namespace: thule
 rules:
   - apiGroups: [""]
@@ -12,38 +12,38 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: thule-ui-role-binding
+  name: thule-ui-service-role-binding
   namespace: thule
 roleRef:
   kind: ClusterRole
-  name: thule-ui-pod-reader
+  name: thule-ui-service-pod-reader
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
-    name: thule-ui-account
+    name: thule-ui-service-account
     namespace: thule
 ---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: thule-ui
+  name: thule-ui-service
   namespace: thule
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: thule-ui
+      app: thule-ui-service
       namespace: thule
   template:
     metadata:
       labels:
-        app: thule-ui
+        app: thule-ui-service
         namespace: thule
     spec:
-      serviceAccountName: thule-ui-account
+      serviceAccountName: thule-ui-service-account
       containers:
-        - name: thule-ui
-          image: pooh:8082/thule-ui:1.0.0-SNAPSHOT
+        - name: thule-ui-service
+          image: pooh:8082/thule-ui-service:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: JDK_JAVA_OPTIONS
@@ -74,13 +74,13 @@ spec:
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2beta1
 metadata:
-  name: thule-ui-hpa
+  name: thule-ui-service-hpa
   namespace: thule
 spec:
   scaleTargetRef:
     apiVersion: extensions/v1beta1
     kind: Deployment
-    name: thule-ui
+    name: thule-ui-service
   minReplicas: 1
   maxReplicas: 4
   metrics:
@@ -96,23 +96,23 @@ metadata:
     kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/thule-ui"
-  name: thule-ui-ingress
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/thule-ui-service"
+  name: thule-ui-service-ingress
   namespace: thule
 spec:
   rules:
     - host: piglet
       http:
         paths:
-          - path: /thule-ui(/|$)(.*)
+          - path: /thule-ui-service(/|$)(.*)
             backend:
-              serviceName: thule-ui
+              serviceName: thule-ui-service
               servicePort: 80
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: thule-ui
+  name: thule-ui-service
   namespace: thule
 spec:
   type: NodePort
@@ -120,11 +120,11 @@ spec:
     - port: 80
       targetPort: 8080
   selector:
-    app: thule-ui
+    app: thule-ui-service
     namespace: thule
 ---
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  name: thule-ui-account
+  name: thule-ui-service-account
   namespace: thule

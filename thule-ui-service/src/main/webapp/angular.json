@@ -19,7 +19,7 @@
           "options": {
             "aot": true,
             "outputPath": "dist/static",
-            "baseHref": "/thule-ui/",
+            "baseHref": "/thule-ui-service/",
             "rebaseRootRelativeCssUrls": true,
             "index": "src/index.html",
             "main": "src/main.ts",

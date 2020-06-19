@@ -16,7 +16,7 @@ management:
 # Spring boot configuration
 spring:
   application:
-    name: thule-ui
+    name: thule-ui-service
   cloud:
     kubernetes:
       ribbon:
