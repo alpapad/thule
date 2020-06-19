@@ -28,7 +28,8 @@
             "rebaseRootRelativeCssUrls": true,
             "assets": [
               "src/favicon.ico",
-              { "glob": "**/*", "input": "src/assets/", "output": "/thule-ui/assets/" }
+              "src/assets",
+              { "glob": "**/*", "input": "src/assets/", "output": "./assets/" }
             ],
             "styles": [
               "./node_modules/leaflet/dist/leaflet.css",
