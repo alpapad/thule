@@ -30,7 +30,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR5")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR6")
     implementation platform("org.testcontainers:testcontainers-bom:1.14.3")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-data:${thuleSharedVersion}")
     implementation("uk.co.serin.thule:thule-spring-boot-starter-feign:${thuleSharedVersion}")
