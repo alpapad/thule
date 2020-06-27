@@ -15,7 +15,7 @@ plugins {
 //    id "org.sonarqube" version "3.0"
     id "org.springframework.boot" version "${springBootVersion}"
 }
-apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
+//apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
 
 // Standard Serin gradle plugin config
 apply from: buildscript.classLoader.getResource("uk/co/serin/gradle/scripts/build-config.gradle")
