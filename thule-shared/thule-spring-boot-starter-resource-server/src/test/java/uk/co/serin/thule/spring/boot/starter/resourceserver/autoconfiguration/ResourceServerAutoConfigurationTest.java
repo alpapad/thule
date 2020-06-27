@@ -62,7 +62,7 @@ public class ResourceServerAutoConfigurationTest {
         given(expressionInterceptUrlRegistry.antMatchers("/actuator/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.antMatchers("/docs")).willReturn(authorizedUrl);
+        given(expressionInterceptUrlRegistry.antMatchers("/docs/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/swagger-ui.html")).willReturn(authorizedUrl);
