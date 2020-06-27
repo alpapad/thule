@@ -97,7 +97,7 @@ public class ResourceServerAutoConfigurationTest {
         sut.configure(httpSecurity);
 
         // Then
-        verify(expressionInterceptUrlRegistry, times(7)).antMatchers(anyString());
+        verify(expressionInterceptUrlRegistry, times(8)).antMatchers(anyString());
     }
 
     @Test
