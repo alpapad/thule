@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import uk.co.serin.thule.resourceserver.keycloak.KeycloakUnsignedJwtDecoder;
+import uk.co.serin.thule.resourceserver.decoder.KeycloakUnsignedJwtDecoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.resourceserver.keycloak;
+package uk.co.serin.thule.resourceserver.decoder;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import uk.co.serin.thule.resourceserver.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +31,7 @@ public class KeycloakUnsignedJwtDecoderTest {
     @SuppressWarnings("unchecked")
     public void given_jwt_tokeb_value_when_decode_then_jwt_is_returned() throws MalformedURLException {
         // Given
-        var jwtTokenValue = JwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID).getTokenValue();
+        var jwtTokenValue = KeycloakJwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID).getTokenValue();
 
         // When
         var jwt = sut.decode(jwtTokenValue);

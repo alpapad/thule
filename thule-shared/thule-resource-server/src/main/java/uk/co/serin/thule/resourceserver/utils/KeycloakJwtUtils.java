@@ -25,7 +25,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class JwtUtils {
+public final class KeycloakJwtUtils {
     public static Jwt createKeycloakJwt(String userName, long userId, Collection<? extends GrantedAuthority> grantedAuthorities, String resourceId) {
         var grantedAuthoritiesWithoutRolePrefix = grantedAuthorities
                 .stream()

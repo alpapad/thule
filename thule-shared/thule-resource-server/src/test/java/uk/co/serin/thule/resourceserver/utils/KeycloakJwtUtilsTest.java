@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class JwtUtilsTest {
+public class KeycloakJwtUtilsTest {
     private static final Set<GrantedAuthority> GRANTED_AUTHORITIES = Set.of(new SimpleGrantedAuthority("ROLE_PUBLIC"));
     private static final String RESOURCE_ID = "thule-test-service";
     private static final int USER_ID = 1234567890;
@@ -36,7 +36,7 @@ public class JwtUtilsTest {
     @SuppressWarnings("unchecked")
     public void given_client_details_when_createKeycloakJwt_then_a_jwt_in_keycloak_format_is_returned() throws MalformedURLException {
         // When
-        var jwt = JwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID);
+        var jwt = KeycloakJwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID);
 
         // Then
         assertThat(jwt.getHeaders()).containsKey("kid");
@@ -62,7 +62,7 @@ public class JwtUtilsTest {
 
         // When
         var illegalStateException =
-                catchThrowableOfType(() -> ReflectionTestUtils.invokeMethod(JwtUtils.class, "createKeycloakJwt", jwt), IllegalStateException.class);
+                catchThrowableOfType(() -> ReflectionTestUtils.invokeMethod(KeycloakJwtUtils.class, "createKeycloakJwt", jwt), IllegalStateException.class);
 
         // Then
         assertThat(illegalStateException).isNotNull();
@@ -74,7 +74,7 @@ public class JwtUtilsTest {
         var invalidJwtTokenValue = "invalidjwttokenvalue";
 
         // When
-        var illegalStateException = catchThrowableOfType(() -> JwtUtils.createKeycloakJwt(invalidJwtTokenValue), IllegalStateException.class);
+        var illegalStateException = catchThrowableOfType(() -> KeycloakJwtUtils.createKeycloakJwt(invalidJwtTokenValue), IllegalStateException.class);
 
         // Then
         assertThat(illegalStateException).isNotNull();
@@ -84,10 +84,10 @@ public class JwtUtilsTest {
     @SuppressWarnings("unchecked")
     public void given_jwt_token_value_when_createKeycloakJwt_then_a_jwt_in_keycloak_format_is_returned() throws MalformedURLException {
         // Given
-        var jwtTokenValue = JwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID).getTokenValue();
+        var jwtTokenValue = KeycloakJwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, RESOURCE_ID).getTokenValue();
 
         // When
-        var jwt = JwtUtils.createKeycloakJwt(jwtTokenValue);
+        var jwt = KeycloakJwtUtils.createKeycloakJwt(jwtTokenValue);
 
         // Then
         assertThat(jwt.getHeaders()).containsKey("kid");

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.resourceserver.keycloak;
+package uk.co.serin.thule.resourceserver.converter;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
+
+import uk.co.serin.thule.resourceserver.converter.KeycloakResourceRoleConverter;
 
 import java.util.List;
 import java.util.Map;

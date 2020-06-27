@@ -1,9 +1,11 @@
-package uk.co.serin.thule.resourceserver.keycloak;
+package uk.co.serin.thule.resourceserver.converter;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import uk.co.serin.thule.resourceserver.converter.KeycloakSubjectClaimConverter;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package uk.co.serin.thule.resourceserver.keycloak;
+package uk.co.serin.thule.resourceserver.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.MappedJwtClaimSetConverter;

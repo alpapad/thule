@@ -1,15 +1,16 @@
-package uk.co.serin.thule.resourceserver.keycloak;
+package uk.co.serin.thule.resourceserver.decoder;
 
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
-import uk.co.serin.thule.resourceserver.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.converter.KeycloakSubjectClaimConverter;
+import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 
 public class KeycloakUnsignedJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) {
         // Create raw keycloak Jwt
-        var keycloakJwt = JwtUtils.createKeycloakJwt(token);
+        var keycloakJwt = KeycloakJwtUtils.createKeycloakJwt(token);
         // Create adapter to convert keycloak username claim to the OAUth2 standard expected by Spring Security
         var keycloakSubjectClaimAdapter = new KeycloakSubjectClaimConverter();
 

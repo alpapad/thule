@@ -12,7 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import uk.co.serin.thule.resourceserver.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 import uk.co.serin.thule.spring.boot.starter.resourceserver.testservice.Application;
 
 import java.util.Set;
@@ -55,7 +55,7 @@ public class ResourceServerAutoConfigurationIntTest {
     @Test
     public void when_authenticated_then_access_should_be_granted() {
         // Given
-        var jwt = JwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, "thule-test-service");
+        var jwt = KeycloakJwtUtils.createKeycloakJwt(USER_NAME, USER_ID, GRANTED_AUTHORITIES, "thule-test-service");
 
         // When
         webTestClient.get().uri("/hello")

@@ -15,9 +15,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
-import uk.co.serin.thule.resourceserver.keycloak.KeycloakResourceRoleConverter;
-import uk.co.serin.thule.resourceserver.keycloak.KeycloakSubjectClaimConverter;
-import uk.co.serin.thule.resourceserver.keycloak.KeycloakUnsignedJwtDecoder;
+import uk.co.serin.thule.resourceserver.converter.KeycloakResourceRoleConverter;
+import uk.co.serin.thule.resourceserver.converter.KeycloakSubjectClaimConverter;
+import uk.co.serin.thule.resourceserver.decoder.KeycloakUnsignedJwtDecoder;
 
 import lombok.Generated;
 
