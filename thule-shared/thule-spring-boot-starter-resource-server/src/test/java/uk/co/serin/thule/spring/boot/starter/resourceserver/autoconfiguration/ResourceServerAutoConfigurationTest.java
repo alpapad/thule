@@ -71,6 +71,9 @@ public class ResourceServerAutoConfigurationTest {
         given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+        given(expressionInterceptUrlRegistry.antMatchers("/webjars/**")).willReturn(authorizedUrl);
+
+        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.authenticated()).willReturn(expressionInterceptUrlRegistry);
@@ -88,7 +91,7 @@ public class ResourceServerAutoConfigurationTest {
         sut.configure(httpSecurity);
 
         // Then
-        verify(expressionInterceptUrlRegistry, times(5)).antMatchers(anyString());
+        verify(expressionInterceptUrlRegistry, times(6)).antMatchers(anyString());
     }
 
     @Test
