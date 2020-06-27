@@ -9,7 +9,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import uk.co.serin.thule.email.domain.model.Attachment;
 import uk.co.serin.thule.email.domain.model.Email;
-import uk.co.serin.thule.resourceserver.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -25,7 +25,7 @@ public class EmailContractTest extends ContractBaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        var jwt = JwtUtils.createKeycloakJwt("username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId");
+        var jwt = KeycloakJwtUtils.createKeycloakJwt("username", 0, Set.of(new SimpleGrantedAuthority("grantedAuthority")), "clientId");
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();
     }
 

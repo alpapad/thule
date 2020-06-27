@@ -23,7 +23,7 @@ import uk.co.serin.thule.people.domain.model.email.Email;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
 import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.people.repository.repositories.StateRepository;
-import uk.co.serin.thule.resourceserver.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
 import java.time.LocalDate;
@@ -57,7 +57,7 @@ public class PeopleContractTest extends ContractBaseTest {
 
     @BeforeEach
     public void beforeEach() {
-        var jwt = JwtUtils.createKeycloakJwt(MOCK_USERS_NAME, 0, AuthorityUtils.createAuthorityList("grantedAuthority"), "clientId");
+        var jwt = KeycloakJwtUtils.createKeycloakJwt(MOCK_USERS_NAME, 0, AuthorityUtils.createAuthorityList("grantedAuthority"), "clientId");
         webTestClient = webTestClient.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()).build();
     }
 

@@ -19,7 +19,7 @@ import org.springframework.util.SocketUtils;
 import uk.co.serin.thule.authentication.KeycloakBaseIntTest;
 import uk.co.serin.thule.authentication.feign.testservice.Application;
 import uk.co.serin.thule.authentication.feign.testservice.TestFeignClient;
-import uk.co.serin.thule.resourceserver.utils.JwtUtils;
+import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,7 +73,7 @@ public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
                 getKeycloakRepository().getJwtFromKeycloakForService(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
 
         // Convert JWT from keycloak into a spring security Jwt object
-        var jwt = JwtUtils.createKeycloakJwt(jwtTokenValue);
+        var jwt = KeycloakJwtUtils.createKeycloakJwt(jwtTokenValue);
 
         // Create OAuth2Authentication
         var jwtAuthenticationToken = new JwtAuthenticationToken(jwt);
