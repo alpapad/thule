@@ -82,7 +82,7 @@ public class ResourceServerAutoConfigurationTest {
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/**")).willReturn(authorizedUrl);
 
-        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+        given(authorizedUrl.authenticated()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.and()).willReturn(httpSecurity);
 
         given(httpSecurity.oauth2ResourceServer()).willReturn(oAuth2ResourceServerConfigurer);
