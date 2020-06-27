@@ -56,7 +56,7 @@ public class ResourceServerAutoConfiguration extends WebSecurityConfigurerAdapte
                     .authorizeRequests() // specify requests that are authorised
                     .antMatchers("/actuator/**").permitAll() // allow actuator endpoints, even if not authenticated
                     .antMatchers("/docs/**").permitAll() // allow rest docs, even if not authenticated
-                    .antMatchers("/v2/api-docs").permitAll() // allow swagger docs, even if not authenticated
+                    .antMatchers("/v2/api-docs/**").permitAll() // allow swagger docs, even if not authenticated
                     .antMatchers("/**").authenticated().and() // everything else must be authenticated
                     .oauth2ResourceServer().jwt() // configure oauth2 resource server using JWTs
                     .jwtAuthenticationConverter(jwtAuthenticationConverter()); // map keycloak roles to Spring Security granted authorities
