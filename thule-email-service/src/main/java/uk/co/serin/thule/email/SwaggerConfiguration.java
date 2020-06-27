@@ -28,6 +28,11 @@ public class SwaggerConfiguration {
     public Docket api(ServletContext servletContext) {
         return new Docket(DocumentationType.SWAGGER_2).pathProvider(new RelativePathProvider(servletContext) {
             @Override
+            protected String getDocumentationPath() {
+                return super.getDocumentationPath() + "/swagger";
+            }
+
+            @Override
             public String getApplicationBasePath() {
                 return super.getApplicationBasePath() + "/swagger";
             }
