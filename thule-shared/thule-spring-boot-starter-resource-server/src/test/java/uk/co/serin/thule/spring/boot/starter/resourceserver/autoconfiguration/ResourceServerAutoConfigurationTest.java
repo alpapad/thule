@@ -65,16 +65,19 @@ public class ResourceServerAutoConfigurationTest {
         given(expressionInterceptUrlRegistry.antMatchers("/docs/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.antMatchers("/swagger-ui.html")).willReturn(authorizedUrl);
+        given(expressionInterceptUrlRegistry.antMatchers("/swagger/**")).willReturn(authorizedUrl);
 
-        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.antMatchers("/swagger-resources/**")).willReturn(authorizedUrl);
-
-        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs/**")).willReturn(authorizedUrl);
-
-        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.antMatchers("/webjars/**")).willReturn(authorizedUrl);
+//        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+//        given(expressionInterceptUrlRegistry.antMatchers("/swagger-ui.html")).willReturn(authorizedUrl);
+//
+//        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+//        given(expressionInterceptUrlRegistry.antMatchers("/swagger-resources/**")).willReturn(authorizedUrl);
+//
+//        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+//        given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs/**")).willReturn(authorizedUrl);
+//
+//        given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
+//        given(expressionInterceptUrlRegistry.antMatchers("/webjars/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/**")).willReturn(authorizedUrl);
@@ -94,7 +97,7 @@ public class ResourceServerAutoConfigurationTest {
         sut.configure(httpSecurity);
 
         // Then
-        verify(expressionInterceptUrlRegistry, times(7)).antMatchers(anyString());
+        verify(expressionInterceptUrlRegistry, times(4)).antMatchers(anyString());
     }
 
     @Test
