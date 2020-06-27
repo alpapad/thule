@@ -8,11 +8,11 @@ buildscript {
 // Plugins
 plugins {
     id "com.github.ben-manes.versions" version "0.28.0"
-    id "jacoco"
+//    id "jacoco"
     id "java"
     id "maven-publish"
     id "org.asciidoctor.convert" version "2.4.0"
-    id "org.sonarqube" version "3.0"
+//    id "org.sonarqube" version "3.0"
     id "org.springframework.boot" version "${springBootVersion}"
 }
 apply plugin: "uk.co.serin.gradle.plugins.sonarqube-build-breaker"
