@@ -29,7 +29,7 @@ public class ApplicationConfigurer {
         // Require authentication for all requests
         http.authorizeExchange().anyExchange().authenticated();
 
-        // Allow allow frames
+        // Allow frames
         http.headers().frameOptions().mode(XFrameOptionsServerHttpHeadersWriter.Mode.SAMEORIGIN);
 
         // Disable CSRF in the gateway to prevent conflicts with proxied service CSRF
