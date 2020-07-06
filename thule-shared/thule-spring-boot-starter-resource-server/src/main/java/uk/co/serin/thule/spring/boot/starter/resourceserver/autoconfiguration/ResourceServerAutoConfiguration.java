@@ -22,6 +22,7 @@ import uk.co.serin.thule.resourceserver.decoder.KeycloakUnsignedJwtDecoder;
 import lombok.Generated;
 
 @AutoConfigureBefore(OAuth2ResourceServerAutoConfiguration.class)
+@ConditionalOnProperty(name = "thule.shared.oauth2.resourceserver.enabled", matchIfMissing = true)
 @Configuration
 @EnableWebSecurity
 @Order(99)
