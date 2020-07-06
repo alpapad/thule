@@ -82,6 +82,7 @@ spec:
         - ip: 192.168.0.104
           hostnames:
             - piglet
+            - piglet-secure
 ---
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2beta1
@@ -128,7 +129,7 @@ metadata:
     kubernetes.io/ingress.allow-http: "false"
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/thule-gateway-service-secure"
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/thule-gateway-service"
   name: thule-gateway-service-ingress-secure
   namespace: thule
 spec:
@@ -136,7 +137,7 @@ spec:
     - host: piglet-secure
       http:
         paths:
-          - path: /thule-gateway-service-secure(/|$)(.*)
+          - path: /thule-gateway-service(/|$)(.*)
             backend:
               serviceName: thule-gateway-service
               servicePort: 80
