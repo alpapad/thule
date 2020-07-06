@@ -1,6 +1,7 @@
 package uk.co.serin.thule.spring.boot.starter.resourceserver.autoconfiguration;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration;
@@ -22,7 +23,6 @@ import uk.co.serin.thule.resourceserver.decoder.KeycloakUnsignedJwtDecoder;
 import lombok.Generated;
 
 @AutoConfigureBefore(OAuth2ResourceServerAutoConfiguration.class)
-@ConditionalOnProperty(name = "thule.shared.oauth2.resourceserver.enabled", matchIfMissing = true)
 @Configuration
 @EnableWebSecurity
 @Order(99)
