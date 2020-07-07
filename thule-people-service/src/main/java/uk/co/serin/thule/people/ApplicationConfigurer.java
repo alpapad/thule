@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @EnableFeignJwtClients
 @EnableJpaAuditing
 @EnableJpaRepositories(repositoryBaseClass = ThuleJpaRepository.class)
+@Generated
 @NoArgsConstructor
 @SuppressWarnings("squid:S1118") // Suppress Utility classes should not have public constructors
 public class ApplicationConfigurer {
@@ -30,7 +31,6 @@ public class ApplicationConfigurer {
     }
 
     @Bean
-    @Generated
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
