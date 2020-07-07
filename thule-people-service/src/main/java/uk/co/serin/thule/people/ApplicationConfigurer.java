@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.co.serin.thule.feign.EnableFeignJwtClients;
 import uk.co.serin.thule.people.repository.support.ThuleJpaRepository;
 
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Configuration
@@ -29,6 +30,7 @@ public class ApplicationConfigurer {
     }
 
     @Bean
+    @Generated
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
