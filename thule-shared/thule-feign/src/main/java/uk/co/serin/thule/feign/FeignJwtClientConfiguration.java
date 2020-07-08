@@ -1,7 +1,6 @@
 package uk.co.serin.thule.feign;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -12,7 +11,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
 
-@ConditionalOnProperty(name = "thule.shared.oauth2.resourceserver.enabled", matchIfMissing = true)
 public class FeignJwtClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
