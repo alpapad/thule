@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.Map;
 
 @Testcontainers
-class KeycloakBaseIntTest {
+public class KeycloakBaseIntTest {
     protected static final String JOHN_DOE_PASSWORD = "password";
     protected static final String JOHN_DOE_USERNAME = "john.doe@serin-consultancy.co.uk";
     protected static final String THULE_TEST_SERVICE_CLIENT_ID = "thule-test-service";
