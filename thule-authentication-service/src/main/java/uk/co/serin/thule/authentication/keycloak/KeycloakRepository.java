@@ -31,7 +31,7 @@ public class KeycloakRepository {
 
     public void createPublicClient(String clientId) {
         var adminUrl = adminRealmsPath + "/clients";
-        var redirectUri = keycloakBaseUrl.getScheme() + "://" + keycloakBaseUrl.getAuthority() + "/*";
+        var redirectUri = "https://" + keycloakBaseUrl.getAuthority() + "/*";
 
         // Delete
         var clients = webClientWithAdminBearerAuth.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
@@ -80,7 +80,7 @@ public class KeycloakRepository {
 
     public void createServiceClient(String clientId) {
         var adminUrl = adminRealmsPath + "/clients";
-        var redirectUri = keycloakBaseUrl.getScheme() + "://" + keycloakBaseUrl.getAuthority() + "/*";
+        var redirectUri = "https://" + keycloakBaseUrl.getAuthority() + "/*";
 
         // Delete
         var clients = webClientWithAdminBearerAuth.get().uri(adminUrl + "?clientId={clientId}", clientId).retrieve().bodyToMono(Map[].class).block();
