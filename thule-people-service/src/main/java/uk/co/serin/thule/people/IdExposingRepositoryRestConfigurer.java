@@ -1,10 +1,10 @@
 package uk.co.serin.thule.people;
 
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.stereotype.Service;
 
 import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import uk.co.serin.thule.utils.utils.ClassUtils;
@@ -12,7 +12,7 @@ import uk.co.serin.thule.utils.utils.ClassUtils;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 
-@Configuration
+@Service
 public class IdExposingRepositoryRestConfigurer implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
