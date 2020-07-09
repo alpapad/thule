@@ -120,6 +120,10 @@ spec:
             backend:
               serviceName: thule-gateway-service
               servicePort: 80
+  tls:
+    - hosts:
+        - piglet
+      secretName: thule-application-secrets
 ---
 kind: Service
 apiVersion: v1
