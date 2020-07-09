@@ -24,7 +24,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @Testcontainers
 @SpringBootTest
-public class GatewayDockerTest {
+class GatewayDockerTest {
     private static final String MOCK_SERVER_ALIAS = "mockserver";
     @Container
     private static final MockServerContainer mockserver = createMockServerContainer();
@@ -58,7 +58,7 @@ public class GatewayDockerTest {
     }
 
     @Test
-    public void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
+    void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("%s/actuator/health", baseUrl));
 
@@ -71,7 +71,7 @@ public class GatewayDockerTest {
     }
 
     @Test
-    public void given_docker_container_has_been_started_when_retrieving_actuator_info_then_it_shows_correct_microservice_is_in_docker_container() {
+    void given_docker_container_has_been_started_when_retrieving_actuator_info_then_it_shows_correct_microservice_is_in_docker_container() {
         // When
         WebTestClient
                 .bindToServer().baseUrl(baseUrl).build()

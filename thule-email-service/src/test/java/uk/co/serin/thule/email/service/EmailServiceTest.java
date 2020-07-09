@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailServiceTest {
+class EmailServiceTest {
     @InjectMocks
     private EmailService emailService;
     @Mock
@@ -36,7 +36,7 @@ public class EmailServiceTest {
     private MimeMessage mimeMessage;
 
     @Test
-    public void given_an_exception_when_sending_an_email_then_a_email_service_exception_is_thrown() {
+    void given_an_exception_when_sending_an_email_then_a_email_service_exception_is_thrown() {
         // Given
         var expectedEmail =
                 Email.builder().body("This is the content").from("from@test.co.uk").subject("This is a test email").tos(Set.of("to@test.co.uk"))
@@ -53,7 +53,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_with_all_fields_set_then_an_email_is_sent_and_returned() throws ExecutionException, InterruptedException {
+    void when_sending_an_email_with_all_fields_set_then_an_email_is_sent_and_returned() throws ExecutionException, InterruptedException {
         // Given
         var attachments = Set.of(Attachment.builder().content("This is a test attachment").label("test-attachment.txt").build());
         var expectedEmail = Email.builder().attachments(attachments).bccs(Set.of("bcc@test.co.uk")).body("This is a test body")
@@ -71,7 +71,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_with_only_bcc_then_an_email_is_sent() throws ExecutionException, InterruptedException {
+    void when_sending_an_email_with_only_bcc_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         var expectedEmail = Email.builder().bccs(Set.of("bcc@test.co.uk")).body("This is the content").from("from@test.co.uk")
                                  .subject("This is a test email").build();
@@ -87,7 +87,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_without_a_from_then_an_email_is_sent() throws ExecutionException, InterruptedException {
+    void when_sending_an_email_without_a_from_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         var expectedEmail = Email.builder().body("This is the content").subject("This is a test email").tos(Set.of("to@test.co.uk")).build();
 
@@ -102,7 +102,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
+    void when_sending_an_email_without_any_recipients_then_a_validation_exception_is_thrown() {
         // Given
         var email = Email.builder().body("This is the content").from("from@test.co.uk").subject("This is a test email").build();
 
@@ -114,7 +114,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_without_bccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
+    void when_sending_an_email_without_bccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         var expectedEmail =
                 Email.builder().body("This is the content").ccs(Set.of("cc@test.co.uk")).from("from@test.co.uk").subject("This is a test email")
@@ -131,7 +131,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_without_ccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
+    void when_sending_an_email_without_ccs_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         var expectedEmail = Email.builder().bccs(Set.of("bcc@test.co.uk")).body("This is the content").from("from@test.co.uk")
                                  .subject("This is a test email").tos(Set.of("to@test.co.uk")).build();
@@ -147,7 +147,7 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void when_sending_an_email_without_tos_then_an_email_is_sent() throws ExecutionException, InterruptedException {
+    void when_sending_an_email_without_tos_then_an_email_is_sent() throws ExecutionException, InterruptedException {
         // Given
         var expectedEmail =
                 Email.builder().bccs(Set.of("bcc@test.co.uk")).body("This is the content").ccs(Set.of("cc@test.co.uk"))

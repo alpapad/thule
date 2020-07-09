@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class KeycloakRepositoryTest {
+class KeycloakRepositoryTest {
     protected static final String TEST_CLIENT_SECRET = "test-client-secret";
     private static final String TEST_CLIENT_ID = "thule-test-service";
     private static final String TEST_FIRST_NAME = "test-first-name";
@@ -47,7 +47,7 @@ public class KeycloakRepositoryTest {
     private WebClient webClient;
 
     @Test
-    public void given_a_clientid_when_creating_a_public_client_then_keycloak_post_clients_is_executed() throws JsonProcessingException {
+    void given_a_clientid_when_creating_a_public_client_then_keycloak_post_clients_is_executed() throws JsonProcessingException {
         // Given
         var clients = new Map[]{Map.of("id", TEST_CLIENT_ID)};
         var responseBody = objectMapper.writeValueAsString(clients);
@@ -86,7 +86,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_a_clientid_when_creating_a_service_client_then_keycloak_post_clients_is_executed() throws JsonProcessingException {
+    void given_a_clientid_when_creating_a_service_client_then_keycloak_post_clients_is_executed() throws JsonProcessingException {
         // Given
         var clients = new Map[]{Map.of("id", TEST_CLIENT_ID)};
         var responseBody = objectMapper.writeValueAsString(clients);
@@ -103,7 +103,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_a_clientid_when_getting_a_client_secret_then_a_client_secret_is_returned() throws JsonProcessingException {
+    void given_a_clientid_when_getting_a_client_secret_then_a_client_secret_is_returned() throws JsonProcessingException {
         // Given
         var clientSecret = Map.of("value", TEST_CLIENT_SECRET);
         var responseBody = objectMapper.writeValueAsString(clientSecret);
@@ -119,7 +119,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_a_realm_name_when_creating_a_realm_then_keycloak_post_realms_is_executed() throws JsonProcessingException {
+    void given_a_realm_name_when_creating_a_realm_then_keycloak_post_realms_is_executed() throws JsonProcessingException {
         // Given
         ReflectionTestUtils.setField(sut, "realmName", TEST_REALM);
         var realms = new Map[]{Map.of("realm", TEST_REALM)};
@@ -136,7 +136,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_a_role_name_and_clientid_when_creating_a_role_for_client_then_keycloak_post_roles_is_executed() throws JsonProcessingException {
+    void given_a_role_name_and_clientid_when_creating_a_role_for_client_then_keycloak_post_roles_is_executed() throws JsonProcessingException {
         // Given
         var roles = new Map[]{Map.of("name", TEST_ROLE)};
         var responseBody = objectMapper.writeValueAsString(roles);
@@ -152,7 +152,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_client_id_and_secret_when_getJwtFromKeycloakForService_then_a_jwt_is_returned() throws JsonProcessingException {
+    void given_client_id_and_secret_when_getJwtFromKeycloakForService_then_a_jwt_is_returned() throws JsonProcessingException {
         // Given
         var role = Map.of("access_token", TEST_JWT);
         var responseBody = objectMapper.writeValueAsString(role);
@@ -168,7 +168,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_user_details_when_creating_a_user_then_keycloak_post_users_is_executed() throws JsonProcessingException {
+    void given_user_details_when_creating_a_user_then_keycloak_post_users_is_executed() throws JsonProcessingException {
         // Given
         var users = new Map[]{Map.of("username", TEST_USERNAME)};
         var responseBody = objectMapper.writeValueAsString(users);
@@ -184,7 +184,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_user_details_when_getJwtFromKeycloakForUser_then_a_jwt_is_returned() throws JsonProcessingException {
+    void given_user_details_when_getJwtFromKeycloakForUser_then_a_jwt_is_returned() throws JsonProcessingException {
         // Given
         var role = Map.of("access_token", TEST_JWT);
         var responseBody = objectMapper.writeValueAsString(role);
@@ -200,7 +200,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void given_user_role_details_when_creating_a_role_mapping_then_keycloak_post_roles_is_executed() throws JsonProcessingException {
+    void given_user_role_details_when_creating_a_role_mapping_then_keycloak_post_roles_is_executed() throws JsonProcessingException {
         // Given
         var role = Map.of("username", TEST_USERNAME);
         var responseBody = objectMapper.writeValueAsString(role);
@@ -216,7 +216,7 @@ public class KeycloakRepositoryTest {
     }
 
     @Test
-    public void when_initializing_then_keycloak_post_token_is_executed() throws JsonProcessingException {
+    void when_initializing_then_keycloak_post_token_is_executed() throws JsonProcessingException {
         // Given
         given(keycloakProperties.getAdmin()).willReturn(admin);
 

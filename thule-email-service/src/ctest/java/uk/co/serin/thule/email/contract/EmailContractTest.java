@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import static org.awaitility.Awaitility.await;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class EmailContractTest extends ContractBaseTest {
+class EmailContractTest extends ContractBaseTest {
     @Autowired
     private WebTestClient webTestClient;
 
@@ -30,7 +30,7 @@ public class EmailContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
+    void given_an_smtp_server_that_is_down_when_sending_an_email_then_response_should_be_accepted() {
         // Given
         var attachments = Set.of(Attachment.builder().content("This is another test attachment").label("test-attachment.txt").build());
         var email = Email.builder().attachments(attachments).bccs(Set.of("bcc@test.co.uk")).body("This is another test body")
@@ -46,7 +46,7 @@ public class EmailContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_sending_an_email_then_the_email_is_sent_by_the_smtp_server() {
+    void when_sending_an_email_then_the_email_is_sent_by_the_smtp_server() {
         // Given
         startEmbeddedSmtpServer();
 

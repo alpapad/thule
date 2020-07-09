@@ -14,7 +14,7 @@ import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class FeignJwtClientConfigurationTest {
+class FeignJwtClientConfigurationTest {
     @Mock
     private ClientRegistrationRepository clientRegistrationRepository;
     @Mock
@@ -27,7 +27,7 @@ public class FeignJwtClientConfigurationTest {
     private FeignJwtClientConfiguration sut;
 
     @Test
-    public void when_bearerAuthFeignRequestInterceptor_then_an_instance_is_instantiated() {
+    void when_bearerAuthFeignRequestInterceptor_then_an_instance_is_instantiated() {
         // When
         var bearerAuthFeignRequestInterceptor =
                 sut.bearerAuthFeignRequestInterceptor(delegatingSecurityContextHolder, oAuth2AuthorizedClientManager);
@@ -37,7 +37,7 @@ public class FeignJwtClientConfigurationTest {
     }
 
     @Test
-    public void when_oAuth2AuthorizedClientManager_then_an_instance_is_instantiated() {
+    void when_oAuth2AuthorizedClientManager_then_an_instance_is_instantiated() {
         // When
         var oAuth2AuthorizedClientManager = sut.oAuth2AuthorizedClientManager(clientRegistrationRepository, oAuth2AuthorizedClientService);
 

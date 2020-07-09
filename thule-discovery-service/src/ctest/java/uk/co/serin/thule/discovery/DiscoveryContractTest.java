@@ -10,12 +10,12 @@ import static org.awaitility.Awaitility.given;
 import static org.awaitility.pollinterval.FixedPollInterval.fixed;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class DiscoveryContractTest extends ContractBaseTest {
+class DiscoveryContractTest extends ContractBaseTest {
     @Autowired
     private DiscoveryClient discoveryClient;
 
     @Test
-    public void given_a_registered_service_when_retrieving_that_service_then_it_is_found() {
+    void given_a_registered_service_when_retrieving_that_service_then_it_is_found() {
         // Given
         given().ignoreExceptions().pollInterval(fixed(Duration.ofSeconds(5))).
                 await().timeout(Duration.ofMinutes(5)).

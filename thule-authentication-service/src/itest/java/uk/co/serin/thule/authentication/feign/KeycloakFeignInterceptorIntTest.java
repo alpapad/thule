@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles({"itest", "itest-feign"})
 @ContextConfiguration(initializers = KeycloakFeignInterceptorIntTest.RandomPortInitializer.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
+class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
     @Autowired
     private TestFeignClient testFeignClient;
 
@@ -53,7 +53,7 @@ public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
     }
 
     @Test
-    public void given_a_jwt_in_security_context_when_invoking_a_remote_service_via_a_feign_client_then_the_service_should_execute_successfully() {
+    void given_a_jwt_in_security_context_when_invoking_a_remote_service_via_a_feign_client_then_the_service_should_execute_successfully() {
         // Given
         insertJwtIntoTheSecurityContext();
 
@@ -83,7 +83,7 @@ public class KeycloakFeignInterceptorIntTest extends KeycloakBaseIntTest {
     }
 
     @Test
-    public void given_no_jwt_in_security_context_when_invoking_a_remote_service_via_a_feign_client_then_the_service_should_execute_successfully() {
+    void given_no_jwt_in_security_context_when_invoking_a_remote_service_via_a_feign_client_then_the_service_should_execute_successfully() {
         // Given
         SecurityContextHolder.clearContext();
 

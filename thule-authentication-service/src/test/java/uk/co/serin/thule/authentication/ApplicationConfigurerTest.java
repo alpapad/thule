@@ -11,14 +11,14 @@ import uk.co.serin.thule.authentication.keycloak.KeycloakProperties;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class ApplicationConfigurerTest {
+class ApplicationConfigurerTest {
     @Mock
     private KeycloakProperties keycloakProperties;
     @InjectMocks
     private ApplicationConfigurer sut;
 
     @Test
-    public void when_creating_classLoaderTemplateResolver_then_an_instance_is_created() {
+    void when_creating_classLoaderTemplateResolver_then_an_instance_is_created() {
         // When
         var classLoaderTemplateResolver = sut.classLoaderTemplateResolver();
 
@@ -27,7 +27,7 @@ public class ApplicationConfigurerTest {
     }
 
     @Test
-    public void when_creating_keycloakRepository_then_an_instance_is_created() {
+    void when_creating_keycloakRepository_then_an_instance_is_created() {
         // When
         var keycloakRepository = sut.keycloakRepository(keycloakProperties);
 

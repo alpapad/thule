@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class KubernetesServicePathServiceInstanceConverterTest {
+class KubernetesServicePathServiceInstanceConverterTest {
     protected static final String LOCALHOST_URI = "http://localhost";
     @Mock
     private ServiceInstance serviceInstance;
@@ -22,7 +22,7 @@ public class KubernetesServicePathServiceInstanceConverterTest {
     private KubernetesServicePathServiceInstanceConverter sut;
 
     @Test
-    public void given_a_service_path_metadata_when_getServiceUrl_then_required_service_url_is_returned() {
+    void given_a_service_path_metadata_when_getServiceUrl_then_required_service_url_is_returned() {
         // Given
         var expectedUri = URI.create(LOCALHOST_URI + "/thule-test-service");
 
@@ -37,7 +37,7 @@ public class KubernetesServicePathServiceInstanceConverterTest {
     }
 
     @Test
-    public void given_no_service_path_metadata_when_getServiceUrl_then_default_service_url_is_returned() {
+    void given_no_service_path_metadata_when_getServiceUrl_then_default_service_url_is_returned() {
         // Given
         var expectedUri = URI.create(LOCALHOST_URI);
 

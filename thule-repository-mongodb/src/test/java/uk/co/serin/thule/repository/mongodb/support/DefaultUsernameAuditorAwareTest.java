@@ -8,12 +8,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultUsernameAuditorAwareTest {
+class DefaultUsernameAuditorAwareTest {
     @InjectMocks
     private DefaultUsernameAuditorAware randomUsernameAuditorAware;
 
     @Test
-    public void getCurrentAuditorReturnsAnAuditor() {
+    void getCurrentAuditorReturnsAnAuditor() {
         // When
         var currentAuditor = randomUsernameAuditorAware.getCurrentAuditor();
 

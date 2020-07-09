@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class KeycloakResourceRoleConverterTest {
+class KeycloakResourceRoleConverterTest {
     public static final String RESOURCE_ID = "thule-test-service";
     @Mock
     private Environment environment;
@@ -28,7 +28,7 @@ public class KeycloakResourceRoleConverterTest {
     private KeycloakResourceRoleConverter sut;
 
     @Test
-    public void given_jwt_with_no_claims_when_convert_jwt_then_empty_granted_authorities_are_returned() {
+    void given_jwt_with_no_claims_when_convert_jwt_then_empty_granted_authorities_are_returned() {
         // Given
         given(jwt.getClaims()).willReturn(null);
 
@@ -40,7 +40,7 @@ public class KeycloakResourceRoleConverterTest {
     }
 
     @Test
-    public void given_jwt_with_no_roles_when_convert_jwt_then_empty_granted_authorities_are_returned() {
+    void given_jwt_with_no_roles_when_convert_jwt_then_empty_granted_authorities_are_returned() {
         // Given
         var claims = Map.<String, Object>of();
 
@@ -56,7 +56,7 @@ public class KeycloakResourceRoleConverterTest {
     }
 
     @Test
-    public void given_jwt_with_realm_level_roles_when_convert_jwt_then_empty_granted_authorities_are_returned() {
+    void given_jwt_with_realm_level_roles_when_convert_jwt_then_empty_granted_authorities_are_returned() {
         // Given
         var realmAccess = Map.<String, Object>of("roles", List.of("PUBLIC"));
         var claims = Map.<String, Object>of("realm_access", realmAccess);
@@ -73,7 +73,7 @@ public class KeycloakResourceRoleConverterTest {
     }
 
     @Test
-    public void given_jwt_with_resource_level_roles_for_required_resource_when_convert_jwt_then_granted_authorities_are_returned() {
+    void given_jwt_with_resource_level_roles_for_required_resource_when_convert_jwt_then_granted_authorities_are_returned() {
         // Given
         var roles = Map.of("roles", List.of("PUBLIC"));
         var resourceAccess = Map.<String, Object>of(RESOURCE_ID, roles);
@@ -91,7 +91,7 @@ public class KeycloakResourceRoleConverterTest {
     }
 
     @Test
-    public void given_jwt_with_resource_level_roles_for_unrequired_resource_when_convert_jwt_then_empty_granted_authorities_are_returned() {
+    void given_jwt_with_resource_level_roles_for_unrequired_resource_when_convert_jwt_then_empty_granted_authorities_are_returned() {
         // Given
         var roles = Map.of("roles", List.of("PUBLIC"));
         var resourceAccess = Map.<String, Object>of("another-resource", roles);

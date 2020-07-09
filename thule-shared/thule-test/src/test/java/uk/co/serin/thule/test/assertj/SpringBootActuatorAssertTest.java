@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class SpringBootActuatorAssertTest {
+class SpringBootActuatorAssertTest {
     private ActuatorUri actuatorUri = ActuatorUri.using("http://localhost");
     @Mock
     private ResponseEntity<Map<String, Object>> responseEntity;
@@ -43,7 +43,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void given_down_health_status_when_expecting_up_health_status_then_assertion_error_contains_health_status_is_down_message() {
+    void given_down_health_status_when_expecting_up_health_status_then_assertion_error_contains_health_status_is_down_message() {
         // Given
         given(restTemplate.exchange(actuatorUri.getUri(), HttpMethod.GET, HttpEntity.EMPTY, responseType)).willReturn(responseEntity);
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.OK);
@@ -57,7 +57,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void given_not_found_http_status_when_expecting_ok_http_status_then_assertion_error_contains_404_message() {
+    void given_not_found_http_status_when_expecting_ok_http_status_then_assertion_error_contains_404_message() {
         // Given
         given(restTemplate.exchange(actuatorUri.getUri(), HttpMethod.GET, HttpEntity.EMPTY, responseType)).willReturn(responseEntity);
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.NOT_FOUND);
@@ -70,7 +70,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void given_ok_http_status_when_expecting_ok_http_status_then_same_of_sut_is_returned() {
+    void given_ok_http_status_when_expecting_ok_http_status_then_same_of_sut_is_returned() {
         // Given
         given(restTemplate.exchange(actuatorUri.getUri(), HttpMethod.GET, HttpEntity.EMPTY, responseType)).willReturn(responseEntity);
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.OK);
@@ -83,7 +83,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void given_service_unavailable_http_status_when_expecting_up_health_status_then_assertion_error_contains_404_message() {
+    void given_service_unavailable_http_status_when_expecting_up_health_status_then_assertion_error_contains_404_message() {
         // Given
         retryTemplate.setRetryPolicy(new NeverRetryPolicy());
         ReflectionTestUtils.setField(sut, "retryTemplate", retryTemplate);
@@ -99,7 +99,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void given_up_health_status_when_expecting_up_health_status_then_same_of_sut_is_returned() {
+    void given_up_health_status_when_expecting_up_health_status_then_same_of_sut_is_returned() {
         // Given
         given(restTemplate.exchange(actuatorUri.getUri(), HttpMethod.GET, HttpEntity.EMPTY, responseType)).willReturn(responseEntity);
         given(responseEntity.getStatusCode()).willReturn(HttpStatus.OK);
@@ -113,7 +113,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void when_any_method_using_lombok_nonnull_annotation_in_sut_has_null_argument_then_npe_is_thrown() {
+    void when_any_method_using_lombok_nonnull_annotation_in_sut_has_null_argument_then_npe_is_thrown() {
         // When/Then
         catchThrowableOfType(() -> new SpringBootActuatorAssert(null), NullPointerException.class);
         catchThrowableOfType(() -> SpringBootActuatorAssert.assertThat(null), NullPointerException.class);
@@ -125,7 +125,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void when_static_assert_that_then_an_instance_of_sut_is_returned() {
+    void when_static_assert_that_then_an_instance_of_sut_is_returned() {
         // When
         var actualSpringBootActuatorAssert = SpringBootActuatorAssert.assertThat(actuatorUri);
 
@@ -134,7 +134,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void when_using_a_rest_template_then_same_of_sut_is_returned() {
+    void when_using_a_rest_template_then_same_of_sut_is_returned() {
         // When
         var actualSpringBootActuatorAssert = sut.usingRestTemplate(new RestTemplate());
 
@@ -143,7 +143,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void when_waiting_for_maximum_of_0_seconds_then_an_illegal_argument_exception_is_thrown() {
+    void when_waiting_for_maximum_of_0_seconds_then_an_illegal_argument_exception_is_thrown() {
         // When
         var throwable = catchThrowable(() -> sut.waitingForMaximum(Duration.ZERO));
 
@@ -152,7 +152,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void when_waiting_for_maximum_of_1_minute_then_same_of_sut_is_returned() {
+    void when_waiting_for_maximum_of_1_minute_then_same_of_sut_is_returned() {
         // When
         var actualSpringBootActuatorAssert = sut.waitingForMaximum(Duration.ofMinutes(1));
 
@@ -161,7 +161,7 @@ public class SpringBootActuatorAssertTest {
     }
 
     @Test
-    public void when_with_http_basic_then_same_of_sut_is_returned() {
+    void when_with_http_basic_then_same_of_sut_is_returned() {
         // When
         var actualSpringBootActuatorAssert = sut.withHttpBasic("username", "password");
 

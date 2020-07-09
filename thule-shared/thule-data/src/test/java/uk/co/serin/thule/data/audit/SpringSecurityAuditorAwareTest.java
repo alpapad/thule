@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class SpringSecurityAuditorAwareTest {
+class SpringSecurityAuditorAwareTest {
     @Mock
     private Authentication authentication;
     @Mock
@@ -24,7 +24,7 @@ public class SpringSecurityAuditorAwareTest {
     private SpringSecurityAuditorAware sut;
 
     @Test
-    public void given_null_authentication_when_get_current_auditor_then_return_empty() {
+    void given_null_authentication_when_get_current_auditor_then_return_empty() {
         // Given
         given(delegatingSecurityContextHolder.getAuthentication()).willReturn(null);
 
@@ -36,7 +36,7 @@ public class SpringSecurityAuditorAwareTest {
     }
 
     @Test
-    public void when_get_current_auditor_then_current_auditor_is_returned() {
+    void when_get_current_auditor_then_current_auditor_is_returned() {
         // Given
         var name = "auditor";
         given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);

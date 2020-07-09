@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class DelegatingSecurityContextHolderTest {
+class DelegatingSecurityContextHolderTest {
     @Mock
     private SecurityContext anotherSecurityContext;
     @Mock
@@ -29,7 +29,7 @@ public class DelegatingSecurityContextHolderTest {
     }
 
     @Test
-    public void given_context_is_set_when_authentication_is_retrieved_then_authentication_is_not_null() {
+    void given_context_is_set_when_authentication_is_retrieved_then_authentication_is_not_null() {
         // Given
         given(securityContext.getAuthentication()).willReturn(authentication);
         sut.setContext(securityContext);
@@ -42,7 +42,7 @@ public class DelegatingSecurityContextHolderTest {
     }
 
     @Test
-    public void when_context_is_cleared_then_authentication_is_null() {
+    void when_context_is_cleared_then_authentication_is_null() {
         // Given
         sut.setContext(securityContext);
 
@@ -55,7 +55,7 @@ public class DelegatingSecurityContextHolderTest {
     }
 
     @Test
-    public void when_context_is_created_then_authentication_is_null() {
+    void when_context_is_created_then_authentication_is_null() {
         // When
         var context = sut.createEmptyContext();
 
@@ -65,7 +65,7 @@ public class DelegatingSecurityContextHolderTest {
     }
 
     @Test
-    public void when_context_is_retrieved_then_context_authentication_details_match_initial_authentication() {
+    void when_context_is_retrieved_then_context_authentication_details_match_initial_authentication() {
         // Given
         sut.setContext(securityContext);
 
@@ -77,7 +77,7 @@ public class DelegatingSecurityContextHolderTest {
     }
 
     @Test
-    public void when_context_is_set_then_context_retrieved_is_equal_to_new_context_set() {
+    void when_context_is_set_then_context_retrieved_is_equal_to_new_context_set() {
         // Given
         sut.setContext(securityContext);
 

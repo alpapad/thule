@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class PatternJava8ValidatorTest {
+class PatternJava8ValidatorTest {
     @Mock
     private ConstraintValidatorContext constraintValidatorContext;
     @Mock
@@ -33,7 +33,7 @@ public class PatternJava8ValidatorTest {
     private CharSequence value;
 
     @Test
-    public void given_invalid_pattern_syntax_when_initialize_then_an_illegal_argument_exception_is_thrown() {
+    void given_invalid_pattern_syntax_when_initialize_then_an_illegal_argument_exception_is_thrown() {
         // Given
         given(parameters.regexp()).willThrow(new PatternSyntaxException(null, null, 0));
 
@@ -45,7 +45,7 @@ public class PatternJava8ValidatorTest {
     }
 
     @Test
-    public void given_null_value_when_checking_is_valid_then_validation_passes() {
+    void given_null_value_when_checking_is_valid_then_validation_passes() {
         // When
         var valid = patternJava8Validator.isValid(null, constraintValidatorContext);
 
@@ -54,7 +54,7 @@ public class PatternJava8ValidatorTest {
     }
 
     @Test
-    public void given_valid_value_when_checking_is_valid_then_validation_passes() {
+    void given_valid_value_when_checking_is_valid_then_validation_passes() {
         // Given
         given(pattern.matcher(value)).willReturn(matcher);
         given(matcher.matches()).willReturn(true);
@@ -67,7 +67,7 @@ public class PatternJava8ValidatorTest {
     }
 
     @Test
-    public void when_initialize_then_regular_expression_pattern_is_set() {
+    void when_initialize_then_regular_expression_pattern_is_set() {
         // Given
         given(parameters.regexp()).willReturn("Regex");
 

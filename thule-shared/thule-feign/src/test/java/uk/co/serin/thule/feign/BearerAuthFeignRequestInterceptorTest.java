@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class BearerAuthFeignRequestInterceptorTest {
+class BearerAuthFeignRequestInterceptorTest {
     public static final String JWT_TOKEN_VALUE = "tokenvalue";
     @Mock
     private Authentication authentication;
@@ -44,7 +44,7 @@ public class BearerAuthFeignRequestInterceptorTest {
     private BearerAuthFeignRequestInterceptor sut;
 
     @Test
-    public void given_an_authentication_with_a_jwt_when_getUserAuthentication_then_a_bearer_auth_header_is_added_to_the_requestTemplate() {
+    void given_an_authentication_with_a_jwt_when_getUserAuthentication_then_a_bearer_auth_header_is_added_to_the_requestTemplate() {
         // Given
         given(delegatingSecurityContextHolder.getAuthentication()).willReturn(jwtAuthenticationToken);
         given(jwtAuthenticationToken.getToken()).willReturn(jwt);
@@ -58,7 +58,7 @@ public class BearerAuthFeignRequestInterceptorTest {
     }
 
     @Test
-    public void given_an_authentication_without_a_jwt_when_getUserAuthentication_then_a_bearer_auth_header_is_added_to_the_requestTemplate() {
+    void given_an_authentication_without_a_jwt_when_getUserAuthentication_then_a_bearer_auth_header_is_added_to_the_requestTemplate() {
         // Given
         given(delegatingSecurityContextHolder.getAuthentication()).willReturn(authentication);
         given(oAuth2AuthorizedClientManager.authorize(any())).willReturn(oAuth2AuthorizedClient);

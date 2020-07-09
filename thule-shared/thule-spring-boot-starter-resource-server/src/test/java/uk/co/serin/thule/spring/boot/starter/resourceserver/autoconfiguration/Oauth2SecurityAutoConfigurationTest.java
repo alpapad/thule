@@ -11,14 +11,14 @@ import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class Oauth2SecurityAutoConfigurationTest {
+class Oauth2SecurityAutoConfigurationTest {
     @Mock
     private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
     private Oauth2SecurityAutoConfiguration sut;
 
     @Test
-    public void when_delegatingSecurityContextHolder_then_an_instance_is_instantiated() {
+    void when_delegatingSecurityContextHolder_then_an_instance_is_instantiated() {
         // When
         var delegatingSecurityContextHolder = sut.delegatingSecurityContextHolder();
 
@@ -27,7 +27,7 @@ public class Oauth2SecurityAutoConfigurationTest {
     }
 
     @Test
-    public void when_jwtUserAuthenticationSecurityContext_then_an_instance_is_instantiated() {
+    void when_jwtUserAuthenticationSecurityContext_then_an_instance_is_instantiated() {
         // When
         var jwtUserAuthenticationSecurityContext = sut.jwtUserAuthenticationSecurityContext(delegatingSecurityContextHolder);
 

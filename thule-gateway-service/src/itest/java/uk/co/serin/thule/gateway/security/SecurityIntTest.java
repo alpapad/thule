@@ -25,7 +25,7 @@ import static uk.co.serin.thule.test.assertj.SpringBootActuatorAssert.assertThat
 @ActiveProfiles("itest")
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SecurityIntTest {
+class SecurityIntTest {
     @Container
     private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer();
     @LocalServerPort
@@ -40,7 +40,7 @@ public class SecurityIntTest {
     }
 
     @Test
-    public void given_not_authenticated_user_when_using_service_then_access_should_be_found() {
+    void given_not_authenticated_user_when_using_service_then_access_should_be_found() {
         // When
         webTestClient.get().uri("/hello").exchange()
 
@@ -49,7 +49,7 @@ public class SecurityIntTest {
     }
 
     @Test
-    public void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
+    void when_accessing_the_actuator_without_authentication_then_access_should_be_granted() {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/info", port));
 

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class PerformanceTestExecutorTest {
+class PerformanceTestExecutorTest {
     @Spy
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private String logMessage = "This is a unit test of PerformanceTestExecutor";
@@ -37,7 +37,7 @@ public class PerformanceTestExecutorTest {
     }
 
     @Test
-    public void when_a_performance_test_throws_an_exception_then_the_exception_is_logged() {
+    void when_a_performance_test_throws_an_exception_then_the_exception_is_logged() {
         // Given
         sut.setNumberOfThreads(1);
         sut.setTimeLimit(Duration.ofMillis(500));
@@ -58,7 +58,7 @@ public class PerformanceTestExecutorTest {
     }
 
     @Test
-    public void when_executing_then_the_performance_test_executes_the_required_test() {
+    void when_executing_then_the_performance_test_executes_the_required_test() {
         // Given
         sut.setNumberOfThreads(1);
         sut.setTimeLimit(Duration.ofMillis(100));
@@ -75,7 +75,7 @@ public class PerformanceTestExecutorTest {
     }
 
     @Test
-    public void when_execution_service_termination_is_interrupted_then_thread_is_interrupted() throws InterruptedException {
+    void when_execution_service_termination_is_interrupted_then_thread_is_interrupted() throws InterruptedException {
         // Given
         sut.setNumberOfThreads(1);
         sut.setTimeLimit(Duration.ofMillis(100));

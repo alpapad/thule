@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailControllerTest {
+class EmailControllerTest {
     @InjectMocks
     private EmailController emailController;
     @Mock
     private EmailService emailService;
 
     @Test
-    public void when_creating_an_email_then_the_email_service_is_invoked_and_an_email_is_returned() {
+    void when_creating_an_email_then_the_email_service_is_invoked_and_an_email_is_returned() {
         // Given
         var expectedEmail = Email.builder().from("from@test.co.uk").subject("This is a test email").build();
 

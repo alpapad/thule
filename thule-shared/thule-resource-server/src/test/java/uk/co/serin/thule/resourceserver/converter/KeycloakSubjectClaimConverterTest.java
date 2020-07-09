@@ -12,13 +12,13 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class KeycloakSubjectClaimConverterTest {
+class KeycloakSubjectClaimConverterTest {
     public static final String USER_NAME = "user";
     @InjectMocks
     private KeycloakSubjectClaimConverter sut;
 
     @Test
-    public void given_claims_with_keycloak_subject_name_when_convert_claims_then_claims_contain_standard_subject_name() {
+    void given_claims_with_keycloak_subject_name_when_convert_claims_then_claims_contain_standard_subject_name() {
         // Given
         var claims = Map.<String, Object>of("preferred_username", USER_NAME);
 

@@ -26,7 +26,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class ResourceServerAutoConfigurationTest {
+class ResourceServerAutoConfigurationTest {
     @Mock
     private ApplicationContext applicationContext;
     @Mock
@@ -53,7 +53,7 @@ public class ResourceServerAutoConfigurationTest {
     private ResourceServerAutoConfiguration sut;
 
     @Test
-    public void when_configure_http_security_then_it_is_configured() throws Exception {
+    void when_configure_http_security_then_it_is_configured() throws Exception {
         // Given
         given(httpSecurity.cors()).willReturn(corsConfigurer);
         given(corsConfigurer.and()).willReturn(httpSecurity);
@@ -101,7 +101,7 @@ public class ResourceServerAutoConfigurationTest {
     }
 
     @Test
-    public void when_jwtAuthenticationConverter_then_an_instance_is_instantiated() {
+    void when_jwtAuthenticationConverter_then_an_instance_is_instantiated() {
         // Given
         ReflectionTestUtils.setField(sut, "context", applicationContext);
         given(applicationContext.getEnvironment()).willReturn(environment);
@@ -114,7 +114,7 @@ public class ResourceServerAutoConfigurationTest {
     }
 
     @Test
-    public void when_jwtDecoderFromIssuerLocation_then_an_instance_is_instantiated() {
+    void when_jwtDecoderFromIssuerLocation_then_an_instance_is_instantiated() {
         // Given
         given(oAuth2ResourceServerProperties.getJwt()).willReturn(jwt);
         given(jwt.getIssuerUri()).willReturn("http://localhost");
@@ -128,7 +128,7 @@ public class ResourceServerAutoConfigurationTest {
     }
 
     @Test
-    public void when_jwtDecoder_then_an_instance_is_instantiated() {
+    void when_jwtDecoder_then_an_instance_is_instantiated() {
         // When
         var jwtDecoder = sut.jwtDecoder();
 
@@ -138,7 +138,7 @@ public class ResourceServerAutoConfigurationTest {
     }
 
     @Test
-    public void when_keycloakResourceRoleConverter_then_an_instance_is_instantiated() {
+    void when_keycloakResourceRoleConverter_then_an_instance_is_instantiated() {
         // Given
         ReflectionTestUtils.setField(sut, "context", applicationContext);
         given(applicationContext.getEnvironment()).willReturn(environment);

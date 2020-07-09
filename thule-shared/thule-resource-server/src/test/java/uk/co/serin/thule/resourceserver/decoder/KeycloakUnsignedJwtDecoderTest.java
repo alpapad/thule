@@ -19,7 +19,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class KeycloakUnsignedJwtDecoderTest {
+class KeycloakUnsignedJwtDecoderTest {
     private static final Set<GrantedAuthority> GRANTED_AUTHORITIES = Set.of(new SimpleGrantedAuthority("ROLE_PUBLIC"));
     private static final String RESOURCE_ID = "thule-test-service";
     private static final int USER_ID = 1234567890;

@@ -13,12 +13,12 @@ import uk.co.serin.thule.spring.boot.starter.testservice.Application;
 
 @ActiveProfiles("itest")
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CorsIntTest {
+class CorsIntTest {
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
-    public void given_an_access_control_request_method_http_header_when_making_an_options_request_then_access_should_be_granted_with_no_body_in_the_response() {
+    void given_an_access_control_request_method_http_header_when_making_an_options_request_then_access_should_be_granted_with_no_body_in_the_response() {
         // When
         webTestClient.options().uri("/hello")
                      .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpMethod.PATCH.name())

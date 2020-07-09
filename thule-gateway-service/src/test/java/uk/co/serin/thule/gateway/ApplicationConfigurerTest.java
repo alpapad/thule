@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class ApplicationConfigurerTest {
+class ApplicationConfigurerTest {
     @Mock
     private ServerHttpSecurity.AuthorizeExchangeSpec.Access access;
     @Captor
@@ -46,7 +46,7 @@ public class ApplicationConfigurerTest {
     private ApplicationConfigurer sut;
 
     @Test
-    public void when_creating_springSecurityFilterChain_then_an_instance_is_created() {
+    void when_creating_springSecurityFilterChain_then_an_instance_is_created() {
         // Given
         given(serverHttpSecurity.oauth2Login()).willReturn(oAuth2LoginSpec);
 

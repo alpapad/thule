@@ -11,14 +11,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class SwaggerConfigurationTest {
+class SwaggerConfigurationTest {
     @Mock
     private BuildProperties buildProperties;
     @InjectMocks
     private SwaggerConfiguration sut;
 
     @Test
-    public void when_creating_a_docket_then_a_docket_is_returned() {
+    void when_creating_a_docket_then_a_docket_is_returned() {
         // Given
         given(buildProperties.getVersion()).willReturn("1.0.0");
 

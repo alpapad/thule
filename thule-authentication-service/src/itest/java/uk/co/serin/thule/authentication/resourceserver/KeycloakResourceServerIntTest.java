@@ -12,12 +12,12 @@ import uk.co.serin.thule.authentication.resourceserver.testservice.Application;
 
 @ActiveProfiles("itest")
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class KeycloakResourceServerIntTest extends KeycloakBaseIntTest {
+class KeycloakResourceServerIntTest extends KeycloakBaseIntTest {
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
-    public void given_a_micro_service_accounts_credentials_when_making_a_restful_call_to_another_micro_service_without_a_user_present_then_a_successful_response_is_returned() {
+    void given_a_micro_service_accounts_credentials_when_making_a_restful_call_to_another_micro_service_without_a_user_present_then_a_successful_response_is_returned() {
         // Given
         var thuleTestServiceClientSecret = getKeycloakRepository().getClientSecret(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID);
         var jwt = getKeycloakRepository().getJwtFromKeycloakForService(KeycloakBaseIntTest.THULE_TEST_SERVICE_CLIENT_ID, thuleTestServiceClientSecret);
@@ -34,7 +34,7 @@ public class KeycloakResourceServerIntTest extends KeycloakBaseIntTest {
     }
 
     @Test
-    public void given_a_users_credentials_when_making_a_restful_call_to_a_micro_service_then_a_successful_response_is_returned() {
+    void given_a_users_credentials_when_making_a_restful_call_to_a_micro_service_then_a_successful_response_is_returned() {
         // Given
         var jwt = getKeycloakRepository().getJwtFromKeycloakForUser(
                 KeycloakBaseIntTest.JOHN_DOE_USERNAME,

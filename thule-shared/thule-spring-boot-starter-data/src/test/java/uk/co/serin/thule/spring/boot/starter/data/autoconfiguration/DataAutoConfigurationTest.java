@@ -11,14 +11,14 @@ import uk.co.serin.thule.security.context.DelegatingSecurityContextHolder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class DataAutoConfigurationTest {
+class DataAutoConfigurationTest {
     @Mock
     private DelegatingSecurityContextHolder delegatingSecurityContextHolder;
     @InjectMocks
     private DataAutoConfiguration sut;
 
     @Test
-    public void when_springSecurityAuditorAware_then_an_instance_is_instantiated() {
+    void when_springSecurityAuditorAware_then_an_instance_is_instantiated() {
         // When
         var springSecurityAuditorAware = sut.springSecurityAuditorAware(delegatingSecurityContextHolder);
 

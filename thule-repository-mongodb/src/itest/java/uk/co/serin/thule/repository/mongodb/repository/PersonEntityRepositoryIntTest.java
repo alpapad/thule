@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @ActiveProfiles("itest")
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class PersonEntityRepositoryIntTest {
+class PersonEntityRepositoryIntTest {
     private static final String MOCK_USERS_NAME = "user";
     @Container
     private static MongoDBContainer mongodb = new MongoDBContainer();
@@ -37,7 +37,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
         var expectedPerson = personRepository.save(createPerson());
 
@@ -61,7 +61,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
         // Given
         var expectedPerson = personRepository.save(createPerson());
 
@@ -74,7 +74,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
+    void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
         // Given
         var expectedPerson = personRepository.save(createPerson());
 
@@ -86,7 +86,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
         // Given
         var expectedPerson = personRepository.save(createPerson());
 
@@ -98,7 +98,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
+    void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
         // Given
         var expectedPerson = personRepository.save(createPerson());
 
@@ -132,7 +132,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
+    void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
         var expectedPerson = createPerson();
 
@@ -162,7 +162,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
+    void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
         // Given
         var person = PersonEntity.builder().id(RandomUtils.generateUniqueRandomLong()).userId("userId").build();
 
@@ -174,7 +174,7 @@ public class PersonEntityRepositoryIntTest {
     }
 
     @Test
-    public void when_deleting_a_person_then_the_person_no_longer_exists() {
+    void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
         var person = personRepository.save(createPerson());
 

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class WebMvcAutoConfigurationTest {
+class WebMvcAutoConfigurationTest {
     @Mock
     private CorsRegistration corsRegistration;
     @Mock
@@ -21,7 +21,7 @@ public class WebMvcAutoConfigurationTest {
     private WebMvcAutoConfiguration sut;
 
     @Test
-    public void when_corsConfigurer_then_cors_mappings_is_configured() {
+    void when_corsConfigurer_then_cors_mappings_is_configured() {
         // Given
         given(corsRegistry.addMapping("/**")).willReturn(corsRegistration);
         given(corsRegistration.allowedMethods("*")).willReturn(corsRegistration);

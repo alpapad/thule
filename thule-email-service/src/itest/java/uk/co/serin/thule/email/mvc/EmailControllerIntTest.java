@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("itest")
 @AutoConfigureRestDocs(outputDir = "build/snippets")
 @WebMvcTest(value = EmailController.class)
-public class EmailControllerIntTest {
+class EmailControllerIntTest {
     private static final String EMAILS_PATH = "/emails";
 
     @MockBean
@@ -51,7 +51,7 @@ public class EmailControllerIntTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void given_no_authenticated_user_when_post_emails_then_http_status_401() throws Exception {
+    void given_no_authenticated_user_when_post_emails_then_http_status_401() throws Exception {
         // Given
         var emailRequest = Email.builder().build();
         var content = objectMapper.writeValueAsString(emailRequest);

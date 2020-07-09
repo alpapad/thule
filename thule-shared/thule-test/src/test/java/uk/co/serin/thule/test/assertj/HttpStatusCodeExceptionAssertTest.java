@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class HttpStatusCodeExceptionAssertTest {
+class HttpStatusCodeExceptionAssertTest {
     @Mock
     private HttpStatusCodeException assertedInstance;
     @InjectMocks
     private HttpStatusCodeExceptionAssert sut;
 
     @Test
-    public void when_asserting_matching_message_error_attribute_then_it_succeeds() {
+    void when_asserting_matching_message_error_attribute_then_it_succeeds() {
         // Given
         var messageErrorAttribute = "hewkwhf";
         given(assertedInstance.getResponseBodyAsString()).willReturn(
@@ -30,7 +30,7 @@ public class HttpStatusCodeExceptionAssertTest {
     }
 
     @Test
-    public void when_asserting_message_error_from_incorrectly_formed_response_json_body_then_runtime_exception_is_thrown() {
+    void when_asserting_message_error_from_incorrectly_formed_response_json_body_then_runtime_exception_is_thrown() {
         // Given
         given(assertedInstance.getResponseBodyAsString()).willReturn("{");
 
@@ -40,7 +40,7 @@ public class HttpStatusCodeExceptionAssertTest {
     }
 
     @Test
-    public void when_asserting_unmatched_message_error_attribute_then_assertion_exception_is_thrown() {
+    void when_asserting_unmatched_message_error_attribute_then_assertion_exception_is_thrown() {
         // Given
         var messageErrorAttribute = "hewkwhf";
         given(assertedInstance.getResponseBodyAsString()).willReturn(

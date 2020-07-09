@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class KeycloakJwtUtilsTest {
+class KeycloakJwtUtilsTest {
     private static final Set<GrantedAuthority> GRANTED_AUTHORITIES = Set.of(new SimpleGrantedAuthority("ROLE_PUBLIC"));
     private static final String RESOURCE_ID = "thule-test-service";
     private static final int USER_ID = 1234567890;
@@ -55,7 +55,7 @@ public class KeycloakJwtUtilsTest {
     }
 
     @Test
-    public void given_invalid_jwt_claimset_when_createKeycloakJwt_then_an_invalid_state_exception_is_thrown() throws ParseException {
+    void given_invalid_jwt_claimset_when_createKeycloakJwt_then_an_invalid_state_exception_is_thrown() throws ParseException {
         // Given
         given(jwt.getHeader()).willReturn(new PlainHeader());
         given(jwt.getJWTClaimsSet()).willThrow(ParseException.class);
@@ -69,7 +69,7 @@ public class KeycloakJwtUtilsTest {
     }
 
     @Test
-    public void given_invalid_jwt_token_value_when_createKeycloakJwt_then_an_invalid_state_exception_is_thrown() {
+    void given_invalid_jwt_token_value_when_createKeycloakJwt_then_an_invalid_state_exception_is_thrown() {
         // Given
         var invalidJwtTokenValue = "invalidjwttokenvalue";
 

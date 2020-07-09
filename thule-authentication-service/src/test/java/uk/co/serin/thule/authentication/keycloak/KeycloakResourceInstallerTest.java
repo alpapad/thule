@@ -16,7 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class KeycloakResourceInstallerTest {
+class KeycloakResourceInstallerTest {
     @Mock
     private KeycloakRepository keycloakRepository;
     @Mock
@@ -25,7 +25,7 @@ public class KeycloakResourceInstallerTest {
     private KeycloakResourceInstaller sut;
 
     @Test
-    public void given_existing_path_when_run_then_file_is_created() {
+    void given_existing_path_when_run_then_file_is_created() {
         // Given
         ReflectionTestUtils.setField(sut, "secretsFile", "build/thule-keycloak-secrets.yml");
 
@@ -50,7 +50,7 @@ public class KeycloakResourceInstallerTest {
     }
 
     @Test
-    public void given_missing_filename_when_run_then_illegalstateexception_is_thrown() {
+    void given_missing_filename_when_run_then_illegalstateexception_is_thrown() {
         // Given
         ReflectionTestUtils.setField(sut, "secretsFile", "build");
 

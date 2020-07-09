@@ -8,12 +8,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class UtilsAutoConfigurationTest {
+class UtilsAutoConfigurationTest {
     @InjectMocks
     private UtilsAutoConfiguration sut;
 
     @Test
-    public void when_logExceptionInterceptor_then_an_instance_is_instantiated() {
+    void when_logExceptionInterceptor_then_an_instance_is_instantiated() {
         // When
         var logExceptionInterceptor = sut.logExceptionInterceptor();
 
@@ -22,7 +22,7 @@ public class UtilsAutoConfigurationTest {
     }
 
     @Test
-    public void when_tracePublicMethodsInterceptor_then_an_instance_is_instantiated() {
+    void when_tracePublicMethodsInterceptor_then_an_instance_is_instantiated() {
         // When
         var tracePublicMethodsInterceptor = sut.tracePublicMethodsInterceptor();
 

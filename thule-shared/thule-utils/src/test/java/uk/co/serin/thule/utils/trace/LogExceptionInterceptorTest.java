@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class LogExceptionInterceptorTest {
+class LogExceptionInterceptorTest {
     @Mock
     private ILoggerFactory iLoggerFactory;
     @Mock
@@ -26,7 +26,7 @@ public class LogExceptionInterceptorTest {
     private Throwable throwable;
 
     @Test
-    public void given_throwable_a_empty_stacktrace_when_exception_is_logged_then_logger_of_class_in_stacktrace_is_used() {
+    void given_throwable_a_empty_stacktrace_when_exception_is_logged_then_logger_of_class_in_stacktrace_is_used() {
         // Given
         var message = "Test throwable message";
         ReflectionTestUtils.setField(LogExceptionInterceptor.class, "loggerFactory", iLoggerFactory);
@@ -44,7 +44,7 @@ public class LogExceptionInterceptorTest {
     }
 
     @Test
-    public void given_throwable_with_empty_stacktrace_when_exception_is_logged_then_logger_of_LogExceptionInterceptor_is_used() {
+    void given_throwable_with_empty_stacktrace_when_exception_is_logged_then_logger_of_LogExceptionInterceptor_is_used() {
         // Given
         var message = "Test throwable message";
         ReflectionTestUtils.setField(LogExceptionInterceptor.class, "loggerFactory", iLoggerFactory);
@@ -61,7 +61,7 @@ public class LogExceptionInterceptorTest {
     }
 
     @Test
-    public void given_throwable_with_null_stacktrace_when_exception_is_logged_then_logger_of_LogExceptionInterceptor_is_used() {
+    void given_throwable_with_null_stacktrace_when_exception_is_logged_then_logger_of_LogExceptionInterceptor_is_used() {
         // Given
         var message = "Test throwable message";
         ReflectionTestUtils.setField(LogExceptionInterceptor.class, "loggerFactory", iLoggerFactory);
@@ -77,7 +77,7 @@ public class LogExceptionInterceptorTest {
     }
 
     @Test
-    public void when_pointcuts_are_called_then_no_exception_is_thrown() {
+    void when_pointcuts_are_called_then_no_exception_is_thrown() {
         var throwable = catchThrowable(() -> {
             sut.pointcutDefinitionBasedOnAnnotationForMethod();
             sut.pointcutDefinitionBasedOnAnnotationForType();
