@@ -24,7 +24,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @Testcontainers
 @SpringBootTest
-public class PeopleDockerTest {
+class PeopleDockerTest {
     private static final String MYSQL_ALIAS = "mysql";
     @Container
     private static MySQLContainer<?> mysql = createMySqlContainer();
@@ -69,7 +69,7 @@ public class PeopleDockerTest {
     }
 
     @Test
-    public void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
+    void given_docker_container_has_been_started_when_checking_health_then_status_is_up() {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("%s/actuator/health", baseUrl));
 
@@ -82,7 +82,7 @@ public class PeopleDockerTest {
     }
 
     @Test
-    public void given_docker_container_has_been_started_when_retrieving_actuator_info_then_it_shows_correct_microservice_is_in_docker_container() {
+    void given_docker_container_has_been_started_when_retrieving_actuator_info_then_it_shows_correct_microservice_is_in_docker_container() {
         // When
         WebTestClient
                 .bindToServer().baseUrl(baseUrl).build()

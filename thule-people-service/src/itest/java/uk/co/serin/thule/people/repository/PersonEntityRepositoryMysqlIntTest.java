@@ -17,7 +17,7 @@ import org.testcontainers.junit.jupiter.Container;
  */
 @ActiveProfiles("itest")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
+class PersonEntityRepositoryMysqlIntTest extends PersonEntityRepositoryBaseIntTest {
     @Container
     private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql")
             .withUsername("root")

@@ -40,7 +40,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @WithMockUser
-public class PeopleContractTest extends ContractBaseTest {
+class PeopleContractTest extends ContractBaseTest {
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_NAME = "user";
     private static final String PEOPLE_PATH = "/people";
@@ -62,7 +62,7 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() throws JsonProcessingException {
+    void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() throws JsonProcessingException {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
 
@@ -110,7 +110,7 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
+    void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
 
@@ -126,7 +126,7 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_creating_a_person_then_that_person_is_returned() throws JsonProcessingException {
+    void when_creating_a_person_then_that_person_is_returned() throws JsonProcessingException {
         // Given
         var testPerson = buildPersonWithoutAnyAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
@@ -173,7 +173,7 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_deleting_a_person_then_the_person_no_longer_exists() throws JsonProcessingException {
+    void when_deleting_a_person_then_the_person_no_longer_exists() throws JsonProcessingException {
         // Given
         var person = createAndPersistPersonWithNoAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
@@ -192,7 +192,7 @@ public class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    public void when_updating_a_person_then_that_person_is_updated() throws InterruptedException, JsonProcessingException {
+    void when_updating_a_person_then_that_person_is_updated() throws InterruptedException, JsonProcessingException {
         // Given
         var testPerson = createAndPersistPersonWithNoAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());

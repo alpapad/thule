@@ -55,7 +55,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_all_people_then_the_new_person_is_found() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -73,7 +73,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -86,7 +86,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
+    void given_a_new_person_when_finding_that_person_by_id_then_the_new_person_is_found_with_all_associations() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -98,7 +98,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_updatedBy_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_that_person_by_updatedBy_then_the_new_person_is_found() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -110,7 +110,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_that_person_by_userid_then_the_new_person_is_found() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -122,7 +122,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_finding_that_person_with_criteria_then_the_new_person_is_found() {
+    void given_a_new_person_when_finding_that_person_with_criteria_then_the_new_person_is_found() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -134,7 +134,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_searching_by_email_address_then_the_new_person_is_found() {
+    void given_a_new_person_when_searching_by_email_address_then_the_new_person_is_found() {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -146,7 +146,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
+    void given_a_new_person_when_updating_that_person_then_the_new_person_is_found_with_updated_fields() throws InterruptedException {
         // Given
         var expectedPerson = createAndPersistPerson();
 
@@ -179,7 +179,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
+    void when_creating_a_person_then_a_new_person_is_persisted_to_the_database() {
         // Given
         var expectedPerson = personEntityRepositoryIntTestHelper.buildPersonWithAllAssociations();
 
@@ -216,7 +216,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
+    void when_creating_an_invalid_person_then_a_constraint_violation_exception_is_thrown() {
         // Given
         var person = PersonEntity.builder().userId("userId").build();
 
@@ -232,7 +232,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
     }
 
     @Test
-    public void when_deleting_a_person_then_the_person_no_longer_exists() {
+    void when_deleting_a_person_then_the_person_no_longer_exists() {
         // Given
         var person = createAndPersistPerson();
 

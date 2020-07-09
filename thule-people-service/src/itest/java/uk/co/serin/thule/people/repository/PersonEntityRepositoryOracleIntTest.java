@@ -16,7 +16,7 @@ import org.testcontainers.junit.jupiter.Container;
  */
 @ActiveProfiles({"itest", "itest-oracle"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PersonEntityRepositoryOracleIntTest extends PersonEntityRepositoryBaseIntTest {
+class PersonEntityRepositoryOracleIntTest extends PersonEntityRepositoryBaseIntTest {
     @Container
     private static final OracleContainer oracle = createOracleContainer();
 

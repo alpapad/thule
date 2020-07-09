@@ -10,12 +10,12 @@ import java.time.Duration;
 
 import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 
-public class HealthCheckContractTest extends ContractBaseTest {
+class HealthCheckContractTest extends ContractBaseTest {
     @LocalServerPort
     private int port;
 
     @Test
-    public void when_checking_health_then_status_is_up() {
+    void when_checking_health_then_status_is_up() {
         // Given
         var actuatorUri = ActuatorUri.using(String.format("http://localhost:%s/actuator/health", port));
 

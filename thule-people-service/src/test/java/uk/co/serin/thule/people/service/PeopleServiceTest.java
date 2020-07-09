@@ -22,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 @ExtendWith(MockitoExtension.class)
-public class PeopleServiceTest {
+class PeopleServiceTest {
     @InjectMocks
     private PeopleService peopleService;
 
     @Test
-    public void when_disable_person_then_state_is_updated_to_person_disabled() {
+    void when_disable_person_then_state_is_updated_to_person_disabled() {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_DISABLED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).nextState(nextState).build();
@@ -42,7 +42,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_disabling_person_already_disabled_then_person_invalid_state_exception_is_thrown() {
+    void when_disabling_person_already_disabled_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
         var state = StateEntity.builder().code(StateCode.PERSON_DISABLED).actions(Set.of(allowedAction)).build();
@@ -56,7 +56,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_discard_person_then_state_is_updated_to_person_discarded() {
+    void when_discard_person_then_state_is_updated_to_person_discarded() {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_DISCARDED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISCARD).nextState(nextState).build();
@@ -71,7 +71,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_discarding_person_already_discarded_then_person_invalid_state_exception_is_thrown() {
+    void when_discarding_person_already_discarded_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
         var state = StateEntity.builder().code(StateCode.PERSON_DISCARDED).actions(Set.of(allowedAction)).build();
@@ -85,7 +85,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_enable_person_already_enabled_then_person_invalid_state_exception_is_thrown() {
+    void when_enable_person_already_enabled_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_DISABLE).build();
         var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Set.of(allowedAction)).build();
@@ -99,7 +99,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_enable_person_then_state_is_updated_to_person_enabled() {
+    void when_enable_person_then_state_is_updated_to_person_enabled() {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_ENABLED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).nextState(nextState).build();
@@ -114,7 +114,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_expiry_date_is_in_the_future_then_person_is_not_expired() {
+    void when_expiry_date_is_in_the_future_then_person_is_not_expired() {
         // Given
         var person = PersonEntity.builder().dateOfExpiry(LocalDate.MAX).build();
 
@@ -126,7 +126,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_expiry_date_is_in_the_past_then_person_is_expired() {
+    void when_expiry_date_is_in_the_past_then_person_is_expired() {
         // Given
         var person = PersonEntity.builder().dateOfExpiry(LocalDate.MIN).build();
 
@@ -138,7 +138,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_password_expiry_date_is_in_the_future_then_password_is_not_expired() {
+    void when_password_expiry_date_is_in_the_future_then_password_is_not_expired() {
         // Given
         var person = PersonEntity.builder().dateOfPasswordExpiry(LocalDate.MAX).build();
 
@@ -150,7 +150,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_password_expiry_date_is_in_the_past_then_password_is_expired() {
+    void when_password_expiry_date_is_in_the_past_then_password_is_expired() {
         // Given
         var person = PersonEntity.builder().dateOfPasswordExpiry(LocalDate.MIN).build();
 
@@ -162,7 +162,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_person_contains_invalid_fields_then_validation_fails() {
+    void when_person_contains_invalid_fields_then_validation_fails() {
         // Given
         var validator = Validation.buildDefaultValidatorFactory().getValidator();
         var person = PersonEntity.builder().build();
@@ -178,7 +178,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_recover_person_then_state_is_changed_to_person_enabled() {
+    void when_recover_person_then_state_is_changed_to_person_enabled() {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_ENABLED).build();
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_RECOVER).nextState(nextState).build();
@@ -193,7 +193,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void when_recovering_an_enabled_person_then_person_invalid_state_exception_is_thrown() {
+    void when_recovering_an_enabled_person_then_person_invalid_state_exception_is_thrown() {
         // Given
         var allowedAction = ActionEntity.builder().code(ActionCode.PERSON_ENABLE).build();
         var state = StateEntity.builder().code(StateCode.PERSON_ENABLED).actions(Set.of(allowedAction)).build();

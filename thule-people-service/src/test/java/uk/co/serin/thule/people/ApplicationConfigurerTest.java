@@ -11,12 +11,12 @@ import uk.co.serin.thule.utils.utils.ClassUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class ApplicationConfigurerTest {
+class ApplicationConfigurerTest {
     @InjectMocks
     private ApplicationConfigurer sut;
 
     @Test
-    public void when_accessing_class_static_initializer_then_context_holder_strategy_is_inheritable_thread_local() {
+    void when_accessing_class_static_initializer_then_context_holder_strategy_is_inheritable_thread_local() {
         // When
         ClassUtils.forName(ApplicationConfigurer.class.getName());
 

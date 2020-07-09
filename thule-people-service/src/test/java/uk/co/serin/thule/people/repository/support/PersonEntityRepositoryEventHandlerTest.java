@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonEntityRepositoryEventHandlerTest {
+class PersonEntityRepositoryEventHandlerTest {
     @Mock
     private EmailServiceClientAsync emailServiceClientAsync;
     @InjectMocks
@@ -34,7 +34,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     private StateRepository stateRepository;
 
     @Test
-    public void when_after_create_then_an_email_notification_is_sent() {
+    void when_after_create_then_an_email_notification_is_sent() {
         // When
         personRepositoryEventHandler.afterCreate(PersonEntity.builder().emailAddress("test@test.com").userId("userId").build());
 
@@ -48,7 +48,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     }
 
     @Test
-    public void when_after_delete_then_an_email_notification_is_sent() {
+    void when_after_delete_then_an_email_notification_is_sent() {
         // When
         personRepositoryEventHandler.afterDelete(PersonEntity.builder().emailAddress("test@test.com").userId("userId").build());
 
@@ -62,7 +62,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     }
 
     @Test
-    public void when_after_save_then_an_email_notification_is_sent() {
+    void when_after_save_then_an_email_notification_is_sent() {
         // When
         personRepositoryEventHandler.afterSave(PersonEntity.builder().emailAddress("test@test.com").userId("userId").build());
 
@@ -76,7 +76,7 @@ public class PersonEntityRepositoryEventHandlerTest {
     }
 
     @Test
-    public void when_before_create_then_roles_and_state_are_set() {
+    void when_before_create_then_roles_and_state_are_set() {
         // Given
         given(roleRepository.findByCode(any(RoleCode.class))).willReturn(RoleEntity.builder().code(RoleCode.ROLE_CLERK).build());
         given(stateRepository.findByCode(any(StateCode.class))).willReturn(StateEntity.builder().code(StateCode.PERSON_ENABLED).build());

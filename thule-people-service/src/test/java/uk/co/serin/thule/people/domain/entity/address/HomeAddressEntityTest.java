@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HomeAddressEntityTest {
+class HomeAddressEntityTest {
     @Test
-    public void when_constructing_then_a_home_address_is_instantiated() {
+    void when_constructing_then_a_home_address_is_instantiated() {
         // When
         var homeAddress = HomeAddressEntity.builder().build();
 

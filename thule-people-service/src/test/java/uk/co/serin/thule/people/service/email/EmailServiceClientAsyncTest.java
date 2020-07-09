@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailServiceClientAsyncTest {
+class EmailServiceClientAsyncTest {
     @Mock
     private EmailServiceClient emailServiceClient;
     @InjectMocks
     private EmailServiceClientAsync emailServiceClientAsync;
 
     @Test
-    public void when_sending_email_then_it_is_delegated_to_email_service_client_returning_a_future() {
+    void when_sending_email_then_it_is_delegated_to_email_service_client_returning_a_future() {
         // Given
         var email = Email.builder().build();
 

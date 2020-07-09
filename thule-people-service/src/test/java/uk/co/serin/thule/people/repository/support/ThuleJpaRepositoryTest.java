@@ -18,7 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class ThuleJpaRepositoryTest {
+class ThuleJpaRepositoryTest {
     @Mock
     private EntityManager entityManager;
     @Mock
@@ -34,7 +34,7 @@ public class ThuleJpaRepositoryTest {
     }
 
     @Test
-    public void when_delete_by_updated_by_then_delete_is_executed() {
+    void when_delete_by_updated_by_then_delete_is_executed() {
         // Given
         var userId = "userId";
 

@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonEntityRepositoryImplTest {
+class PersonEntityRepositoryImplTest {
     @Mock
     private EntityManager entityManager;
     @InjectMocks
@@ -28,7 +28,7 @@ public class PersonEntityRepositoryImplTest {
     private TypedQuery<PersonEntity> typedQuery;
 
     @Test
-    public void given_new_person_when_find_by_criteria_then_person_is_found() {
+    void given_new_person_when_find_by_criteria_then_person_is_found() {
         // Given
         var expectedPerson = PersonEntity.builder().userId("userId").emailAddress("test@gmail.com").firstName("firstName").lastName("lastName").build();
 
@@ -45,7 +45,7 @@ public class PersonEntityRepositoryImplTest {
     }
 
     @Test
-    public void given_new_person_when_find_by_null_criteria_then_person_is_found() {
+    void given_new_person_when_find_by_null_criteria_then_person_is_found() {
         // Given
         var expectedPerson = PersonEntity.builder().build();
 
@@ -62,7 +62,7 @@ public class PersonEntityRepositoryImplTest {
     }
 
     @Test
-    public void given_new_person_when_search_by_null_criteria_then_person_is_found() {
+    void given_new_person_when_search_by_null_criteria_then_person_is_found() {
         // Given
         var expectedPerson = PersonEntity.builder().userId("userId").build();
 
@@ -78,7 +78,7 @@ public class PersonEntityRepositoryImplTest {
     }
 
     @Test
-    public void given_new_person_when_search_then_person_is_found() {
+    void given_new_person_when_search_then_person_is_found() {
         // Given
         var expectedPerson = PersonEntity.builder().userId("userId").build();
 
