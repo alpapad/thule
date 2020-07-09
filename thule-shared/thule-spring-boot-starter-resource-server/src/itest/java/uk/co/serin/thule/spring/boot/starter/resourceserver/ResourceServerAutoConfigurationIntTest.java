@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("itest")
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ResourceServerAutoConfigurationIntTest {
+public class ResourceServerAutoConfigurationIntTest {
     public static final Set<GrantedAuthority> GRANTED_AUTHORITIES = Set.of(new SimpleGrantedAuthority("ROLE_PUBLIC"));
     public static final int USER_ID = 1234567890;
     public static final String USER_NAME = "user";
