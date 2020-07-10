@@ -148,13 +148,9 @@ function configureMicrok8s() {
 
   echo ""
   echo -n "Creating ingress for dashboard..."
-  if [[ $(kubectl get ingress dashboard --namespace kube-system 2>&1 | grep "not found") == "" ]]; then
-    echo -e "\rCreating ingress for dashboard...\033[32m already created \033[0m"
-  else
-    echo ""
-    kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/dashboard-ingress.yml"
-    echo -e "Creating ingress for dashboard...\033[32m done \033[0m"
-  fi
+  echo ""
+  kubectl apply -f "${SCRIPT_DIR_NAME}/../apply/dashboard-ingress.yml"
+  echo -e "Creating ingress for dashboard...\033[32m done \033[0m"
 
   echo ""
   echo "Have configured microk8s"
