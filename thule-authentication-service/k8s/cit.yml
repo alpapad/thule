@@ -123,7 +123,7 @@ spec:
       hostAliases:
         - ip: 192.168.0.102
           hostnames:
-            - pooh
+            - pooh.serin-consultancy.co.uk
         - ip: 192.168.0.104
           hostnames:
            - piglet.serin-consultancy.co.uk

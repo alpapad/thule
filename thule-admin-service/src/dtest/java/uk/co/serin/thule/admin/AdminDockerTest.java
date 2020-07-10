@@ -27,7 +27,7 @@ class AdminDockerTest {
     private String baseUrl;
 
     private static GenericContainer<?> createSpringBootService() {
-        return new GenericContainer("pooh:8084/thule-admin-service")
+        return new GenericContainer("pooh.serin-consultancy.co.uk:8084/thule-admin-service")
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(Map.of("JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",
                         "SPRING_CLOUD_CONFIG_ENABLED", FALSE.toString(),

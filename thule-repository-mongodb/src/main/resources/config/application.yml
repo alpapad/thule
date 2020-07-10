@@ -10,4 +10,4 @@ thule:
     logging:
       logstash:
         enabled: true
-        host: pooh
+        host: pooh.serin-consultancy.co.uk

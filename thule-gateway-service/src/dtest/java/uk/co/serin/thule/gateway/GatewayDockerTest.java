@@ -37,7 +37,7 @@ class GatewayDockerTest {
     }
 
     private static GenericContainer<?> createSpringBootService() {
-        return new GenericContainer("pooh:8084/thule-gateway-service")
+        return new GenericContainer("pooh.serin-consultancy.co.uk:8084/thule-gateway-service")
                 .dependsOn(mockserver)
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(Map.of("JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",

@@ -1,6 +1,6 @@
 #!/bin/bash
 K8S_HOST_TARGET_BASE_DIRECTORY=/home/wayne/.thule
 K8S_HOST_USERID=wayne
-NEXUS_HOST=pooh
+NEXUS_HOST=pooh.serin-consultancy.co.uk
 NEXUS_PORT_DOCKER=8082
 NEXUS_PORT_MAVEN=8081

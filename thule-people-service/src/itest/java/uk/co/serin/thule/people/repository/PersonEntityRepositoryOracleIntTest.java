@@ -26,7 +26,7 @@ class PersonEntityRepositoryOracleIntTest extends PersonEntityRepositoryBaseIntT
     }
 
     private static OracleContainer createOracleContainer() {
-        var oracleContainer = new OracleContainer("pooh:8082/oracle-database:18.4.0-xe-initialized")
+        var oracleContainer = new OracleContainer("pooh.serin-consultancy.co.uk:8082/oracle-database:18.4.0-xe-initialized")
                 .withEnv("ORACLE_PDB", "system")
                 .withEnv("ORACLE_PWD", "oracle");
 

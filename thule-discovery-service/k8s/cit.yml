@@ -43,7 +43,7 @@ spec:
       serviceAccountName: thule-discovery-service-account
       containers:
         - name: thule-discovery-service
-          image: pooh:8082/thule-discovery-service:1.0.0-SNAPSHOT
+          image: pooh.serin-consultancy.co.uk:8082/thule-discovery-service:1.0.0-SNAPSHOT
           imagePullPolicy: Always
           env:
             - name: JDK_JAVA_OPTIONS
@@ -73,7 +73,7 @@ spec:
       hostAliases:
         - ip: 192.168.0.102
           hostnames:
-            - pooh
+            - pooh.serin-consultancy.co.uk
         - ip: 192.168.0.104
           hostnames:
            - piglet.serin-consultancy.co.uk

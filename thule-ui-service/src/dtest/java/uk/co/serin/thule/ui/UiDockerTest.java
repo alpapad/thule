@@ -35,7 +35,7 @@ class UiDockerTest {
         environmentVariables.put("THULE_SHARED_LOGGING_LOGSTASH_ENABLED", FALSE.toString());
         environmentVariables.put("TZ", "Europe/London");
 
-        return new GenericContainer("pooh:8084/thule-ui-service")
+        return new GenericContainer("pooh.serin-consultancy.co.uk:8084/thule-ui-service")
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(environmentVariables)
                 .withExposedPorts(8080)

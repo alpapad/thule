@@ -35,7 +35,7 @@ class EmailDockerTest {
     }
 
     private static GenericContainer<?> createSpringBootService() {
-        return new GenericContainer("pooh:8084/thule-email-service")
+        return new GenericContainer("pooh.serin-consultancy.co.uk:8084/thule-email-service")
                 .dependsOn(mailhog)
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(Map.of("JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",

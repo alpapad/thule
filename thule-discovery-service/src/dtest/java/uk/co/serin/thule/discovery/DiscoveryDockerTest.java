@@ -27,7 +27,7 @@ class DiscoveryDockerTest {
     private String baseUrl;
 
     private static GenericContainer<?> createSpringBootService() {
-        return new GenericContainer("pooh:8084/thule-discovery-service")
+        return new GenericContainer("pooh.serin-consultancy.co.uk:8084/thule-discovery-service")
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(Map.of("EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS", "5", // By default eureka server can take a long time to start due to the default lease renewal of 30 seconds
                         "JDK_JAVA_OPTIONS", "-XX:InitialHeapSize=256m -XX:MaxHeapSize=256m -XX:MaxMetaspaceSize=256m",

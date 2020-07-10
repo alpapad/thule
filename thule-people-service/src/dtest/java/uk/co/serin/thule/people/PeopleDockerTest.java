@@ -55,7 +55,7 @@ class PeopleDockerTest {
         environmentVariables.put("THULE_SHARED_OAUTH2_RESOURCESERVER_JWS_ENABLED", FALSE.toString());
         environmentVariables.put("TZ", "Europe/London");
 
-        return new GenericContainer("pooh:8084/thule-people-service")
+        return new GenericContainer("pooh.serin-consultancy.co.uk:8084/thule-people-service")
                 .dependsOn(mysql)
                 .waitingFor(Wait.forHttp("/actuator/health").forStatusCode(HttpStatus.OK.value()))
                 .withEnv(environmentVariables)

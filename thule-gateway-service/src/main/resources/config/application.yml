@@ -52,7 +52,7 @@ spring:
     sampler:
       probability: 1.0
   zipkin:
-    base-url: http://pooh:9411
+    base-url: http://pooh.serin-consultancy.co.uk:9411
     sender:
       type: web
 
@@ -62,4 +62,4 @@ thule:
     logging:
       logstash:
         enabled: true
-        host: pooh
+        host: pooh.serin-consultancy.co.uk
