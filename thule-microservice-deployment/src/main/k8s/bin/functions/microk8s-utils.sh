@@ -117,9 +117,9 @@ function configureMicrok8s() {
     echo -e "\rAdding nexus docker registry...\033[32m already added \033[0m"
   else
     sudo sed -i "/${NEXUS_HOST}:${NEXUS_PORT_DOCKER}/d" /var/snap/microk8s/current/args/containerd-template.toml
-    sudo sed -i "/\[plugins.cri.registry.mirrors\]/a \
-      \        [plugins.cri.registry.mirrors.\"${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"] \n\
-      \          endpoint = [\"http://${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"]" /var/snap/microk8s/current/args/containerd-template.toml
+    sudo sed -i "/\[plugins.\"io.containerd.grpc.v1.cri\".registry.mirrors\]/a \
+      \      [plugins.\"io.containerd.grpc.v1.cri\".registry.mirrors.\"${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\"] \n\
+      \        endpoint = [\"http://${NEXUS_HOST}:${NEXUS_PORT_DOCKER}\", ]" /var/snap/microk8s/current/args/containerd-template.toml
     # Restart microk8s to effect registry changes
     sudo microk8s.stop
     sudo microk8s.start
