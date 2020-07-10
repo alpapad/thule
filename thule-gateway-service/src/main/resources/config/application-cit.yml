@@ -5,4 +5,4 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://piglet/thule-authentication-service/auth/realms/thule
+            issuer-uri: https://piglet/thule-authentication-service/auth/realms/thule
