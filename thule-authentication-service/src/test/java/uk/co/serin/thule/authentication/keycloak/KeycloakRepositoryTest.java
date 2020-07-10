@@ -20,13 +20,9 @@ import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.net.ssl.SSLException;
-
-import io.netty.handler.ssl.SslContextBuilder;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,8 +42,6 @@ class KeycloakRepositoryTest {
     @Mock
     private KeycloakProperties keycloakProperties;
     private ObjectMapper objectMapper = new ObjectMapper();
-    @Mock
-    private SslContextBuilder sslContextBuilder;
     @InjectMocks
     private KeycloakRepository sut;
     private WebClient webClient;
@@ -237,18 +231,5 @@ class KeycloakRepositoryTest {
 
         // Then
         assertThat(keycloakPostWasExecuted).isTrue();
-    }
-
-    @Test
-    void when_initializing_then_ssl_context_throws_a_securityexception() throws SSLException {
-        // Given
-        given(sslContextBuilder.build()).willThrow(SSLException.class);
-        ReflectionTestUtils.setField(sut, "sslContextBuilder", sslContextBuilder);
-
-        // When
-        var securityException = catchThrowableOfType(() -> sut.init(), SecurityException.class);
-
-        // Then
-        assertThat(securityException).isNotNull();
     }
 }

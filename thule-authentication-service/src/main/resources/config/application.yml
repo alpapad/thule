@@ -11,5 +11,5 @@ spring:
 # Thule configuration
 thule:
   keycloak:
-    base-url: https://piglet/thule-authentication-service
+    base-url: https://piglet.serin-consultancy.co.uk/thule-authentication-service
     realm: thule

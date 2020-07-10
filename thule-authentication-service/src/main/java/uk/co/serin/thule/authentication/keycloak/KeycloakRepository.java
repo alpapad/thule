@@ -2,7 +2,6 @@ package uk.co.serin.thule.authentication.keycloak;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -14,11 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.net.ssl.SSLException;
-
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import reactor.netty.http.client.HttpClient;
 
 @SuppressWarnings("squid:S1192") // Suppress String literals should not be duplicated
 @TracePublicMethods
@@ -28,7 +22,6 @@ public class KeycloakRepository {
     private URI keycloakBaseUrl;
     private KeycloakProperties keycloakProperties;
     private String realmName;
-    private SslContextBuilder sslContextBuilder = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE);
     private WebClient webClientWithAdminBearerAuth = WebClient.create();
     private WebClient webClientWithoutAdminBearerAuth = WebClient.create();
 
@@ -181,24 +174,9 @@ public class KeycloakRepository {
         realmName = keycloakProperties.getRealm();
         adminRealmsPath = ADMIN_REALMS + realmName;
 
-        webClientWithoutAdminBearerAuth =
-                webClientWithoutAdminBearerAuth.mutate().clientConnector(createHttpClientTrustingAllSslCertificates()).baseUrl(keycloakBaseUrl + "/auth")
-                                               .build();
-
+        webClientWithoutAdminBearerAuth = webClientWithoutAdminBearerAuth.mutate().baseUrl(keycloakBaseUrl + "/auth").build();
         var adminJwt = getJwtFromKeycloakForAdminUser();
-        webClientWithAdminBearerAuth =
-                webClientWithoutAdminBearerAuth.mutate().clientConnector(createHttpClientTrustingAllSslCertificates())
-                                               .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + adminJwt).build();
-    }
-
-    private ReactorClientHttpConnector createHttpClientTrustingAllSslCertificates() {
-        try {
-            var sslContext = sslContextBuilder.build();
-            var httpClient = HttpClient.create().secure(t -> t.sslContext(sslContext));
-            return new ReactorClientHttpConnector(httpClient);
-        } catch (SSLException e) {
-            throw new SecurityException(e);
-        }
+        webClientWithAdminBearerAuth = webClientWithoutAdminBearerAuth.mutate().defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + adminJwt).build();
     }
 
     private String getJwtFromKeycloakForAdminUser() {

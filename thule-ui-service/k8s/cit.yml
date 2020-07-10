@@ -101,7 +101,7 @@ metadata:
   namespace: thule
 spec:
   rules:
-    - host: piglet
+    - host: piglet.serin-consultancy.co.uk
       http:
         paths:
           - path: /thule-ui-service(/|$)(.*)
@@ -110,7 +110,7 @@ spec:
               servicePort: 80
   tls:
     - hosts:
-        - piglet
+       - piglet.serin-consultancy.co.uk
       secretName: thule-application-secrets
 ---
 kind: Service

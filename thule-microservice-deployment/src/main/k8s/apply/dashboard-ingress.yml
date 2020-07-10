@@ -9,7 +9,7 @@ metadata:
   namespace: kube-system
 spec:
   rules:
-    - host: piglet
+    - host: piglet.serin-consultancy.co.uk
       http:
         paths:
           - path: /dashboard(/|$)(.*)

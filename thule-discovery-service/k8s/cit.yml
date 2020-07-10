@@ -76,7 +76,7 @@ spec:
             - pooh
         - ip: 192.168.0.104
           hostnames:
-            - piglet
+           - piglet.serin-consultancy.co.uk
 ---
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2beta1
@@ -108,7 +108,7 @@ metadata:
   namespace: thule
 spec:
   rules:
-    - host: piglet
+    - host: piglet.serin-consultancy.co.uk
       http:
         paths:
           - path: /thule-discovery-service(/|$)(.*)
@@ -117,7 +117,7 @@ spec:
               servicePort: 80
   tls:
     - hosts:
-        - piglet
+       - piglet.serin-consultancy.co.uk
       secretName: thule-application-secrets
 ---
 kind: Service
