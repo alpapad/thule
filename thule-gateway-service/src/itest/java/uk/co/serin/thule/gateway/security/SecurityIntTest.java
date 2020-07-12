@@ -27,7 +27,7 @@ import static uk.co.serin.thule.test.assertj.SpringBootActuatorAssert.assertThat
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SecurityIntTest {
     @Container
-    private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer();
+    private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer("5.11.0");
     @LocalServerPort
     private int port;
     @Autowired
