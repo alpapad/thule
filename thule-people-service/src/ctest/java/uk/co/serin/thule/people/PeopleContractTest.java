@@ -86,7 +86,8 @@ class PeopleContractTest extends ContractBaseTest {
         person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
 
         person = personRepository.saveAndFlush(person);
-        person = personRepository.findById(person.getId()).orElseThrow(); // createdAt and updatedAt are updated after save so need to retrieve the updated person to reflect this
+        person = personRepository.findById(person.getId())
+                                 .orElseThrow(); // createdAt and updatedAt are updated after save so need to retrieve the updated person to reflect this
         entityManager.clear();
 
         person.setHomeAddress(null);
