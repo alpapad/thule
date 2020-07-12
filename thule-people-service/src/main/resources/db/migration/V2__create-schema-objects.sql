@@ -17,9 +17,9 @@ CREATE TABLE actions
     description   VARCHAR(100) NOT NULL,
     next_state_id BIGINT,
     version       BIGINT       NOT NULL,
-    created_at    TIMESTAMP(6),
+    created_at    DATETIME,
     created_by    VARCHAR(100) NOT NULL,
-    updated_at    TIMESTAMP(6),
+    updated_at    DATETIME,
     updated_by    VARCHAR(100) NOT NULL
 );
 
@@ -36,9 +36,9 @@ CREATE TABLE addresses
     post_code     VARCHAR(9)   NOT NULL,
     state_id      BIGINT       NOT NULL,
     version       BIGINT       NOT NULL,
-    created_at    TIMESTAMP(6),
+    created_at    DATETIME,
     created_by    VARCHAR(100) NOT NULL,
-    updated_at    TIMESTAMP(6),
+    updated_at    DATETIME,
     updated_by    VARCHAR(100) NOT NULL
 );
 
@@ -51,9 +51,9 @@ CREATE TABLE countries
     iso_name                  VARCHAR(100) NOT NULL,
     iso_number                VARCHAR(3)   NOT NULL UNIQUE,
     version                   BIGINT       NOT NULL,
-    created_at                TIMESTAMP(6),
+    created_at                DATETIME,
     created_by                VARCHAR(100) NOT NULL,
-    updated_at                TIMESTAMP(6),
+    updated_at                DATETIME,
     updated_by                VARCHAR(100) NOT NULL
 );
 
@@ -75,9 +75,9 @@ CREATE TABLE people
     user_id                 VARCHAR(100) NOT NULL UNIQUE,
     work_address_id         BIGINT,
     version                 BIGINT       NOT NULL,
-    created_at              TIMESTAMP(6),
+    created_at              DATETIME,
     created_by              VARCHAR(100) NOT NULL,
-    updated_at              TIMESTAMP(6),
+    updated_at              DATETIME,
     updated_by              VARCHAR(100) NOT NULL
 );
 
@@ -98,9 +98,9 @@ CREATE TABLE photographs
     person_id  BIGINT       NOT NULL,
     positin    BIGINT       NOT NULL,
     version    BIGINT       NOT NULL,
-    created_at TIMESTAMP(6),
+    created_at DATETIME,
     created_by VARCHAR(100) NOT NULL,
-    updated_at TIMESTAMP(6),
+    updated_at DATETIME,
     updated_by VARCHAR(100) NOT NULL
 );
 
@@ -111,9 +111,9 @@ CREATE TABLE roles
     code        VARCHAR(30)  NOT NULL UNIQUE,
     description VARCHAR(30)  NOT NULL,
     version     BIGINT       NOT NULL,
-    created_at  TIMESTAMP(6),
+    created_at  DATETIME,
     created_by  VARCHAR(100) NOT NULL,
-    updated_at  TIMESTAMP(6),
+    updated_at  DATETIME,
     updated_by  VARCHAR(100) NOT NULL
 );
 
@@ -124,9 +124,9 @@ CREATE TABLE states
     code        VARCHAR(30)  NOT NULL,
     description VARCHAR(100) NOT NULL,
     version     BIGINT       NOT NULL,
-    created_at  TIMESTAMP(6),
+    created_at  DATETIME,
     created_by  VARCHAR(100) NOT NULL,
-    updated_at  TIMESTAMP(6),
+    updated_at  DATETIME,
     updated_by  VARCHAR(100) NOT NULL
 );
 
