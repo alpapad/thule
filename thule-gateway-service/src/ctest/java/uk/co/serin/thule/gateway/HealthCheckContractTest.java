@@ -22,7 +22,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HealthCheckContractTest {
     @Container
-    private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer("5.11.0");
+    private static OpenIdMockServerContainer mockserver = new OpenIdMockServerContainer();
     @LocalServerPort
     private int port;
 

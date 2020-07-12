@@ -174,7 +174,7 @@ class PeopleServiceTest {
         var constraintViolationsByProperty = constraintViolations.stream().collect(
                 Collectors.toMap(constraintViolation -> constraintViolation.getPropertyPath().toString(), Function.identity()));
 
-        assertThat(constraintViolationsByProperty.containsKey("userId")).isTrue();
+        assertThat(constraintViolationsByProperty).containsKey("userId");
     }
 
     @Test

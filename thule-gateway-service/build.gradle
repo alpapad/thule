@@ -50,7 +50,7 @@ dependencies {
 
     testImplementation platform("org.testcontainers:testcontainers-bom:1.14.3")
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
-    testImplementation("org.mock-server:mockserver-client-java:5.11.0")
+    testImplementation("org.mock-server:mockserver-client-java:5.10.0")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mockserver")
 
@@ -61,7 +61,7 @@ dependencies {
     dtestImplementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     dtestImplementation platform("org.testcontainers:testcontainers-bom:1.14.3")
     dtestImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
-    dtestImplementation("org.mock-server:mockserver-client-java:5.11.0")
+    dtestImplementation("org.mock-server:mockserver-client-java:5.10.0")
     dtestImplementation("org.springframework.boot:spring-boot-starter-actuator")
     dtestImplementation("org.springframework.boot:spring-boot-starter-webflux")
     dtestImplementation("org.testcontainers:junit-jupiter")

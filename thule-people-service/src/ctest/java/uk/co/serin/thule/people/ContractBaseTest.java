@@ -17,7 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class ContractBaseTest {
     static MockServerClient mockServerClient;
     @Container
-    private static MockServerContainer mockServer = new MockServerContainer("5.10.0");
+    private static MockServerContainer mockServer = new MockServerContainer();
     @Container
     private static MySQLContainer<?> mysql = new MySQLContainer<>("mysql")
             .withImagePullPolicy(PullPolicy.alwaysPull())
