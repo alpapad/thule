@@ -33,7 +33,7 @@ class GatewayDockerTest {
     private String baseUrl;
 
     private static MockServerContainer createMockServerContainer() {
-        return new OpenIdMockServerContainer().withNetwork(Network.SHARED).withNetworkAliases(MOCK_SERVER_ALIAS);
+        return new OpenIdMockServerContainer("5.11.0").withNetwork(Network.SHARED).withNetworkAliases(MOCK_SERVER_ALIAS);
     }
 
     private static GenericContainer<?> createSpringBootService() {
