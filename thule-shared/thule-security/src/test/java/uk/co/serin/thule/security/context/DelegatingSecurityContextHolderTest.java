@@ -73,7 +73,7 @@ class DelegatingSecurityContextHolderTest {
         var actualContext = sut.getContext();
 
         // Then
-        assertThat(actualContext).isSameAs(actualContext);
+        assertThat(actualContext).isSameAs(securityContext);
     }
 
     @Test
