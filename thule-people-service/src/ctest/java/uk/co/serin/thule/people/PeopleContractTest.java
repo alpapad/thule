@@ -29,6 +29,7 @@ import uk.co.serin.thule.utils.utils.RandomUtils;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -64,7 +65,7 @@ class PeopleContractTest extends ContractBaseTest {
     @Test
     void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() throws JsonProcessingException {
         // Given
-        var testPerson = createAndPersistPersonWithNoAssociations();
+        var testPerson = createAndPersistPersonWithoutAnyAssociations();
 
         // When
         var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH).exchange()
@@ -80,13 +81,19 @@ class PeopleContractTest extends ContractBaseTest {
         assertThat(actualPeople).contains(testPerson);
     }
 
-    private PersonEntity createAndPersistPersonWithNoAssociations() {
+    private PersonEntity createAndPersistPersonWithoutAnyAssociations() {
         var person = buildPersonWithoutAnyAssociations();
         person.setState(stateRepository.findByCode(StateCode.PERSON_ENABLED));
 
-        personRepository.saveAndFlush(person);
+        person = personRepository.saveAndFlush(person);
+        person = personRepository.findById(person.getId()).orElseThrow(); // createdAt and updatedAt are updated after save so need to retrieve the updated person to reflect this
         entityManager.clear();
+
+        person.setHomeAddress(null);
+        person.setPhotographs(Set.of());
+        person.setRoles(Set.of());
         person.setState(null);
+        person.setWorkAddress(null);
 
         return person;
     }
@@ -112,7 +119,7 @@ class PeopleContractTest extends ContractBaseTest {
     @Test
     void given_a_new_person_when_finding_by_id_then_the_person_is_returned() {
         // Given
-        var testPerson = createAndPersistPersonWithNoAssociations();
+        var testPerson = createAndPersistPersonWithoutAnyAssociations();
 
         // When
         var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH + ID_PATH, testPerson.getId()).exchange()
@@ -175,7 +182,7 @@ class PeopleContractTest extends ContractBaseTest {
     @Test
     void when_deleting_a_person_then_the_person_no_longer_exists() throws JsonProcessingException {
         // Given
-        var person = createAndPersistPersonWithNoAssociations();
+        var person = createAndPersistPersonWithoutAnyAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
         mockServerClient
                 .when(request().withMethod("POST").withPath("/emails"))
@@ -194,7 +201,7 @@ class PeopleContractTest extends ContractBaseTest {
     @Test
     void when_updating_a_person_then_that_person_is_updated() throws InterruptedException, JsonProcessingException {
         // Given
-        var testPerson = createAndPersistPersonWithNoAssociations();
+        var testPerson = createAndPersistPersonWithoutAnyAssociations();
         var email = objectMapper.writeValueAsString(Email.builder().build());
         mockServerClient
                 .when(request().withMethod("POST").withPath("/emails"))
