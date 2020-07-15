@@ -3,6 +3,7 @@ package uk.co.serin.thule.spring.boot.starter.resourceserver.autoconfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -101,6 +103,22 @@ class ResourceServerAutoConfigurationTest {
     }
 
     @Test
+    void when_getJwtDecoderfromIssuerLocation_then_an_instance_is_instantiated() {
+        // Given
+        var issuerUri = "http://localhost";
+        var jwtDecoders = Mockito.mockStatic(JwtDecoders.class);
+
+        jwtDecoders.when(() -> JwtDecoders.fromIssuerLocation(issuerUri)).thenReturn(nimbusJwtDecoder);
+
+        // When
+        var jwtDecoder = sut.getJwtDecoderFromIssuerLocation(issuerUri);
+
+        // Then
+        assertThat(jwtDecoder).isSameAs(nimbusJwtDecoder);
+        jwtDecoders.reset();
+    }
+
+    @Test
     void when_jwtAuthenticationConverter_then_an_instance_is_instantiated() {
         // Given
         ReflectionTestUtils.setField(sut, "context", applicationContext);
@@ -118,7 +136,7 @@ class ResourceServerAutoConfigurationTest {
         // Given
         given(oAuth2ResourceServerProperties.getJwt()).willReturn(jwt);
         given(jwt.getIssuerUri()).willReturn("http://localhost");
-        doReturn(nimbusJwtDecoder).when(sut).getJwtDecoderfromIssuerLocation(any());
+        doReturn(nimbusJwtDecoder).when(sut).getJwtDecoderFromIssuerLocation(any());
 
         // When
         var jwtDecoder = sut.jwtDecoderFromIssuerLocation(oAuth2ResourceServerProperties);

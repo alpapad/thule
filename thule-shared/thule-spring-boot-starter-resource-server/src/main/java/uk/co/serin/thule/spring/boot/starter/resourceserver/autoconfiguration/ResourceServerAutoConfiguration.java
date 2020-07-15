@@ -19,14 +19,14 @@ import uk.co.serin.thule.resourceserver.converter.KeycloakResourceRoleConverter;
 import uk.co.serin.thule.resourceserver.converter.KeycloakSubjectClaimConverter;
 import uk.co.serin.thule.resourceserver.decoder.KeycloakUnsignedJwtDecoder;
 
-import lombok.Generated;
-
 @AutoConfigureBefore(OAuth2ResourceServerAutoConfiguration.class)
 @ConditionalOnProperty(name = "thule.shared.oauth2.resourceserver.enabled", matchIfMissing = true)
 @Configuration
 @EnableWebSecurity
-@Order(99)
+@Order(ResourceServerAutoConfiguration.ORDER)
 public class ResourceServerAutoConfiguration extends WebSecurityConfigurerAdapter {
+    public static final int ORDER = 99;
+
     @Bean
     @ConditionalOnProperty(value = "thule.shared.oauth2.resourceserver.jws.enabled", havingValue = "false")
     public JwtDecoder jwtDecoder() {
@@ -37,16 +37,12 @@ public class ResourceServerAutoConfiguration extends WebSecurityConfigurerAdapte
     @ConditionalOnProperty({"spring.security.oauth2.resourceserver.jwt.issuer-uri", "thule.shared.oauth2.resourceserver.jws.enabled"})
     public JwtDecoder jwtDecoderFromIssuerLocation(OAuth2ResourceServerProperties oAuth2ResourceServerProperties) {
         var issuerUri = oAuth2ResourceServerProperties.getJwt().getIssuerUri();
-        var jwtDecoder = getJwtDecoderfromIssuerLocation(issuerUri);
+        var jwtDecoder = getJwtDecoderFromIssuerLocation(issuerUri);
         jwtDecoder.setClaimSetConverter(new KeycloakSubjectClaimConverter());
         return jwtDecoder;
     }
 
-    /**
-     * Marked as generated because cannot mock a static method (without going through immense pain)
-     */
-    @Generated
-    NimbusJwtDecoder getJwtDecoderfromIssuerLocation(String issuerUri) {
+    NimbusJwtDecoder getJwtDecoderFromIssuerLocation(String issuerUri) {
         return (NimbusJwtDecoder) JwtDecoders.fromIssuerLocation(issuerUri);
     }
 
