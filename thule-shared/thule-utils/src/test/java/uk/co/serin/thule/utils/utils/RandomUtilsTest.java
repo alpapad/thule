@@ -51,8 +51,7 @@ class RandomUtilsTest {
         var randomBigDecimalFromRange = RandomUtils.generateRandomBigDecimalFromRange(minBigDecimal, maxBigDecimal);
 
         // Then
-        assertThat(randomBigDecimalFromRange).isNotNull();
-        assertThat(randomBigDecimalFromRange).isBetween(minBigDecimal, maxBigDecimal);
+        assertThat(randomBigDecimalFromRange).isNotNull().isBetween(minBigDecimal, maxBigDecimal);
     }
 
     @Test
@@ -94,11 +93,11 @@ class RandomUtilsTest {
 
     @Test
     void when_generate_unique_random_integer_then_it_is_not_null() {
-        assertThat(RandomUtils.generateUniqueRandomInteger()).isNotNull();
+        assertThat(RandomUtils.generateUniqueRandomInteger()).isPositive();
     }
 
     @Test
     void when_generate_unique_random_long_then_it_is_not_null() {
-        assertThat(RandomUtils.generateUniqueRandomLong()).isNotNull();
+        assertThat(RandomUtils.generateUniqueRandomLong()).isPositive();
     }
 }
