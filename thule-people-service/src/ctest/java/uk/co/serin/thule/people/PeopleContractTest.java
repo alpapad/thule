@@ -43,7 +43,7 @@ import static uk.co.serin.thule.test.assertj.ThuleAssertions.assertThat;
 @WithMockUser
 class PeopleContractTest extends ContractBaseTest {
     private static final String ID_PATH = "/{id}";
-    private static final String MOCK_USERS_NAME = "anonymousUser"; // change to "user" when not using PermitAnyRequestWebSecurityConfiguration
+    private static final String MOCK_USERS_NAME = "user";
     private static final String PEOPLE_PATH = "/people";
     @Autowired
     private EntityManager entityManager;

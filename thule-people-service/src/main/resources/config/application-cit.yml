@@ -9,3 +9,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://piglet.serin-consultancy.co.uk/thule-authentication-service/auth/realms/thule
+
+# Thule configuration
+thule:
+  peopleservice:
+    permit-any-request-web-security-configuration-enabled: true
