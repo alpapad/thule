@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 class RandomUtilsTest {
     private LocalDate today = LocalDate.now();
@@ -93,11 +94,18 @@ class RandomUtilsTest {
 
     @Test
     void when_generate_unique_random_integer_then_it_is_not_null() {
-        assertThat(RandomUtils.generateUniqueRandomInteger()).isPositive();
+        // When
+        var throwable = catchThrowable(RandomUtils::generateUniqueRandomInteger);
+
+        //Then
+        assertThat(throwable).isNull();
     }
 
     @Test
     void when_generate_unique_random_long_then_it_is_not_null() {
-        assertThat(RandomUtils.generateUniqueRandomLong()).isPositive();
+        var throwable = catchThrowable(RandomUtils::generateUniqueRandomLong);
+
+        //Then
+        assertThat(throwable).isNull();
     }
 }
