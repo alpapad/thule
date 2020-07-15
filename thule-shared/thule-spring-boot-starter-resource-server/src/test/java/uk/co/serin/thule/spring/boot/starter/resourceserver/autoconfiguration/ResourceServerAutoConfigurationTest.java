@@ -70,7 +70,7 @@ class ResourceServerAutoConfigurationTest {
         given(expressionInterceptUrlRegistry.antMatchers("/swagger-resources/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
-        given(expressionInterceptUrlRegistry.antMatchers("/swagger-ui/index.html")).willReturn(authorizedUrl);
+        given(expressionInterceptUrlRegistry.antMatchers("/swagger-ui/**")).willReturn(authorizedUrl);
 
         given(authorizedUrl.permitAll()).willReturn(expressionInterceptUrlRegistry);
         given(expressionInterceptUrlRegistry.antMatchers("/v2/api-docs/**")).willReturn(authorizedUrl);
@@ -93,7 +93,7 @@ class ResourceServerAutoConfigurationTest {
         sut.configure(httpSecurity);
 
         // Then
-        verify(expressionInterceptUrlRegistry, times(8)).antMatchers(anyString());
+        verify(expressionInterceptUrlRegistry, times(6)).antMatchers(anyString());
     }
 
     @Test
