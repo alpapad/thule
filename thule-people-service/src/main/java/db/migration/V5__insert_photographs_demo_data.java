@@ -22,15 +22,15 @@ public class V5__insert_photographs_demo_data extends BaseJavaMigration {
     public void migrate(Context context) throws Exception {
         jdbcTemplate.setDataSource(new SingleConnectionDataSource(context.getConnection(), true));
 
-        insertPhotograph(context, "green", "photographs/reverendGreen.jpg");
-        insertPhotograph(context, "mustard", "photographs/colonelMustard.jpg");
-        insertPhotograph(context, "peacock", "photographs/mrsPeacock.jpg");
-        insertPhotograph(context, "plum", "photographs/professorPlum.jpg");
-        insertPhotograph(context, "scarlett", "photographs/missScarlet.jpg");
-        insertPhotograph(context, "white", "photographs/mrsWhite.jpg");
+        insertPhotograph("green", "photographs/reverendGreen.jpg");
+        insertPhotograph("mustard", "photographs/colonelMustard.jpg");
+        insertPhotograph("peacock", "photographs/mrsPeacock.jpg");
+        insertPhotograph("plum", "photographs/professorPlum.jpg");
+        insertPhotograph("scarlett", "photographs/missScarlet.jpg");
+        insertPhotograph("white", "photographs/mrsWhite.jpg");
     }
 
-    public void insertPhotograph(Context context, String userId, String photographLocation) throws IOException {
+    public void insertPhotograph(String userId, String photographLocation) throws IOException {
         var resource = new DefaultResourceLoader().getResource(photographLocation);
         var photo = FileCopyUtils.copyToByteArray(resource.getInputStream());
         var hash = new String(DigestUtils.md5Digest(photo), Charset.defaultCharset());
