@@ -100,16 +100,16 @@ class ResourceServerAutoConfigurationTest {
     void when_getJwtDecoderfromIssuerLocation_then_an_instance_is_instantiated() {
         // Given
         var issuerUri = "http://localhost";
-        var jwtDecoders = Mockito.mockStatic(JwtDecoders.class);
 
-        jwtDecoders.when(() -> JwtDecoders.fromIssuerLocation(issuerUri)).thenReturn(nimbusJwtDecoder);
+        try (var jwtDecoders = Mockito.mockStatic(JwtDecoders.class)) {
+            jwtDecoders.when(() -> JwtDecoders.fromIssuerLocation(issuerUri)).thenReturn(nimbusJwtDecoder);
 
-        // When
-        var jwtDecoder = sut.getJwtDecoderFromIssuerLocation(issuerUri);
+            // When
+            var jwtDecoder = sut.getJwtDecoderFromIssuerLocation(issuerUri);
 
-        // Then
-        assertThat(jwtDecoder).isSameAs(nimbusJwtDecoder);
-        jwtDecoders.reset();
+            // Then
+            assertThat(jwtDecoder).isSameAs(nimbusJwtDecoder);
+        }
     }
 
     @Test
