@@ -105,8 +105,8 @@ project("thule-test") {
         annotationProcessor("org.projectlombok:lombok")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-        api("org.mockito:mockito-core:3.4.0") // Override Springs mockito version of 3.3.3
-        api("org.mockito:mockito-junit-jupiter:3.4.0") // Override Springs mockito version of 3.3.3
+        api("org.mockito:mockito-core:3.4.2") // Override Springs mockito version of 3.3.3
+        api("org.mockito:mockito-junit-jupiter:3.4.2") // Override Springs mockito version of 3.3.3
         api("org.springframework.boot:spring-boot-starter-test")
 
         compileOnly("org.projectlombok:lombok")
