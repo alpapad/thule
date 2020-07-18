@@ -36,6 +36,8 @@ INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email
     SELECT DATE_FORMAT('1971-01-12', '%Y-%m-%d'), DATE_FORMAT('2030-12-31', '%Y-%m-%d'), DATE_FORMAT('2030-12-31', '%Y-%m-%d'), 'green@serin-consultancy.co.uk', 'Verde', (SELECT addresses.id FROM addresses WHERE addresses.address_type = 'HOME'), 'Green', 'green', null, states.id, 'Reverend', 'green', 1, (SELECT addresses.id FROM addresses WHERE addresses.address_type = 'WORK'), CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
     FROM states WHERE states.code = 'PERSON_ENABLED';
 
+-- Photographs
+
 -- Roles
 
 -- people_roles
