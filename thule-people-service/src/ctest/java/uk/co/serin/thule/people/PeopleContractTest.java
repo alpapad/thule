@@ -48,6 +48,7 @@ class PeopleContractTest extends ContractBaseTest {
     private static final String ID_PATH = "/{id}";
     private static final String MOCK_USERS_NAME = "user";
     private static final String PEOPLE_PATH = "/people";
+    private static final String PHOTOGRAPHS_PATH = "/photographs";
     @Autowired
     private EntityManager entityManager;
     @Autowired
@@ -66,22 +67,20 @@ class PeopleContractTest extends ContractBaseTest {
     }
 
     @Test
-    void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() throws JsonProcessingException {
+    void given_a_new_person_when_finding_a_photograph_then_the_photograph_is_returned() {
         // Given
         var testPerson = createAndPersistPersonWithoutAnyAssociations();
 
         // When
-        var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH).exchange()
+        var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH + ID_PATH + PHOTOGRAPHS_PATH, testPerson.getId()).exchange()
                                                 .expectStatus().isOk()
-                                                .expectBody(String.class)
+                                                .expectBody(byte[].class)
                                                 .returnResult();
 
         // Then
-        var embeddedPeople = JsonPath.read(entityExchangeResult.getResponseBody(), "$._embedded.people[*]").toString();
-        var actualPeople = objectMapper.readValue(embeddedPeople, new TypeReference<PersonEntity[]>() {
-        });
+        var actualPhotograph = entityExchangeResult.getResponseBody();
 
-        assertThat(actualPeople).contains(testPerson);
+        assertThat(actualPhotograph).contains(testPerson.getPhotograph());
     }
 
     private PersonEntity createAndPersistPersonWithoutAnyAssociations() {
@@ -127,6 +126,25 @@ class PeopleContractTest extends ContractBaseTest {
                                    title("Miss").
                                    userId(userId).
                                    build();
+    }
+
+    @Test
+    void given_a_new_person_when_finding_all_people_then_the_new_person_is_returned() throws JsonProcessingException {
+        // Given
+        var testPerson = createAndPersistPersonWithoutAnyAssociations();
+
+        // When
+        var entityExchangeResult = webTestClient.get().uri(PEOPLE_PATH).exchange()
+                                                .expectStatus().isOk()
+                                                .expectBody(String.class)
+                                                .returnResult();
+
+        // Then
+        var embeddedPeople = JsonPath.read(entityExchangeResult.getResponseBody(), "$._embedded.people[*]").toString();
+        var actualPeople = objectMapper.readValue(embeddedPeople, new TypeReference<PersonEntity[]>() {
+        });
+
+        assertThat(actualPeople).contains(testPerson);
     }
 
     @Test

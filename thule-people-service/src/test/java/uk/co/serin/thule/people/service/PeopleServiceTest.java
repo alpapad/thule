@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
@@ -10,8 +11,10 @@ import uk.co.serin.thule.people.domain.entity.state.ActionEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 import uk.co.serin.thule.people.domain.model.state.ActionCode;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
+import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,11 +23,14 @@ import javax.validation.Validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class PeopleServiceTest {
     @InjectMocks
     private PeopleService peopleService;
+    @Mock
+    private PersonRepository personRepository;
 
     @Test
     void when_disable_person_then_state_is_updated_to_person_disabled() {
@@ -204,5 +210,20 @@ class PeopleServiceTest {
 
         // Then
         assertThat(personInvalidStateException).isNotNull();
+    }
+
+    @Test
+    void when_retrieving_photograph_then_a_photograph_is_returned() {
+        // Given
+        var expectedPhotograph = "photograph".getBytes();
+        var person = PersonEntity.builder().photograph(expectedPhotograph).build();
+        var id = 12345678L;
+        given(personRepository.findById(id)).willReturn(Optional.of(person));
+
+        // When
+        var actualPhotograph = peopleService.photograph(id);
+
+        // Then
+        assertThat(actualPhotograph).isEqualTo(expectedPhotograph);
     }
 }

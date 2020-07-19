@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.model.state.ActionCode;
+import uk.co.serin.thule.people.repository.repositories.PersonRepository;
 import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.time.LocalDate;
@@ -21,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Validated
 public class PeopleService {
+    private final PersonRepository personRepository;
+
     public void disable(PersonEntity personEntity) {
         updateStateWithNextState(personEntity, ActionCode.PERSON_DISABLE);
     }
@@ -46,6 +49,10 @@ public class PeopleService {
 
     public boolean isPasswordExpired(PersonEntity personEntity) {
         return LocalDate.now().isAfter(personEntity.getDateOfPasswordExpiry());
+    }
+
+    public byte[] photograph(long id) {
+        return personRepository.findById(id).orElseThrow().getPhotograph();
     }
 
     public void recover(PersonEntity personEntity) {
