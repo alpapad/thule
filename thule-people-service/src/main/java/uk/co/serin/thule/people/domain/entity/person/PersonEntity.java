@@ -1,14 +1,15 @@
 package uk.co.serin.thule.people.domain.entity.person;
 
 import uk.co.serin.thule.people.domain.entity.AuditEntity;
+import uk.co.serin.thule.people.domain.entity.account.AccountEntity;
 import uk.co.serin.thule.people.domain.entity.address.HomeAddressEntity;
 import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
-import uk.co.serin.thule.people.domain.entity.account.AccountEntity;
 import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -123,4 +124,8 @@ public class PersonEntity extends AuditEntity {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @ToString.Exclude
     private WorkAddressEntity workAddress;
+
+    public Optional<byte[]> getPhotograph() {
+        return Optional.ofNullable(photograph);
+    }
 }

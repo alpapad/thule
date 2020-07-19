@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import uk.co.serin.thule.people.service.PeopleService;
 import uk.co.serin.thule.people.service.PersonNotFoundException;
+import uk.co.serin.thule.people.service.PhotographNotFoundException;
 import uk.co.serin.thule.utils.trace.TracePublicMethods;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class PhotographController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(photograph);
     }
 
-    @ExceptionHandler(PersonNotFoundException.class)
+    @ExceptionHandler({PersonNotFoundException.class, PhotographNotFoundException.class})
     public void notFound(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());
     }

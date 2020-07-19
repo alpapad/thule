@@ -33,9 +33,8 @@ class PeopleServiceTest {
     private PersonRepository personRepository;
 
     @Test
-    void given_a_non_existing_photograph_when_retrieving_photograph_then_a_photograph_is_returned() {
+    void given_a_non_existing_person_when_retrieving_photograph_then_a_PersonNotFoundException_is_thrown() {
         // Given
-        var expectedPhotograph = "photograph".getBytes();
         var id = 12345678L;
         given(personRepository.findById(id)).willReturn(Optional.empty());
 
@@ -44,6 +43,20 @@ class PeopleServiceTest {
 
         // Then
         assertThat(personNotFoundException).isNotNull();
+    }
+
+    @Test
+    void given_a_non_existing_photograph_when_retrieving_photograph_then_a_PhotographNotFoundException_is_thrown() {
+        // Given
+        var person = PersonEntity.builder().build();
+        var id = 12345678L;
+        given(personRepository.findById(id)).willReturn(Optional.of(person));
+
+        // When
+        var photographNotFoundException = catchThrowableOfType(() -> peopleService.photograph(id), PhotographNotFoundException.class);
+
+        // Then
+        assertThat(photographNotFoundException).isNotNull();
     }
 
     @Test

@@ -80,7 +80,7 @@ class PeopleContractTest extends ContractBaseTest {
         // Then
         var actualPhotograph = entityExchangeResult.getResponseBody();
 
-        assertThat(actualPhotograph).contains(testPerson.getPhotograph());
+        assertThat(actualPhotograph).contains(testPerson.getPhotograph().orElseThrow());
     }
 
     private PersonEntity createAndPersistPersonWithoutAnyAssociations() {
