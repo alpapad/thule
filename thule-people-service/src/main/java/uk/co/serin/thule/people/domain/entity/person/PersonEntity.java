@@ -3,6 +3,7 @@ package uk.co.serin.thule.people.domain.entity.person;
 import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import uk.co.serin.thule.people.domain.entity.address.HomeAddressEntity;
 import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
+import uk.co.serin.thule.people.domain.entity.account.AccountEntity;
 import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
 

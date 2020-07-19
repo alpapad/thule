@@ -52,7 +52,8 @@ public class PeopleService {
     }
 
     public byte[] photograph(long id) {
-        return personRepository.findById(id).orElseThrow().getPhotograph();
+        var personEntity = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(String.format("Person with id %S does not exist", id)));
+        return personEntity.getPhotograph();
     }
 
     public void recover(PersonEntity personEntity) {

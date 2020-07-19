@@ -3,9 +3,9 @@ package uk.co.serin.thule.people.repository;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.FileCopyUtils;
 
+import uk.co.serin.thule.people.domain.entity.account.AccountEntity;
 import uk.co.serin.thule.people.domain.entity.address.HomeAddressEntity;
 import uk.co.serin.thule.people.domain.entity.address.WorkAddressEntity;
-import uk.co.serin.thule.people.domain.entity.person.AccountEntity;
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.role.RoleEntity;
 import uk.co.serin.thule.people.domain.model.state.StateCode;
@@ -62,14 +62,14 @@ class PersonEntityRepositoryIntTestHelper {
         return person;
     }
 
+    private AccountEntity buildAccount12345678(PersonEntity personEntity) {
+        return AccountEntity.builder().number(12345678).person(personEntity).build();
+    }
+
     private HomeAddressEntity buildOxfordStreetHomeAddress() {
         return HomeAddressEntity.builder().addressLine1("Oxford Street").addressLine2("Green")
                                 .country(countryRepository.findByIsoCodeThreeCharacters("GBR")).county("Greater London").postCode("EC3")
                                 .state(stateRepository.findByCode(StateCode.ADDRESS_ENABLED)).town("London").build();
-    }
-
-    private AccountEntity buildAccount12345678(PersonEntity personEntity) {
-        return AccountEntity.builder().number(12345678).person(personEntity).build();
     }
 
     private WorkAddressEntity buildRegentStreetWorkAddress() {

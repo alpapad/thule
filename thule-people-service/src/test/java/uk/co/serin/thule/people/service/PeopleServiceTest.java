@@ -33,6 +33,36 @@ class PeopleServiceTest {
     private PersonRepository personRepository;
 
     @Test
+    void given_a_non_existing_photograph_when_retrieving_photograph_then_a_photograph_is_returned() {
+        // Given
+        var expectedPhotograph = "photograph".getBytes();
+        var person = PersonEntity.builder().photograph(expectedPhotograph).build();
+        var id = 12345678L;
+        given(personRepository.findById(id)).willReturn(Optional.empty());
+
+        // When
+        var personNotFoundException = catchThrowableOfType(() -> peopleService.photograph(id), PersonNotFoundException.class);
+
+        // Then
+        assertThat(personNotFoundException).isNotNull();
+    }
+
+    @Test
+    void given_an_existing_photograph_when_retrieving_photograph_then_a_photograph_is_returned() {
+        // Given
+        var expectedPhotograph = "photograph".getBytes();
+        var person = PersonEntity.builder().photograph(expectedPhotograph).build();
+        var id = 12345678L;
+        given(personRepository.findById(id)).willReturn(Optional.of(person));
+
+        // When
+        var actualPhotograph = peopleService.photograph(id);
+
+        // Then
+        assertThat(actualPhotograph).isEqualTo(expectedPhotograph);
+    }
+
+    @Test
     void when_disable_person_then_state_is_updated_to_person_disabled() {
         // Given
         var nextState = StateEntity.builder().code(StateCode.PERSON_DISABLED).build();
@@ -210,20 +240,5 @@ class PeopleServiceTest {
 
         // Then
         assertThat(personInvalidStateException).isNotNull();
-    }
-
-    @Test
-    void when_retrieving_photograph_then_a_photograph_is_returned() {
-        // Given
-        var expectedPhotograph = "photograph".getBytes();
-        var person = PersonEntity.builder().photograph(expectedPhotograph).build();
-        var id = 12345678L;
-        given(personRepository.findById(id)).willReturn(Optional.of(person));
-
-        // When
-        var actualPhotograph = peopleService.photograph(id);
-
-        // Then
-        assertThat(actualPhotograph).isEqualTo(expectedPhotograph);
     }
 }

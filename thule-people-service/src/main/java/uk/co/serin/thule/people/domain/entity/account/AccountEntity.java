@@ -1,8 +1,9 @@
-package uk.co.serin.thule.people.domain.entity.person;
+package uk.co.serin.thule.people.domain.entity.account;
 
 import org.springframework.data.annotation.Transient;
 
 import uk.co.serin.thule.people.domain.entity.AuditEntity;
+import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
