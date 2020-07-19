@@ -1,12 +1,17 @@
 USE ${schema-name};
 
 -- Create tables
-DROP TABLE IF EXISTS state_actions CASCADE;
-CREATE TABLE state_actions
+DROP TABLE IF EXISTS accounts CASCADE;
+CREATE TABLE accounts
 (
-    state_id  BIGINT NOT NULL,
-    action_id BIGINT NOT NULL,
-    PRIMARY KEY (state_id, action_id)
+    id             BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    account_number LONGBLOB     NOT NULL,
+    person_id      BIGINT       NOT NULL,
+    version        BIGINT       NOT NULL,
+    created_at     DATETIME,
+    created_by     VARCHAR(100) NOT NULL,
+    updated_at     DATETIME,
+    updated_by     VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS actions CASCADE;
@@ -69,6 +74,7 @@ CREATE TABLE people
     home_address_id         BIGINT,
     last_name               VARCHAR(30)  NOT NULL,
     password                VARCHAR(100) NOT NULL,
+    photograph              LONGBLOB,
     second_name             VARCHAR(30),
     state_id                BIGINT       NOT NULL,
     title                   VARCHAR(30),
@@ -79,29 +85,6 @@ CREATE TABLE people
     created_by              VARCHAR(100) NOT NULL,
     updated_at              DATETIME,
     updated_by              VARCHAR(100) NOT NULL
-);
-
-DROP TABLE IF EXISTS people_roles CASCADE;
-CREATE TABLE people_roles
-(
-    person_id BIGINT NOT NULL AUTO_INCREMENT,
-    role_id   BIGINT NOT NULL,
-    PRIMARY KEY (person_id, role_id)
-);
-
-DROP TABLE IF EXISTS photographs CASCADE;
-CREATE TABLE photographs
-(
-    id         BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    hash       VARCHAR(255) NOT NULL,
-    photo      LONGBLOB     NOT NULL,
-    person_id  BIGINT       NOT NULL,
-    positin    BIGINT       NOT NULL,
-    version    BIGINT       NOT NULL,
-    created_at DATETIME,
-    created_by VARCHAR(100) NOT NULL,
-    updated_at DATETIME,
-    updated_by VARCHAR(100) NOT NULL
 );
 
 DROP TABLE IF EXISTS roles CASCADE;
@@ -117,6 +100,14 @@ CREATE TABLE roles
     updated_by  VARCHAR(100) NOT NULL
 );
 
+DROP TABLE IF EXISTS people_roles CASCADE;
+CREATE TABLE people_roles
+(
+    person_id BIGINT NOT NULL AUTO_INCREMENT,
+    role_id   BIGINT NOT NULL,
+    PRIMARY KEY (person_id, role_id)
+);
+
 DROP TABLE IF EXISTS states CASCADE;
 CREATE TABLE states
 (
@@ -130,12 +121,20 @@ CREATE TABLE states
     updated_by  VARCHAR(100) NOT NULL
 );
 
+DROP TABLE IF EXISTS state_actions CASCADE;
+CREATE TABLE state_actions
+(
+    state_id  BIGINT NOT NULL,
+    action_id BIGINT NOT NULL,
+    PRIMARY KEY (state_id, action_id)
+);
+
 -- Create foreign key constraints
+ALTER TABLE accounts ADD CONSTRAINT person_id03_fk FOREIGN KEY (person_id) REFERENCES people (id);
 ALTER TABLE addresses ADD CONSTRAINT state_id02_fk FOREIGN KEY (state_id) REFERENCES states (id);
 ALTER TABLE addresses ADD CONSTRAINT country_id01_fk FOREIGN KEY (country_id) REFERENCES countries (id);
 ALTER TABLE people ADD CONSTRAINT state_id01_fk FOREIGN KEY (state_id) REFERENCES states (id);
 ALTER TABLE people_roles ADD CONSTRAINT person_id01_fk FOREIGN KEY (person_id) REFERENCES people (id);
 ALTER TABLE people_roles ADD CONSTRAINT role_id01_fk FOREIGN KEY (role_id) REFERENCES roles (id);
-ALTER TABLE photographs ADD CONSTRAINT person_id03_fk FOREIGN KEY (person_id) REFERENCES people (id);
 ALTER TABLE state_actions ADD CONSTRAINT state_id03_fk FOREIGN KEY (state_id) REFERENCES states (id);
 ALTER TABLE state_actions ADD CONSTRAINT actions_id01_fk FOREIGN KEY (action_id) REFERENCES actions (id);

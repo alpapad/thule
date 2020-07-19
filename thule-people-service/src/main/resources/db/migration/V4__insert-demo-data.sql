@@ -1,9 +1,5 @@
 USE ${schema-name};
 
--- States
-
--- Actions
-
 -- Addresses
 INSERT INTO addresses(address_type, address_line1, address_line2, town, county, country_id, post_code, state_id, version, created_at, created_by, updated_at, updated_by)
     SELECT 'HOME', 'No. 1', 'Park lane', 'London', 'Middlesex', countries.id, 'ABC 123', states.id, 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
@@ -11,10 +7,6 @@ INSERT INTO addresses(address_type, address_line1, address_line2, town, county, 
 INSERT INTO addresses(address_type, address_line1, address_line2, town, county, country_id, post_code, state_id, version, created_at, created_by, updated_at, updated_by)
     SELECT 'WORK', '55', 'Picadilly', 'London', 'Middlesex', countries.id, 'DEF 456', states.id, 1, CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
     FROM countries, states WHERE countries.iso_code_three_characters = 'GBR' AND states.code= 'ADDRESS_ENABLED';
-
--- Countries
-
--- State_actions
 
 -- People
 INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, home_address_id, last_name, password, second_name, state_id, title, user_id, version, work_address_id, created_at, created_by, updated_at, updated_by)
@@ -35,10 +27,6 @@ INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email
 INSERT INTO people(date_of_birth, date_of_expiry, date_of_password_expiry, email_address, first_name, home_address_id, last_name, password, second_name, state_id, title, user_id, version, work_address_id, created_at, created_by, updated_at, updated_by)
     SELECT DATE_FORMAT('1971-01-12', '%Y-%m-%d'), DATE_FORMAT('2030-12-31', '%Y-%m-%d'), DATE_FORMAT('2030-12-31', '%Y-%m-%d'), 'green@serin-consultancy.co.uk', 'Verde', (SELECT addresses.id FROM addresses WHERE addresses.address_type = 'HOME'), 'Green', 'green', null, states.id, 'Reverend', 'green', 1, (SELECT addresses.id FROM addresses WHERE addresses.address_type = 'WORK'), CURRENT_TIMESTAMP, 'superuser', CURRENT_TIMESTAMP, 'superuser'
     FROM states WHERE states.code = 'PERSON_ENABLED';
-
--- Photographs
-
--- Roles
 
 -- people_roles
 INSERT INTO people_roles(person_id, role_id)

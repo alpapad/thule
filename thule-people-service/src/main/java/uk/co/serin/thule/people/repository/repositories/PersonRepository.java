@@ -11,15 +11,15 @@ import java.util.Set;
 
 @RepositoryRestResource(collectionResourceRel = "people", path = "people")
 public interface PersonRepository extends JpaRepository<PersonEntity, Long>, PersonRepositoryCustom {
-    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.id = :id")
+    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.accounts accounts LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.id = :id")
     @NewSpan
     PersonEntity findByIdAndFetchAllAssociations(Long id);
 
-    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.photographs photographs WHERE person.updatedBy = :updatedBy")
+    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.accounts accounts WHERE person.updatedBy = :updatedBy")
     @NewSpan
     Set<PersonEntity> findByUpdatedBy(String updatedBy);
 
-    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.userId = :userId")
+    @Query("SELECT person FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.accounts accounts LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions  WHERE person.userId = :userId")
     @NewSpan
     PersonEntity findByUserIdAndFetchAllAssociations(String userId);
 }

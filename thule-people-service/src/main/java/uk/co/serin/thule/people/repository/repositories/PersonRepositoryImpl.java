@@ -20,9 +20,9 @@ public class PersonRepositoryImpl implements PersonRepositoryCustom {
     private static final String ENTITY_ATTRIBUTE_NAME_LAST_NAME = "lastName";
     private static final String ENTITY_ATTRIBUTE_NAME_USER_ID = "userId";
     private static final String FIND_PEOPLE_BY_CRITERIA_JPA_QL =
-            "select DISTINCT(person) FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or :emailAddress is null) and ( person.firstName like :firstName or :firstName is null) and ( person.lastName like :lastName or :lastName is null) and ( person.userId like :userId or :userId is null)";
+            "select DISTINCT(person) FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.accounts accounts LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or :emailAddress is null) and ( person.firstName like :firstName or :firstName is null) and ( person.lastName like :lastName or :lastName is null) and ( person.userId like :userId or :userId is null)";
     private static final String SEARCH_PEOPLE_BY_QUERY_JPA_QL =
-            "select DISTINCT(person) FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.photographs photographs LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or person.firstName like :firstName or person.lastName like :lastName or person.userId like :userId)";
+            "select DISTINCT(person) FROM PersonEntity person LEFT JOIN FETCH person.roles roles LEFT JOIN FETCH person.accounts accounts LEFT JOIN FETCH person.state state LEFT JOIN FETCH state.actions actions WHERE person.id > 0 and ( person.emailAddress like :emailAddress or person.firstName like :firstName or person.lastName like :lastName or person.userId like :userId)";
 
     @PersistenceContext
     private EntityManager entityManager;

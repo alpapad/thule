@@ -203,7 +203,7 @@ public abstract class PersonEntityRepositoryBaseIntTest {
         assertThat(actualPerson.getId()).isNotNull();
         assertThat(actualPerson.getLastName()).isEqualTo(expectedPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(expectedPerson.getPassword());
-        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(expectedPerson.getPhotographs());
+        assertThat(actualPerson.getAccounts()).containsExactlyElementsOf(expectedPerson.getAccounts());
         assertThat(actualPerson.getSecondName()).isEqualTo(expectedPerson.getSecondName());
         assertThat(actualPerson.getState()).isEqualTo(expectedPerson.getState());
         assertThat(actualPerson.getTitle()).isEqualTo(expectedPerson.getTitle());

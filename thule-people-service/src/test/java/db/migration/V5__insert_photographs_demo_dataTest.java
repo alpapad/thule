@@ -12,6 +12,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.sql.Connection;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,6 +38,6 @@ class V5__insert_photographs_demo_dataTest {
         sut.migrate(context);
 
         // Then
-        verify(jdbcTemplate, times(6)).update(any(), any(), any(), any());
+        verify(jdbcTemplate, times(6)).update(anyString(), any(), anyString());
     }
 }

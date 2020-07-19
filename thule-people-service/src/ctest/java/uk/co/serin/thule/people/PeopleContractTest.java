@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.data.rest.webmvc.support.ETag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.util.FileCopyUtils;
 
 import uk.co.serin.thule.people.domain.entity.person.PersonEntity;
 import uk.co.serin.thule.people.domain.entity.state.StateEntity;
@@ -26,6 +28,7 @@ import uk.co.serin.thule.people.repository.repositories.StateRepository;
 import uk.co.serin.thule.resourceserver.utils.KeycloakJwtUtils;
 import uk.co.serin.thule.utils.utils.RandomUtils;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -90,8 +93,8 @@ class PeopleContractTest extends ContractBaseTest {
                                  .orElseThrow(); // createdAt and updatedAt are updated after save so need to retrieve the updated person to reflect this
         entityManager.clear();
 
+        person.setAccounts(Set.of());
         person.setHomeAddress(null);
-        person.setPhotographs(Set.of());
         person.setRoles(Set.of());
         person.setState(null);
         person.setWorkAddress(null);
@@ -103,6 +106,14 @@ class PeopleContractTest extends ContractBaseTest {
         var dateOfExpiry = RandomUtils.generateUniqueRandomDateAfter(LocalDate.now().plus(1, ChronoUnit.DAYS));
         var userId = "missScarlett" + RandomUtils.generateUniqueRandomString(8);
 
+        byte[] photograph;
+        try {
+            var resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
+            photograph = FileCopyUtils.copyToByteArray(resource.getInputStream());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+
         return PersonEntity.builder().
                 dateOfBirth(RandomUtils.generateUniqueRandomDateInThePast()).
                                    dateOfExpiry(RandomUtils.generateUniqueRandomDateInTheFuture()).
@@ -111,6 +122,7 @@ class PeopleContractTest extends ContractBaseTest {
                                    firstName("Elizabeth").
                                    lastName("Scarlett").
                                    password(userId).
+                                   photograph(photograph).
                                    secondName("K").
                                    title("Miss").
                                    userId(userId).
@@ -169,7 +181,7 @@ class PeopleContractTest extends ContractBaseTest {
         assertThat(actualPerson.getId()).isNotNull();
         assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
-        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(testPerson.getPhotographs());
+        assertThat(actualPerson.getAccounts()).containsExactlyElementsOf(testPerson.getAccounts());
         assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
         assertThat(actualPerson.getState()).isEqualTo(testPerson.getState());
         assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());
@@ -237,7 +249,7 @@ class PeopleContractTest extends ContractBaseTest {
         assertThat(actualPerson.getId()).isEqualTo(testPerson.getId());
         assertThat(actualPerson.getLastName()).isEqualTo(testPerson.getLastName());
         assertThat(actualPerson.getPassword()).isEqualTo(testPerson.getPassword());
-        assertThat(actualPerson.getPhotographs()).containsExactlyElementsOf(testPerson.getPhotographs());
+        assertThat(actualPerson.getAccounts()).containsExactlyElementsOf(testPerson.getAccounts());
         assertThat(actualPerson.getSecondName()).isEqualTo(testPerson.getSecondName());
         assertThat(actualPerson.getState()).isEqualTo(StateEntity.builder().code(StateCode.PERSON_ENABLED).build());
         assertThat(actualPerson.getTitle()).isEqualTo(testPerson.getTitle());

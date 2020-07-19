@@ -14,6 +14,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -50,6 +51,11 @@ public class PersonEntity extends AuditEntity {
     public static final int TITLE_MAX_LENGTH = 10;
     public static final int USER_ID_MAX_LENGTH = 100;
 
+    @Builder.Default
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "person", orphanRemoval = true)
+    @ToString.Exclude
+    private Set<AccountEntity> accounts = new HashSet<>();
+
     @NotNull
     private LocalDate dateOfBirth;
 
@@ -83,10 +89,8 @@ public class PersonEntity extends AuditEntity {
     @Size(max = PASSWORD_MAX_LENGTH)
     private String password;
 
-    @Builder.Default
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "person", orphanRemoval = true)
-    @ToString.Exclude
-    private Set<PhotographEntity> photographs = new HashSet<>();
+    @Lob
+    private byte[] photograph;
 
     @Builder.Default
     @JoinTable(name = "people_roles",

@@ -7,11 +7,9 @@ import uk.co.serin.thule.people.domain.entity.AuditEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +17,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -30,14 +27,14 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@Table(name = "photographs")
+@Table(name = "accounts")
 @ToString(callSuper = true)
-public class PhotographEntity extends AuditEntity {
+public class AccountEntity extends AuditEntity {
     private static final int HASH_MAX_LENGTH = 255;
 
     @EqualsAndHashCode.Include
-    @Size(max = HASH_MAX_LENGTH)
-    private String hash;
+    @Column(name = "account_number")
+    private int number;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "personId", nullable = false, updatable = false)
@@ -45,13 +42,4 @@ public class PhotographEntity extends AuditEntity {
     @Transient
     @ToString.Exclude
     private PersonEntity person;
-
-    @Lob
-    @NotNull
-    @NonNull
-    private byte[] photo;
-
-    @EqualsAndHashCode.Include
-    @Column(name = "positin") // Don't call this position because 'position' is a reserved word in HSQL
-    private long position;
 }
