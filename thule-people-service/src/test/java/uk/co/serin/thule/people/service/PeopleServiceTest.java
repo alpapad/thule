@@ -36,7 +36,6 @@ class PeopleServiceTest {
     void given_a_non_existing_photograph_when_retrieving_photograph_then_a_photograph_is_returned() {
         // Given
         var expectedPhotograph = "photograph".getBytes();
-        var person = PersonEntity.builder().photograph(expectedPhotograph).build();
         var id = 12345678L;
         given(personRepository.findById(id)).willReturn(Optional.empty());
 
