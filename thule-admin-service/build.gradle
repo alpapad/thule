@@ -44,7 +44,7 @@ dependencies {
     // Spring Boot uses version 0.9.8.RELEASE which contains a bug producing the following error:
     // io.netty.channel.unix.Errors$NativeIoException: accept(..) failed: Too many open files
     // See https://github.com/spring-projects/spring-boot/issues/21934
-    implementation("io.projectreactor.netty:reactor-netty:0.9.9.RELEASE")
+    implementation("io.projectreactor.netty:reactor-netty:0.9.10.RELEASE")
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
