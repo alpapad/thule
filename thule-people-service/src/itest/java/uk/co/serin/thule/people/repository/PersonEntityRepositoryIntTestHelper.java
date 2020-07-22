@@ -38,7 +38,7 @@ class PersonEntityRepositoryIntTestHelper {
 
         byte[] photograph;
         try {
-            var resource = new DefaultResourceLoader().getResource("photographs/missScarlet.jpg");
+            var resource = new DefaultResourceLoader().getResource("photographs/missScarlet-140x140.jpg");
             photograph = FileCopyUtils.copyToByteArray(resource.getInputStream());
         } catch (IOException e) {
             throw new IllegalStateException(e);

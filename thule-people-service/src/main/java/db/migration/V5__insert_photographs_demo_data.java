@@ -20,12 +20,12 @@ public class V5__insert_photographs_demo_data extends BaseJavaMigration {
     public void migrate(Context context) throws Exception {
         jdbcTemplate.setDataSource(new SingleConnectionDataSource(context.getConnection(), true));
 
-        insertAccount("green", "photographs/reverendGreen.jpg");
-        insertAccount("mustard", "photographs/colonelMustard.jpg");
-        insertAccount("peacock", "photographs/mrsPeacock.jpg");
-        insertAccount("plum", "photographs/professorPlum.jpg");
-        insertAccount("scarlett", "photographs/missScarlet.jpg");
-        insertAccount("white", "photographs/mrsWhite.jpg");
+        insertAccount("green", "photographs/reverendGreen-140x140.jpg");
+        insertAccount("mustard", "photographs/colonelMustard-140x140.jpg");
+        insertAccount("peacock", "photographs/mrsPeacock-140x140.jpg");
+        insertAccount("plum", "photographs/professorPlum-140x140.jpg");
+        insertAccount("scarlett", "photographs/missScarlet-140x140.jpg");
+        insertAccount("white", "photographs/mrsWhite-140x140.jpg");
     }
 
     public void insertAccount(String userId, String photographLocation) throws IOException {
