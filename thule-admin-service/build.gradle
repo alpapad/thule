@@ -41,10 +41,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin")
     // Required to retry connecting to the configuration service when it is not available at startup
     implementation("org.springframework.retry:spring-retry")
-    // Spring Boot uses version 0.9.8.RELEASE which contains a bug producing the following error:
-    // io.netty.channel.unix.Errors$NativeIoException: accept(..) failed: Too many open files
-    // See https://github.com/spring-projects/spring-boot/issues/21934
-    implementation("io.projectreactor.netty:reactor-netty:0.9.10.RELEASE")
 
     testImplementation("uk.co.serin.thule:thule-spring-boot-starter-test:${thuleSharedVersion}")
 
