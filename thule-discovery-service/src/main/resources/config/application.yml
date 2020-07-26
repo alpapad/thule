@@ -20,6 +20,11 @@ management:
         include: "*"
   endpoint:
     health:
+      group:
+        liveness:
+          include: livenessStateProbeIndicator,diskSpace,refreshScope
+        readiness:
+          include: readinessStateProbeIndicator
       show-details: ALWAYS
 
 # Server configuration
